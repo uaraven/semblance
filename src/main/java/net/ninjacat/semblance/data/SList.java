@@ -7,6 +7,7 @@ import net.ninjacat.semblance.errors.ValueExpectedException;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,12 +34,12 @@ public class SList extends LispCollection implements Function {
 
     private List<LispValue> collection;
 
-    public SList(SourceInfo sourceInfo, List<LispValue> collection) {
+    public SList(SourceInfo sourceInfo, Collection<LispValue> collection) {
         super(sourceInfo);
         this.collection = unmodifiableList(new LinkedList<>(collection));
     }
 
-    public SList(List<LispValue> collection) {
+    public SList(Collection<LispValue> collection) {
         this.collection = unmodifiableList(new LinkedList<>(collection));
     }
 

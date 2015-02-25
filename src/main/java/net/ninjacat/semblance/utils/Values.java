@@ -41,7 +41,7 @@ public final class Values {
         return new StringAtom(value);
     }
 
-    public static LispValue symbol(String value) {
+    public static SymbolAtom symbol(String value) {
         return new SymbolAtom(value);
     }
 

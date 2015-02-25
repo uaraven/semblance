@@ -8,6 +8,7 @@ import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
@@ -33,12 +34,12 @@ public class Vector extends LispCollection implements Function {
 
     private List<LispValue> collection;
 
-    public Vector(SourceInfo sourceInfo, List<LispValue> collection) {
+    public Vector(SourceInfo sourceInfo, Collection<LispValue> collection) {
         super(sourceInfo);
         this.collection = unmodifiableList(new ArrayList<>(collection));
     }
 
-    public Vector(List<LispValue> collection) {
+    public Vector(Collection<LispValue> collection) {
         this.collection = unmodifiableList(new ArrayList<>(collection));
     }
 

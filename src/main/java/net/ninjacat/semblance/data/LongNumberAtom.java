@@ -20,8 +20,8 @@ public class LongNumberAtom extends NumberAtom<Long> {
     }
 
     @Override
-    public SemblanceNumberType getNumberType() {
-        return SemblanceNumberType.LONG;
+    public SemblanceIntType getNumberType() {
+        return SemblanceIntType.LONG;
     }
 
     @Override

@@ -30,8 +30,8 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     @Override
-    public SemblanceNumberType getNumberType() {
-        return SemblanceNumberType.BIG;
+    public SemblanceIntType getNumberType() {
+        return SemblanceIntType.BIG;
     }
 
     @Override

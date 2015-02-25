@@ -2,7 +2,8 @@ package net.ninjacat.semblance.data;
 
 import org.junit.Test;
 
-import static net.ninjacat.semblance.data.SemblanceNumberType.*;
+import static net.ninjacat.semblance.data.SemblanceIntType.BIG;
+import static net.ninjacat.semblance.data.SemblanceIntType.LONG;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -20,34 +21,6 @@ public class NumberAtomTest {
         NumberAtom<?> atom = NumberAtom.make("-1234");
 
         assertThat("number should be of LONG type", atom.getNumberType(), is(LONG));
-    }
-
-    @Test
-    public void shouldCreateDoubleRepresentation() throws Exception {
-        NumberAtom<?> atom = NumberAtom.make("1234.1");
-
-        assertThat("number should be of DOUBLE type", atom.getNumberType(), is(DOUBLE));
-    }
-
-    @Test
-    public void shouldCreateDuobleRepresentationForNegativeNumber() throws Exception {
-        NumberAtom<?> atom = NumberAtom.make("-1234.2");
-
-        assertThat("number should be of DOUBLE type", atom.getNumberType(), is(DOUBLE));
-    }
-
-    @Test
-    public void shouldCreateDoubleRepresentationForScientificNumber() throws Exception {
-        NumberAtom<?> atom = NumberAtom.make("10e12");
-
-        assertThat("number should be of DOUBLE type", atom.getNumberType(), is(DOUBLE));
-    }
-
-    @Test
-    public void shouldCreateDuobleRepresentationForNegativeScientificNumber() throws Exception {
-        NumberAtom<?> atom = NumberAtom.make("-10e12");
-
-        assertThat("number should be of DOUBLE type", atom.getNumberType(), is(DOUBLE));
     }
 
     @Test

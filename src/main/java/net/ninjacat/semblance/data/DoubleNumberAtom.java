@@ -5,7 +5,7 @@ import net.ninjacat.semblance.debug.SourceInfo;
 /**
  * Floating point representation of number atom
  */
-public class DoubleNumberAtom extends NumberAtom<Double> {
+public class DoubleNumberAtom extends Atom {
 
     private double value;
 
@@ -18,22 +18,8 @@ public class DoubleNumberAtom extends NumberAtom<Double> {
         this.value = value;
     }
 
-    public boolean canBeLong() {
-        return Math.floor(value) == value && !Double.isInfinite(value);
-    }
-
     @Override
     public Double asJavaObject() {
-        return getValue();
-    }
-
-    @Override
-    public SemblanceNumberType getNumberType() {
-        return SemblanceNumberType.DOUBLE;
-    }
-
-    @Override
-    public Double getValue() {
         return value;
     }
 
@@ -53,5 +39,15 @@ public class DoubleNumberAtom extends NumberAtom<Double> {
     public int hashCode() {
         long temp = Double.doubleToLongBits(value);
         return (int) (temp ^ (temp >>> 32));
+    }
+
+    @Override
+    public SemblanceType getType() {
+        return SemblanceType.FLOATIG_POINT;
+    }
+
+    @Override
+    public String repr() {
+        return String.valueOf(value);
     }
 }

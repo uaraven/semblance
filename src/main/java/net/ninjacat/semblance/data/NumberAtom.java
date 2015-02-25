@@ -17,9 +17,6 @@ public abstract class NumberAtom<T> extends Atom {
     }
 
     public static NumberAtom<?> make(String token) {
-        if (token.contains(".") || token.contains("e")) { // this is double
-            return new DoubleNumberAtom(Double.parseDouble(token));
-        }
         BigInteger bigInteger = new BigInteger(token);
         if (bigInteger.bitLength() <= 32) {
             return new LongNumberAtom(bigInteger.longValue());
@@ -35,7 +32,7 @@ public abstract class NumberAtom<T> extends Atom {
 
     @Override
     public SemblanceType getType() {
-        return SemblanceType.NUMBER;
+        return SemblanceType.INTEGER;
     }
 
     @Override
@@ -43,7 +40,7 @@ public abstract class NumberAtom<T> extends Atom {
         return "NumberAtom{" + getValue() + '}';
     }
 
-    public abstract SemblanceNumberType getNumberType();
+    public abstract SemblanceIntType getNumberType();
 
     public abstract T getValue();
 }

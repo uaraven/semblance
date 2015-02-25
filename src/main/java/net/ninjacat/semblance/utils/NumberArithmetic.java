@@ -1,6 +1,9 @@
 package net.ninjacat.semblance.utils;
 
-import net.ninjacat.semblance.data.*;
+import net.ninjacat.semblance.data.BigIntegerNumberAtom;
+import net.ninjacat.semblance.data.LongNumberAtom;
+import net.ninjacat.semblance.data.NumberAtom;
+import net.ninjacat.semblance.data.SemblanceIntType;
 
 /**
  * Utilities to help with different number representations
@@ -10,10 +13,8 @@ public final class NumberArithmetic {
     }
 
     public static NumberAtom simplify(NumberAtom number) {
-        if (number.getNumberType() == SemblanceNumberType.BIG) {
+        if (number.getNumberType() == SemblanceIntType.BIG) {
             return simplifyBig((BigIntegerNumberAtom) number);
-        } else if (number.getNumberType() == SemblanceNumberType.DOUBLE) {
-            return simplifyDouble((DoubleNumberAtom) number);
         } else {
             return number;
         }
@@ -23,7 +24,4 @@ public final class NumberArithmetic {
         return number.canBeLong() ? new LongNumberAtom(number.getValue().longValue(), number.getSourceInfo()) : number;
     }
 
-    private static NumberAtom simplifyDouble(DoubleNumberAtom number) {
-        return number.canBeLong() ? new LongNumberAtom(number.getValue().longValue(), number.getSourceInfo()) : number;
-    }
 }

@@ -29,10 +29,10 @@ public class DoubleNumberAtomTest {
     }
 
     @Test
-    public void typeNameShouldBeSymbol() throws Exception {
+    public void typeNameShouldBeFloatingPoint() throws Exception {
         Atom symbol = getAtom();
 
-        assertThat("Type name should be STRING", symbol.getType(), is(SemblanceType.NUMBER));
+        assertThat("Type name should be FLOATING_POINT", symbol.getType(), is(SemblanceType.FLOATIG_POINT));
     }
 
     @Test

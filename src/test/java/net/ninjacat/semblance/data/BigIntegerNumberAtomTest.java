@@ -34,7 +34,7 @@ public class BigIntegerNumberAtomTest {
     public void typeNameShouldBeSymbol() throws Exception {
         Atom symbol = getAtom();
 
-        assertThat("Type name should be STRING", symbol.getType(), is(SemblanceType.NUMBER));
+        assertThat("Type name should be STRING", symbol.getType(), is(SemblanceType.INTEGER));
     }
 
     @Test

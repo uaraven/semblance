@@ -20,7 +20,7 @@ public final class Values {
         if (atom instanceof LongNumberAtom) {
             return ((LongNumberAtom) atom).asJavaObject();
         } else {
-            throw new TypeMismatchException(SemblanceType.NUMBER, atom.getType(), getSourceInfo(atom));
+            throw new TypeMismatchException(SemblanceType.INTEGER, atom.getType(), getSourceInfo(atom));
         }
     }
 

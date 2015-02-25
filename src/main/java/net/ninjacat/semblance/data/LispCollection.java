@@ -3,6 +3,7 @@ package net.ninjacat.semblance.data;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.java.JavaConvertible;
+import net.ninjacat.smooth.functions.Func;
 
 /**
  * Parent class for lists and vectors
@@ -57,4 +58,13 @@ public abstract class LispCollection implements LispValue, DebugInfoProvider, Ja
      * @return {@code true} if the collection is empty
      */
     public abstract boolean isNil();
+
+    protected static enum ValueToString implements Func<String, LispValue> {
+        REPR;
+
+        @Override
+        public String apply(LispValue lispValue) {
+            return lispValue.repr();
+        }
+    }
 }

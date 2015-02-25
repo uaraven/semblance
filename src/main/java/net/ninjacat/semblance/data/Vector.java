@@ -4,7 +4,6 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.CollectionException;
 import net.ninjacat.semblance.errors.CollectionIndexOutOfBoundsException;
 import net.ninjacat.semblance.errors.ValueExpectedException;
-import net.ninjacat.semblance.utils.ValueToString;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 

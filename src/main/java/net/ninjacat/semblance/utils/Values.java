@@ -66,7 +66,7 @@ public final class Values {
     }
 
     public static Vector smartVector(Object... values) {
-        return vector(Iter.of(values).map(SmartConverter.INSTANCE).toArray(new LispValue[values.length]));
+        return vector(Iter.of(values).map(FromJavaConverter.INSTANCE).toArray(new LispValue[values.length]));
     }
 
     public static SList list(LispValue... values) {
@@ -74,14 +74,14 @@ public final class Values {
     }
 
     public static SList smartList(Object... values) {
-        return list(Iter.of(values).map(SmartConverter.INSTANCE).toArray(new LispValue[values.length]));
+        return list(Iter.of(values).map(FromJavaConverter.INSTANCE).toArray(new LispValue[values.length]));
     }
 
     public static boolean isNilCollection(Object collection) {
         return collection instanceof LispCollection && ((LispCollection) collection).isNil();
     }
 
-    private enum SmartConverter implements Func<LispValue, Object> {
+    private enum FromJavaConverter implements Func<LispValue, Object> {
         INSTANCE;
 
         @Override

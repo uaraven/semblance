@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.java;
 
 /**
- * Java representation of Semblance symbol
+ * Java representation of Semblance symbol. Immutable class that holds its value.
  */
 public class Symbol {
     public final String value;

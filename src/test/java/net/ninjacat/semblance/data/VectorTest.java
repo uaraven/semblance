@@ -166,7 +166,7 @@ public class VectorTest {
         LispCollection vector1 = smartVector(1L, 2L);
         LispCollection vector2 = new NilCollection();
 
-        assertThat("Non-empty vector should not be equal to NIL", vector1, not(equalTo(vector2)));
+        assertThat("Non-empty vector should not be equal to NIL", vector2, not(equalTo(vector1)));
     }
 
     @Test

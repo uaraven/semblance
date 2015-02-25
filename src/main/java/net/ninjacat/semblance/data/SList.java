@@ -8,39 +8,39 @@ import net.ninjacat.semblance.utils.ValueToString;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 
 /**
- * Vector collection.
+ * List collection.
  * <br/>
- * Vector allows indexed access to its elements and also efficiently calculates its size
+ * List allows fast head and tail operations, but slow indexed access to its elements. Size calculation might be inefficient
  * <pre>
  *     Semblance syntax:
  *
- *     [elem1, elem2, ..., elemN]
+ *     (elem1, elem2, ..., elemN)
  *     or
- *     (vector elem1, elem2, ..., elemN)
+ *     (list elem1, elem2, ..., elemN) s-expression
  *
- *     if vector is bound to a variable v then following code can be used to access its elements by index:
- *     (v i), where
+ *     if list is bound to a variable L then following code can be used to access its elements by index:
+ *     (L i), where
  *     i is index
- *     (v length) returns vector size
+ *     (L length) returns list size
  * </pre>
  */
-public class Vector extends LispCollection implements Function {
+public class SList extends LispCollection implements Function {
 
     private List<LispValue> collection;
 
-    public Vector(SourceInfo sourceInfo, List<LispValue> collection) {
+    public SList(SourceInfo sourceInfo, List<LispValue> collection) {
         super(sourceInfo);
-        this.collection = unmodifiableList(new ArrayList<>(collection));
+        this.collection = unmodifiableList(new LinkedList<>(collection));
     }
 
-    public Vector(List<LispValue> collection) {
-        this.collection = unmodifiableList(new ArrayList<>(collection));
+    public SList(List<LispValue> collection) {
+        this.collection = unmodifiableList(new LinkedList<>(collection));
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Vector extends LispCollection implements Function {
 
     @Override
     public SemblanceType getType() {
-        return SemblanceType.VECTOR;
+        return SemblanceType.LIST;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class Vector extends LispCollection implements Function {
 
     @Override
     public String repr() {
-        return "[" + Iter.of(collection).map(ValueToString.REPR).mkStr(", ") + "]";
+        return "(" + Iter.of(collection).map(ValueToString.REPR).mkStr(", ") + ")";
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Vector extends LispCollection implements Function {
     @Override
     public LispValue head() {
         if (isNil()) {
-            throw new CollectionException("Cannot get head of empty vector", getSourceInfo());
+            throw new CollectionException("Cannot get head of empty list", getSourceInfo());
         } else {
             return collection.get(0);
         }
@@ -97,11 +97,11 @@ public class Vector extends LispCollection implements Function {
     @Override
     public LispCollection tail() {
         if (isNil()) {
-            throw new CollectionException("Cannot get tail of empty vector", getSourceInfo());
+            throw new CollectionException("Cannot get tail of empty list", getSourceInfo());
         } else if (collection.size() == 1) {
             return new NilCollection(getSourceInfo());
         } else {
-            return new Vector(getSourceInfo(), collection.subList(1, collection.size()));
+            return new SList(getSourceInfo(), collection.subList(1, collection.size()));
         }
     }
 
@@ -123,9 +123,9 @@ public class Vector extends LispCollection implements Function {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        Vector vector = (Vector) o;
+        SList list = (SList) o;
 
-        if (!collection.equals(vector.collection)) return false;
+        if (!collection.equals(list.collection)) return false;
 
         return true;
     }
@@ -137,6 +137,6 @@ public class Vector extends LispCollection implements Function {
 
     @Override
     public String toString() {
-        return "Vector{" + collection + '}';
+        return "List{" + collection + '}';
     }
 }

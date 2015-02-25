@@ -69,6 +69,14 @@ public final class Values {
         return vector(Iter.of(values).map(SmartConverter.INSTANCE).toArray(new LispValue[values.length]));
     }
 
+    public static SList list(LispValue... values) {
+        return new SList(Iter.of(values).toList());
+    }
+
+    public static SList smartList(Object... values) {
+        return list(Iter.of(values).map(SmartConverter.INSTANCE).toArray(new LispValue[values.length]));
+    }
+
     public static boolean isNilCollection(Object collection) {
         return collection instanceof LispCollection && ((LispCollection) collection).isNil();
     }

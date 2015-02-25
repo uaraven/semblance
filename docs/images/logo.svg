@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="512"
+   height="512"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="logo.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3759">
+      <stop
+         style="stop-color:#005f64;stop-opacity:1;"
+         offset="0"
+         id="stop3761" />
+      <stop
+         style="stop-color:#19418a;stop-opacity:0;"
+         offset="1"
+         id="stop3763" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3759"
+       id="radialGradient3765"
+       cx="276.27673"
+       cy="253.90602"
+       fx="276.27673"
+       fy="253.90602"
+       r="277.28687"
+       gradientTransform="matrix(1,0,0,0.91256833,0,22.199426)"
+       gradientUnits="userSpaceOnUse" />
+    <filter
+       id="filter3878"
+       inkscape:label="Torn edges"
+       inkscape:menu="Distort"
+       inkscape:menu-tooltip="Displace the outside of shapes and pictures without altering their content"
+       height="1.4"
+       y="-0.2"
+       width="1.4"
+       x="-0.2"
+       color-interpolation-filters="sRGB">
+      <feTurbulence
+         id="feTurbulence3880"
+         baseFrequency="0.05"
+         numOctaves="5"
+         type="fractalNoise"
+         result="result91" />
+      <feDisplacementMap
+         id="feDisplacementMap3882"
+         in2="result91"
+         scale="25"
+         result="result5"
+         xChannelSelector="R"
+         in="SourceGraphic" />
+      <feComposite
+         id="feComposite3884"
+         in2="result5"
+         in="SourceGraphic"
+         operator="atop" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="108.89606"
+     inkscape:cy="33.296656"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-540.36218)">
+    <path
+       sodipodi:type="arc"
+       id="path2989"
+       sodipodi:cx="276.27673"
+       sodipodi:cy="253.90602"
+       sodipodi:rx="277.28687"
+       sodipodi:ry="253.04321"
+       d="m 553.5636,253.90602 c 0,139.75191 -124.14556,253.04321 -277.28687,253.04321 -153.1413,0 -277.2868618,-113.2913 -277.2868618,-253.04321 0,-139.75191 124.1455618,-253.04321177 277.2868618,-253.04321177 153.14131,0 277.28687,113.29130177 277.28687,253.04321177 z"
+       transform="matrix(0.92167577,0,0,1.007984,0.9310347,539.34514)"
+       style="fill-opacity:1;fill:url(#radialGradient3765)"
+       inkscape:export-filename="/home/raven/work/projects/iasl/docs/logo_small.png"
+       inkscape:export-xdpi="21.207659"
+       inkscape:export-ydpi="21.207659" />
+    <g
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu"
+       id="text2985"
+       inkscape:export-filename="/home/raven/work/projects/iasl/docs/logo_small.png"
+       inkscape:export-xdpi="21.207659"
+       inkscape:export-ydpi="21.207659">
+      <path
+         d="m 262.30966,776.73273 c -9.00012,18.00019 -17.50011,36.66684 -25.5,56 -7.66676,19.00014 -14.83342,37.83345 -21.5,56.5 -6.33341,18.33341 -12.00007,36.16673 -17,53.5 -5.00006,17.00003 -9.16672,32.66668 -12.5,47 l -47.5,0 c 4.66666,-19.33332 10.66665,-39.99996 18,-62 7.3333,-21.99992 15.49996,-44.33323 24.5,-67 9.33328,-22.99985 19.1666,-45.83316 29.5,-68.5 10.33324,-22.99978 20.83323,-44.83309 31.5,-65.5 -6.0001,-13.99973 -11.33343,-26.33305 -16,-37 -4.66676,-10.99969 -9.50008,-20.16635 -14.5,-27.5 -5.00007,-7.333 -10.50007,-12.833 -16.5,-16.5 -6.00006,-3.66632 -13.16672,-5.49965 -21.5,-5.5 -4.6667,3.5e-4 -8.83337,0.33368 -12.5,1 -3.33336,0.66701 -5.83336,1.33368 -7.5,2 l -6.5,-37.5 c 1.66665,-0.66628 5.49998,-1.49962 11.5,-2.5 6.3333,-0.99962 13.49996,-1.49961 21.5,-1.5 11.33327,3.9e-4 21.33326,1.66705 30,5 8.99991,3.33371 16.83324,8.00037 23.5,14 6.66656,6.00036 12.49989,13.16702 17.5,21.5 5.33321,8.00034 10.16654,17.00033 14.5,27 24.66651,57.66693 46.33315,114.33354 65,170 18.66645,55.66676 33.99977,105.83338 46,150.5 l -48.5,0 c -8.66685,-31.3333 -18.50018,-65.33327 -29.5,-102 -10.66682,-36.99986 -22.66681,-73.99983 -36,-111"
+         style="font-size:500px;filter:url(#filter3878)"
+         id="path3814" />
+    </g>
+  </g>
+</svg>

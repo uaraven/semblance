@@ -1,55 +1,66 @@
 package net.ninjacat.semblance.data;
 
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.sameInstance;
+import static net.ninjacat.semblance.data.SemblanceNumberType.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class NumberAtomTest {
 
-    public static final long TEST_NUMBER = 123321;
-
     @Test
-    public void reprShouldReturnCorrectStringRepresentation() throws Exception {
-        Atom symbol = getAtom();
+    public void shouldCreateLongRepresentation() throws Exception {
+        NumberAtom<?> atom = NumberAtom.make("1234");
 
-        assertThat("Should return correct symbol name", symbol.repr(), is(String.valueOf(TEST_NUMBER)));
+        assertThat("number should be of LONG type", atom.getNumberType(), is(LONG));
     }
 
     @Test
-    public void shouldConvertToJavaStringObject() throws Exception {
-        Atom symbol = getAtom();
+    public void shouldCreateLongRepresentationForNegativeNumber() throws Exception {
+        NumberAtom<?> atom = NumberAtom.make("-1234");
 
-        Object javaSymbol = symbol.asJavaObject();
-
-        assertThat("Should be represented as Java String object", javaSymbol, Matchers.instanceOf(Long.class));
-        assertThat("Java Symbol value should be correct", (Long) javaSymbol, is(TEST_NUMBER));
+        assertThat("number should be of LONG type", atom.getNumberType(), is(LONG));
     }
 
     @Test
-    public void typeNameShouldBeSymbol() throws Exception {
-        Atom symbol = getAtom();
+    public void shouldCreateDoubleRepresentation() throws Exception {
+        NumberAtom<?> atom = NumberAtom.make("1234.1");
 
-        assertThat("Type name should be STRING", symbol.getType(), is(SemblanceType.NUMBER));
+        assertThat("number should be of DOUBLE type", atom.getNumberType(), is(DOUBLE));
     }
 
     @Test
-    public void selfShouldReturnAtomItself() throws Exception {
-        LispValue symbol = getAtom();
+    public void shouldCreateDuobleRepresentationForNegativeNumber() throws Exception {
+        NumberAtom<?> atom = NumberAtom.make("-1234.2");
 
-        assertThat("Self should return this instance", symbol.self(), sameInstance(symbol));
+        assertThat("number should be of DOUBLE type", atom.getNumberType(), is(DOUBLE));
     }
 
     @Test
-    public void shouldEvaluateToItself() throws Exception {
-        LispValue symbol = getAtom();
+    public void shouldCreateDoubleRepresentationForScientificNumber() throws Exception {
+        NumberAtom<?> atom = NumberAtom.make("10e12");
 
-        assertThat("Should evaluate to self", symbol.evaluate(), sameInstance(symbol));
+        assertThat("number should be of DOUBLE type", atom.getNumberType(), is(DOUBLE));
     }
 
-    private Atom getAtom() {
-        return new NumberAtom(TEST_NUMBER);
+    @Test
+    public void shouldCreateDuobleRepresentationForNegativeScientificNumber() throws Exception {
+        NumberAtom<?> atom = NumberAtom.make("-10e12");
+
+        assertThat("number should be of DOUBLE type", atom.getNumberType(), is(DOUBLE));
+    }
+
+    @Test
+    public void shouldCreateBigIntRepresentation() throws Exception {
+        NumberAtom<?> atom = NumberAtom.make("123456789012345678901234567890");
+
+        assertThat("number should be of BIG type", atom.getNumberType(), is(BIG));
+    }
+
+    @Test
+    public void shouldCreateBigIntRepresentationForNegativeNumber() throws Exception {
+        NumberAtom<?> atom = NumberAtom.make("-123456789012345678901234567890");
+
+        assertThat("number should be of BIG type", atom.getNumberType(), is(BIG));
     }
 }

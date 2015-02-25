@@ -2,30 +2,35 @@ package net.ninjacat.semblance.data;
 
 import net.ninjacat.semblance.debug.SourceInfo;
 
+import java.math.BigInteger;
+
 /**
  * Number atom
  */
-public class NumberAtom extends Atom {
+public abstract class NumberAtom<T> extends Atom {
 
-    private final long value;
-
-    public NumberAtom(long value) {
-        this.value = value;
+    public NumberAtom() {
     }
 
-    public NumberAtom(long value, SourceInfo sourceInfo) {
+    public NumberAtom(SourceInfo sourceInfo) {
         super(sourceInfo);
-        this.value = value;
+    }
+
+    public static NumberAtom<?> make(String token) {
+        if (token.contains(".") || token.contains("e")) { // this is double
+            return new DoubleNumberAtom(Double.parseDouble(token));
+        }
+        BigInteger bigInteger = new BigInteger(token);
+        if (bigInteger.bitLength() <= 32) {
+            return new LongNumberAtom(bigInteger.longValue());
+        } else {
+            return new BigIntegerNumberAtom(bigInteger);
+        }
     }
 
     @Override
     public String repr() {
-        return String.valueOf(value);
-    }
-
-    @Override
-    public Long asJavaObject() {
-        return value;
+        return String.valueOf(getValue());
     }
 
     @Override
@@ -34,24 +39,11 @@ public class NumberAtom extends Atom {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        NumberAtom that = (NumberAtom) o;
-
-        if (value != that.value) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (value ^ (value >>> 32));
-    }
-
-    @Override
     public String toString() {
-        return "NumberAtom{" + value + '}';
+        return "NumberAtom{" + getValue() + '}';
     }
+
+    public abstract SemblanceNumberType getNumberType();
+
+    public abstract T getValue();
 }

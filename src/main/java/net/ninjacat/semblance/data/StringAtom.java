@@ -3,34 +3,34 @@ package net.ninjacat.semblance.data;
 import net.ninjacat.semblance.debug.SourceInfo;
 
 /**
- * Number atom
+ * Created on 24/02/15.
  */
-public class NumberAtom extends Atom {
+public class StringAtom extends Atom {
 
-    private final long value;
+    private final String value;
 
-    public NumberAtom(long value) {
+    public StringAtom(String value) {
         this.value = value;
     }
 
-    public NumberAtom(long value, SourceInfo sourceInfo) {
+    public StringAtom(String value, SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
     }
 
     @Override
     public String repr() {
-        return String.valueOf(value);
+        return "\"" + value + "\"";
     }
 
     @Override
-    public Long asJavaObject() {
+    public String asJavaObject() {
         return value;
     }
 
     @Override
     public SemblanceType getType() {
-        return SemblanceType.NUMBER;
+        return SemblanceType.STRING;
     }
 
     @Override
@@ -38,20 +38,20 @@ public class NumberAtom extends Atom {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        NumberAtom that = (NumberAtom) o;
+        StringAtom that = (StringAtom) o;
 
-        if (value != that.value) return false;
+        if (!value.equals(that.value)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return (int) (value ^ (value >>> 32));
+        return value.hashCode();
     }
 
     @Override
     public String toString() {
-        return "NumberAtom{" + value + '}';
+        return "StringAtom{\'" + value + "\'}";
     }
 }

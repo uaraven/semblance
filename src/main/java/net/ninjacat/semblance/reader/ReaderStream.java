@@ -52,6 +52,8 @@ public class ReaderStream {
         streamTokenizer.wordChars('A', 'Z');
         streamTokenizer.wordChars('0', '9');
         streamTokenizer.wordChars(128 + 32, Integer.MAX_VALUE);
+        streamTokenizer.wordChars('-', '-');
+        streamTokenizer.wordChars('@', '@');
         streamTokenizer.whitespaceChars(0, ' ');
         streamTokenizer.commentChar('/');
         streamTokenizer.eolIsSignificant(true);

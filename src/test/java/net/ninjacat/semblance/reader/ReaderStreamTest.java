@@ -175,6 +175,16 @@ public class ReaderStreamTest {
     }
 
     @Test
+    public void shouldTokenizeSymbolWithHyphen() throws Exception {
+        ReaderStream stream = ReaderStream.readString(":symbol-two");
+
+        List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have 1 token", tokens.size(), is(1));
+        assertThat("Token type should be symbol", tokens.get(0).getType(), is(Token.TokenType.Symbol));
+    }
+
+    @Test
     public void shouldTokenizeMultiElementList() throws Exception {
         ReaderStream stream = ReaderStream.readString("( symbol \"String\" 15)");
 

@@ -57,16 +57,21 @@ public class ReaderStream {
         streamTokenizer.eolIsSignificant(true);
     }
 
-    private void resetTokenizerForString(StreamTokenizer streamTokenizer) {
-        streamTokenizer.resetSyntax();
-        streamTokenizer.wordChars('a', 'z');
-        streamTokenizer.wordChars('A', 'Z');
-        streamTokenizer.wordChars('0', '9');
-        streamTokenizer.wordChars(128 + 32, Integer.MAX_VALUE);
-        streamTokenizer.ordinaryChar(' ');
-        streamTokenizer.ordinaryChar('\t');
-        streamTokenizer.ordinaryChar('\\');
-        streamTokenizer.eolIsSignificant(true);
+    private void resetTokenizerForString() {
+        tokenizer.resetSyntax();
+        tokenizer.wordChars('a', 'z');
+        tokenizer.wordChars('A', 'Z');
+        tokenizer.wordChars('0', '9');
+        tokenizer.wordChars(128 + 32, Integer.MAX_VALUE);
+        tokenizer.ordinaryChar(' ');
+        tokenizer.ordinaryChar('\t');
+        tokenizer.ordinaryChar('\\');
+        tokenizer.eolIsSignificant(true);
+    }
+
+    private void resetTokenizerForEscape() {
+        tokenizer.resetSyntax();
+        tokenizer.eolIsSignificant(true);
     }
 
     public void registerSpecial(char specialCharacter) {
@@ -106,15 +111,16 @@ public class ReaderStream {
     }
 
     private Token parseString() throws IOException, UnterminatedStringException {
-        resetTokenizerForString(tokenizer);
+        resetTokenizerForString();
         StringBuilder builder = new StringBuilder();
         try {
             while (true) {
                 int token = tokenizer.nextToken();
                 if (token == '"') {
                     break;
-                }
-                if (token == StreamTokenizer.TT_EOL || token == StreamTokenizer.TT_EOF) {
+                } else if (token == '\\') {
+                    token = readEscapedChar();
+                } else if (token == StreamTokenizer.TT_EOL || token == StreamTokenizer.TT_EOF) {
                     tokenizer.pushBack();
                     throw new UnterminatedStringException(currentPosition());
                 }
@@ -129,6 +135,29 @@ public class ReaderStream {
         }
         return Token.string(builder.toString(), currentPosition());
 
+    }
+
+    private int readEscapedChar() throws IOException {
+        resetTokenizerForEscape();
+        try {
+            int token = tokenizer.nextToken();
+            switch (token) {
+                case 't':
+                    return '\t';
+                case 'n':
+                    return '\n';
+                case 'r':
+                    return '\r';
+                case 'f':
+                    return '\f';
+                case 'b':
+                    return '\b';
+                default:
+                    return token;
+            }
+        } finally {
+            resetTokenizerForString();
+        }
     }
 
     private Token parseChar() {
@@ -216,7 +245,5 @@ public class ReaderStream {
                 token.getType() == Token.TokenType.Comment ||
                 token.getType() == Token.TokenType.Whitespace ||
                 token.getType() == Token.TokenType.Eof;
-
-
     }
 }

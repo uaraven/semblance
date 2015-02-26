@@ -17,10 +17,10 @@ public final class Values {
     }
 
     public static long getLongValue(LispValue atom) {
-        if (atom instanceof NumberAtom) {
-            return ((NumberAtom) atom).asJavaObject();
+        if (atom instanceof LongNumberAtom) {
+            return ((LongNumberAtom) atom).asJavaObject();
         } else {
-            throw new TypeMismatchException(SemblanceType.NUMBER, atom.getType(), getSourceInfo(atom));
+            throw new TypeMismatchException(SemblanceType.INTEGER, atom.getType(), getSourceInfo(atom));
         }
     }
 
@@ -33,8 +33,12 @@ public final class Values {
 
     }
 
+    public static LispValue number(String value) {
+        return NumberAtom.make(value);
+    }
+
     public static LispValue number(long value) {
-        return new NumberAtom(value);
+        return new LongNumberAtom(value);
     }
 
     public static LispValue string(String value) {

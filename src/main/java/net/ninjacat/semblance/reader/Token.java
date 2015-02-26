@@ -36,6 +36,34 @@ public class Token {
         this.position = sourceInfo;
     }
 
+    public static Token eof(SourceInfo position) {
+        return new Token("", TokenType.Eof, position);
+    }
+
+    public static Token whitespace(SourceInfo position) {
+        return new Token("", TokenType.Whitespace, position);
+    }
+
+    public static Token string(String sval, SourceInfo sourceInfo) {
+        return new Token(sval, TokenType.String, sourceInfo);
+    }
+
+    public static Token openParen(SourceInfo sourceInfo) {
+        return new Token("(", TokenType.OpenParens, sourceInfo);
+    }
+
+    public static Token closeParen(SourceInfo sourceInfo) {
+        return new Token(")", TokenType.CloseParens, sourceInfo);
+    }
+
+    public static Token carriageReturn(SourceInfo sourceInfo) {
+        return new Token("\n", TokenType.CarriageReturn, sourceInfo);
+    }
+
+    public static Token special(char ttype, SourceInfo sourceInfo) {
+        return new Token(Character.toString(ttype), TokenType.Special, sourceInfo);
+    }
+
     public String getValue() {
         return value;
     }
@@ -80,11 +108,10 @@ public class Token {
         Symbol,
         OpenParens,
         CloseParens,
-        StringQuote,
         CarriageReturn,
         Whitespace,
         Comment,
-        Quote,
         Special,
+        Eof
     }
 }

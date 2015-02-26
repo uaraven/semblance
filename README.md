@@ -3,7 +3,7 @@
 
 ### What is it? ###
 
-Semblance is an small Lisp machine written in Java and intended for embedding in Java applications.
+Semblance is an small Lisp machine written in Java and intended for embedding in Java.
 
 ### Features ### 
 

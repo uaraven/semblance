@@ -3,11 +3,31 @@ package net.ninjacat.semblance.data;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.CollectionException;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * Empty collection
  */
 public class NilCollection extends LispCollection {
+    public static final LispValue INSTANCE = new NilCollection();
     private static final String NAME = "NIL";
+    private static final Iterator<LispValue> NIL_ITERATOR = new Iterator<LispValue>() {
+        @Override
+        public boolean hasNext() {
+            return false;
+        }
+
+        @Override
+        public LispValue next() {
+            throw new NoSuchElementException();
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    };
 
     public NilCollection() {
     }
@@ -68,5 +88,10 @@ public class NilCollection extends LispCollection {
     @Override
     public int hashCode() {
         return 17;
+    }
+
+    @Override
+    public Iterator<LispValue> iterator() {
+        return NIL_ITERATOR;
     }
 }

@@ -8,7 +8,7 @@ import net.ninjacat.smooth.functions.Func;
 /**
  * Parent class for lists and vectors
  */
-public abstract class LispCollection implements LispValue, DebugInfoProvider, JavaConvertible {
+public abstract class LispCollection implements Iterable<LispValue>, LispValue, DebugInfoProvider, JavaConvertible {
 
     private final SourceInfo sourceInfo;
 

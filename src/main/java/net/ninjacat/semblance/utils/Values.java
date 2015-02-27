@@ -61,6 +61,18 @@ public final class Values {
         }
     }
 
+    public static SymbolAtom asSymbol(LispValue value) {
+        return (SymbolAtom) value;
+    }
+
+    public static SList asList(LispValue value) {
+        return (SList) value;
+    }
+
+    public static Callable asCallable(LispValue value) {
+        return (Callable) value;
+    }
+
     public static boolean canBeConvertedToJavaObject(LispValue value) {
         return value instanceof JavaConvertible;
     }
@@ -79,6 +91,22 @@ public final class Values {
 
     public static SList smartList(Object... values) {
         return list(Iter.of(values).map(FromJavaConverter.INSTANCE).toArray(new LispValue[values.length]));
+    }
+
+    public static boolean isList(LispValue value) {
+        return value.getType() == SemblanceType.LIST;
+    }
+
+    public static boolean isSymbol(LispValue value) {
+        return value.getType() == SemblanceType.SYMBOL;
+    }
+
+    public static boolean isCallable(LispValue value) {
+        return value.getType() == SemblanceType.FUNCTION || value.getType() == SemblanceType.MACRO;
+    }
+
+    public static boolean isAtom(LispValue value) {
+        return value instanceof Atom;
     }
 
     public static boolean isNilCollection(Object collection) {

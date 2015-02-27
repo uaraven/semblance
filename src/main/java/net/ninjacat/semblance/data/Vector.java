@@ -9,6 +9,7 @@ import net.ninjacat.smooth.iterators.Iter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
@@ -30,7 +31,7 @@ import static java.util.Collections.unmodifiableList;
  *     (v length) returns vector size
  * </pre>
  */
-public class Vector extends LispCollection implements Function {
+public class Vector extends LispCollection implements Callable {
 
     private List<LispValue> collection;
 
@@ -138,5 +139,10 @@ public class Vector extends LispCollection implements Function {
     @Override
     public String toString() {
         return "Vector{" + collection + '}';
+    }
+
+    @Override
+    public Iterator<LispValue> iterator() {
+        return collection.listIterator();
     }
 }

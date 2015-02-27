@@ -8,6 +8,7 @@ import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ import static java.util.Collections.unmodifiableList;
  *     (L length) returns list size
  * </pre>
  */
-public class SList extends LispCollection implements Function {
+public class SList extends LispCollection implements Callable {
 
     private List<LispValue> collection;
 
@@ -138,5 +139,10 @@ public class SList extends LispCollection implements Function {
     @Override
     public String toString() {
         return "List{" + collection + '}';
+    }
+
+    @Override
+    public Iterator<LispValue> iterator() {
+        return collection.iterator();
     }
 }

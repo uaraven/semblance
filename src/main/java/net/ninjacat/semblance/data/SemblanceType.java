@@ -9,5 +9,7 @@ public enum SemblanceType {
     STRING,
     SYMBOL,
     LIST,
-    VECTOR
+    VECTOR,
+    FUNCTION,
+    MACRO
 }

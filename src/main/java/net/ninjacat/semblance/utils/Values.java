@@ -9,6 +9,8 @@ import net.ninjacat.semblance.java.Symbol;
 import net.ninjacat.smooth.functions.Func;
 import net.ninjacat.smooth.iterators.Iter;
 
+import java.util.List;
+
 /**
  * Various utils simplifying value manipulations
  */
@@ -111,6 +113,10 @@ public final class Values {
 
     public static boolean isAtom(LispValue value) {
         return value instanceof Atom;
+    }
+
+    public static List<LispValue> asList(LispCollection in) {
+        return Iter.of(in.iterator()).toList();
     }
 
     public static boolean isNilCollection(Object collection) {

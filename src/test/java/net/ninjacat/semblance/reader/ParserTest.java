@@ -120,7 +120,6 @@ public class ParserTest {
         assertThat("Function paramter should be list", (SList) expr.tail().head(), is(list(Values.symbol("one"))));
     }
 
-
     @Test()
     public void shouldReplaceQuoteMacroForSymbol() throws Exception {
         List<Token> tokens = Lists.of(Token.special('\'', UNKNOWN), symbol("one", UNKNOWN));
@@ -134,6 +133,30 @@ public class ParserTest {
 
         assertThat("Function call should be quote", (SymbolAtom) expr.head(), is(Values.symbol("quote")));
         assertThat("Function paramter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
+    }
+
+    @Test()
+    public void shouldParseNestedList() throws Exception {
+        List<Token> tokens = Lists.of(
+                Token.openParen(UNKNOWN),
+                Token.symbol("+", UNKNOWN),
+                Token.openParen(UNKNOWN),
+                Token.symbol("-", UNKNOWN),
+                Token.closeParen(UNKNOWN),
+                Token.closeParen(UNKNOWN));
+
+        LispCollection parse = parser.parse(tokens);
+
+        assertThat("Should produce s-expression", parse.head(), instanceOf(SList.class));
+
+        SList list = (SList) parse.head();
+
+        assertThat("Should parse nested lists", list, is(
+                list(
+                        Values.symbol("+"), list(Values.symbol("-"))
+                )
+        ));
+
     }
 
 }

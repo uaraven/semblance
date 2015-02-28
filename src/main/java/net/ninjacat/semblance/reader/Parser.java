@@ -1,6 +1,5 @@
 package net.ninjacat.semblance.reader;
 
-import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
@@ -37,7 +36,7 @@ public class Parser {
         readerMacros.put(macro.getMacroCharacter(), macro);
     }
 
-    public LispCollection parse(List<Token> tokens) throws UnknownExpressionException {
+    public SList parse(List<Token> tokens) throws UnknownExpressionException {
         ParserIterator parserIterator = new ParserIterator(tokens.iterator(), CONVERTERS, readerMacros);
         List<LispValue> result = new LinkedList<>();
         while (parserIterator.hasNext()) {

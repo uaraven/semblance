@@ -241,4 +241,29 @@ public class ReaderStreamTest {
         assertThat("Token type should be integer", tokens.get(2).getType(), is(Token.TokenType.Integer));
         assertThat("Token type should be CloseBracket", tokens.get(3).getType(), is(Token.TokenType.CloseBracket));
     }
+
+    @Test
+    public void shouldParseReaderMacro() throws Exception {
+        ReaderStream stream = ReaderStream.readString("'symbol");
+        stream.registerSpecial('\'');
+
+        List<Token> tokens = stream.tokenize();
+        assertThat("Should have 2 tokens", tokens.size(), is(2));
+        assertThat("Token type should be special", tokens.get(0).getType(), is(Token.TokenType.Special));
+        assertThat("Token type should be symbol", tokens.get(1).getType(), is(Token.TokenType.Symbol));
+
+    }
+
+    @Test
+    public void shouldParseReaderMacroBeforeList() throws Exception {
+        ReaderStream stream = ReaderStream.readString("'()");
+        stream.registerSpecial('\'');
+
+        List<Token> tokens = stream.tokenize();
+        assertThat("Should have 3 tokens", tokens.size(), is(3));
+        assertThat("Token type should be special", tokens.get(0).getType(), is(Token.TokenType.Special));
+        assertThat("Token type should be OpenParen", tokens.get(1).getType(), is(Token.TokenType.OpenParens));
+        assertThat("Token type should be CloseParen", tokens.get(2).getType(), is(Token.TokenType.CloseParens));
+
+    }
 }

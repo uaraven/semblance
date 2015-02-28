@@ -203,9 +203,9 @@ public class ReaderStream {
         if (isInteger(tokenizer.sval)) {
             return parseNumber(false);
         } else if (isDouble(tokenizer.sval)) {
-            return new Token(String.valueOf(tokenizer.nval), Token.TokenType.Double, currentPosition());
+            return Token.doubleToken(tokenizer.nval, currentPosition());
         } else {
-            return new Token(tokenizer.sval, Token.TokenType.Symbol, currentPosition());
+            return Token.symbol(tokenizer.sval, currentPosition());
         }
     }
 
@@ -227,7 +227,7 @@ public class ReaderStream {
             return parseDouble(val + Character.toString((char) token));
         } else {
             tokenizer.pushBack();
-            return new Token(val, Token.TokenType.Integer, currentPosition());
+            return Token.integer(val, currentPosition());
         }
     }
 
@@ -238,7 +238,7 @@ public class ReaderStream {
         } else {
             s += tokenizer.sval;
         }
-        return new Token(s, Token.TokenType.Double, currentPosition());
+        return Token.doubleToken(s, currentPosition());
     }
 
     private boolean isInteger(String nval) {

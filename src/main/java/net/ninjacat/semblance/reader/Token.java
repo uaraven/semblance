@@ -72,6 +72,22 @@ public class Token {
         return new Token(Character.toString(ttype), TokenType.Special, sourceInfo);
     }
 
+    public static Token symbol(String sval, SourceInfo sourceInfo) {
+        return new Token(sval, Token.TokenType.Symbol, sourceInfo);
+    }
+
+    public static Token doubleToken(double nval, SourceInfo sourceInfo) {
+        return new Token(String.valueOf(nval), Token.TokenType.Double, sourceInfo);
+    }
+
+    public static Token doubleToken(String nval, SourceInfo sourceInfo) {
+        return new Token(nval, Token.TokenType.Double, sourceInfo);
+    }
+
+    public static Token integer(String val, SourceInfo sourceInfo) {
+        return new Token(val, Token.TokenType.Integer, sourceInfo);
+    }
+
     public String getValue() {
         return value;
     }

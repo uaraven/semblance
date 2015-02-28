@@ -85,14 +85,15 @@ public class ParserIterator implements Iterator<LispValue> {
         while (tokens.hasNext()) {
             LispValue value = parseInternal();
             if (value.getType() == SemblanceType.SPECIAL) {
-                if (value != SpecialValue.LIST_END) {
-                    throw new UnexpectedEndRuntimeException();
+                if (value == SpecialValue.LIST_END) {
+                    return collection;
+                } else {
+                    break;
                 }
-                break;
             }
             collection.add(value);
         }
-        return collection;
+        throw new UnexpectedEndRuntimeException();
     }
 
     private SList parseList(Token token) {

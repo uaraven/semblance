@@ -3,6 +3,7 @@ package net.ninjacat.semblance.reader;
 import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SList;
+import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.UnknownExpressionException;
 import net.ninjacat.semblance.reader.converters.*;
 
@@ -28,7 +29,7 @@ public class Parser {
 
     private final Map<String, ReaderMacro> readerMacros;
 
-    private Parser() {
+    public Parser() {
         readerMacros = new ConcurrentHashMap<>();
     }
 
@@ -42,7 +43,7 @@ public class Parser {
         while (parserIterator.hasNext()) {
             result.add(parserIterator.next());
         }
-        return new SList(result, tokens.get(0).getSourceInfo());
+        return new SList(result, tokens.isEmpty() ? SourceInfo.UNKNOWN : tokens.get(0).getSourceInfo());
     }
 
 }

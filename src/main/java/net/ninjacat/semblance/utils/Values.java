@@ -49,6 +49,10 @@ public final class Values {
         return new SymbolAtom(value);
     }
 
+    public static SymbolAtom symbol(String value, SourceInfo sourceInfo) {
+        return new SymbolAtom(value, sourceInfo);
+    }
+
     public static LispValue atom(Object value) {
         if (value instanceof String) {
             return string(value.toString());

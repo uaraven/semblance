@@ -5,7 +5,6 @@ import net.ninjacat.semblance.errors.CollectionIndexOutOfBoundsException;
 import net.ninjacat.semblance.errors.ValueExpectedException;
 import net.ninjacat.semblance.evaluator.Context;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,10 +12,10 @@ import java.util.List;
 import static net.ninjacat.semblance.utils.Values.*;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class VectorTest {
 
@@ -110,14 +109,6 @@ public class VectorTest {
                 atom(list.get(1)), is(vector.get(1)));
     }
 
-
-    @Test
-    public void shouldEvaluateToItself() throws Exception {
-        LispValue vector = smartVector(1L);
-
-        assertThat("Should evaluate to self", vector.evaluate(), sameInstance(vector));
-    }
-
     @Test
     public void shouldGenerateCorrectRepr() throws Exception {
         Vector vector = smartVector(1L, 2L);
@@ -126,9 +117,10 @@ public class VectorTest {
     }
 
     @Test
-    @Ignore
     public void vectorAsFunctionShouldReturnValueByIndex() throws Exception {
         Vector vector = smartVector(1L, 2L);
+
+        when(context.evaluate(number(1))).thenReturn(number(1));
 
         LispValue value = vector.apply(context, smartVector(1L));
 
@@ -136,17 +128,17 @@ public class VectorTest {
     }
 
     @Test(expected = CollectionIndexOutOfBoundsException.class)
-    @Ignore
     public void vectorAsFunctionShouldFailWhenIndexIsOutOfBounds() throws Exception {
         Vector vector = smartVector(1L, 2L);
+        when(context.evaluate(number(3))).thenReturn(number(3));
 
         vector.apply(context, smartVector(3L));
     }
 
     @Test(expected = ValueExpectedException.class)
-    @Ignore
     public void vectorAsFunctionShouldFailWhenNoParameters() throws Exception {
         Vector vector = smartVector(1L, 2L);
+        when(context.evaluate(NilCollection.INSTANCE)).thenReturn(NilCollection.INSTANCE);
 
         vector.apply(context, new NilCollection());
     }

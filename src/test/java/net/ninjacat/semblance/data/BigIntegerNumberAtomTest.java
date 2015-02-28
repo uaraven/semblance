@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 
-import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -37,19 +36,6 @@ public class BigIntegerNumberAtomTest {
         assertThat("Type name should be STRING", symbol.getType(), is(SemblanceType.INTEGER));
     }
 
-    @Test
-    public void selfShouldReturnAtomItself() throws Exception {
-        LispValue symbol = getAtom();
-
-        assertThat("Self should return this instance", symbol.self(), sameInstance(symbol));
-    }
-
-    @Test
-    public void shouldEvaluateToItself() throws Exception {
-        LispValue symbol = getAtom();
-
-        assertThat("Should evaluate to self", symbol.evaluate(), sameInstance(symbol));
-    }
 
     private Atom getAtom() {
         return new BigIntegerNumberAtom(TEST_NUMBER);

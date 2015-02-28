@@ -12,7 +12,6 @@ import java.util.List;
 import static net.ninjacat.semblance.utils.Values.*;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -107,14 +106,6 @@ public class SListTest {
                 atom(list.get(0)), is(slist.get(0)));
         assertThat("Second element in Java list should match same element in slist",
                 atom(list.get(1)), is(slist.get(1)));
-    }
-
-
-    @Test
-    public void shouldEvaluateToItself() throws Exception {
-        LispValue list = smartList(1L);
-
-        assertThat("Should evaluate to self", list.evaluate(), sameInstance(list));
     }
 
     @Test

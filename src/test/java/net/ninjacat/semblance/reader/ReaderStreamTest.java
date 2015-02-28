@@ -228,4 +228,17 @@ public class ReaderStreamTest {
         assertThat("Token type should be integer", tokens.get(5).getType(), is(Token.TokenType.Double));
         assertThat("Token type should be CloseParens", tokens.get(6).getType(), is(Token.TokenType.CloseParens));
     }
+
+    @Test
+    public void shouldTokenizeVector() throws Exception {
+        ReaderStream stream = ReaderStream.readString("[1 2]");
+
+        List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have 4 tokens", tokens.size(), is(4));
+        assertThat("Token type should be OpenBracket", tokens.get(0).getType(), is(Token.TokenType.OpenBracket));
+        assertThat("Token type should be integer", tokens.get(1).getType(), is(Token.TokenType.Integer));
+        assertThat("Token type should be integer", tokens.get(2).getType(), is(Token.TokenType.Integer));
+        assertThat("Token type should be CloseBracket", tokens.get(3).getType(), is(Token.TokenType.CloseBracket));
+    }
 }

@@ -56,6 +56,14 @@ public class Token {
         return new Token(")", TokenType.CloseParens, sourceInfo);
     }
 
+    public static Token openBracket(SourceInfo sourceInfo) {
+        return new Token("[", TokenType.OpenBracket, sourceInfo);
+    }
+
+    public static Token closeBracket(SourceInfo sourceInfo) {
+        return new Token("]", TokenType.CloseBracket, sourceInfo);
+    }
+
     public static Token carriageReturn(SourceInfo sourceInfo) {
         return new Token("\n", TokenType.CarriageReturn, sourceInfo);
     }

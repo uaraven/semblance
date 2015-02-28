@@ -67,11 +67,6 @@ public class NilCollection extends LispCollection {
     }
 
     @Override
-    public LispValue evaluate() {
-        return this;
-    }
-
-    @Override
     public String repr() {
         return NAME;
     }

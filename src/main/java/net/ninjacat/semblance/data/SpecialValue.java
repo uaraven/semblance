@@ -14,16 +14,6 @@ public class SpecialValue implements LispValue {
     }
 
     @Override
-    public LispValue evaluate() {
-        return this;
-    }
-
-    @Override
-    public LispValue self() {
-        return this;
-    }
-
-    @Override
     public String repr() {
         return "special";
     }

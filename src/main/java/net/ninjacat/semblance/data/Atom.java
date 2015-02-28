@@ -26,13 +26,4 @@ public abstract class Atom implements LispValue, DebugInfoProvider, JavaConverti
         return sourceInfo;
     }
 
-    @Override
-    public LispValue evaluate() {
-        return this;
-    }
-
-    @Override
-    public LispValue self() {
-        return this;
-    }
 }

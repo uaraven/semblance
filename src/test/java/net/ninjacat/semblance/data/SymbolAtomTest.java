@@ -4,7 +4,6 @@ import net.ninjacat.semblance.java.Symbol;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -34,20 +33,6 @@ public class SymbolAtomTest {
         Atom symbol = getAtom();
 
         assertThat("Type name should be SYMBOL", symbol.getType(), is(SemblanceType.SYMBOL));
-    }
-
-    @Test
-    public void selfShouldReturnAtomItself() throws Exception {
-        LispValue symbol = getAtom();
-
-        assertThat("Self should return this instance", symbol.self(), sameInstance(symbol));
-    }
-
-    @Test
-    public void shouldEvaluateToItself() throws Exception {
-        LispValue symbol = getAtom();
-
-        assertThat("Should evaluate to self", symbol.evaluate(), sameInstance(symbol));
     }
 
     private Atom getAtom() {

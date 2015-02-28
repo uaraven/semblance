@@ -71,7 +71,7 @@ public class DefaultContext implements Context {
         } else if (isList(expression)) {
             return evaluateFunction(asList(expression));
         } else {
-            return expression.self();
+            return expression;
         }
     }
 

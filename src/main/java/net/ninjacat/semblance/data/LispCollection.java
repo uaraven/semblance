@@ -21,11 +21,6 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
     }
 
     @Override
-    public LispValue self() {
-        return this;
-    }
-
-    @Override
     public SourceInfo getSourceInfo() {
         return sourceInfo;
     }

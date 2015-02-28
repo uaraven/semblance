@@ -4,7 +4,8 @@ import net.ninjacat.semblance.errors.CollectionException;
 import net.ninjacat.semblance.java.JavaConvertible;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -29,20 +30,6 @@ public class NilCollectionTest {
         LispCollection collection = getLispCollection();
 
         collection.tail();
-    }
-
-    @Test
-    public void selfShouldReturnAtomItself() throws Exception {
-        LispValue symbol = getLispCollection();
-
-        assertThat("Self should return this instance", symbol.self(), sameInstance(symbol));
-    }
-
-    @Test
-    public void shouldEvaluateToSelf() throws Exception {
-        LispValue symbol = getLispCollection();
-
-        assertThat("Should evaluate to self", symbol.evaluate(), sameInstance(symbol));
     }
 
     @Test

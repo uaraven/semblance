@@ -62,11 +62,6 @@ public class SList extends LispCollection implements Callable {
     }
 
     @Override
-    public LispValue evaluate() {
-        return this;
-    }
-
-    @Override
     public String repr() {
         return "(" + Iter.of(collection).map(ValueToString.REPR).mkStr(", ") + ")";
     }

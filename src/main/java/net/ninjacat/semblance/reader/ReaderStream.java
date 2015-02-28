@@ -13,12 +13,13 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
+ * Lexer. Reads stream of characters and converts it into list of tokens
  * Created on 25/02/15.
  */
 public class ReaderStream {
 
-    private static final Pattern INTEGER = Pattern.compile("(\\+|\\-){0,1}\\d+");
-    private static final Pattern NUMBER = Pattern.compile("(\\+|\\-){0,1}\\d+(\\.\\d*){0,1}");
+    private static final Pattern INTEGER = Pattern.compile("(\\+|\\-)?\\d+");
+    private static final Pattern DOUBLE = Pattern.compile("(\\+|\\-)?\\d+(\\.\\d*)?");
 
     private final Set<Character> specials;
     private final StreamTokenizer tokenizer;
@@ -40,6 +41,26 @@ public class ReaderStream {
         return new ReaderStream(new ByteArrayInputStream(string.getBytes(Charset.forName("utf-8"))));
     }
 
+    public void registerSpecial(char specialCharacter) {
+        specials.add(specialCharacter);
+    }
+
+    public SourceInfo currentPosition() {
+        return new SourceInfo(tokenizer.lineno(), linePosition);
+    }
+
+    public List<Token> tokenize() throws ParsingException {
+        List<Token> tokens = new LinkedList<>();
+        Token token;
+        do {
+            token = nextToken();
+            if (!shouldIgnore(token)) {
+                tokens.add(token);
+            }
+        } while (token.getType() != Token.TokenType.Eof);
+        return tokens;
+    }
+
     private StreamTokenizer setupTokenizer(InputStreamReader reader) {
         StreamTokenizer streamTokenizer = new StreamTokenizer(reader);
         resetTokenizer(streamTokenizer);
@@ -55,7 +76,9 @@ public class ReaderStream {
         streamTokenizer.wordChars('-', '-');
         streamTokenizer.wordChars('@', '@');
         streamTokenizer.whitespaceChars(0, ' ');
-        streamTokenizer.commentChar('/');
+        streamTokenizer.commentChar(';');
+        streamTokenizer.ordinaryChar('[');
+        streamTokenizer.ordinaryChar(']');
         streamTokenizer.eolIsSignificant(true);
     }
 
@@ -74,14 +97,6 @@ public class ReaderStream {
     private void resetTokenizerForEscape() {
         tokenizer.resetSyntax();
         tokenizer.eolIsSignificant(true);
-    }
-
-    public void registerSpecial(char specialCharacter) {
-        specials.add(specialCharacter);
-    }
-
-    public SourceInfo currentPosition() {
-        return new SourceInfo(tokenizer.lineno(), linePosition);
     }
 
     private Token nextToken() throws ParsingException {
@@ -168,6 +183,10 @@ public class ReaderStream {
                 return Token.openParen(currentPosition());
             case ')':
                 return Token.closeParen(currentPosition());
+            case '[':
+                return Token.openBracket(currentPosition());
+            case ']':
+                return Token.closeBracket(currentPosition());
             case '\n':
                 Token token = Token.carriageReturn(currentPosition());
                 linePosition = 0;
@@ -227,19 +246,7 @@ public class ReaderStream {
     }
 
     private boolean isDouble(String nval) {
-        return NUMBER.matcher(nval).matches();
-    }
-
-    public List<Token> tokenize() throws ParsingException {
-        List<Token> tokens = new LinkedList<>();
-        Token token;
-        do {
-            token = nextToken();
-            if (!shouldIgnore(token)) {
-                tokens.add(token);
-            }
-        } while (token.getType() != Token.TokenType.Eof);
-        return tokens;
+        return DOUBLE.matcher(nval).matches();
     }
 
     private boolean shouldIgnore(Token token) {

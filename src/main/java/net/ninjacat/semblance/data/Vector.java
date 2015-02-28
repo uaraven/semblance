@@ -4,6 +4,7 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.CollectionException;
 import net.ninjacat.semblance.errors.CollectionIndexOutOfBoundsException;
 import net.ninjacat.semblance.errors.ValueExpectedException;
+import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 
@@ -33,9 +34,11 @@ import static java.util.Collections.unmodifiableList;
  */
 public class Vector extends LispCollection implements Callable {
 
+    private static final SymbolAtom NAME = new SymbolAtom("--vector-get");
+
     private List<LispValue> collection;
 
-    public Vector(SourceInfo sourceInfo, Collection<LispValue> collection) {
+    public Vector(Collection<LispValue> collection, SourceInfo sourceInfo) {
         super(sourceInfo);
         this.collection = unmodifiableList(new ArrayList<>(collection));
     }
@@ -69,11 +72,12 @@ public class Vector extends LispCollection implements Callable {
     }
 
     @Override
-    public LispValue apply(LispCollection parameters) {
+    public LispValue apply(Context context, LispCollection parameters) {
         if (parameters.isNil()) {
             throw new ValueExpectedException(getSourceInfo());
         } else {
-            long index = Values.getLongValue(parameters.head());
+            LispValue value = context.evaluate(parameters.head());
+            long index = Values.getLongValue(value);
             try {
                 return collection.get((int) index);
             } catch (IndexOutOfBoundsException ex) {
@@ -102,7 +106,7 @@ public class Vector extends LispCollection implements Callable {
         } else if (collection.size() == 1) {
             return new NilCollection(getSourceInfo());
         } else {
-            return new Vector(getSourceInfo(), collection.subList(1, collection.size()));
+            return new Vector(collection.subList(1, collection.size()), getSourceInfo());
         }
     }
 
@@ -144,5 +148,10 @@ public class Vector extends LispCollection implements Callable {
     @Override
     public Iterator<LispValue> iterator() {
         return collection.listIterator();
+    }
+
+    @Override
+    public SymbolAtom name() {
+        return null;
     }
 }

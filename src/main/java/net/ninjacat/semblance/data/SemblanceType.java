@@ -11,5 +11,6 @@ public enum SemblanceType {
     LIST,
     VECTOR,
     FUNCTION,
-    MACRO
+    MACRO,
+    SPECIAL // this is internal type, it will never appear in programs
 }

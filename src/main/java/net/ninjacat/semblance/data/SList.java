@@ -4,6 +4,7 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.CollectionException;
 import net.ninjacat.semblance.errors.CollectionIndexOutOfBoundsException;
 import net.ninjacat.semblance.errors.ValueExpectedException;
+import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 
@@ -33,9 +34,11 @@ import static java.util.Collections.unmodifiableList;
  */
 public class SList extends LispCollection implements Callable {
 
+    private static final SymbolAtom NAME = new SymbolAtom("--list-get");
+
     private List<LispValue> collection;
 
-    public SList(SourceInfo sourceInfo, Collection<LispValue> collection) {
+    public SList(Collection<LispValue> collection, SourceInfo sourceInfo) {
         super(sourceInfo);
         this.collection = unmodifiableList(new LinkedList<>(collection));
     }
@@ -69,7 +72,12 @@ public class SList extends LispCollection implements Callable {
     }
 
     @Override
-    public LispValue apply(LispCollection parameters) {
+    public SymbolAtom name() {
+        return NAME;
+    }
+
+    @Override
+    public LispValue apply(Context context, LispCollection parameters) {
         if (parameters.isNil()) {
             throw new ValueExpectedException(getSourceInfo());
         } else {
@@ -102,7 +110,7 @@ public class SList extends LispCollection implements Callable {
         } else if (collection.size() == 1) {
             return new NilCollection(getSourceInfo());
         } else {
-            return new SList(getSourceInfo(), collection.subList(1, collection.size()));
+            return new SList(collection.subList(1, collection.size()), getSourceInfo());
         }
     }
 
@@ -145,4 +153,5 @@ public class SList extends LispCollection implements Callable {
     public Iterator<LispValue> iterator() {
         return collection.iterator();
     }
+
 }

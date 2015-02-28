@@ -17,11 +17,15 @@ public abstract class NumberAtom<T> extends Atom {
     }
 
     public static NumberAtom<?> make(String token) {
+        return make(token, SourceInfo.UNKNOWN);
+    }
+
+    public static NumberAtom<?> make(String token, SourceInfo sourceInfo) {
         BigInteger bigInteger = new BigInteger(token);
         if (bigInteger.bitLength() <= 32) {
-            return new LongNumberAtom(bigInteger.longValue());
+            return new LongNumberAtom(bigInteger.longValue(), sourceInfo);
         } else {
-            return new BigIntegerNumberAtom(bigInteger);
+            return new BigIntegerNumberAtom(bigInteger, sourceInfo);
         }
     }
 

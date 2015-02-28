@@ -108,6 +108,8 @@ public class Token {
         Symbol,
         OpenParens,
         CloseParens,
+        OpenBracket,
+        CloseBracket,
         CarriageReturn,
         Whitespace,
         Comment,

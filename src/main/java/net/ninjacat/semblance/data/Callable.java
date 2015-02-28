@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.data;
 
-import net.ninjacat.semblance.interpreter.Context;
+import net.ninjacat.semblance.evaluator.Context;
 
 /**
  * Base interface for all callables: functions, special forms, macros

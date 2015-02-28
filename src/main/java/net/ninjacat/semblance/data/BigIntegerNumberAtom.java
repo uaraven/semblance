@@ -15,7 +15,7 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
         this.value = value;
     }
 
-    public BigIntegerNumberAtom(SourceInfo sourceInfo, BigInteger value) {
+    public BigIntegerNumberAtom(BigInteger value, SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
     }

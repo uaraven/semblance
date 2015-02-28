@@ -3,6 +3,8 @@ package net.ninjacat.semblance.data;
 import net.ninjacat.semblance.errors.CollectionException;
 import net.ninjacat.semblance.errors.CollectionIndexOutOfBoundsException;
 import net.ninjacat.semblance.errors.ValueExpectedException;
+import net.ninjacat.semblance.evaluator.Context;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,8 +15,16 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class SListTest {
+
+    private Context context;
+
+    @Before
+    public void setUp() throws Exception {
+        context = mock(Context.class);
+    }
 
     @Test
     public void shouldReturnCorrectLength() throws Exception {
@@ -118,7 +128,7 @@ public class SListTest {
     public void listAsFunctionShouldReturnValueByIndex() throws Exception {
         SList list = smartList(1L, 2L);
 
-        LispValue value = list.apply(smartList(1L));
+        LispValue value = list.apply(context, smartList(1L));
 
         assertThat("list.apply should return value by index", value, is(atom(2L)));
     }
@@ -127,14 +137,14 @@ public class SListTest {
     public void listAsFunctionShouldFailWhenIndexIsOutOfBounds() throws Exception {
         SList list = smartList(1L, 2L);
 
-        list.apply(smartList(3L));
+        list.apply(context, smartList(3L));
     }
 
     @Test(expected = ValueExpectedException.class)
     public void listAsFunctionShouldFailWhenNoParameters() throws Exception {
         SList list = smartList(1L, 2L);
 
-        list.apply(new NilCollection());
+        list.apply(context, new NilCollection());
     }
 
     @Test

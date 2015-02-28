@@ -1,8 +1,6 @@
 package net.ninjacat.semblance.reader;
 
-import net.ninjacat.semblance.errors.TermExpectedException;
-
-import java.util.Collection;
+import net.ninjacat.semblance.data.LispValue;
 
 /**
  * <p>
@@ -14,9 +12,9 @@ import java.util.Collection;
  * </p>
  * Created on 25/02/15.
  */
-public interface ReaderSpecial {
+public interface ReaderMacro {
 
-    char getSpecialTrigger();
+    String getMacroCharacter();
 
-    Collection<Token> replaceTokenStream(String trigger, ReaderStream reader) throws TermExpectedException;
+    LispValue replaceReaderMacro(LispValue value);
 }

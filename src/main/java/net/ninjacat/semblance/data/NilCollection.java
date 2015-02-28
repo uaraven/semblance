@@ -10,7 +10,7 @@ import java.util.NoSuchElementException;
  * Empty collection
  */
 public class NilCollection extends LispCollection {
-    public static final LispValue INSTANCE = new NilCollection();
+    public static final NilCollection INSTANCE = new NilCollection();
     private static final String NAME = "NIL";
     private static final Iterator<LispValue> NIL_ITERATOR = new Iterator<LispValue>() {
         @Override

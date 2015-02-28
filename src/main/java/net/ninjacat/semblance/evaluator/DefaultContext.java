@@ -1,8 +1,8 @@
-package net.ninjacat.semblance.interpreter;
+package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.data.*;
-import net.ninjacat.semblance.errors.CannotEvaluateException;
 import net.ninjacat.semblance.errors.FunctionExpectedException;
+import net.ninjacat.semblance.errors.UnboundSymbolException;
 import net.ninjacat.smooth.utils.Option;
 
 import java.util.Map;
@@ -66,14 +66,12 @@ public class DefaultContext implements Context {
             if (value.isPresent()) {
                 return value.get();
             } else {
-                return expression.self();
+                throw new UnboundSymbolException(asSymbol(expression), getSourceInfo(expression));
             }
-        } else if (isAtom(expression)) {
-            return expression.self();
         } else if (isList(expression)) {
             return evaluateFunction(asList(expression));
         } else {
-            throw new CannotEvaluateException(expression);
+            return expression.self();
         }
     }
 

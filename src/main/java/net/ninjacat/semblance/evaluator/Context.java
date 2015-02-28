@@ -1,4 +1,4 @@
-package net.ninjacat.semblance.interpreter;
+package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;

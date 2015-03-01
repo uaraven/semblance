@@ -1,4 +1,4 @@
-package net.ninjacat.semblance.errors;
+package net.ninjacat.semblance.errors.compile;
 
 import net.ninjacat.semblance.reader.Token;
 

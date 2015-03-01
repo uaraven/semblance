@@ -3,7 +3,7 @@ package net.ninjacat.semblance.reader;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
-import net.ninjacat.semblance.errors.UnknownExpressionException;
+import net.ninjacat.semblance.errors.compile.UnknownExpressionException;
 import net.ninjacat.semblance.reader.converters.*;
 
 import java.util.HashMap;

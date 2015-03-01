@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.data;
 
 import net.ninjacat.semblance.debug.SourceInfo;
-import net.ninjacat.semblance.errors.CollectionException;
-import net.ninjacat.semblance.errors.CollectionIndexOutOfBoundsException;
-import net.ninjacat.semblance.errors.ValueExpectedException;
+import net.ninjacat.semblance.errors.runtime.CollectionException;
+import net.ninjacat.semblance.errors.runtime.CollectionIndexOutOfBoundsException;
+import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;

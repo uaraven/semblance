@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.data;
 
-import net.ninjacat.semblance.errors.CollectionException;
-import net.ninjacat.semblance.errors.CollectionIndexOutOfBoundsException;
-import net.ninjacat.semblance.errors.ValueExpectedException;
+import net.ninjacat.semblance.errors.runtime.CollectionException;
+import net.ninjacat.semblance.errors.runtime.CollectionIndexOutOfBoundsException;
+import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
 import net.ninjacat.semblance.evaluator.Context;
 import org.junit.Before;
 import org.junit.Test;

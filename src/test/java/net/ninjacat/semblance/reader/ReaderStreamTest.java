@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.reader;
 
-import net.ninjacat.semblance.errors.UnterminatedStringException;
+import net.ninjacat.semblance.errors.compile.UnterminatedStringException;
 import org.junit.Test;
 
 import java.util.List;

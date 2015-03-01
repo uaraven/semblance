@@ -13,6 +13,8 @@ Interpreter has no knowledge of special characters used in input stream, like ` 
 
 As all Semblance forms are JVM Serializable objects, so parsed program can be saved as standard Java Object stream. This allows to bypass translation phase for often-used programs and speed up execution.
 
+Semblance is *case sensitive*
+
 Symbols
 -------
 
@@ -57,3 +59,19 @@ Positional parameters are supported as usual. Optional parameters are supported 
  All extra parameters which do not fit in positional and optional parameters will be passed as list in `list-to-catch-all`
 
  Keyword parameter support will be added later.
+
+Functions
+---------
+
+Beta functions
+==============
+
+  These functions are implemented in the current version of Semblance, but may be removed in the final version
+
+  **VAR**
+
+    var(name value [name value ...])
+  Binds evaluated *value* to symbol *name* in the current context. May evaluate and bind multiple varialbes.
+  Returns latest evaluated value
+
+

@@ -1,6 +1,7 @@
-package net.ninjacat.semblance.errors;
+package net.ninjacat.semblance.errors.runtime;
 
 import net.ninjacat.semblance.debug.SourceInfo;
+import net.ninjacat.semblance.errors.compile.ParsingRuntimeException;
 
 /**
  * Created on 27/02/15.

@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.data;
 
 import net.ninjacat.semblance.debug.SourceInfo;
-import net.ninjacat.semblance.errors.CollectionException;
+import net.ninjacat.semblance.errors.runtime.CollectionException;
 
 import java.util.Collections;
 import java.util.Iterator;

@@ -2,8 +2,8 @@ package net.ninjacat.semblance.reader;
 
 import net.ninjacat.semblance.data.*;
 import net.ninjacat.semblance.data.Vector;
-import net.ninjacat.semblance.errors.UnexpectedEndRuntimeException;
-import net.ninjacat.semblance.errors.UnknownExpressionRuntimeException;
+import net.ninjacat.semblance.errors.compile.UnknownExpressionRuntimeException;
+import net.ninjacat.semblance.errors.runtime.UnexpectedEndRuntimeException;
 import net.ninjacat.semblance.reader.converters.TokenConverter;
 
 import java.util.*;

@@ -1,4 +1,4 @@
-package net.ninjacat.semblance.errors;
+package net.ninjacat.semblance.errors.runtime;
 
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.debug.SourceInfo;

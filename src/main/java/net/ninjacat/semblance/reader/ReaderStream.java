@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.reader;
 
 import net.ninjacat.semblance.debug.SourceInfo;
-import net.ninjacat.semblance.errors.ParsingException;
-import net.ninjacat.semblance.errors.UnterminatedStringException;
+import net.ninjacat.semblance.errors.compile.ParsingException;
+import net.ninjacat.semblance.errors.compile.UnterminatedStringException;
 
 import java.io.*;
 import java.nio.charset.Charset;

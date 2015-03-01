@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.data.*;
-import net.ninjacat.semblance.errors.FunctionExpectedException;
-import net.ninjacat.semblance.errors.UnboundSymbolException;
+import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
+import net.ninjacat.semblance.errors.runtime.UnboundSymbolException;
 import net.ninjacat.smooth.utils.Option;
 
 import java.util.ArrayList;

@@ -5,7 +5,6 @@ import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.semblance.evaluator.DefaultContext;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -23,14 +22,17 @@ public class Var extends SpecialForm {
 
     @Override
     public LispValue apply(Context context, LispCollection parameters) {
-        Context localContext = DefaultContext.namelessChildContext(context);
-        getParameters().apply(localContext, asSList(parameters));
+        return bindVariable(context, parameters);
+    }
 
-        SymbolAtom binding = asSymbol(localContext.findSymbol(BINDING).get());
-        LispValue value = localContext.findSymbol(VALUE).get();
-
-        context.bind(binding, value);
-
-        return value;
+    private LispValue bindVariable(Context context, LispCollection parameters) {
+        LispValue name = parameters.head();
+        LispValue value = context.evaluate(parameters.tail().head());
+        context.bind(asSymbol(name), value);
+        if (parameters.tail().tail().isNil()) {
+            return value;
+        } else {
+            return bindVariable(context, parameters.tail().tail());
+        }
     }
 }

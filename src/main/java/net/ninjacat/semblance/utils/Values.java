@@ -3,7 +3,7 @@ package net.ninjacat.semblance.utils;
 import net.ninjacat.semblance.data.*;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
-import net.ninjacat.semblance.errors.TypeMismatchException;
+import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.java.JavaConvertible;
 import net.ninjacat.semblance.java.Symbol;
 import net.ninjacat.smooth.functions.Func;

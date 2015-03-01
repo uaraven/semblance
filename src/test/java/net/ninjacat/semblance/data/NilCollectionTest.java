@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.data;
 
-import net.ninjacat.semblance.errors.CollectionException;
+import net.ninjacat.semblance.errors.runtime.CollectionException;
 import net.ninjacat.semblance.java.JavaConvertible;
 import org.junit.Test;
 

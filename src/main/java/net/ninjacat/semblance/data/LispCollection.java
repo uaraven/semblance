@@ -31,7 +31,7 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
      * Returns first element of the collection.
      *
      * @return {@link LispValue} which is the first element of the collection.
-     * @throws net.ninjacat.semblance.errors.CollectionException if collection is empty.
+     * @throws net.ninjacat.semblance.errors.runtime.CollectionException if collection is empty.
      */
     public abstract LispValue head();
 
@@ -40,7 +40,7 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
      *
      * @return {@link net.ninjacat.semblance.data.LispCollection} containing all of the elements but the first. Will return
      * {@link net.ninjacat.semblance.data.NilCollection} if original collection contains only one element.
-     * @throws net.ninjacat.semblance.errors.CollectionException if original collection is empty.
+     * @throws net.ninjacat.semblance.errors.runtime.CollectionException if original collection is empty.
      */
     public abstract LispCollection tail();
 

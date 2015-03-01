@@ -4,7 +4,7 @@ import net.ninjacat.semblance.data.Callable;
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
-import net.ninjacat.semblance.errors.InvalidFunctionDeclarationException;
+import net.ninjacat.semblance.errors.runtime.InvalidFunctionDeclarationException;
 
 import static net.ninjacat.semblance.utils.Values.asSList;
 import static net.ninjacat.semblance.utils.Values.asSymbol;

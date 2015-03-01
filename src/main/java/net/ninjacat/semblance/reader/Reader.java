@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.reader;
 
 import net.ninjacat.semblance.data.SList;
-import net.ninjacat.semblance.errors.ParsingException;
+import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.reader.macros.QuoteMacro;
 
 import java.io.InputStream;

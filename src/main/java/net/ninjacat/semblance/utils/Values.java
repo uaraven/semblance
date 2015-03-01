@@ -15,6 +15,9 @@ import java.util.List;
  * Various utils simplifying value manipulations
  */
 public final class Values {
+    public static final SymbolAtom T = symbol("T");
+    public static final SymbolAtom F = symbol("F");
+
     private Values() {
     }
 
@@ -68,7 +71,11 @@ public final class Values {
     }
 
     public static SymbolAtom asSymbol(LispValue value) {
-        return (SymbolAtom) value;
+        if (isSymbol(value)) {
+            return (SymbolAtom) value;
+        } else {
+            throw new TypeMismatchException(SemblanceType.SYMBOL, value.getType(), getSourceInfo(value));
+        }
     }
 
     public static SList asList(LispValue value) {

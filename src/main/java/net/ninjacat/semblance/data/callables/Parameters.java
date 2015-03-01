@@ -4,7 +4,8 @@ import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.errors.UnexpectedValueException;
-import net.ninjacat.semblance.errors.runtime.ParameterValueExpected;
+import net.ninjacat.semblance.errors.runtime.ParameterException;
+import net.ninjacat.semblance.errors.runtime.ParameterValueExpectedException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.smooth.utils.Option;
 
@@ -34,11 +35,17 @@ public class Parameters implements Iterable<Parameter>, Serializable {
                 sweeper = Sweeper.Optional;
             } else if (REST.equals(value)) {
                 sweeper = Sweeper.Rest;
-                tempRest = createRestParameter();
             } else {
                 Parameter parameter = createParameter(value, sweeper);
-                formalParameters.add(parameter);
+                if (sweeper == Sweeper.Rest) {
+                    tempRest = parameter;
+                } else {
+                    formalParameters.add(parameter);
+                }
             }
+        }
+        if (tempRest == null && sweeper == Sweeper.Rest) {
+            throw new ParameterException("&resp parameter not specified", definitions.getSourceInfo());
         }
         restParameter = Option.of(tempRest);
     }
@@ -68,7 +75,7 @@ public class Parameters implements Iterable<Parameter>, Serializable {
         for (Parameter parameter : this) {
             if (params.isNil()) {
                 if (parameter.isRequired()) {
-                    throw new ParameterValueExpected(parameter.getName(), evaluated.getSourceInfo());
+                    throw new ParameterValueExpectedException(parameter.getName(), evaluated.getSourceInfo());
                 } else {
                     parameter.setInContext(context, null);
                 }
@@ -90,13 +97,13 @@ public class Parameters implements Iterable<Parameter>, Serializable {
             case Optional:
                 return createOptionalParamter(value);
             case Rest:
-                return createRestParameter();
+                return createRestParameter(value);
         }
         throw new UnexpectedValueException(value);
     }
 
-    private Parameter createRestParameter() {
-        return new RestParameter();
+    private Parameter createRestParameter(LispValue value) {
+        return new RestParameter(asSymbol(value));
     }
 
     private Parameter createNormalParameter(LispValue value) {

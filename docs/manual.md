@@ -35,3 +35,25 @@ Second program does not have symbol `var` bound to any value, so symbol will eva
 be printed.
 
 **TODO Consider changing this behavior to generate exception when using unbound symbols**
+
+
+Function parameters
+-------------------
+
+Positional parameters are supported as usual. Optional parameters are supported as well
+
+    (positional parameters &optional optional parameters)
+
+ each optional parameter can be of following format
+   - name - simplest possible case. In case parameter is omitted it will be set to NIL
+   - (name default_value) - if parameter is omitted, then default_value will be supplied
+   - (name default_value flag) - same as above, but flag will be set to *T* if parameter was passed to function
+      and to *F* if default_value was used
+
+ Catch-all &rest parameters are supported:
+
+    (positional parameters &optional parameters &rest list-to-catch-all)
+
+ All extra parameters which do not fit in positional and optional parameters will be passed as list in `list-to-catch-all`
+
+ Keyword parameter support will be added later.

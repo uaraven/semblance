@@ -5,6 +5,7 @@ import net.ninjacat.semblance.data.NilCollection;
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.errors.TypeMismatchException;
+import net.ninjacat.semblance.errors.runtime.ParameterException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.utils.Option;
@@ -221,8 +222,8 @@ public class ParametersTest {
     }
 
 
-    @Test
-    public void shouldBindRestParameter() throws Exception {
+    @Test(expected = ParameterException.class)
+    public void shouldFailWhenRestParameterIsNotSpecified() throws Exception {
         SymbolAtom param = symbol("&rest");
         Parameters parameters = new Parameters(list(param));
         Context context = mock(Context.class);
@@ -230,16 +231,31 @@ public class ParametersTest {
         when(context.evaluateList(actualParameters)).thenReturn(actualParameters);
 
         parameters.apply(context, actualParameters);
-
-        verify(context).bind(param, actualParameters);
     }
+
+
+    @Test
+    public void shouldBindRestParameter() throws Exception {
+        SymbolAtom rest = symbol("&rest");
+        SymbolAtom rest_param = symbol("rest_param");
+        Parameters parameters = new Parameters(list(rest, rest_param));
+        Context context = mock(Context.class);
+        SList actualParameters = list(number(10), number(12));
+        when(context.evaluateList(actualParameters)).thenReturn(actualParameters);
+
+        parameters.apply(context, actualParameters);
+
+        verify(context).bind(rest_param, actualParameters);
+    }
+
 
 
     @Test
     public void shouldBindEmptyRestParameter() throws Exception {
         SymbolAtom param = symbol("param");
         SymbolAtom rest = symbol("&rest");
-        Parameters parameters = new Parameters(list(param, rest));
+        SymbolAtom rest_param = symbol("rest_param");
+        Parameters parameters = new Parameters(list(param, rest, rest_param));
         Context context = mock(Context.class);
         SList actualParameters = list(number(10));
         when(context.evaluateList(actualParameters)).thenReturn(actualParameters);
@@ -247,7 +263,7 @@ public class ParametersTest {
         parameters.apply(context, actualParameters);
 
         verify(context).bind(param, number(10));
-        verify(context).bind(rest, NilCollection.INSTANCE);
+        verify(context).bind(rest_param, NilCollection.INSTANCE);
     }
 
 

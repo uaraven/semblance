@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.evaluator;
 
+import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.smooth.utils.Option;
@@ -42,4 +43,11 @@ public interface Context {
      */
     LispValue evaluate(LispValue expression);
 
+    /**
+     * Evaluates list of values
+     *
+     * @param actualParameters list of values to evaluate
+     * @return list of evaluated values
+     */
+    <T extends LispCollection> T evaluateList(T actualParameters);
 }

@@ -8,10 +8,7 @@ import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -117,6 +114,16 @@ public class SList extends LispCollection implements Callable {
     @Override
     public boolean isNil() {
         return collection.isEmpty();
+    }
+
+    @Override
+    public SList createSame(LispCollection values) {
+        return new SList(values.getCollection(), getSourceInfo());
+    }
+
+    @Override
+    public List<LispValue> getCollection() {
+        return Collections.unmodifiableList(collection);
     }
 
     @Override

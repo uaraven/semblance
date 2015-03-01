@@ -1,20 +1,14 @@
 package net.ninjacat.semblance.data.callables;
 
-import net.ninjacat.semblance.data.Callable;
-import net.ninjacat.semblance.data.SemblanceType;
+import net.ninjacat.semblance.data.SList;
 
 /**
  * Created on 28/02/15.
  */
-public abstract class SpecialForm implements Callable {
+public abstract class SpecialForm extends ParametrizableCallable {
 
-    @Override
-    public String repr() {
-        return null;
+    public SpecialForm(SList definition) {
+        super(definition);
     }
 
-    @Override
-    public SemblanceType getType() {
-        return null;
-    }
 }

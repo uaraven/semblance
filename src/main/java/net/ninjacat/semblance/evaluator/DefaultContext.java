@@ -5,6 +5,8 @@ import net.ninjacat.semblance.errors.FunctionExpectedException;
 import net.ninjacat.semblance.errors.UnboundSymbolException;
 import net.ninjacat.smooth.utils.Option;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -69,10 +71,20 @@ public class DefaultContext implements Context {
                 throw new UnboundSymbolException(asSymbol(expression), getSourceInfo(expression));
             }
         } else if (isList(expression)) {
-            return evaluateFunction(asList(expression));
+            return evaluateFunction(asSList(expression));
         } else {
             return expression;
         }
+    }
+
+    @Override
+    public <T extends LispCollection> T evaluateList(T params) {
+        List<LispValue> evaluatedParams = new ArrayList<>((int) params.length());
+        for (LispValue value : params) {
+            LispValue evaluated = evaluate(value);
+            evaluatedParams.add(evaluated);
+        }
+        return params.createSame(new SList(evaluatedParams));
     }
 
     private LispValue evaluateFunction(SList function) {

@@ -3,13 +3,15 @@ package net.ninjacat.semblance.data;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.CollectionException;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * Empty collection
  */
-public class NilCollection extends LispCollection {
+public class NilCollection extends SList {
     public static final NilCollection INSTANCE = new NilCollection();
     private static final String NAME = "NIL";
     private static final Iterator<LispValue> NIL_ITERATOR = new Iterator<LispValue>() {
@@ -30,10 +32,11 @@ public class NilCollection extends LispCollection {
     };
 
     public NilCollection() {
+        super(Collections.<LispValue>emptyList());
     }
 
     public NilCollection(SourceInfo sourceInfo) {
-        super(sourceInfo);
+        super(Collections.<LispValue>emptyList(), sourceInfo);
     }
 
     @Override
@@ -57,7 +60,17 @@ public class NilCollection extends LispCollection {
     }
 
     @Override
-    public Object asJavaObject() {
+    public SList createSame(LispCollection values) {
+        return NilCollection.INSTANCE;
+    }
+
+    @Override
+    public List<LispValue> getCollection() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List asJavaObject() {
         return null;
     }
 

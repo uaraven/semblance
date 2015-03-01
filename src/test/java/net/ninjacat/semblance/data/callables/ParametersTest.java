@@ -1,8 +1,12 @@
 package net.ninjacat.semblance.data.callables;
 
 import net.ninjacat.semblance.data.LispValue;
+import net.ninjacat.semblance.data.NilCollection;
+import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.errors.TypeMismatchException;
+import net.ninjacat.semblance.evaluator.Context;
+import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.utils.Option;
 import org.junit.Test;
 
@@ -11,6 +15,7 @@ import java.util.List;
 import static net.ninjacat.semblance.utils.Values.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 public class ParametersTest {
 
@@ -78,7 +83,7 @@ public class ParametersTest {
         List<Parameter> params = parameters.getFormalParameters();
 
         assertThat("Should parse &rest params",
-                (RestParameter) params.get(0), is(new RestParameter()));
+                parameters.getRestParameter().isPresent(), is(true));
     }
 
     @Test
@@ -90,7 +95,7 @@ public class ParametersTest {
         assertThat("Should parse standard params",
                 (StandardParameter) params.get(0), is(new StandardParameter(symbol("param1"))));
         assertThat("Should parse &rest params",
-                (RestParameter) params.get(1), is(new RestParameter()));
+                parameters.getRestParameter().isPresent(), is(true));
     }
 
     @Test
@@ -107,7 +112,7 @@ public class ParametersTest {
                 (OptionalParameter) params.get(1), is(new OptionalParameter(
                         symbol("opt1"), Option.of(number(10L)), Option.of(symbol("opt1-supplied-p")))));
         assertThat("Should parse &rest params",
-                (RestParameter) params.get(2), is(new RestParameter()));
+                parameters.getRestParameter().isPresent(), is(true));
     }
 
     @Test(expected = TypeMismatchException.class)
@@ -123,4 +128,127 @@ public class ParametersTest {
 
         parameters.getFormalParameters();
     }
+
+    @Test
+    public void shouldBindActualParameter() throws Exception {
+        SymbolAtom param = symbol("param1");
+        Parameters parameters = new Parameters(list(param));
+        Context context = mock(Context.class);
+        when(context.evaluateList(list(number(10)))).thenReturn(list(number(10)));
+
+        parameters.apply(context, list(number(10)));
+
+        verify(context).bind(param, number(10));
+    }
+
+    @Test
+    public void shouldBindMultipleActualParameters() throws Exception {
+        SymbolAtom param1 = symbol("param1");
+        SymbolAtom param2 = symbol("param2");
+        Parameters parameters = new Parameters(list(param1, param2));
+        Context context = mock(Context.class);
+        SList actualParams = list(number(10), string("v"));
+        when(context.evaluateList(actualParams)).thenReturn(actualParams);
+
+        parameters.apply(context, actualParams);
+
+        verify(context).bind(param1, number(10));
+        verify(context).bind(param2, string("v"));
+    }
+
+    @Test
+    public void shouldBindOptionalParameter() throws Exception {
+        SymbolAtom param1 = symbol("param1");
+        SymbolAtom param2 = symbol("param2");
+        Parameters parameters = new Parameters(list(param1, symbol("&optional"), param2));
+        Context context = mock(Context.class);
+        SList actualParams = list(number(10), string("v"));
+        when(context.evaluateList(actualParams)).thenReturn(actualParams);
+
+        parameters.apply(context, actualParams);
+
+        verify(context).bind(param1, number(10));
+        verify(context).bind(param2, string("v"));
+    }
+
+    @Test
+    public void shouldBindNilAsOmittedOptionalParameter() throws Exception {
+        SymbolAtom param1 = symbol("param1");
+        SymbolAtom param2 = symbol("param2");
+        Parameters parameters = new Parameters(list(param1, symbol("&optional"), param2));
+        Context context = mock(Context.class);
+        SList actualParams = list(number(10));
+        when(context.evaluateList(actualParams)).thenReturn(actualParams);
+
+        parameters.apply(context, actualParams);
+
+        verify(context).bind(param1, number(10));
+        verify(context).bind(param2, NilCollection.INSTANCE);
+    }
+
+
+    @Test
+    public void shouldBindNilAsOmittedOptionalParameterWithDefault() throws Exception {
+        SymbolAtom param1 = symbol("param1");
+        SymbolAtom param2 = symbol("param2");
+        Parameters parameters = new Parameters(list(param1, symbol("&optional"), list(param2, string("v"))));
+        Context context = mock(Context.class);
+        SList actualParams = list(number(10));
+        when(context.evaluateList(actualParams)).thenReturn(actualParams);
+        when(context.evaluate(string("v"))).thenReturn(string("v"));
+
+        parameters.apply(context, actualParams);
+
+        verify(context).bind(param1, number(10));
+        verify(context).bind(param2, string("v"));
+    }
+
+    @Test
+    public void shouldBindNilAsOmittedOptionalParameterWithDefaultAndFlag() throws Exception {
+        SymbolAtom param1 = symbol("param1");
+        SymbolAtom param2 = symbol("param2");
+        Parameters parameters = new Parameters(list(param1, symbol("&optional"), list(param2, string("v"), symbol("flag"))));
+        Context context = mock(Context.class);
+        SList actualParams = list(number(10));
+        when(context.evaluateList(actualParams)).thenReturn(actualParams);
+        when(context.evaluate(string("v"))).thenReturn(string("v"));
+
+        parameters.apply(context, actualParams);
+
+        verify(context).bind(param1, number(10));
+        verify(context).bind(param2, string("v"));
+        verify(context).bind(symbol("flag"), Values.T);
+    }
+
+
+    @Test
+    public void shouldBindRestParameter() throws Exception {
+        SymbolAtom param = symbol("&rest");
+        Parameters parameters = new Parameters(list(param));
+        Context context = mock(Context.class);
+        SList actualParameters = list(number(10), number(12));
+        when(context.evaluateList(actualParameters)).thenReturn(actualParameters);
+
+        parameters.apply(context, actualParameters);
+
+        verify(context).bind(param, actualParameters);
+    }
+
+
+    @Test
+    public void shouldBindEmptyRestParameter() throws Exception {
+        SymbolAtom param = symbol("param");
+        SymbolAtom rest = symbol("&rest");
+        Parameters parameters = new Parameters(list(param, rest));
+        Context context = mock(Context.class);
+        SList actualParameters = list(number(10));
+        when(context.evaluateList(actualParameters)).thenReturn(actualParameters);
+
+        parameters.apply(context, actualParameters);
+
+        verify(context).bind(param, number(10));
+        verify(context).bind(rest, NilCollection.INSTANCE);
+    }
+
+
 }

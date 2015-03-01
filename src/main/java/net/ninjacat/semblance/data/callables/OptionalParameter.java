@@ -1,6 +1,7 @@
 package net.ninjacat.semblance.data.callables;
 
 import net.ninjacat.semblance.data.LispValue;
+import net.ninjacat.semblance.data.NilCollection;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
@@ -19,14 +20,6 @@ public class OptionalParameter extends BaseParameter {
         super(name);
         this.defaultValue = defaultValue;
         this.suppliedFlagName = suppliedFlagName;
-    }
-
-    public Option<LispValue> getDefaultValue() {
-        return defaultValue;
-    }
-
-    public Option<SymbolAtom> getSuppliedFlagName() {
-        return suppliedFlagName;
     }
 
     @Override
@@ -50,13 +43,19 @@ public class OptionalParameter extends BaseParameter {
     }
 
     @Override
+    public boolean isRequired() {
+        return false;
+    }
+
+    @Override
     public void setInContext(Context context, LispValue actualValue) {
         if (actualValue == null) {
             if (defaultValue.isPresent()) {
-                context.bind(getName(), defaultValue.get());
-                if (suppliedFlagName.isPresent()) {
-                    context.bind(suppliedFlagName.get(), Values.T);
-                }
+                context.bind(getName(), context.evaluate(defaultValue.get()));
+                bindSupplied(context, true);
+            } else {
+                context.bind(getName(), NilCollection.INSTANCE);
+                bindSupplied(context, false);
             }
         } else {
             context.bind(getName(), actualValue);
@@ -74,5 +73,11 @@ public class OptionalParameter extends BaseParameter {
             builder.append(" ").append(suppliedFlagName.get());
         }
         return builder.toString();
+    }
+
+    private void bindSupplied(Context context, boolean isSupplied) {
+        if (suppliedFlagName.isPresent()) {
+            context.bind(suppliedFlagName.get(), isSupplied ? Values.T : Values.F);
+        }
     }
 }

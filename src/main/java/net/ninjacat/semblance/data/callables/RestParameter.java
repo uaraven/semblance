@@ -13,6 +13,11 @@ public class RestParameter extends BaseParameter {
     }
 
     @Override
+    public boolean isRequired() {
+        return false;
+    }
+
+    @Override
     public void setInContext(Context context, LispValue actualValue) {
         context.bind(getName(), actualValue);
     }

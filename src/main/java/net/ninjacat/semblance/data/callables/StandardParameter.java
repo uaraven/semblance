@@ -13,6 +13,11 @@ public class StandardParameter extends BaseParameter {
         super(name);
     }
 
+    @Override
+    public boolean isRequired() {
+        return true;
+    }
+
     public void setInContext(Context context, LispValue actualValue) {
         context.bind(getName(), actualValue);
     }

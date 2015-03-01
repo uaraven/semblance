@@ -19,7 +19,7 @@ public class Function implements Callable {
 
     @Override
     public SymbolAtom name() {
-        return null;
+        return name;
     }
 
     @Override

@@ -5,6 +5,8 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.java.JavaConvertible;
 import net.ninjacat.smooth.functions.Func;
 
+import java.util.List;
+
 /**
  * Parent class for lists and vectors
  */
@@ -53,6 +55,10 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
      * @return {@code true} if the collection is empty
      */
     public abstract boolean isNil();
+
+    public abstract List<LispValue> getCollection();
+
+    public abstract <T extends LispCollection> T createSame(LispCollection values);
 
     protected static enum ValueToString implements Func<String, LispValue> {
         REPR;

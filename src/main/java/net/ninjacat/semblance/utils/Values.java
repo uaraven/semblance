@@ -78,8 +78,12 @@ public final class Values {
         }
     }
 
-    public static SList asList(LispValue value) {
-        return (SList) value;
+    public static SList asSList(LispValue value) {
+        if (isList(value)) {
+            return (SList) value;
+        } else {
+            throw new TypeMismatchException(SemblanceType.LIST, value.getType(), getSourceInfo(value));
+        }
     }
 
     public static Callable asCallable(LispValue value) {

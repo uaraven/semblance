@@ -22,7 +22,7 @@ public class DefaultContext implements Context {
 
     private final Map<SymbolAtom, LispValue> bindings;
 
-    private DefaultContext(String name, Context parent) {
+    protected DefaultContext(String name, Context parent) {
         this.name = name;
         this.parent = parent;
         bindings = new ConcurrentHashMap<>();

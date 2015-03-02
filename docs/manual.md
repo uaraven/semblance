@@ -63,6 +63,19 @@ Positional parameters are supported as usual. Optional parameters are supported 
 Functions
 ---------
 
+Release Functions
+=================
+
+  Semblance probably includes more special forms than Common Lisp. That's done mostly for efficiency and sometimes to avoid complex
+  parameter processing. Some of the special forms may later be rewritten as functions or macros in standard library.
+
+  **PRINTLN**
+
+    println(value1 value2 value3 ...)
+
+  prints all values separated by space and returns NIL
+
+
 Beta functions
 ==============
 

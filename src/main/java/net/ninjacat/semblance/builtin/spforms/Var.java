@@ -9,7 +9,7 @@ import net.ninjacat.semblance.evaluator.Context;
 import static net.ninjacat.semblance.utils.Values.*;
 
 /**
- * Created on 01/03/15.
+ * (var name value [name value]...)
  */
 public class Var extends SpecialForm {
 

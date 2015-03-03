@@ -3,7 +3,8 @@ package net.ninjacat.semblance.data;
 /**
  * Value types supported by Semblance
  */
-public enum SemblanceIntType {
+public enum SemblanceNumberType {
     LONG,
-    BIG
+    BIG,
+    DOUBLE
 }

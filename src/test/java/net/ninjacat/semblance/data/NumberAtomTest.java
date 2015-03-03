@@ -2,8 +2,8 @@ package net.ninjacat.semblance.data;
 
 import org.junit.Test;
 
-import static net.ninjacat.semblance.data.SemblanceIntType.BIG;
-import static net.ninjacat.semblance.data.SemblanceIntType.LONG;
+import static net.ninjacat.semblance.data.SemblanceNumberType.BIG;
+import static net.ninjacat.semblance.data.SemblanceNumberType.LONG;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 

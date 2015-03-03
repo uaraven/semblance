@@ -29,6 +29,18 @@ public abstract class NumberAtom<T> extends Atom {
         }
     }
 
+    public abstract NumberAtom<?> add(NumberAtom<?> other);
+
+    public abstract NumberAtom<?> sub(NumberAtom<?> other);
+
+    public abstract NumberAtom<?> div(NumberAtom<?> other);
+
+    public abstract NumberAtom<?> mod(NumberAtom<?> other);
+
+    public abstract NumberAtom<?> mul(NumberAtom<?> other);
+
+    public abstract NumberAtom<?> fdiv(NumberAtom<?> other);
+
     @Override
     public String repr() {
         return String.valueOf(getValue());
@@ -44,7 +56,15 @@ public abstract class NumberAtom<T> extends Atom {
         return "NumberAtom{" + getValue() + '}';
     }
 
-    public abstract SemblanceIntType getNumberType();
+    public abstract SemblanceNumberType getNumberType();
 
     public abstract T getValue();
+
+    protected abstract NumberAtom<?> expandIfNeeded(NumberAtom other);
+
+    protected abstract NumberAtom<?> convertToBigInt();
+
+    protected abstract NumberAtom<?> convertToLong();
+
+    protected abstract NumberAtom<?> convertToDouble();
 }

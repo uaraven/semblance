@@ -13,7 +13,7 @@ import static net.ninjacat.semblance.utils.Values.symbol;
  * Created on 01/03/15.
  */
 public class RootContext extends DefaultContext {
-    private RootContext() {
+    public RootContext() {
         super("/", null);
 
         bind(symbol("nil"), NilCollection.INSTANCE);

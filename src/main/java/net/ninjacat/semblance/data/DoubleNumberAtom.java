@@ -84,11 +84,6 @@ public class DoubleNumberAtom extends NumberAtom {
     }
 
     @Override
-    public NumberAtom<?> fdiv(NumberAtom other) {
-        return new DoubleNumberAtom(value / (Double) expandOther(other).getValue());
-    }
-
-    @Override
     public String repr() {
         return String.valueOf(value);
     }

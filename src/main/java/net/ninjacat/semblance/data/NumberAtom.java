@@ -39,8 +39,6 @@ public abstract class NumberAtom<T> extends Atom {
 
     public abstract NumberAtom<?> mul(NumberAtom<?> other);
 
-    public abstract NumberAtom<?> fdiv(NumberAtom<?> other);
-
     @Override
     public String repr() {
         return String.valueOf(getValue());

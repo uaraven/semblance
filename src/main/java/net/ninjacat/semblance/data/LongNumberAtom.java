@@ -89,17 +89,6 @@ public class LongNumberAtom extends NumberAtom<Long> {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public NumberAtom<?> fdiv(NumberAtom<?> other) {
-        NumberAtom self = expandIfNeeded(other);
-        if (self == this) {
-            return new LongNumberAtom(value / (Long) other.getValue());
-        } else {
-            return self.fdiv(other);
-        }
-    }
-
     @Override
     public SemblanceNumberType getNumberType() {
         return SemblanceNumberType.LONG;

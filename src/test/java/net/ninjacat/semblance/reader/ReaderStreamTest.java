@@ -266,4 +266,19 @@ public class ReaderStreamTest {
         assertThat("Token type should be CloseParen", tokens.get(2).getType(), is(Token.TokenType.CloseParens));
 
     }
+
+    @Test
+    public void shouldParseArithmeticCall() throws Exception {
+        ReaderStream stream = ReaderStream.readString("(+ 2 3)");
+
+        List<Token> tokens = stream.tokenize();
+        assertThat("Should have 4 tokens", tokens.size(), is(5));
+        assertThat("Token type should be OpenParen", tokens.get(0).getType(), is(Token.TokenType.OpenParens));
+        assertThat("Token type should be Symbol", tokens.get(1).getType(), is(Token.TokenType.Symbol));
+        assertThat("Token type should be Int", tokens.get(2).getType(), is(Token.TokenType.Integer));
+        assertThat("Token type should be Int", tokens.get(3).getType(), is(Token.TokenType.Integer));
+        assertThat("Token type should be CloseParen", tokens.get(4).getType(), is(Token.TokenType.CloseParens));
+
+    }
+
 }

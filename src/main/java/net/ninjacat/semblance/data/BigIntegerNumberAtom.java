@@ -87,17 +87,6 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     @Override
-    public NumberAtom<?> fdiv(NumberAtom<?> other) {
-        NumberAtom<?> self = expandIfNeeded(other);
-        NumberAtom<?> oth = other.expandIfNeeded(this);
-        if (self == this) {
-            return make(value.divide((BigInteger) oth.getValue()));
-        } else {
-            return self.div(other);
-        }
-    }
-
-    @Override
     public BigInteger asJavaObject() {
         return value;
     }

@@ -1,7 +1,6 @@
 package net.ninjacat.semblance.evaluator;
 
-import net.ninjacat.semblance.builtin.spforms.PrintLn;
-import net.ninjacat.semblance.builtin.spforms.Var;
+import net.ninjacat.semblance.builtin.spforms.*;
 import net.ninjacat.semblance.data.NilCollection;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 
@@ -26,6 +25,11 @@ public class RootContext extends DefaultContext {
     private void bindSpecialForms() {
         bindForm(new Var());
         bindForm(new PrintLn());
+        bindForm(new Add());
+        bindForm(new Sub());
+        bindForm(new Div());
+        bindForm(new Mul());
+        bindForm(new Mod());
     }
 
     private void bindForm(SpecialForm form) {

@@ -73,8 +73,11 @@ public class ReaderStream {
         streamTokenizer.wordChars('A', 'Z');
         streamTokenizer.wordChars('0', '9');
         streamTokenizer.wordChars(128 + 32, Integer.MAX_VALUE);
-        streamTokenizer.wordChars('-', '-');
-        streamTokenizer.wordChars('@', '@');
+        streamTokenizer.wordChars('!', '!');
+        streamTokenizer.wordChars('$', '&');
+        streamTokenizer.wordChars('*', '-');
+        streamTokenizer.wordChars('/', '/');
+        streamTokenizer.wordChars(':', ':');
         streamTokenizer.whitespaceChars(0, ' ');
         streamTokenizer.commentChar(';');
         streamTokenizer.ordinaryChar('[');
@@ -194,9 +197,10 @@ public class ReaderStream {
             default:
                 if (specials.contains((char) tokenizer.ttype)) {
                     return Token.special((char) tokenizer.ttype, currentPosition());
+                } else {
+                    return Token.symbol(String.valueOf((char) tokenizer.ttype), currentPosition());
                 }
         }
-        return Token.whitespace(currentPosition());
     }
 
     private Token parseWord() throws IOException {

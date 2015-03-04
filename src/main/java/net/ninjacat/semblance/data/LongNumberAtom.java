@@ -41,7 +41,12 @@ public class LongNumberAtom extends NumberAtom<Long> {
     public NumberAtom<?> sub(NumberAtom<?> other) {
         NumberAtom self = expandIfNeeded(other);
         if (self == this) {
-            return new LongNumberAtom(value - (Long) other.getValue());
+            if (willOverflow(value, (Long) other.getValue())) {
+                return convertToBigInt().sub(other.convertToBigInt());
+            } else {
+                return new LongNumberAtom(value - (Long) other.getValue());
+            }
+
         } else {
             return self.sub(other);
         }

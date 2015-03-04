@@ -46,6 +46,10 @@ public final class Values {
         return new LongNumberAtom(value);
     }
 
+    public static LispValue number(double value) {
+        return new DoubleNumberAtom(value);
+    }
+
     public static LispValue string(String value) {
         return new StringAtom(value);
     }
@@ -132,6 +136,18 @@ public final class Values {
 
     public static boolean isNilCollection(Object collection) {
         return collection instanceof LispCollection && ((LispCollection) collection).isNil();
+    }
+
+    public static NumberAtom asNumber(LispValue value) {
+        if (isNumber(value)) {
+            return (NumberAtom) value;
+        } else {
+            throw new TypeMismatchException("Numeric", value.getType(), getSourceInfo(value));
+        }
+    }
+
+    private static boolean isNumber(LispValue value) {
+        return value.getType() == SemblanceType.FLOATIG_POINT || value.getType() == SemblanceType.INTEGER;
     }
 
     private enum FromJavaConverter implements Func<LispValue, Object> {

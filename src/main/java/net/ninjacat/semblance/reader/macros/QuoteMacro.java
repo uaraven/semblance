@@ -14,7 +14,7 @@ public class QuoteMacro implements ReaderMacro {
     }
 
     @Override
-    public LispValue replaceReaderMacro(LispValue value) {
+    public LispValue replaceReaderMacro(final LispValue value) {
 
         return Values.list(Values.symbol("quote"), value);
     }

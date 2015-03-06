@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
  * Lexer. Reads stream of characters and converts it into list of tokens
  * Created on 25/02/15.
  */
+@SuppressWarnings("MagicCharacter")
 public class ReaderStream {
 
     private static final Pattern INTEGER = Pattern.compile("(\\+|\\-)?\\d+");
@@ -26,48 +27,48 @@ public class ReaderStream {
 
     private int linePosition;
 
-    private ReaderStream(InputStream inputStream) {
-        InputStreamReader reader = new InputStreamReader(new BufferedInputStream(inputStream));
+    private ReaderStream(final InputStream inputStream) {
+        final InputStreamReader reader = new InputStreamReader(new BufferedInputStream(inputStream));
         specials = new HashSet<>();
         tokenizer = setupTokenizer(reader);
         linePosition = 0;
     }
 
-    public static ReaderStream readStream(InputStream inputStream) {
+    static ReaderStream readStream(final InputStream inputStream) {
         return new ReaderStream(inputStream);
     }
 
-    public static ReaderStream readString(String string) {
-        return new ReaderStream(new ByteArrayInputStream(string.getBytes(Charset.forName("utf-8"))));
+    static ReaderStream readString(final String text) {
+        return new ReaderStream(new ByteArrayInputStream(text.getBytes(Charset.forName("utf-8"))));
     }
 
-    public void registerSpecial(char specialCharacter) {
+    void registerSpecial(final char specialCharacter) {
         specials.add(specialCharacter);
     }
 
-    public SourceInfo currentPosition() {
+    SourceInfo currentPosition() {
         return new SourceInfo(tokenizer.lineno(), linePosition);
     }
 
-    public List<Token> tokenize() throws ParsingException {
-        List<Token> tokens = new LinkedList<>();
+    List<Token> tokenize() throws ParsingException {
+        final List<Token> tokens = new LinkedList<>();
         Token token;
         do {
             token = nextToken();
             if (!shouldIgnore(token)) {
                 tokens.add(token);
             }
-        } while (token.getType() != Token.TokenType.Eof);
+        } while (Token.TokenType.Eof != token.getType());
         return tokens;
     }
 
-    private StreamTokenizer setupTokenizer(InputStreamReader reader) {
-        StreamTokenizer streamTokenizer = new StreamTokenizer(reader);
+    private StreamTokenizer setupTokenizer(final InputStreamReader reader) {
+        final StreamTokenizer streamTokenizer = new StreamTokenizer(reader);
         resetTokenizer(streamTokenizer);
         return streamTokenizer;
     }
 
-    private void resetTokenizer(StreamTokenizer streamTokenizer) {
+    private void resetTokenizer(final StreamTokenizer streamTokenizer) {
         streamTokenizer.resetSyntax();
         streamTokenizer.wordChars('a', 'z');
         streamTokenizer.wordChars('A', 'Z');
@@ -104,8 +105,8 @@ public class ReaderStream {
 
     private Token nextToken() throws ParsingException {
         try {
-            int token = tokenizer.nextToken();
-            Token result;
+            final int token = tokenizer.nextToken();
+            final Token result;
             switch (token) {
                 case StreamTokenizer.TT_WORD:
                     result = parseWord();
@@ -125,26 +126,27 @@ public class ReaderStream {
             }
             linePosition += result.getValue().length();
             return result;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new ParsingException("Failed to read input", e, currentPosition());
         }
     }
 
     private Token parseString() throws IOException, UnterminatedStringException {
         resetTokenizerForString();
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         try {
             while (true) {
                 int token = tokenizer.nextToken();
-                if (token == '"') {
+                if ('"' == token) {
                     break;
-                } else if (token == '\\') {
+                }
+                if ('\\' == token) {
                     token = readEscapedChar();
-                } else if (token == StreamTokenizer.TT_EOL || token == StreamTokenizer.TT_EOF) {
+                } else if (StreamTokenizer.TT_EOL == token || StreamTokenizer.TT_EOF == token) {
                     tokenizer.pushBack();
                     throw new UnterminatedStringException(currentPosition());
                 }
-                if (token == StreamTokenizer.TT_WORD) {
+                if (StreamTokenizer.TT_WORD == token) {
                     builder.append(tokenizer.sval);
                 } else {
                     builder.append((char) token);
@@ -160,7 +162,7 @@ public class ReaderStream {
     private int readEscapedChar() throws IOException {
         resetTokenizerForEscape();
         try {
-            int token = tokenizer.nextToken();
+            final int token = tokenizer.nextToken();
             switch (token) {
                 case 't':
                     return '\t';
@@ -191,7 +193,7 @@ public class ReaderStream {
             case ']':
                 return Token.closeBracket(currentPosition());
             case '\n':
-                Token token = Token.carriageReturn(currentPosition());
+                final Token token = Token.carriageReturn(currentPosition());
                 linePosition = 0;
                 return token;
             default:
@@ -213,10 +215,10 @@ public class ReaderStream {
         }
     }
 
-    private Token parseNumber(boolean negative) throws IOException {
-        String val;
+    private Token parseNumber(final boolean negative) throws IOException {
+        final String val;
         if (negative) {
-            int token = tokenizer.nextToken();
+            final int token = tokenizer.nextToken();
             if (token == StreamTokenizer.TT_WORD && isInteger(tokenizer.sval)) {
                 val = "-" + tokenizer.sval;
             } else {
@@ -226,7 +228,7 @@ public class ReaderStream {
         } else {
             val = tokenizer.sval;
         }
-        int token = tokenizer.nextToken();
+        final int token = tokenizer.nextToken();
         if (token == '.' || token == 'e' || token == 'E') {
             return parseDouble(val + Character.toString((char) token));
         } else {
@@ -236,7 +238,7 @@ public class ReaderStream {
     }
 
     private Token parseDouble(String s) throws IOException {
-        int token = tokenizer.nextToken();
+        final int token = tokenizer.nextToken();
         if (token != StreamTokenizer.TT_WORD) {
             tokenizer.pushBack();
         } else {
@@ -245,15 +247,15 @@ public class ReaderStream {
         return Token.doubleToken(s, currentPosition());
     }
 
-    private boolean isInteger(String nval) {
+    private boolean isInteger(final String nval) {
         return INTEGER.matcher(nval).matches();
     }
 
-    private boolean isDouble(String nval) {
+    private boolean isDouble(final String nval) {
         return DOUBLE.matcher(nval).matches();
     }
 
-    private boolean shouldIgnore(Token token) {
+    private boolean shouldIgnore(final Token token) {
         return token.getType() == Token.TokenType.CarriageReturn ||
                 token.getType() == Token.TokenType.Comment ||
                 token.getType() == Token.TokenType.Whitespace ||

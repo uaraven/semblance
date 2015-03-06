@@ -22,17 +22,17 @@ public class DefaultContext implements Context {
 
     private final Map<SymbolAtom, LispValue> bindings;
 
-    protected DefaultContext(String name, Context parent) {
+    protected DefaultContext(final String name, final Context parent) {
         this.name = name;
         this.parent = parent;
         bindings = new ConcurrentHashMap<>();
     }
 
-    public static Context namelessChildContext(Context parent) {
+    public static Context namelessChildContext(final Context parent) {
         return new DefaultContext("", parent);
     }
 
-    public static Context namedChildContext(String name, Context parent) {
+    public static Context namedChildContext(final String name, final Context parent) {
         return new DefaultContext(name, parent);
     }
 
@@ -46,10 +46,10 @@ public class DefaultContext implements Context {
     }
 
     @Override
-    public Option<LispValue> findSymbol(SymbolAtom name) {
+    public Option<LispValue> findSymbol(final SymbolAtom name) {
         if (bindings.containsKey(name)) {
             return Option.of(bindings.get(name));
-        } else if (parent != null) {
+        } else if (null != parent) {
             return parent.findSymbol(name);
         } else {
             return Option.absent();
@@ -57,14 +57,14 @@ public class DefaultContext implements Context {
     }
 
     @Override
-    public void bind(SymbolAtom name, LispValue value) {
+    public void bind(final SymbolAtom name, final LispValue value) {
         bindings.put(name, value);
     }
 
     @Override
-    public LispValue evaluate(LispValue expression) {
+    public LispValue evaluate(final LispValue expression) {
         if (isSymbol(expression)) {
-            Option<LispValue> value = findSymbol(asSymbol(expression));
+            final Option<LispValue> value = findSymbol(asSymbol(expression));
             if (value.isPresent()) {
                 return value.get();
             } else {
@@ -78,26 +78,26 @@ public class DefaultContext implements Context {
     }
 
     @Override
-    public <T extends LispCollection> T evaluateList(T params) {
-        List<LispValue> evaluatedParams = new ArrayList<>((int) params.length());
-        for (LispValue value : params) {
-            LispValue evaluated = evaluate(value);
+    public <T extends LispCollection> T evaluateList(final T params) {
+        final List<LispValue> evaluatedParams = new ArrayList<>((int) params.length());
+        for (final LispValue value : params) {
+            final LispValue evaluated = evaluate(value);
             evaluatedParams.add(evaluated);
         }
         return params.createSame(new SList(evaluatedParams));
     }
 
-    private LispValue evaluateFunction(SList function) {
-        LispValue head = function.head();
+    private LispValue evaluateFunction(final SList function) {
+        final LispValue head = function.head();
         if (!isSymbol(head)) {
             throw new FunctionExpectedException(function);
         }
-        Option<LispValue> callable = findSymbol(asSymbol(head));
+        final Option<LispValue> callable = findSymbol(asSymbol(head));
         if (!callable.isPresent() || !isCallable(callable.get())) {
             throw new FunctionExpectedException(head);
         }
-        LispCollection params = function.tail();
-        Callable func = asCallable(callable.get());
+        final LispCollection params = function.tail();
+        final Callable func = asCallable(callable.get());
         return func.apply(namedChildContext(func.name().asJavaObject().getValue(), this), params);
     }
 }

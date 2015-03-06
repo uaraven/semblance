@@ -15,9 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Created on 27/02/15.
  */
-public class Parser {
+class Parser {
 
-    private final static Map<Token.TokenType, TokenConverter> CONVERTERS = new HashMap<>();
+    private static final Map<Token.TokenType, TokenConverter> CONVERTERS = new HashMap<>();
 
     static {
         CONVERTERS.put(Token.TokenType.Symbol, new SymbolConverter());
@@ -28,17 +28,17 @@ public class Parser {
 
     private final Map<String, ReaderMacro> readerMacros;
 
-    public Parser() {
+    Parser() {
         readerMacros = new ConcurrentHashMap<>();
     }
 
-    public void registerReaderMacro(ReaderMacro macro) {
+    void registerReaderMacro(final ReaderMacro macro) {
         readerMacros.put(macro.getMacroCharacter(), macro);
     }
 
-    public SList parse(List<Token> tokens) throws UnknownExpressionException {
-        ParserIterator parserIterator = new ParserIterator(tokens.iterator(), CONVERTERS, readerMacros);
-        List<LispValue> result = new LinkedList<>();
+    SList parse(final List<Token> tokens) throws UnknownExpressionException {
+        final ParserIterator parserIterator = new ParserIterator(tokens.iterator(), CONVERTERS, readerMacros);
+        final List<LispValue> result = new LinkedList<>();
         while (parserIterator.hasNext()) {
             result.add(parserIterator.next());
         }

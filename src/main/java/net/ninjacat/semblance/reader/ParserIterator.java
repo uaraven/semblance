@@ -8,19 +8,17 @@ import net.ninjacat.semblance.reader.converters.TokenConverter;
 
 import java.util.*;
 
-/**
- * Created on 27/02/15.
- */
-public class ParserIterator implements Iterator<LispValue> {
+
+class ParserIterator implements Iterator<LispValue> {
 
     private final Iterator<Token> tokens;
     private final Map<String, ReaderMacro> macros;
     private final Map<Token.TokenType, TokenConverter> converters;
 
-    public ParserIterator(
-            Iterator<Token> tokens,
-            Map<Token.TokenType, TokenConverter> converters,
-            Map<String, ReaderMacro> macros) {
+    ParserIterator(
+            final Iterator<Token> tokens,
+            final Map<Token.TokenType, TokenConverter> converters,
+            final Map<String, ReaderMacro> macros) {
         this.tokens = tokens;
         this.macros = Collections.unmodifiableMap(macros);
         this.converters = Collections.unmodifiableMap(converters);
@@ -43,7 +41,7 @@ public class ParserIterator implements Iterator<LispValue> {
 
     private LispValue parseInternal() {
         if (tokens.hasNext()) {
-            Token token = tokens.next();
+            final Token token = tokens.next();
             switch (token.getType()) {
                 case CloseParens:
                 case CloseBracket:
@@ -64,7 +62,7 @@ public class ParserIterator implements Iterator<LispValue> {
         }
     }
 
-    private LispValue parseAtom(Token token) {
+    private LispValue parseAtom(final Token token) {
         if (converters.containsKey(token.getType())) {
             return converters.get(token.getType()).mkValue(token);
         } else {
@@ -72,7 +70,7 @@ public class ParserIterator implements Iterator<LispValue> {
         }
     }
 
-    private LispValue parseReaderMacro(Token token) {
+    private LispValue parseReaderMacro(final Token token) {
         if (macros.containsKey(token.getValue())) {
             return macros.get(token.getValue()).replaceReaderMacro(parseInternal());
         } else {
@@ -81,11 +79,11 @@ public class ParserIterator implements Iterator<LispValue> {
     }
 
     private List<LispValue> parseCollection() {
-        List<LispValue> collection = new LinkedList<>();
+        final List<LispValue> collection = new LinkedList<>();
         while (tokens.hasNext()) {
-            LispValue value = parseInternal();
-            if (value.getType() == SemblanceType.SPECIAL) {
-                if (value == SpecialValue.LIST_END) {
+            final LispValue value = parseInternal();
+            if (SemblanceType.SPECIAL == value.getType()) {
+                if (SpecialValue.LIST_END == value) {
                     return collection;
                 } else {
                     break;
@@ -96,11 +94,11 @@ public class ParserIterator implements Iterator<LispValue> {
         throw new UnexpectedEndRuntimeException();
     }
 
-    private SList parseList(Token token) {
+    private SList parseList(final Token token) {
         return new SList(parseCollection(), token.getSourceInfo());
     }
 
-    private Vector parseVector(Token token) {
+    private Vector parseVector(final Token token) {
         return new Vector(parseCollection(), token.getSourceInfo());
     }
 

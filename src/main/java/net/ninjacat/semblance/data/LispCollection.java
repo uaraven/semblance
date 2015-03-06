@@ -15,10 +15,10 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
     private final SourceInfo sourceInfo;
 
     public LispCollection() {
-        this.sourceInfo = SourceInfo.UNKNOWN;
+        sourceInfo = SourceInfo.UNKNOWN;
     }
 
-    public LispCollection(SourceInfo sourceInfo) {
+    public LispCollection(final SourceInfo sourceInfo) {
         this.sourceInfo = sourceInfo;
     }
 
@@ -64,7 +64,7 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
         REPR;
 
         @Override
-        public String apply(LispValue lispValue) {
+        public String apply(final LispValue lispValue) {
             return lispValue.repr();
         }
     }

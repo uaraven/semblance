@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.integration;
 
+import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.reader.Reader;
 import net.ninjacat.semblance.utils.Values;
 import org.junit.Test;
 
@@ -15,9 +15,9 @@ public class ProgramTest {
 
     @Test
     public void shouldDoSimpleArithmetic() throws Exception {
-        Reader reader = new Reader();
+        final Interpreter interpreter = new Interpreter();
 
-        LispValue value = reader.run("(+ 2 (- 4 2))");
+        final LispValue value = interpreter.run("(+ 2 (- 4 2))");
 
         assertThat(value, is(Values.number(4)));
     }

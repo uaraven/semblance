@@ -9,11 +9,11 @@ public class StringAtom extends Atom {
 
     private final String value;
 
-    public StringAtom(String value) {
+    public StringAtom(final String value) {
         this.value = value;
     }
 
-    public StringAtom(String value, SourceInfo sourceInfo) {
+    public StringAtom(final String value, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
     }
@@ -34,11 +34,11 @@ public class StringAtom extends Atom {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (null == o || getClass() != o.getClass()) return false;
 
-        StringAtom that = (StringAtom) o;
+        final StringAtom that = (StringAtom) o;
 
         if (!value.equals(that.value)) return false;
 

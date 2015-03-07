@@ -9,13 +9,24 @@ import java.math.BigInteger;
  */
 public class DoubleNumberAtom extends NumberAtom {
 
-    private double value;
+    private final double value;
 
-    public DoubleNumberAtom(double value) {
+    /**
+     * Creates new Double Atom.
+     *
+     * @param value Value of the new atom.
+     */
+    public DoubleNumberAtom(final double value) {
         this.value = value;
     }
 
-    public DoubleNumberAtom(Double value, SourceInfo sourceInfo) {
+    /**
+     * Creates new Double Atom.
+     *
+     * @param value      Value of the new atom.
+     * @param sourceInfo Source information of the new atom.
+     */
+    public DoubleNumberAtom(final Double value, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
     }
@@ -25,6 +36,7 @@ public class DoubleNumberAtom extends NumberAtom {
         return value;
     }
 
+    @SuppressWarnings("all")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,7 +51,7 @@ public class DoubleNumberAtom extends NumberAtom {
 
     @Override
     public int hashCode() {
-        long temp = Double.doubleToLongBits(value);
+        final long temp = Double.doubleToLongBits(value);
         return (int) (temp ^ (temp >>> 32));
     }
 
@@ -59,27 +71,27 @@ public class DoubleNumberAtom extends NumberAtom {
     }
 
     @Override
-    public NumberAtom<?> add(NumberAtom other) {
+    public NumberAtom<?> add(final NumberAtom other) {
         return new DoubleNumberAtom(value + (Double) expandOther(other).getValue());
     }
 
     @Override
-    public NumberAtom<?> sub(NumberAtom other) {
+    public NumberAtom<?> sub(final NumberAtom other) {
         return new DoubleNumberAtom(value - (Double) expandOther(other).getValue());
     }
 
     @Override
-    public NumberAtom<?> div(NumberAtom other) {
+    public NumberAtom<?> div(final NumberAtom other) {
         return new DoubleNumberAtom(value / (Double) expandOther(other).getValue());
     }
 
     @Override
-    public NumberAtom<?> mod(NumberAtom other) {
+    public NumberAtom<?> mod(final NumberAtom other) {
         throw new net.ninjacat.semblance.errors.runtime.UnsupportedOperationException("%", getSourceInfo());
     }
 
     @Override
-    public NumberAtom<?> mul(NumberAtom other) {
+    public NumberAtom<?> mul(final NumberAtom other) {
         return new DoubleNumberAtom(value * (Double) expandOther(other).getValue());
     }
 
@@ -89,7 +101,7 @@ public class DoubleNumberAtom extends NumberAtom {
     }
 
     @Override
-    protected NumberAtom expandIfNeeded(NumberAtom other) {
+    protected NumberAtom expandIfNeeded(final NumberAtom other) {
         return this;
     }
 
@@ -108,8 +120,8 @@ public class DoubleNumberAtom extends NumberAtom {
         return this;
     }
 
-    private NumberAtom expandOther(NumberAtom other) {
-        if (other.getNumberType() != SemblanceNumberType.DOUBLE) {
+    private NumberAtom expandOther(final NumberAtom other) {
+        if (SemblanceNumberType.DOUBLE != other.getNumberType()) {
             return other.expandIfNeeded(this);
         } else {
             return other;

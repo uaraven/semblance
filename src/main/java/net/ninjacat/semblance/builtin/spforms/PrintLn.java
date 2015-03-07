@@ -5,7 +5,7 @@ import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.NilCollection;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.semblance.evaluator.DefaultContext;
+import net.ninjacat.semblance.evaluator.LocalContext;
 
 import static net.ninjacat.semblance.utils.Values.list;
 import static net.ninjacat.semblance.utils.Values.symbol;
@@ -25,7 +25,7 @@ public class PrintLn extends SpecialForm {
 
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
-        final Context localContext = DefaultContext.namelessChildContext(context);
+        final Context localContext = LocalContext.namelessChildContext(context);
         final LispCollection evaluated = localContext.evaluateList(parameters);
 
         for (final LispValue value : evaluated) {

@@ -3,19 +3,23 @@ package net.ninjacat.semblance.data.callables;
 import net.ninjacat.semblance.data.SymbolAtom;
 
 /**
+ * Base class for all parameters.
+ *
  * Created on 28/02/15.
  */
-public abstract class BaseParameter implements Parameter {
+abstract class BaseParameter implements Parameter {
     private final SymbolAtom name;
 
-    public BaseParameter(SymbolAtom name) {
+    BaseParameter(final SymbolAtom name) {
         this.name = name;
     }
 
+    @Override
     public SymbolAtom getName() {
         return name;
     }
 
+    @SuppressWarnings("all")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

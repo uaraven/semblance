@@ -14,11 +14,11 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
 
     private final SourceInfo sourceInfo;
 
-    public LispCollection() {
+    LispCollection() {
         sourceInfo = SourceInfo.UNKNOWN;
     }
 
-    public LispCollection(final SourceInfo sourceInfo) {
+    LispCollection(final SourceInfo sourceInfo) {
         this.sourceInfo = sourceInfo;
     }
 
@@ -60,7 +60,7 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
 
     public abstract <T extends LispCollection> T createSame(LispCollection values);
 
-    protected static enum ValueToString implements Func<String, LispValue> {
+    protected enum ValueToString implements Func<String, LispValue> {
         REPR;
 
         @Override

@@ -80,10 +80,11 @@ class ParserIterator implements Iterator<LispValue> {
 
     private List<LispValue> parseCollection() {
         final List<LispValue> collection = new LinkedList<>();
+        //noinspection LoopConditionNotUpdatedInsideLoop
         while (tokens.hasNext()) {
             final LispValue value = parseInternal();
             if (SemblanceType.SPECIAL == value.getType()) {
-                if (SpecialValue.LIST_END == value) {
+                if (SpecialValue.LIST_END.equals(value)) {
                     return collection;
                 } else {
                     break;

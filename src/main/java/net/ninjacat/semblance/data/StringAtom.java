@@ -33,6 +33,7 @@ public class StringAtom extends Atom {
         return SemblanceType.STRING;
     }
 
+    @SuppressWarnings("all")
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

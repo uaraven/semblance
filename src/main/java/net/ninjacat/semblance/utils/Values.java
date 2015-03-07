@@ -123,15 +123,15 @@ public final class Values {
     }
 
     public static boolean isList(final LispValue value) {
-        return value.getType() == SemblanceType.LIST;
+        return SemblanceType.LIST == value.getType();
     }
 
     public static boolean isSymbol(final LispValue value) {
-        return value.getType() == SemblanceType.SYMBOL;
+        return SemblanceType.SYMBOL == value.getType();
     }
 
     public static boolean isCallable(final LispValue value) {
-        return value.getType() == SemblanceType.FUNCTION || value.getType() == SemblanceType.MACRO;
+        return SemblanceType.FUNCTION == value.getType() || SemblanceType.MACRO == value.getType();
     }
 
     public static boolean isAtom(final LispValue value) {
@@ -155,7 +155,7 @@ public final class Values {
     }
 
     private static boolean isNumber(final LispValue value) {
-        return value.getType() == SemblanceType.FLOATIG_POINT || value.getType() == SemblanceType.INTEGER;
+        return SemblanceType.FLOATIG_POINT == value.getType() || SemblanceType.INTEGER == value.getType();
     }
 
     private enum FromJavaConverter implements Func<LispValue, Object> {
@@ -167,7 +167,10 @@ public final class Values {
         }
     }
 
-    public static enum ToJavaConverter implements Func<Object, LispValue> {
+    /**
+     * Converts LispValue to Java object, if LispValue supports {@link JavaConvertible} interface.
+     */
+    public enum ToJavaConverter implements Func<Object, LispValue> {
         INSTANCE;
 
         @Override

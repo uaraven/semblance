@@ -33,14 +33,25 @@ public class SList extends LispCollection implements Callable {
 
     private static final SymbolAtom NAME = new SymbolAtom("--list-get");
 
-    private List<LispValue> collection;
+    private final List<LispValue> collection;
 
-    public SList(Collection<LispValue> collection, SourceInfo sourceInfo) {
+    /**
+     * Creates new list.
+     *
+     * @param collection Collection to be wrapped in the list.
+     * @param sourceInfo Source code information.
+     */
+    public SList(final Collection<LispValue> collection, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.collection = unmodifiableList(new LinkedList<>(collection));
     }
 
-    public SList(Collection<LispValue> collection) {
+    /**
+     * Creates new list.
+     *
+     * @param collection Collection to be wrapped in the list.
+     */
+    public SList(final Collection<LispValue> collection) {
         this.collection = unmodifiableList(new LinkedList<>(collection));
     }
 
@@ -48,7 +59,7 @@ public class SList extends LispCollection implements Callable {
     public List<?> asJavaObject() {
         try {
             return Iter.of(collection).map(Values.ToJavaConverter.INSTANCE).toList();
-        } catch (IllegalArgumentException ex) {
+        } catch (final IllegalArgumentException ex) {
             throw new CollectionException("Cannot create Java representation", getSourceInfo(), ex);
         }
     }
@@ -69,20 +80,26 @@ public class SList extends LispCollection implements Callable {
     }
 
     @Override
-    public LispValue apply(Context context, LispCollection parameters) {
+    public LispValue apply(final Context context, final LispCollection parameters) {
         if (parameters.isNil()) {
             throw new ValueExpectedException(getSourceInfo());
         } else {
-            long index = Values.getLongValue(parameters.head());
+            final long index = Values.getLongValue(parameters.head());
             try {
                 return collection.get((int) index);
-            } catch (IndexOutOfBoundsException ex) {
+            } catch (final IndexOutOfBoundsException ex) {
                 throw new CollectionIndexOutOfBoundsException(index, collection.size(), parameters.getSourceInfo(), ex);
             }
         }
     }
 
-    public LispValue get(int index) {
+    /**
+     * Get value by its index.
+     *
+     * @param index Index of the element.
+     * @return Value of the list element.
+     */
+    public LispValue get(final int index) {
         return collection.get(index);
     }
 
@@ -99,7 +116,7 @@ public class SList extends LispCollection implements Callable {
     public LispCollection tail() {
         if (isNil()) {
             throw new CollectionException("Cannot get tail of empty list", getSourceInfo());
-        } else if (collection.size() == 1) {
+        } else if (1 == collection.size()) {
             return new NilCollection(getSourceInfo());
         } else {
             return new SList(collection.subList(1, collection.size()), getSourceInfo());
@@ -116,8 +133,9 @@ public class SList extends LispCollection implements Callable {
         return collection.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public SList createSame(LispCollection values) {
+    public SList createSame(final LispCollection values) {
         return new SList(values.getCollection(), getSourceInfo());
     }
 
@@ -126,15 +144,16 @@ public class SList extends LispCollection implements Callable {
         return Collections.unmodifiableList(collection);
     }
 
+    @SuppressWarnings("all")
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
 
         if (isNil() && Values.isNilCollection(o)) return true;
 
-        if (o == null || getClass() != o.getClass()) return false;
+        if (null == o || getClass() != o.getClass()) return false;
 
-        SList list = (SList) o;
+        final SList list = (SList) o;
 
         if (!collection.equals(list.collection)) return false;
 

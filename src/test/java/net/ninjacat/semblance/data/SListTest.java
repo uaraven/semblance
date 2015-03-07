@@ -16,6 +16,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
+@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "DuplicateStringLiteralInspection"})
 public class SListTest {
 
     private Context context;
@@ -27,46 +28,46 @@ public class SListTest {
 
     @Test
     public void shouldReturnCorrectLength() throws Exception {
-        SList l = smartList(1L, 2L, 3L);
+        final SList list = smartList(1L, 2L, 3L);
 
-        assertThat("length of list should be equal to 3", l.length(), is(3L));
+        assertThat("length of list should be equal to 3", list.length(), is(3L));
     }
 
     @Test
     public void lengthShouldBeZeroWhenListIsEmpty() throws Exception {
-        LispCollection l = smartList();
+        final LispCollection list = smartList();
 
-        assertThat("length of list should be equal to 0", l.length(), is(0L));
+        assertThat("length of list should be equal to 0", list.length(), is(0L));
     }
 
     @Test
     public void isNilShouldBeFalseWhenListIsNotEmpty() throws Exception {
-        SList l = smartList(1L, 2L, 3L);
+        final SList list = smartList(1L, 2L, 3L);
 
-        assertThat("isNil() should be false", l.isNil(), is(false));
+        assertThat("isNil() should be false", list.isNil(), is(false));
     }
 
     @Test
     public void isNilShouldBeTrueWhenListIsEmpty() throws Exception {
-        SList l = smartList();
+        final SList list = smartList();
 
-        assertThat("isNil() should be false", l.isNil(), is(true));
+        assertThat("isNil() should be false", list.isNil(), is(true));
     }
 
     @Test
     public void headShouldReturnTheFirstElement() throws Exception {
-        SList l = smartList(1L, 2L, 3L);
+        final SList list = smartList(1L, 2L, 3L);
 
-        LispValue head = l.head();
+        final LispValue head = list.head();
 
         assertThat("head should return the first element", head, is(number(1L)));
     }
 
     @Test
     public void tailShouldReturnAllButTheFirstElement() throws Exception {
-        SList l = smartList(1L, 2L, 3L);
+        final SList list = smartList(1L, 2L, 3L);
 
-        LispCollection tail = l.tail();
+        final LispCollection tail = list.tail();
 
         assertThat("tail should return all but the first element", tail, equalTo((LispCollection) smartList(2L, 3L)));
     }
@@ -81,25 +82,25 @@ public class SListTest {
         smartList().tail();
     }
 
-    @Test()
+    @Test
     public void tailShouldReturnNilOnOneElementVector() throws Exception {
-        LispCollection tail = smartList(1L).tail();
+        final LispCollection tail = smartList(1L).tail();
 
         assertThat("tail should return nil on 1-element list", tail.isNil(), is(true));
     }
 
     @Test
     public void listTypeShouldBeList() throws Exception {
-        SemblanceType type = smartList(1L).getType();
+        final SemblanceType type = smartList(1L).getType();
 
         assertThat("list type should be LIST", type, is(SemblanceType.LIST));
     }
 
     @Test
     public void listShouldConvertToJavaList() throws Exception {
-        SList slist = smartList(1L, 2L);
+        final SList slist = smartList(1L, 2L);
 
-        List<?> list = slist.asJavaObject();
+        final List<?> list = slist.asJavaObject();
 
         assertThat("Number of elements in Java list should match number of elements in slist", (long) list.size(), is(slist.length()));
         assertThat("First element in Java list should match same element in slist",
@@ -110,70 +111,70 @@ public class SListTest {
 
     @Test
     public void shouldGenerateCorrectRepr() throws Exception {
-        SList list = smartList(1L, 2L);
+        final SList list = smartList(1L, 2L);
 
         assertThat("repr() should return correct string representation", list.repr(), is("(1, 2)"));
     }
 
     @Test
     public void listAsFunctionShouldReturnValueByIndex() throws Exception {
-        SList list = smartList(1L, 2L);
+        final SList list = smartList(1L, 2L);
 
-        LispValue value = list.apply(context, smartList(1L));
+        final LispValue value = list.apply(context, smartList(1L));
 
         assertThat("list.apply should return value by index", value, is(atom(2L)));
     }
 
     @Test(expected = CollectionIndexOutOfBoundsException.class)
     public void listAsFunctionShouldFailWhenIndexIsOutOfBounds() throws Exception {
-        SList list = smartList(1L, 2L);
+        final SList list = smartList(1L, 2L);
 
         list.apply(context, smartList(3L));
     }
 
     @Test(expected = ValueExpectedException.class)
     public void listAsFunctionShouldFailWhenNoParameters() throws Exception {
-        SList list = smartList(1L, 2L);
+        final SList list = smartList(1L, 2L);
 
         list.apply(context, new NilCollection());
     }
 
     @Test
     public void similarListsShouldBeEqual() throws Exception {
-        SList list1 = smartList(1L, 2L);
-        SList list2 = smartList(1L, 2L);
+        final SList list1 = smartList(1L, 2L);
+        final SList list2 = smartList(1L, 2L);
 
         assertThat("Similar lists should be equal", list1, equalTo(list2));
     }
 
     @Test
     public void differentSizeListsShouldNotBeEqual() throws Exception {
-        SList list1 = smartList(1L, 2L);
-        SList list2 = smartList(1L, 2L, 3L);
+        final SList list1 = smartList(1L, 2L);
+        final SList list2 = smartList(1L, 2L, 3L);
 
         assertThat("Different size lists should not be equal", list1, not(equalTo(list2)));
     }
 
     @Test
     public void differentValueListShouldNotBeEqual() throws Exception {
-        SList list1 = smartList(1L, 2L);
-        SList list2 = smartList(1L, 3L);
+        final SList list1 = smartList(1L, 2L);
+        final SList list2 = smartList(1L, 3L);
 
         assertThat("Different value lists should not be equal", list1, not(equalTo(list2)));
     }
 
     @Test
     public void nonEmptyListShouldNotBeEqualtoNil() throws Exception {
-        LispCollection list1 = smartList(1L, 2L);
-        LispCollection list2 = new NilCollection();
+        final LispCollection list1 = smartList(1L, 2L);
+        final LispCollection list2 = new NilCollection();
 
         assertThat("Non-empty list should not be equal to NIL", list2, not(equalTo(list1)));
     }
 
     @Test
     public void emptyListShouldBeEqualtoNil() throws Exception {
-        LispCollection list1 = smartList();
-        LispCollection list2 = new NilCollection();
+        final LispCollection list1 = smartList();
+        final LispCollection list2 = new NilCollection();
 
         assertThat("Empty list should be equal to NIL", list2, equalTo(list1));
     }

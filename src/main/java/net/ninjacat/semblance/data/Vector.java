@@ -31,16 +31,26 @@ import static java.util.Collections.unmodifiableList;
  */
 public class Vector extends LispCollection implements Callable {
 
-    private static final SymbolAtom NAME = new SymbolAtom("--vector-get");
+    private final List<LispValue> collection;
 
-    private List<LispValue> collection;
+    /**
+     * Creates new vector.
+     *
+     * @param collection Collection to be wrapped in the vector.
+     * @param sourceInfo Source code information.
+     */
 
-    public Vector(Collection<LispValue> collection, SourceInfo sourceInfo) {
+    public Vector(final Collection<LispValue> collection, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.collection = unmodifiableList(new ArrayList<>(collection));
     }
 
-    public Vector(Collection<LispValue> collection) {
+    /**
+     * Creates new vector.
+     *
+     * @param collection Collection to be wrapped in the vector.
+     */
+    public Vector(final Collection<LispValue> collection) {
         this.collection = unmodifiableList(new ArrayList<>(collection));
     }
 
@@ -48,7 +58,7 @@ public class Vector extends LispCollection implements Callable {
     public List<?> asJavaObject() {
         try {
             return Iter.of(collection).map(Values.ToJavaConverter.INSTANCE).toList();
-        } catch (IllegalArgumentException ex) {
+        } catch (final IllegalArgumentException ex) {
             throw new CollectionException("Cannot create Java representation", getSourceInfo(), ex);
         }
     }
@@ -64,21 +74,27 @@ public class Vector extends LispCollection implements Callable {
     }
 
     @Override
-    public LispValue apply(Context context, LispCollection parameters) {
+    public LispValue apply(final Context context, final LispCollection parameters) {
         if (parameters.isNil()) {
             throw new ValueExpectedException(getSourceInfo());
         } else {
-            LispValue value = context.evaluate(parameters.head());
-            long index = Values.getLongValue(value);
+            final LispValue value = context.evaluate(parameters.head());
+            final long index = Values.getLongValue(value);
             try {
                 return collection.get((int) index);
-            } catch (IndexOutOfBoundsException ex) {
+            } catch (final IndexOutOfBoundsException ex) {
                 throw new CollectionIndexOutOfBoundsException(index, collection.size(), parameters.getSourceInfo(), ex);
             }
         }
     }
 
-    public LispValue get(int index) {
+    /**
+     * Gets vector element by index.
+     *
+     * @param index Index of the element.
+     * @return Value of the element at the index.
+     */
+    public LispValue get(final int index) {
         return collection.get(index);
     }
 
@@ -95,7 +111,7 @@ public class Vector extends LispCollection implements Callable {
     public LispCollection tail() {
         if (isNil()) {
             throw new CollectionException("Cannot get tail of empty vector", getSourceInfo());
-        } else if (collection.size() == 1) {
+        } else if (1 == collection.size()) {
             return new NilCollection(getSourceInfo());
         } else {
             return new Vector(collection.subList(1, collection.size()), getSourceInfo());
@@ -112,8 +128,9 @@ public class Vector extends LispCollection implements Callable {
         return collection.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Vector createSame(LispCollection values) {
+    public Vector createSame(final LispCollection values) {
         return new Vector(values.getCollection(), getSourceInfo());
     }
 
@@ -122,15 +139,16 @@ public class Vector extends LispCollection implements Callable {
         return Collections.unmodifiableList(collection);
     }
 
+    @SuppressWarnings("all")
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
 
         if (isNil() && Values.isNilCollection(o)) return true;
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        Vector vector = (Vector) o;
+        final Vector vector = (Vector) o;
 
         if (!collection.equals(vector.collection)) return false;
 

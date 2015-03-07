@@ -3,25 +3,23 @@ package net.ninjacat.semblance.builtin.spforms;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.semblance.utils.Values;
 import org.junit.Test;
 
-import static net.ninjacat.semblance.utils.Values.number;
-import static net.ninjacat.semblance.utils.Values.symbol;
+import static net.ninjacat.semblance.utils.Values.*;
 import static org.mockito.Mockito.*;
 
 public class VarTest {
 
     @Test
     public void shouldBindValueToSymbolInContext() throws Exception {
-        Context context = mock(Context.class);
-        SymbolAtom name = symbol("x");
-        LispValue value = number(42);
+        final Context context = mock(Context.class);
+        final SymbolAtom name = symbol("x");
+        final LispValue value = number(42);
         when(context.evaluate(value)).thenReturn(value);
 
-        Var var = new Var();
+        final Var varExpression = new Var();
 
-        var.apply(context, Values.list(name, value));
+        varExpression.apply(context, list(list(name, value)));
 
         verify(context).bind(name, value);
     }

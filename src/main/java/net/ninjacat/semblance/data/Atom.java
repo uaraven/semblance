@@ -13,11 +13,11 @@ public abstract class Atom implements LispValue, DebugInfoProvider, JavaConverti
 
     private final SourceInfo sourceInfo;
 
-    public Atom() {
+    Atom() {
         sourceInfo = SourceInfo.UNKNOWN;
     }
 
-    public Atom(final SourceInfo sourceInfo) {
+    Atom(final SourceInfo sourceInfo) {
         this.sourceInfo = sourceInfo;
     }
 

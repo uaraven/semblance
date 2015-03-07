@@ -30,61 +30,61 @@ public class Token {
     private final TokenType type;
     private final SourceInfo position;
 
-    public Token(String value, TokenType type, SourceInfo sourceInfo) {
+    public Token(final String value, final TokenType type, final SourceInfo sourceInfo) {
         this.value = value;
         this.type = type;
-        this.position = sourceInfo;
+        position = sourceInfo;
     }
 
-    public static Token eof(SourceInfo position) {
+    public static Token eof(final SourceInfo position) {
         return new Token("", TokenType.Eof, position);
     }
 
-    public static Token whitespace(SourceInfo position) {
+    public static Token whitespace(final SourceInfo position) {
         return new Token("", TokenType.Whitespace, position);
     }
 
-    public static Token string(String sval, SourceInfo sourceInfo) {
+    public static Token string(final String sval, final SourceInfo sourceInfo) {
         return new Token(sval, TokenType.String, sourceInfo);
     }
 
-    public static Token openParen(SourceInfo sourceInfo) {
+    public static Token openParen(final SourceInfo sourceInfo) {
         return new Token("(", TokenType.OpenParens, sourceInfo);
     }
 
-    public static Token closeParen(SourceInfo sourceInfo) {
+    public static Token closeParen(final SourceInfo sourceInfo) {
         return new Token(")", TokenType.CloseParens, sourceInfo);
     }
 
-    public static Token openBracket(SourceInfo sourceInfo) {
+    public static Token openBracket(final SourceInfo sourceInfo) {
         return new Token("[", TokenType.OpenBracket, sourceInfo);
     }
 
-    public static Token closeBracket(SourceInfo sourceInfo) {
+    public static Token closeBracket(final SourceInfo sourceInfo) {
         return new Token("]", TokenType.CloseBracket, sourceInfo);
     }
 
-    public static Token carriageReturn(SourceInfo sourceInfo) {
+    public static Token carriageReturn(final SourceInfo sourceInfo) {
         return new Token("\n", TokenType.CarriageReturn, sourceInfo);
     }
 
-    public static Token special(char ttype, SourceInfo sourceInfo) {
+    public static Token special(final char ttype, final SourceInfo sourceInfo) {
         return new Token(Character.toString(ttype), TokenType.Special, sourceInfo);
     }
 
-    public static Token symbol(String sval, SourceInfo sourceInfo) {
+    public static Token symbol(final String sval, final SourceInfo sourceInfo) {
         return new Token(sval, Token.TokenType.Symbol, sourceInfo);
     }
 
-    public static Token doubleToken(double nval, SourceInfo sourceInfo) {
+    public static Token doubleToken(final double nval, final SourceInfo sourceInfo) {
         return new Token(String.valueOf(nval), Token.TokenType.Double, sourceInfo);
     }
 
-    public static Token doubleToken(String nval, SourceInfo sourceInfo) {
+    public static Token doubleToken(final String nval, final SourceInfo sourceInfo) {
         return new Token(nval, Token.TokenType.Double, sourceInfo);
     }
 
-    public static Token integer(String val, SourceInfo sourceInfo) {
+    public static Token integer(final String val, final SourceInfo sourceInfo) {
         return new Token(val, Token.TokenType.Integer, sourceInfo);
     }
 
@@ -105,6 +105,7 @@ public class Token {
         return '"' + value + "\" (" + type.toString() + ')';
     }
 
+    @SuppressWarnings("all")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -120,12 +121,15 @@ public class Token {
 
     @Override
     public int hashCode() {
-        int result = value != null ? value.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
+        int result = null != value ? value.hashCode() : 0;
+        result = 31 * result + (null != type ? type.hashCode() : 0);
         return result;
     }
 
-    public static enum TokenType {
+    /**
+     * Enumeration of supported token types.
+     */
+    public enum TokenType {
         Integer,
         Double,
         String,

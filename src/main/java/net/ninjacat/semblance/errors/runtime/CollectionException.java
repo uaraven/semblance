@@ -6,11 +6,25 @@ import net.ninjacat.semblance.debug.SourceInfo;
  * Exception thrown when invalid access to a collection happens
  */
 public class CollectionException extends SemblanceRuntimeException {
-    public CollectionException(String message, SourceInfo sourceInfo) {
+    /**
+     * Creates new exception.
+     *
+     * @param message    Exception message.
+     * @param sourceInfo Source code information.
+     */
+    public CollectionException(final String message, final SourceInfo sourceInfo) {
         super(message, sourceInfo);
     }
 
-    public CollectionException(String s, SourceInfo sourceInfo, IllegalArgumentException ex) {
-        super(s, sourceInfo, ex);
+    /**
+     * Creates new exception.
+     *
+     * @param message    Exception message.
+     * @param sourceInfo Source code information.
+     * @param throwable  Cause of the exception.
+     */
+    public CollectionException(final String message, final SourceInfo sourceInfo,
+                               final IllegalArgumentException throwable) {
+        super(message, sourceInfo, throwable);
     }
 }

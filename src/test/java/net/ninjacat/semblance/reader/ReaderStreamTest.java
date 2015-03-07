@@ -8,13 +8,14 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "DuplicateStringLiteralInspection", "InstanceMethodNamingConvention"})
 public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeSymbol() throws Exception {
-        ReaderStream stream = ReaderStream.readString("symbol");
+        final ReaderStream stream = ReaderStream.readString("symbol");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be symbol", tokens.get(0).getType(), is(Token.TokenType.Symbol));
@@ -23,9 +24,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeNumber() throws Exception {
-        ReaderStream stream = ReaderStream.readString("42");
+        final ReaderStream stream = ReaderStream.readString("42");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be integer", tokens.get(0).getType(), is(Token.TokenType.Integer));
@@ -34,9 +35,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeNegativeNumber() throws Exception {
-        ReaderStream stream = ReaderStream.readString("-42");
+        final ReaderStream stream = ReaderStream.readString("-42");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be integer", tokens.get(0).getType(), is(Token.TokenType.Integer));
@@ -45,9 +46,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeDouble() throws Exception {
-        ReaderStream stream = ReaderStream.readString("42.42");
+        final ReaderStream stream = ReaderStream.readString("42.42");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be double", tokens.get(0).getType(), is(Token.TokenType.Double));
@@ -56,9 +57,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeNegativeDouble() throws Exception {
-        ReaderStream stream = ReaderStream.readString("-42.42");
+        final ReaderStream stream = ReaderStream.readString("-42.42");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be double", tokens.get(0).getType(), is(Token.TokenType.Double));
@@ -67,9 +68,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeDoubleEvenWhenFractionalPartIsZero() throws Exception {
-        ReaderStream stream = ReaderStream.readString("42.0");
+        final ReaderStream stream = ReaderStream.readString("42.0");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be double", tokens.get(0).getType(), is(Token.TokenType.Double));
@@ -78,9 +79,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeNegativeDoubleEvenWhenFractionalPartIsZero() throws Exception {
-        ReaderStream stream = ReaderStream.readString("-42.0");
+        final ReaderStream stream = ReaderStream.readString("-42.0");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be double", tokens.get(0).getType(), is(Token.TokenType.Double));
@@ -89,9 +90,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeStringWithQuote() throws Exception {
-        ReaderStream stream = ReaderStream.readString("\"str\\\"ing\"");
+        final ReaderStream stream = ReaderStream.readString("\"str\\\"ing\"");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be string", tokens.get(0).getType(), is(Token.TokenType.String));
@@ -100,9 +101,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeStringWithEscapes() throws Exception {
-        ReaderStream stream = ReaderStream.readString("\"s\\t\\r\\\"i\\n\\g\"");
+        final ReaderStream stream = ReaderStream.readString("\"s\\t\\r\\\"i\\n\\g\"");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be string", tokens.get(0).getType(), is(Token.TokenType.String));
@@ -112,9 +113,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeString() throws Exception {
-        ReaderStream stream = ReaderStream.readString("\"string\"");
+        final ReaderStream stream = ReaderStream.readString("\"string\"");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be string", tokens.get(0).getType(), is(Token.TokenType.String));
@@ -123,16 +124,16 @@ public class ReaderStreamTest {
 
     @Test(expected = UnterminatedStringException.class)
     public void shouldFailOnUnterminatedString() throws Exception {
-        ReaderStream stream = ReaderStream.readString("\"string string2");
+        final ReaderStream stream = ReaderStream.readString("\"string string2");
 
         stream.tokenize();
     }
 
     @Test
     public void shouldTokenizeOpenParens() throws Exception {
-        ReaderStream stream = ReaderStream.readString("(");
+        final ReaderStream stream = ReaderStream.readString("(");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be OpenParens", tokens.get(0).getType(), is(Token.TokenType.OpenParens));
@@ -140,9 +141,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeCloseParens() throws Exception {
-        ReaderStream stream = ReaderStream.readString(")");
+        final ReaderStream stream = ReaderStream.readString(")");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be CloseParens", tokens.get(0).getType(), is(Token.TokenType.CloseParens));
@@ -150,10 +151,10 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeSpecialChars() throws Exception {
-        ReaderStream stream = ReaderStream.readString("'#");
+        final ReaderStream stream = ReaderStream.readString("'#");
         stream.registerSpecial('\'');
         stream.registerSpecial('#');
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have two tokens", tokens.size(), is(2));
         assertThat("Token type should be special", tokens.get(0).getType(), is(Token.TokenType.Special));
@@ -164,9 +165,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeOneElementList() throws Exception {
-        ReaderStream stream = ReaderStream.readString("( symbol )");
+        final ReaderStream stream = ReaderStream.readString("( symbol )");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have 3 tokens", tokens.size(), is(3));
         assertThat("Token type should be OpenParens", tokens.get(0).getType(), is(Token.TokenType.OpenParens));
@@ -176,9 +177,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeSymbolWithHyphen() throws Exception {
-        ReaderStream stream = ReaderStream.readString(":symbol-two");
+        final ReaderStream stream = ReaderStream.readString(":symbol-two");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have 1 token", tokens.size(), is(1));
         assertThat("Token type should be symbol", tokens.get(0).getType(), is(Token.TokenType.Symbol));
@@ -186,9 +187,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeMultiElementList() throws Exception {
-        ReaderStream stream = ReaderStream.readString("( symbol \"String\" 15)");
+        final ReaderStream stream = ReaderStream.readString("( symbol \"String\" 15)");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have 5 tokens", tokens.size(), is(5));
         assertThat("Token type should be OpenParens", tokens.get(0).getType(), is(Token.TokenType.OpenParens));
@@ -200,9 +201,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeMultiElementList2() throws Exception {
-        ReaderStream stream = ReaderStream.readString("( symbol \"String\" 15 -33.2)");
+        final ReaderStream stream = ReaderStream.readString("( symbol \"String\" 15 -33.2)");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have 6 tokens", tokens.size(), is(6));
         assertThat("Token type should be OpenParens", tokens.get(0).getType(), is(Token.TokenType.OpenParens));
@@ -215,9 +216,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeNestedList() throws Exception {
-        ReaderStream stream = ReaderStream.readString("( symbol (\"String\") -33.2)");
+        final ReaderStream stream = ReaderStream.readString("( symbol (\"String\") -33.2)");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have 7 tokens", tokens.size(), is(7));
         assertThat("Token type should be OpenParens", tokens.get(0).getType(), is(Token.TokenType.OpenParens));
@@ -231,9 +232,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldTokenizeVector() throws Exception {
-        ReaderStream stream = ReaderStream.readString("[1 2]");
+        final ReaderStream stream = ReaderStream.readString("[1 2]");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have 4 tokens", tokens.size(), is(4));
         assertThat("Token type should be OpenBracket", tokens.get(0).getType(), is(Token.TokenType.OpenBracket));
@@ -244,10 +245,10 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldParseReaderMacro() throws Exception {
-        ReaderStream stream = ReaderStream.readString("'symbol");
+        final ReaderStream stream = ReaderStream.readString("'symbol");
         stream.registerSpecial('\'');
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
         assertThat("Should have 2 tokens", tokens.size(), is(2));
         assertThat("Token type should be special", tokens.get(0).getType(), is(Token.TokenType.Special));
         assertThat("Token type should be symbol", tokens.get(1).getType(), is(Token.TokenType.Symbol));
@@ -256,10 +257,10 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldParseReaderMacroBeforeList() throws Exception {
-        ReaderStream stream = ReaderStream.readString("'()");
+        final ReaderStream stream = ReaderStream.readString("'()");
         stream.registerSpecial('\'');
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
         assertThat("Should have 3 tokens", tokens.size(), is(3));
         assertThat("Token type should be special", tokens.get(0).getType(), is(Token.TokenType.Special));
         assertThat("Token type should be OpenParen", tokens.get(1).getType(), is(Token.TokenType.OpenParens));
@@ -269,9 +270,9 @@ public class ReaderStreamTest {
 
     @Test
     public void shouldParseArithmeticCall() throws Exception {
-        ReaderStream stream = ReaderStream.readString("(+ 2 3)");
+        final ReaderStream stream = ReaderStream.readString("(+ 2 3)");
 
-        List<Token> tokens = stream.tokenize();
+        final List<Token> tokens = stream.tokenize();
         assertThat("Should have 4 tokens", tokens.size(), is(5));
         assertThat("Token type should be OpenParen", tokens.get(0).getType(), is(Token.TokenType.OpenParens));
         assertThat("Token type should be Symbol", tokens.get(1).getType(), is(Token.TokenType.Symbol));

@@ -31,11 +31,12 @@ public class NilCollection extends SList {
         }
     };
 
-    public NilCollection() {
+
+    NilCollection() {
         super(Collections.<LispValue>emptyList());
     }
 
-    public NilCollection(SourceInfo sourceInfo) {
+    NilCollection(final SourceInfo sourceInfo) {
         super(Collections.<LispValue>emptyList(), sourceInfo);
     }
 
@@ -60,7 +61,7 @@ public class NilCollection extends SList {
     }
 
     @Override
-    public SList createSame(LispCollection values) {
+    public SList createSame(final LispCollection values) {
         return NilCollection.INSTANCE;
     }
 
@@ -85,11 +86,11 @@ public class NilCollection extends SList {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (!(obj instanceof LispCollection)) {
             return false;
         }
-        LispCollection other = (LispCollection) obj;
+        final LispCollection other = (LispCollection) obj;
         return other.isNil();
     }
 

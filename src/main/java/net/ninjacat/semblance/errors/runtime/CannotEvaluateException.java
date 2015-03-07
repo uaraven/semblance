@@ -8,7 +8,7 @@ import net.ninjacat.semblance.utils.Values;
  */
 public class CannotEvaluateException extends SemblanceRuntimeException {
 
-    public CannotEvaluateException(LispValue expression) {
+    public CannotEvaluateException(final LispValue expression) {
         super(String.format("Cannot evaluate expression '%s'", expression), Values.getSourceInfo(expression));
     }
 }

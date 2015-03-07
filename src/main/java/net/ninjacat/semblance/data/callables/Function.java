@@ -12,9 +12,8 @@ public class Function implements Callable {
 
     private final SymbolAtom name;
 
-    public Function(SList definition) {
-        this.name = asSymbol(definition.head());
-//        this.formalParameters = parseFormalParameters(definition.tail());
+    public Function(final SList definition) {
+        name = asSymbol(definition.head());
     }
 
     @Override
@@ -23,7 +22,7 @@ public class Function implements Callable {
     }
 
     @Override
-    public LispValue apply(Context context, LispCollection parameters) {
+    public LispValue apply(final Context context, final LispCollection parameters) {
         return null;
     }
 
@@ -37,7 +36,7 @@ public class Function implements Callable {
         return null;
     }
 
-    private void parseFormalParameters(SList definition) {
+    private void parseFormalParameters(final SList definition) {
 
     }
 }

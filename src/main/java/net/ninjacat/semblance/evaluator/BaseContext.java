@@ -15,29 +15,17 @@ import static net.ninjacat.semblance.utils.Values.*;
 /**
  * Default context implementation. Supports parent contexts
  */
-public class DefaultContext implements Context {
+abstract class BaseContext implements Context {
 
     private final String name;
     private final Context parent;
 
     private final Map<SymbolAtom, LispValue> bindings;
 
-    protected DefaultContext(final String name, final Context parent) {
+    BaseContext(final String name, final Context parent) {
         this.name = name;
         this.parent = parent;
         bindings = new ConcurrentHashMap<>();
-    }
-
-    public static Context namelessChildContext(final Context parent) {
-        return new DefaultContext("", parent);
-    }
-
-    public static Context namedChildContext(final String name, final Context parent) {
-        return new DefaultContext(name, parent);
-    }
-
-    public static Context newContext() {
-        return new DefaultContext("", null);
     }
 
     @Override
@@ -46,19 +34,19 @@ public class DefaultContext implements Context {
     }
 
     @Override
-    public Option<LispValue> findSymbol(final SymbolAtom name) {
-        if (bindings.containsKey(name)) {
-            return Option.of(bindings.get(name));
+    public Option<LispValue> findSymbol(final SymbolAtom symbolName) {
+        if (bindings.containsKey(symbolName)) {
+            return Option.of(bindings.get(symbolName));
         } else if (null != parent) {
-            return parent.findSymbol(name);
+            return parent.findSymbol(symbolName);
         } else {
             return Option.absent();
         }
     }
 
     @Override
-    public void bind(final SymbolAtom name, final LispValue value) {
-        bindings.put(name, value);
+    public void bind(final SymbolAtom symbolName, final LispValue value) {
+        bindings.put(symbolName, value);
     }
 
     @Override
@@ -100,6 +88,14 @@ public class DefaultContext implements Context {
         return last;
     }
 
+    /**
+     * Creates a named child context.
+     *
+     * @param name The name of child context.
+     * @return Newly created context.
+     */
+    protected abstract Context createChild(String name);
+
     private LispValue evaluateFunction(final SList function) {
         final LispValue head = function.head();
         if (!isSymbol(head)) {
@@ -111,6 +107,7 @@ public class DefaultContext implements Context {
         }
         final LispCollection params = function.tail();
         final Callable func = asCallable(callable.get());
-        return func.apply(namedChildContext(func.name().asJavaObject().getValue(), this), params);
+        return func.apply(createChild(func.name().asJavaObject().getValue()), params);
     }
+
 }

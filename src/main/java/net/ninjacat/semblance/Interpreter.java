@@ -5,7 +5,7 @@ import net.ninjacat.semblance.data.NilCollection;
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.semblance.evaluator.DefaultContext;
+import net.ninjacat.semblance.evaluator.LocalContext;
 import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.reader.Reader;
 
@@ -55,7 +55,7 @@ public class Interpreter {
     }
 
     private LispValue doRun(final SList program) {
-        final Context executionContext = DefaultContext.namelessChildContext(rootContext);
+        final Context executionContext = LocalContext.namelessChildContext(rootContext);
         LispValue evaluated = NilCollection.INSTANCE;
         for (final LispValue sExpression : program) {
             evaluated = executionContext.evaluate(sExpression);

@@ -16,6 +16,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 public class AddTest {
 
     private Context context;
@@ -25,7 +26,7 @@ public class AddTest {
         context = mock(Context.class);
         when(context.evaluateList(any(LispCollection.class))).thenAnswer(new Answer<LispCollection>() {
             @Override
-            public LispCollection answer(InvocationOnMock invocationOnMock) throws Throwable {
+            public LispCollection answer(final InvocationOnMock invocationOnMock) throws Throwable {
                 return (LispCollection) invocationOnMock.getArguments()[0];
             }
         });
@@ -33,10 +34,10 @@ public class AddTest {
 
     @Test
     public void shouldAddIntegers() throws Exception {
-        SList params = list(number(1), number(2), number(3));
-        Add add = new Add();
+        final SList params = list(number(1), number(2), number(3));
+        final Add add = new Add();
 
-        LispValue value = add.apply(context, params);
+        final LispValue value = add.apply(context, params);
 
         assertThat("Result should be an integer", value, instanceOf(LongNumberAtom.class));
         assertThat("Result should be equal to 6", (Long) asNumber(value).getValue(), is(6L));
@@ -45,10 +46,10 @@ public class AddTest {
 
     @Test
     public void shouldAddDoubles() throws Exception {
-        SList params = list(number(1), number(2.5), number(1.5));
-        Add add = new Add();
+        final SList params = list(number(1), number(2.5), number(1.5));
+        final Add add = new Add();
 
-        LispValue value = add.apply(context, params);
+        final LispValue value = add.apply(context, params);
 
         assertThat("Result should be an integer", value, instanceOf(DoubleNumberAtom.class));
         assertThat("Result should be equal to 6", (Double) asNumber(value).getValue(), is(5d));
@@ -56,8 +57,8 @@ public class AddTest {
 
     @Test(expected = TypeMismatchException.class)
     public void shouldFailToAddIntegerAndString() throws Exception {
-        SList params = list(number(1), string("2"));
-        Add add = new Add();
+        final SList params = list(number(1), string("2"));
+        final Add add = new Add();
 
         add.apply(context, params);
     }

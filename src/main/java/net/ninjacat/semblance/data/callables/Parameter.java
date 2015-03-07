@@ -14,5 +14,5 @@ public interface Parameter extends Serializable {
 
     boolean isRequired();
 
-    void setInContext(Context context, LispValue actualValue);
+    void bindInContext(Context context, LispValue actualValue);
 }

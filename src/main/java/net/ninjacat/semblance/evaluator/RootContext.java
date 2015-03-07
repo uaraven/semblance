@@ -2,6 +2,7 @@ package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.builtin.spforms.*;
 import net.ninjacat.semblance.data.NilCollection;
+import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 
 import static net.ninjacat.semblance.utils.Values.symbol;
@@ -11,15 +12,23 @@ import static net.ninjacat.semblance.utils.Values.symbol;
  * <p/>
  * Created on 01/03/15.
  */
-public class RootContext extends DefaultContext {
+public class RootContext extends BaseContext {
+    /**
+     * Creates new instance of root context
+     */
     public RootContext() {
         super("/", null);
 
         bind(symbol("nil"), NilCollection.INSTANCE);
-        bind(symbol("T"), symbol("T"));
-        bind(symbol("F"), symbol("F"));
+        bind(symbol("T"), SymbolAtom.TRUE);
+        bind(symbol("F"), SymbolAtom.FALSE);
 
         bindSpecialForms();
+    }
+
+    @Override
+    protected Context createChild(final String name) {
+        return LocalContext.namedChildContext(name, this);
     }
 
     private void bindSpecialForms() {
@@ -31,6 +40,7 @@ public class RootContext extends DefaultContext {
         bindForm(new Mul());
         bindForm(new Mod());
         bindForm(new Progn());
+        bindForm(new Let());
     }
 
     private void bindForm(final SpecialForm form) {

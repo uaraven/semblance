@@ -6,11 +6,30 @@ import net.ninjacat.semblance.debug.SourceInfo;
  * Exception thrown when invalid access to a collection happens
  */
 public class CollectionIndexOutOfBoundsException extends SemblanceRuntimeException {
-    public CollectionIndexOutOfBoundsException(long index, long size, SourceInfo sourceInfo) {
-        super(String.format("Index %d is out of bounds, size %d", index, size), sourceInfo);
+
+    private static final String MESSAGE = "Index %d is out of bounds, size %d";
+
+    /**
+     * Create new Out of bounds exception.
+     *
+     * @param index      Index access to which caused exception.
+     * @param size       Size of the collection.
+     * @param sourceInfo Source code information.
+     */
+    public CollectionIndexOutOfBoundsException(final long index, final long size, final SourceInfo sourceInfo) {
+        super(String.format(MESSAGE, index, size), sourceInfo);
     }
 
-    public CollectionIndexOutOfBoundsException(long index, long size, SourceInfo sourceInfo, Throwable cause) {
-        super(String.format("Index %d is out of bounds, size %d", index, size), sourceInfo, cause);
+    /**
+     * Create new Out of bounds exception.
+     *
+     * @param index      Index access to which caused exception.
+     * @param size       Size of the collection.
+     * @param sourceInfo Source code information.
+     * @param cause      Parent exception cause.
+     */
+    public CollectionIndexOutOfBoundsException(final long index, final long size,
+                                               final SourceInfo sourceInfo, final Throwable cause) {
+        super(String.format(MESSAGE, index, size), sourceInfo, cause);
     }
 }

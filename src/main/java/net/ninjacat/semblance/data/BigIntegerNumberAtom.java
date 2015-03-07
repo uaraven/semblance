@@ -7,6 +7,7 @@ import java.math.BigInteger;
 /**
  * Big Integer representation of number atom. Used for numbers that does not fit into long
  */
+@SuppressWarnings("ObjectEquality")
 public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
 
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
@@ -14,28 +15,31 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
 
     private final BigInteger value;
 
-    public BigIntegerNumberAtom(BigInteger value) {
+    /**
+     * Creates new instanse of Number atom backed by BigInteger.
+     *
+     * @param value Value of the number atom.
+     */
+    public BigIntegerNumberAtom(final BigInteger value) {
         this.value = value;
     }
 
-    public BigIntegerNumberAtom(BigInteger value, SourceInfo sourceInfo) {
+    /**
+     * Creates new instanse of Number atom backed by BigInteger.
+     *
+     * @param value      Value of the number atom.
+     * @param sourceInfo Source code information.
+     */
+    public BigIntegerNumberAtom(final BigInteger value, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
     }
 
-    private static NumberAtom<?> make(BigInteger value) {
-        if (value.compareTo(MIN_LONG) > 0 && value.compareTo(MAX_LONG) < 0) {
-            return new LongNumberAtom(value.longValue());
-        } else {
-            return new BigIntegerNumberAtom(value);
-        }
-    }
-
     @Override
-    public NumberAtom<?> add(NumberAtom<?> other) {
-        NumberAtom<?> self = expandIfNeeded(other);
-        NumberAtom<?> oth = other.expandIfNeeded(this);
-        if (self.getNumberType() == SemblanceNumberType.BIG) {
+    public NumberAtom<?> add(final NumberAtom<?> other) {
+        final NumberAtom<?> self = expandIfNeeded(other);
+        final NumberAtom<?> oth = other.expandIfNeeded(this);
+        if (SemblanceNumberType.BIG == self.getNumberType()) {
             return make(value.add((BigInteger) oth.getValue()));
         } else {
             return self.add(other);
@@ -43,9 +47,9 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     @Override
-    public NumberAtom<?> sub(NumberAtom<?> other) {
-        NumberAtom<?> self = expandIfNeeded(other);
-        NumberAtom<?> oth = other.expandIfNeeded(this);
+    public NumberAtom<?> sub(final NumberAtom<?> other) {
+        final NumberAtom<?> self = expandIfNeeded(other);
+        final NumberAtom<?> oth = other.expandIfNeeded(this);
         if (self == this) {
             return make(value.subtract((BigInteger) oth.getValue()));
         } else {
@@ -54,9 +58,9 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     @Override
-    public NumberAtom<?> div(NumberAtom<?> other) {
-        NumberAtom<?> self = expandIfNeeded(other);
-        NumberAtom<?> oth = other.expandIfNeeded(this);
+    public NumberAtom<?> div(final NumberAtom<?> other) {
+        final NumberAtom<?> self = expandIfNeeded(other);
+        final NumberAtom<?> oth = other.expandIfNeeded(this);
         if (self == this) {
             return make(value.divide((BigInteger) oth.getValue()));
         } else {
@@ -65,9 +69,9 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     @Override
-    public NumberAtom<?> mod(NumberAtom<?> other) {
-        NumberAtom<?> self = expandIfNeeded(other);
-        NumberAtom<?> oth = other.expandIfNeeded(this);
+    public NumberAtom<?> mod(final NumberAtom<?> other) {
+        final NumberAtom<?> self = expandIfNeeded(other);
+        final NumberAtom<?> oth = other.expandIfNeeded(this);
         if (self == this) {
             return make(value.divide((BigInteger) oth.getValue()));
         } else {
@@ -76,9 +80,9 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     @Override
-    public NumberAtom<?> mul(NumberAtom<?> other) {
-        NumberAtom<?> self = expandIfNeeded(other);
-        NumberAtom<?> oth = other.expandIfNeeded(this);
+    public NumberAtom<?> mul(final NumberAtom<?> other) {
+        final NumberAtom<?> self = expandIfNeeded(other);
+        final NumberAtom<?> oth = other.expandIfNeeded(this);
         if (self == this) {
             return make(value.multiply((BigInteger) oth.getValue()));
         } else {
@@ -102,11 +106,12 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     @Override
-    public boolean equals(Object o) {
+    @SuppressWarnings("all")
+    public boolean equals(final Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (null == o || getClass() != o.getClass()) return false;
 
-        BigIntegerNumberAtom that = (BigIntegerNumberAtom) o;
+        final BigIntegerNumberAtom that = (BigIntegerNumberAtom) o;
 
         if (!value.equals(that.value)) return false;
 
@@ -116,6 +121,14 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     @Override
     public int hashCode() {
         return value.hashCode();
+    }
+
+    private static NumberAtom<?> make(final BigInteger value) {
+        if (0 < value.compareTo(MIN_LONG) && 0 > value.compareTo(MAX_LONG)) {
+            return new LongNumberAtom(value.longValue());
+        } else {
+            return new BigIntegerNumberAtom(value);
+        }
     }
 
     @Override
@@ -134,8 +147,8 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     @Override
-    protected NumberAtom expandIfNeeded(NumberAtom other) {
-        if (other.getNumberType() == SemblanceNumberType.DOUBLE) {
+    protected NumberAtom expandIfNeeded(final NumberAtom other) {
+        if (SemblanceNumberType.DOUBLE == other.getNumberType()) {
             return convertToDouble();
         } else {
             return this;

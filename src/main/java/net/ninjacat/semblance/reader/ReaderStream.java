@@ -24,14 +24,22 @@ public class ReaderStream {
 
     private final Set<Character> specials;
     private final StreamTokenizer tokenizer;
+    private final InputStreamReader reader;
 
     private int linePosition;
 
     private ReaderStream(final InputStream inputStream) {
-        final InputStreamReader reader = new InputStreamReader(new BufferedInputStream(inputStream));
+        reader = new InputStreamReader(new BufferedInputStream(inputStream));
         specials = new HashSet<>();
         tokenizer = setupTokenizer(reader);
         linePosition = 0;
+    }
+
+    public void close() {
+        try {
+            reader.close();
+        } catch (final IOException ignored) {
+        }
     }
 
     static ReaderStream readStream(final InputStream inputStream) {
@@ -219,7 +227,7 @@ public class ReaderStream {
         final String val;
         if (negative) {
             final int token = tokenizer.nextToken();
-            if (token == StreamTokenizer.TT_WORD && isInteger(tokenizer.sval)) {
+            if (StreamTokenizer.TT_WORD == token && isInteger(tokenizer.sval)) {
                 val = "-" + tokenizer.sval;
             } else {
                 tokenizer.pushBack();
@@ -229,7 +237,7 @@ public class ReaderStream {
             val = tokenizer.sval;
         }
         final int token = tokenizer.nextToken();
-        if (token == '.' || token == 'e' || token == 'E') {
+        if ('.' == token || 'e' == token || 'E' == token) {
             return parseDouble(val + Character.toString((char) token));
         } else {
             tokenizer.pushBack();
@@ -237,14 +245,15 @@ public class ReaderStream {
         }
     }
 
-    private Token parseDouble(String s) throws IOException {
+    private Token parseDouble(final String s) throws IOException {
+        String value = s;
         final int token = tokenizer.nextToken();
-        if (token != StreamTokenizer.TT_WORD) {
+        if (StreamTokenizer.TT_WORD != token) {
             tokenizer.pushBack();
         } else {
-            s += tokenizer.sval;
+            value += tokenizer.sval;
         }
-        return Token.doubleToken(s, currentPosition());
+        return Token.doubleToken(value, currentPosition());
     }
 
     private boolean isInteger(final String nval) {
@@ -256,9 +265,9 @@ public class ReaderStream {
     }
 
     private boolean shouldIgnore(final Token token) {
-        return token.getType() == Token.TokenType.CarriageReturn ||
-                token.getType() == Token.TokenType.Comment ||
-                token.getType() == Token.TokenType.Whitespace ||
-                token.getType() == Token.TokenType.Eof;
+        return Token.TokenType.CarriageReturn == token.getType() ||
+                Token.TokenType.Comment == token.getType() ||
+                Token.TokenType.Whitespace == token.getType() ||
+                Token.TokenType.Eof == token.getType();
     }
 }

@@ -14,14 +14,22 @@ public class OptionalParameter extends BaseParameter {
     private final Option<LispValue> defaultValue;
     private final Option<SymbolAtom> suppliedFlagName;
 
-    public OptionalParameter(SymbolAtom name,
-                             Option<LispValue> defaultValue,
-                             Option<SymbolAtom> suppliedFlagName) {
+    /**
+     * Creates new Optional parameter
+     *
+     * @param name             Name of parameter.
+     * @param defaultValue     Default value for optional parameter (if present).
+     * @param suppliedFlagName Supplied flag name for parameter (if present).
+     */
+    public OptionalParameter(final SymbolAtom name,
+                             final Option<LispValue> defaultValue,
+                             final Option<SymbolAtom> suppliedFlagName) {
         super(name);
         this.defaultValue = defaultValue;
         this.suppliedFlagName = suppliedFlagName;
     }
 
+    @SuppressWarnings("all")
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,8 +56,8 @@ public class OptionalParameter extends BaseParameter {
     }
 
     @Override
-    public void setInContext(Context context, LispValue actualValue) {
-        if (actualValue == null) {
+    public void bindInContext(final Context context, final LispValue actualValue) {
+        if (null == actualValue) {
             if (defaultValue.isPresent()) {
                 context.bind(getName(), context.evaluate(defaultValue.get()));
                 bindSupplied(context, true);
@@ -64,7 +72,7 @@ public class OptionalParameter extends BaseParameter {
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder("&optional ");
+        final StringBuilder builder = new StringBuilder("&optional ");
         builder.append(getName());
         if (defaultValue.isPresent()) {
             builder.append(" ").append(defaultValue.get());
@@ -75,7 +83,7 @@ public class OptionalParameter extends BaseParameter {
         return builder.toString();
     }
 
-    private void bindSupplied(Context context, boolean isSupplied) {
+    private void bindSupplied(final Context context, final boolean isSupplied) {
         if (suppliedFlagName.isPresent()) {
             context.bind(suppliedFlagName.get(), isSupplied ? Values.T : Values.F);
         }

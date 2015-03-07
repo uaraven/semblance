@@ -8,8 +8,12 @@ import net.ninjacat.semblance.utils.Values;
  */
 public class FunctionExpectedException extends SemblanceRuntimeException {
 
-    public FunctionExpectedException(LispValue expression) {
-
+    /**
+     * Creates new exception.
+     *
+     * @param expression Function call expression which caused exception.
+     */
+    public FunctionExpectedException(final LispValue expression) {
         super(String.format("Function call expected in %s", expression), Values.getSourceInfo(expression));
     }
 }

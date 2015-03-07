@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "DuplicateStringLiteralInspection"})
 public class ParserTest {
 
     private Parser parser;
@@ -35,25 +36,25 @@ public class ParserTest {
     @Test
     public void shouldProduceSlist() throws Exception {
 
-        LispCollection parse = parser.parse(Collections.<Token>emptyList());
+        final LispCollection parse = parser.parse(Collections.<Token>emptyList());
 
         assertThat("Parser result should be SList", parse, CoreMatchers.instanceOf(SList.class));
     }
 
     @Test
     public void shouldParseSymbol() throws Exception {
-        List<Token> tokens = Lists.of(symbol("symbol", UNKNOWN));
+        final List<Token> tokens = Lists.of(symbol("symbol", UNKNOWN));
 
-        LispCollection parse = parser.parse(tokens);
+        final LispCollection parse = parser.parse(tokens);
 
         assertThat("Should produce symbol", (SymbolAtom) parse.head(), is(Values.symbol("symbol")));
     }
 
     @Test
     public void shouldParseTwoSymbols() throws Exception {
-        List<Token> tokens = Lists.of(symbol("one", UNKNOWN), symbol("another", UNKNOWN));
+        final List<Token> tokens = Lists.of(symbol("one", UNKNOWN), symbol("another", UNKNOWN));
 
-        LispCollection parse = parser.parse(tokens);
+        final LispCollection parse = parser.parse(tokens);
 
         assertThat("Should produce symbol 'one'", (SymbolAtom) parse.head(), is(Values.symbol("one")));
         assertThat("Should produce symbol 'another'", (SymbolAtom) parse.tail().head(), is(Values.symbol("another")));
@@ -61,11 +62,11 @@ public class ParserTest {
 
     @Test
     public void shouldParseVector() throws Exception {
-        List<Token> tokens = Lists.of(Token.openBracket(UNKNOWN),
+        final List<Token> tokens = Lists.of(Token.openBracket(UNKNOWN),
                 symbol("one", UNKNOWN),
                 integer("10", UNKNOWN), Token.closeBracket(UNKNOWN));
 
-        LispCollection parse = parser.parse(tokens);
+        final LispCollection parse = parser.parse(tokens);
 
         assertThat("Should produce vector", (Vector) parse.head(),
                 is(vector(Values.symbol("one"), number(10L))));
@@ -73,7 +74,7 @@ public class ParserTest {
 
     @Test(expected = UnexpectedEndRuntimeException.class)
     public void shouldFailToParseUnterminatedVector() throws Exception {
-        List<Token> tokens = Lists.of(Token.openBracket(UNKNOWN),
+        final List<Token> tokens = Lists.of(Token.openBracket(UNKNOWN),
                 symbol("one", UNKNOWN),
                 integer("10", UNKNOWN));
 
@@ -82,12 +83,12 @@ public class ParserTest {
 
     @Test
     public void shouldParseList() throws Exception {
-        List<Token> tokens = Lists.of(Token.openParen(UNKNOWN),
+        final List<Token> tokens = Lists.of(Token.openParen(UNKNOWN),
                 symbol("one", UNKNOWN),
                 integer("10", UNKNOWN),
                 Token.closeParen(UNKNOWN));
 
-        LispCollection parse = parser.parse(tokens);
+        final LispCollection parse = parser.parse(tokens);
 
         assertThat("Should produce vector", (SList) parse.head(),
                 is(list(Values.symbol("one"), number(10L))));
@@ -95,7 +96,7 @@ public class ParserTest {
 
     @Test(expected = UnexpectedEndRuntimeException.class)
     public void shouldFailToParseUnterminatedList() throws Exception {
-        List<Token> tokens = Lists.of(Token.openParen(UNKNOWN),
+        final List<Token> tokens = Lists.of(Token.openParen(UNKNOWN),
                 symbol("one", UNKNOWN),
                 integer("10", UNKNOWN));
 
@@ -104,17 +105,17 @@ public class ParserTest {
 
     @Test()
     public void shouldReplaceQuoteMacroForList() throws Exception {
-        List<Token> tokens = Lists.of(Token.special('\'', UNKNOWN),
+        final List<Token> tokens = Lists.of(Token.special('\'', UNKNOWN),
                 Token.openParen(UNKNOWN),
                 Token.symbol("one", UNKNOWN),
                 Token.closeParen(UNKNOWN));
         parser.registerReaderMacro(new QuoteMacro());
 
-        LispCollection parse = parser.parse(tokens);
+        final LispCollection parse = parser.parse(tokens);
 
         assertThat("Should produce s-expression", parse.head(), instanceOf(SList.class));
 
-        SList expr = (SList) parse.head();
+        final SList expr = (SList) parse.head();
 
         assertThat("Function call should be quote", (SymbolAtom) expr.head(), is(Values.symbol("quote")));
         assertThat("Function paramter should be list", (SList) expr.tail().head(), is(list(Values.symbol("one"))));
@@ -122,14 +123,14 @@ public class ParserTest {
 
     @Test()
     public void shouldReplaceQuoteMacroForSymbol() throws Exception {
-        List<Token> tokens = Lists.of(Token.special('\'', UNKNOWN), symbol("one", UNKNOWN));
+        final List<Token> tokens = Lists.of(Token.special('\'', UNKNOWN), symbol("one", UNKNOWN));
         parser.registerReaderMacro(new QuoteMacro());
 
-        LispCollection parse = parser.parse(tokens);
+        final LispCollection parse = parser.parse(tokens);
 
         assertThat("Should produce s-expression", parse.head(), instanceOf(SList.class));
 
-        SList expr = (SList) parse.head();
+        final SList expr = (SList) parse.head();
 
         assertThat("Function call should be quote", (SymbolAtom) expr.head(), is(Values.symbol("quote")));
         assertThat("Function paramter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
@@ -137,7 +138,7 @@ public class ParserTest {
 
     @Test()
     public void shouldParseNestedList() throws Exception {
-        List<Token> tokens = Lists.of(
+        final List<Token> tokens = Lists.of(
                 Token.openParen(UNKNOWN),
                 Token.symbol("+", UNKNOWN),
                 Token.openParen(UNKNOWN),
@@ -145,11 +146,11 @@ public class ParserTest {
                 Token.closeParen(UNKNOWN),
                 Token.closeParen(UNKNOWN));
 
-        LispCollection parse = parser.parse(tokens);
+        final LispCollection parse = parser.parse(tokens);
 
         assertThat("Should produce s-expression", parse.head(), instanceOf(SList.class));
 
-        SList list = (SList) parse.head();
+        final SList list = (SList) parse.head();
 
         assertThat("Should parse nested lists", list, is(
                 list(

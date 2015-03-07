@@ -8,13 +8,13 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class DefaultContextTest {
+public class LocalContextTest {
 
     public static final SymbolAtom KEYWORD_SYMBOL = Values.symbol(":keyword");
 
     @Test
     public void keywordShouldEvaluateToItself() throws Exception {
-        final DefaultContext context = new DefaultContext("", null);
+        final BaseContext context = new LocalContext("", null);
 
         final LispValue value = context.evaluate(KEYWORD_SYMBOL);
 

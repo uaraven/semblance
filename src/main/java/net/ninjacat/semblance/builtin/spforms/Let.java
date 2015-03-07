@@ -4,7 +4,7 @@ import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.semblance.evaluator.DefaultContext;
+import net.ninjacat.semblance.evaluator.LocalContext;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -20,7 +20,7 @@ public class Let extends SpecialForm {
 
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
-        final Context localContext = DefaultContext.namelessChildContext(context);
+        final Context localContext = LocalContext.namelessChildContext(context);
         final LispValue bindings = parameters.head();
         final LispValue expressions = parameters.tail();
 

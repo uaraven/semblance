@@ -10,13 +10,26 @@ public class SemblanceRuntimeException extends RuntimeException {
     private final String message;
     private final SourceInfo sourceInfo;
 
-    public SemblanceRuntimeException(String message, SourceInfo sourceInfo) {
+    /**
+     * Creates new exception.
+     *
+     * @param message    Error message.
+     * @param sourceInfo Source code information.
+     */
+    public SemblanceRuntimeException(final String message, final SourceInfo sourceInfo) {
         super(message + " at " + sourceInfo);
         this.message = message;
         this.sourceInfo = sourceInfo;
     }
 
-    public SemblanceRuntimeException(String message, SourceInfo sourceInfo, Throwable cause) {
+    /**
+     * Creates new exception.
+     *
+     * @param message    Error message.
+     * @param sourceInfo Source code information.
+     * @param cause      Cause of the error.
+     */
+    public SemblanceRuntimeException(final String message, final SourceInfo sourceInfo, final Throwable cause) {
         super(message + " at " + sourceInfo, cause);
         this.message = message;
         this.sourceInfo = sourceInfo;
@@ -27,6 +40,9 @@ public class SemblanceRuntimeException extends RuntimeException {
         return message;
     }
 
+    /**
+     * @return Source code information.
+     */
     public SourceInfo getSourceInfo() {
         return sourceInfo;
     }

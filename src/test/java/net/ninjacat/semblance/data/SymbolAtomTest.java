@@ -7,22 +7,23 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings({"DuplicateStringLiteralInspection", "NonBooleanMethodNameMayNotStartWithQuestion"})
 public class SymbolAtomTest {
 
     public static final String TEST_SYMBOL = "test-symbol";
 
     @Test
     public void reprShouldReturnCorrectSymbolRepresentation() throws Exception {
-        Atom symbol = getAtom();
+        final Atom symbol = getAtom();
 
         assertThat("Should return correct symbol name", symbol.repr(), is(TEST_SYMBOL));
     }
 
     @Test
     public void shouldConvertToJavaSymbolObject() throws Exception {
-        Atom symbol = getAtom();
+        final Atom symbol = getAtom();
 
-        Object javaSymbol = symbol.asJavaObject();
+        final Object javaSymbol = symbol.asJavaObject();
 
         assertThat("Should be represented as Java Symbol object", javaSymbol, instanceOf(Symbol.class));
         assertThat("Java Symbol value should be correct", ((Symbol) javaSymbol).getValue(), is(TEST_SYMBOL));
@@ -30,7 +31,7 @@ public class SymbolAtomTest {
 
     @Test
     public void typeNameShouldBeSymbol() throws Exception {
-        Atom symbol = getAtom();
+        final Atom symbol = getAtom();
 
         assertThat("Type name should be SYMBOL", symbol.getType(), is(SemblanceType.SYMBOL));
     }

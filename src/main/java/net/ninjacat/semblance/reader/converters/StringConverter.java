@@ -9,7 +9,7 @@ import net.ninjacat.semblance.reader.Token;
  */
 public class StringConverter implements TokenConverter {
     @Override
-    public LispValue mkValue(Token token) {
+    public LispValue mkValue(final Token token) {
         return new StringAtom(token.getValue(), token.getSourceInfo());
     }
 }

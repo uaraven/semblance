@@ -32,7 +32,11 @@ public class Reader {
      */
     public SList read(final InputStream stream) throws ParsingException {
         final ReaderStream readerStream = ReaderStream.readStream(stream);
-        return parse(readerStream);
+        try {
+            return parse(readerStream);
+        } finally {
+            readerStream.close();
+        }
     }
 
     /**
@@ -44,7 +48,11 @@ public class Reader {
      */
     public SList readString(final String text) throws ParsingException {
         final ReaderStream readerStream = ReaderStream.readString(text);
-        return parse(readerStream);
+        try {
+            return parse(readerStream);
+        } finally {
+            readerStream.close();
+        }
     }
 
     private SList parse(final ReaderStream readerStream) throws ParsingException {

@@ -18,13 +18,13 @@ public abstract class ParametrizableCallable implements Callable {
     private final SymbolAtom name;
     private final Parameters parameters;
 
-    public ParametrizableCallable(SList definition) {
+    protected ParametrizableCallable(final SList definition) {
         this.definition = definition;
         if (definition.isNil()) {
             throw new InvalidFunctionDeclarationException(definition);
         }
-        this.name = asSymbol(definition.head());
-        this.parameters = new Parameters(asSList(definition.tail()));
+        name = asSymbol(definition.head());
+        parameters = new Parameters(asSList(definition.tail()));
     }
 
     @Override

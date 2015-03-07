@@ -11,20 +11,31 @@ public class LongNumberAtom extends NumberAtom<Long> {
 
     private final long value;
 
-    public LongNumberAtom(long value) {
+    /**
+     * Creates new number atom.
+     *
+     * @param value Value of the atom.
+     */
+    public LongNumberAtom(final long value) {
         super();
         this.value = value;
     }
 
-    public LongNumberAtom(long value, SourceInfo sourceInfo) {
+    /**
+     * Creates new number atom.
+     *
+     * @param value      Value of the atom.
+     * @param sourceInfo Source code information.
+     */
+    public LongNumberAtom(final long value, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public NumberAtom<?> add(NumberAtom<?> other) {
-        NumberAtom self = expandIfNeeded(other);
+    public NumberAtom<?> add(final NumberAtom<?> other) {
+        final NumberAtom self = expandIfNeeded(other);
         if (self == this) {
             if (willOverflow(value, (Long) other.getValue())) {
                 return convertToBigInt().add(other.convertToBigInt());
@@ -38,8 +49,8 @@ public class LongNumberAtom extends NumberAtom<Long> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public NumberAtom<?> sub(NumberAtom<?> other) {
-        NumberAtom self = expandIfNeeded(other);
+    public NumberAtom<?> sub(final NumberAtom<?> other) {
+        final NumberAtom self = expandIfNeeded(other);
         if (self == this) {
             if (willOverflow(value, (Long) other.getValue())) {
                 return convertToBigInt().sub(other.convertToBigInt());
@@ -54,8 +65,8 @@ public class LongNumberAtom extends NumberAtom<Long> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public NumberAtom<?> div(NumberAtom<?> other) {
-        NumberAtom self = expandIfNeeded(other);
+    public NumberAtom<?> div(final NumberAtom<?> other) {
+        final NumberAtom self = expandIfNeeded(other);
         if (self == this) {
             return new LongNumberAtom(value / (Long) other.getValue());
         } else {
@@ -65,8 +76,8 @@ public class LongNumberAtom extends NumberAtom<Long> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public NumberAtom<?> mod(NumberAtom<?> other) {
-        NumberAtom self = expandIfNeeded(other);
+    public NumberAtom<?> mod(final NumberAtom<?> other) {
+        final NumberAtom self = expandIfNeeded(other);
         if (self == this) {
             return new LongNumberAtom(value % (Long) other.getValue());
         } else {
@@ -76,8 +87,8 @@ public class LongNumberAtom extends NumberAtom<Long> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public NumberAtom<?> mul(NumberAtom<?> other) {
-        NumberAtom self = expandIfNeeded(other);
+    public NumberAtom<?> mul(final NumberAtom<?> other) {
+        final NumberAtom self = expandIfNeeded(other);
         if (self == this) {
             if (willOverflow(value, (Long) other.getValue())) {
                 return convertToBigInt().mul(other.convertToBigInt());
@@ -104,13 +115,14 @@ public class LongNumberAtom extends NumberAtom<Long> {
         return getValue();
     }
 
+    @SuppressWarnings("all")
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        LongNumberAtom that = (LongNumberAtom) o;
+        final LongNumberAtom that = (LongNumberAtom) o;
 
         if (value != that.value) return false;
 
@@ -138,19 +150,19 @@ public class LongNumberAtom extends NumberAtom<Long> {
     }
 
     @Override
-    protected NumberAtom expandIfNeeded(NumberAtom other) {
-        if (other.getNumberType() == SemblanceNumberType.DOUBLE) {
+    protected NumberAtom expandIfNeeded(final NumberAtom other) {
+        if (SemblanceNumberType.DOUBLE == other.getNumberType()) {
             return convertToDouble();
-        } else if (other.getNumberType() == SemblanceNumberType.BIG) {
+        } else if (SemblanceNumberType.BIG == other.getNumberType()) {
             return convertToBigInt();
         } else {
             return this;
         }
     }
 
-    private boolean willOverflow(long a, long b) {
-        long maximum = Long.signum(a) == Long.signum(b) ? Long.MAX_VALUE : Long.MIN_VALUE;
+    private boolean willOverflow(final long a, final long b) {
+        final long maximum = Long.signum(a) == Long.signum(b) ? Long.MAX_VALUE : Long.MIN_VALUE;
 
-        return (a != 0 && (b > 0 && b > maximum / a || b < 0 && b < maximum / a));
+        return (0 != a && (0 < b && b > maximum / a || 0 > b && b < maximum / a));
     }
 }

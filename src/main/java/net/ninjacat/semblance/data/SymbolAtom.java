@@ -8,6 +8,9 @@ import net.ninjacat.semblance.java.Symbol;
  */
 public class SymbolAtom extends Atom {
 
+    public static final SymbolAtom TRUE = new SymbolAtom("T");
+    public static final SymbolAtom FALSE = new SymbolAtom("F");
+
     private final String value;
 
     public SymbolAtom(final String value) {
@@ -35,6 +38,7 @@ public class SymbolAtom extends Atom {
         return SemblanceType.SYMBOL;
     }
 
+    @SuppressWarnings("all")
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

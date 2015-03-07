@@ -7,7 +7,12 @@ import net.ninjacat.semblance.debug.SourceInfo;
  */
 public class ValueExpectedException extends SemblanceRuntimeException {
 
-    public ValueExpectedException(SourceInfo sourceInfo) {
+    /**
+     * Creates a new exception
+     *
+     * @param sourceInfo Source code position where value was expected.
+     */
+    public ValueExpectedException(final SourceInfo sourceInfo) {
         super("Value expected", sourceInfo);
     }
 }

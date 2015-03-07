@@ -8,7 +8,12 @@ import net.ninjacat.semblance.debug.SourceInfo;
  */
 public class UnterminatedStringException extends ParsingException {
 
-    public UnterminatedStringException(SourceInfo sourceInfo) {
+    /**
+     * Creates new exception
+     *
+     * @param sourceInfo Source code information.
+     */
+    public UnterminatedStringException(final SourceInfo sourceInfo) {
         super("Unterminated string", sourceInfo);
     }
 }

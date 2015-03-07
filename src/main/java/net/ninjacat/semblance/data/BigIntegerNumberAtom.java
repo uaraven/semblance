@@ -16,7 +16,7 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     private final BigInteger value;
 
     /**
-     * Creates new instanse of Number atom backed by BigInteger.
+     * Creates new instance of Number atom backed by BigInteger.
      *
      * @param value Value of the number atom.
      */
@@ -25,7 +25,7 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     /**
-     * Creates new instanse of Number atom backed by BigInteger.
+     * Creates new instance of Number atom backed by BigInteger.
      *
      * @param value      Value of the number atom.
      * @param sourceInfo Source code information.

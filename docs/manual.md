@@ -71,10 +71,24 @@ Release Functions
 
   **PRINTLN**
 
-    println(value1 value2 value3 ...)
+    (println value1 value2 value3 ...)
 
   prints all values separated by space and returns NIL
 
+
+  **LET**
+
+    (let variables body)
+
+  where `variables` is list of (name value) definitions and `body` is sequence of S-expressions.
+  Example:
+
+    (let ((x 40)
+          (y 2))
+         (+ x y))
+
+  Let is similar to Common Lisp let*, all bindings are done one by one, not in parallel. Let evaluates to last
+  value in `body`
 
 Beta functions
 ==============
@@ -83,8 +97,9 @@ Beta functions
 
   **VAR**
 
-    var(name value [name value ...])
-  Binds evaluated *value* to symbol *name* in the current context. May evaluate and bind multiple varialbes.
+    (var (name value) [(name value) ...])
+  Binds evaluated *value* to symbol *name* in the current context. May evaluate and bind multiple variables.
   Returns latest evaluated value
+
 
 

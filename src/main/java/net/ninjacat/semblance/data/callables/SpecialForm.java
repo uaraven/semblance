@@ -12,7 +12,7 @@ public abstract class SpecialForm extends ParametrizableCallable {
      *
      * @param definition Special form definition. Used for documentation purposes.
      */
-    public SpecialForm(final SList definition) {
+    protected SpecialForm(final SList definition) {
         super(definition);
     }
 

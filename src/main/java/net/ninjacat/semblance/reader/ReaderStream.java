@@ -31,7 +31,7 @@ public class ReaderStream {
     private ReaderStream(final InputStream inputStream) {
         reader = new InputStreamReader(new BufferedInputStream(inputStream));
         specials = new HashSet<>();
-        tokenizer = setupTokenizer(reader);
+        tokenizer = setupTokenizer();
         linePosition = 0;
     }
 
@@ -70,7 +70,7 @@ public class ReaderStream {
         return tokens;
     }
 
-    private StreamTokenizer setupTokenizer(final InputStreamReader reader) {
+    private StreamTokenizer setupTokenizer() {
         final StreamTokenizer streamTokenizer = new StreamTokenizer(reader);
         resetTokenizer(streamTokenizer);
         return streamTokenizer;

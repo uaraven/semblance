@@ -9,10 +9,10 @@ import java.math.BigInteger;
  */
 public abstract class NumberAtom<T> extends Atom {
 
-    public NumberAtom() {
+    protected NumberAtom() {
     }
 
-    public NumberAtom(final SourceInfo sourceInfo) {
+    protected NumberAtom(final SourceInfo sourceInfo) {
         super(sourceInfo);
     }
 

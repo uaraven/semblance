@@ -7,7 +7,13 @@ import net.ninjacat.semblance.debug.SourceInfo;
  */
 public class UnsupportedOperationException extends SemblanceRuntimeException {
 
-    public UnsupportedOperationException(String operation, SourceInfo sourceInfo) {
+    /**
+     * Creates new exception.
+     *
+     * @param operation  Encountered operation.
+     * @param sourceInfo Source code information.
+     */
+    public UnsupportedOperationException(final String operation, final SourceInfo sourceInfo) {
         super("Unsupported operation " + operation, sourceInfo);
     }
 }

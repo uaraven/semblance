@@ -40,7 +40,7 @@ public class BigIntegerNumberAtomTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testAddBigs() throws Exception {
+    public void testAddBigInts() throws Exception {
         final NumberAtom n1 = new BigIntegerNumberAtom(new BigInteger("42"));
         final NumberAtom n2 = new BigIntegerNumberAtom(new BigInteger("42"));
         final NumberAtom result = n1.add(n2);

@@ -82,7 +82,7 @@ public class ParametersTest {
     public void shouldParseRestParameter() throws Exception {
         final Parameters parameters = new Parameters(list(symbol("&rest"), symbol("rest1")));
 
-        final List<Parameter> params = parameters.getFormalParameters();
+        parameters.getFormalParameters();
 
         assertThat("Should parse &rest params",
                 parameters.getRestParameter().isPresent(), is(true));

@@ -103,7 +103,7 @@ public class ParserTest {
         parser.parse(tokens);
     }
 
-    @Test()
+    @Test
     public void shouldReplaceQuoteMacroForList() throws Exception {
         final List<Token> tokens = Lists.of(Token.special('\'', UNKNOWN),
                 Token.openParen(UNKNOWN),
@@ -121,7 +121,7 @@ public class ParserTest {
         assertThat("Function paramter should be list", (SList) expr.tail().head(), is(list(Values.symbol("one"))));
     }
 
-    @Test()
+    @Test
     public void shouldReplaceQuoteMacroForSymbol() throws Exception {
         final List<Token> tokens = Lists.of(Token.special('\'', UNKNOWN), symbol("one", UNKNOWN));
         parser.registerReaderMacro(new QuoteMacro());
@@ -136,7 +136,7 @@ public class ParserTest {
         assertThat("Function paramter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
     }
 
-    @Test()
+    @Test
     public void shouldParseNestedList() throws Exception {
         final List<Token> tokens = Lists.of(
                 Token.openParen(UNKNOWN),

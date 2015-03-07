@@ -8,7 +8,13 @@ import net.ninjacat.semblance.debug.SourceInfo;
  */
 public class UnboundSymbolException extends SemblanceRuntimeException {
 
-    public UnboundSymbolException(SymbolAtom symbol, SourceInfo sourceInfo) {
+    /**
+     * Creates new exception
+     *
+     * @param symbol     Symbol.
+     * @param sourceInfo Source code information.
+     */
+    public UnboundSymbolException(final SymbolAtom symbol, final SourceInfo sourceInfo) {
         super(String.format("Symbol %s is unbound", symbol), sourceInfo);
     }
 }

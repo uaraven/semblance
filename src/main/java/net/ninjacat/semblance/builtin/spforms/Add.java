@@ -13,15 +13,18 @@ import static net.ninjacat.semblance.utils.Values.*;
  */
 public class Add extends SpecialForm {
 
+    /**
+     * Create instance of Add class
+     */
     public Add() {
         super(list(symbol("+"), symbol("&rest"), symbol("values")));
     }
 
     @Override
-    public LispValue apply(Context context, LispCollection parameters) {
-        LispCollection evaluated = context.evaluateList(parameters);
+    public LispValue apply(final Context context, final LispCollection parameters) {
+        final LispCollection evaluated = context.evaluateList(parameters);
         NumberAtom accumulator = asNumber(evaluated.head());
-        for (LispValue value : evaluated.tail()) {
+        for (final LispValue value : evaluated.tail()) {
             //noinspection unchecked
             accumulator = accumulator.add(asNumber(value));
         }

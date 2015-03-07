@@ -64,11 +64,15 @@ public class DefaultContext implements Context {
     @Override
     public LispValue evaluate(final LispValue expression) {
         if (isSymbol(expression)) {
-            final Option<LispValue> value = findSymbol(asSymbol(expression));
-            if (value.isPresent()) {
-                return value.get();
+            if (asSymbol(expression).repr().startsWith(":")) {
+                return expression;
             } else {
-                throw new UnboundSymbolException(asSymbol(expression), getSourceInfo(expression));
+                final Option<LispValue> value = findSymbol(asSymbol(expression));
+                if (value.isPresent()) {
+                    return value.get();
+                } else {
+                    throw new UnboundSymbolException(asSymbol(expression), getSourceInfo(expression));
+                }
             }
         } else if (isList(expression)) {
             return evaluateFunction(asSList(expression));
@@ -85,6 +89,15 @@ public class DefaultContext implements Context {
             evaluatedParams.add(evaluated);
         }
         return params.createSame(new SList(evaluatedParams));
+    }
+
+    @Override
+    public LispValue evaluateBlock(final LispCollection expressions) {
+        LispValue last = NilCollection.INSTANCE;
+        for (final LispValue expr : expressions) {
+            last = evaluate(expr);
+        }
+        return last;
     }
 
     private LispValue evaluateFunction(final SList function) {

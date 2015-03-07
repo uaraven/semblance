@@ -50,4 +50,12 @@ public interface Context {
      * @return list of evaluated values
      */
     <T extends LispCollection> T evaluateList(T actualParameters);
+
+    /**
+     * Evaluates collection of expressions, returns last evaluation as a result
+     *
+     * @param expressions List of expressions to evaluate.
+     * @return Result of the last expression.
+     */
+    LispValue evaluateBlock(LispCollection expressions);
 }

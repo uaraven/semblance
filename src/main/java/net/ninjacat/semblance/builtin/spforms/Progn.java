@@ -4,22 +4,26 @@ import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
+import net.ninjacat.semblance.evaluator.DefaultContext;
 
 import static net.ninjacat.semblance.utils.Values.list;
 import static net.ninjacat.semblance.utils.Values.symbol;
 
 /**
- * (var name value [name value]...)
+ * @author oleksiivoronin, date: 15-03-06.
  */
-public class Var extends SpecialForm {
+public class Progn extends SpecialForm {
 
-    public Var() {
-        super(list(symbol("var"), symbol("&rest"), symbol("bindings")));
+    /**
+     * Creates instance of Progn
+     */
+    public Progn() {
+        super(list(symbol("progn"), symbol("&rest"), symbol("expressions")));
     }
 
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
-        return VarBinder.bindVariables(context, parameters);
+        final Context localContext = DefaultContext.namelessChildContext(context);
+        return localContext.evaluateBlock(parameters);
     }
-
 }

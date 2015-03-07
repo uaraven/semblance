@@ -18,10 +18,10 @@ public class Mod extends SpecialForm {
     }
 
     @Override
-    public LispValue apply(Context context, LispCollection parameters) {
-        LispCollection evaluated = context.evaluateList(parameters);
+    public LispValue apply(final Context context, final LispCollection parameters) {
+        final LispCollection evaluated = context.evaluateList(parameters);
         NumberAtom accumulator = asNumber(evaluated.head());
-        for (LispValue value : evaluated.tail()) {
+        for (final LispValue value : evaluated.tail()) {
             //noinspection unchecked
             accumulator = accumulator.mod(asNumber(value));
         }

@@ -24,11 +24,11 @@ public class PrintLn extends SpecialForm {
     }
 
     @Override
-    public LispValue apply(Context context, LispCollection parameters) {
-        Context localContext = DefaultContext.namelessChildContext(context);
-        LispCollection evaluated = localContext.evaluateList(parameters);
+    public LispValue apply(final Context context, final LispCollection parameters) {
+        final Context localContext = DefaultContext.namelessChildContext(context);
+        final LispCollection evaluated = localContext.evaluateList(parameters);
 
-        for (LispValue value : evaluated) {
+        for (final LispValue value : evaluated) {
             System.out.print(value.repr());
             System.out.print(" ");
         }

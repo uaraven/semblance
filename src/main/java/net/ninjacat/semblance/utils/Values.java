@@ -21,7 +21,7 @@ public final class Values {
     private Values() {
     }
 
-    public static long getLongValue(LispValue atom) {
+    public static long getLongValue(final LispValue atom) {
         if (atom instanceof LongNumberAtom) {
             return ((LongNumberAtom) atom).asJavaObject();
         } else {
@@ -29,7 +29,7 @@ public final class Values {
         }
     }
 
-    public static SourceInfo getSourceInfo(LispValue atom) {
+    public static SourceInfo getSourceInfo(final LispValue atom) {
         if (atom instanceof DebugInfoProvider) {
             return ((DebugInfoProvider) atom).getSourceInfo();
         } else {
@@ -38,31 +38,31 @@ public final class Values {
 
     }
 
-    public static LispValue number(String value) {
+    public static LispValue number(final String value) {
         return NumberAtom.make(value);
     }
 
-    public static LispValue number(long value) {
+    public static LispValue number(final long value) {
         return new LongNumberAtom(value);
     }
 
-    public static LispValue number(double value) {
+    public static LispValue number(final double value) {
         return new DoubleNumberAtom(value);
     }
 
-    public static LispValue string(String value) {
+    public static LispValue string(final String value) {
         return new StringAtom(value);
     }
 
-    public static SymbolAtom symbol(String value) {
+    public static SymbolAtom symbol(final String value) {
         return new SymbolAtom(value);
     }
 
-    public static SymbolAtom symbol(String value, SourceInfo sourceInfo) {
+    public static SymbolAtom symbol(final String value, final SourceInfo sourceInfo) {
         return new SymbolAtom(value, sourceInfo);
     }
 
-    public static LispValue atom(Object value) {
+    public static LispValue atom(final Object value) {
         if (value instanceof String) {
             return string(value.toString());
         } else if (value instanceof Long) {
@@ -74,7 +74,7 @@ public final class Values {
         }
     }
 
-    public static SymbolAtom asSymbol(LispValue value) {
+    public static SymbolAtom asSymbol(final LispValue value) {
         if (isSymbol(value)) {
             return (SymbolAtom) value;
         } else {
@@ -82,7 +82,7 @@ public final class Values {
         }
     }
 
-    public static SList asSList(LispValue value) {
+    public static SList asSList(final LispValue value) {
         if (isList(value)) {
             return (SList) value;
         } else {
@@ -90,55 +90,63 @@ public final class Values {
         }
     }
 
-    public static Callable asCallable(LispValue value) {
+    public static LispCollection asCollection(final LispValue value) {
+        if (value instanceof LispCollection) {
+            return (LispCollection) value;
+        } else {
+            throw new TypeMismatchException("Collection", value.getType(), getSourceInfo(value));
+        }
+    }
+
+    public static Callable asCallable(final LispValue value) {
         return (Callable) value;
     }
 
-    public static boolean canBeConvertedToJavaObject(LispValue value) {
+    public static boolean canBeConvertedToJavaObject(final LispValue value) {
         return value instanceof JavaConvertible;
     }
 
-    public static Vector vector(LispValue... values) {
+    public static Vector vector(final LispValue... values) {
         return new Vector(Iter.of(values).toList());
     }
 
-    public static Vector smartVector(Object... values) {
+    public static Vector smartVector(final Object... values) {
         return vector(Iter.of(values).map(FromJavaConverter.INSTANCE).toArray(new LispValue[values.length]));
     }
 
-    public static SList list(LispValue... values) {
+    public static SList list(final LispValue... values) {
         return new SList(Iter.of(values).toList());
     }
 
-    public static SList smartList(Object... values) {
+    public static SList smartList(final Object... values) {
         return list(Iter.of(values).map(FromJavaConverter.INSTANCE).toArray(new LispValue[values.length]));
     }
 
-    public static boolean isList(LispValue value) {
+    public static boolean isList(final LispValue value) {
         return value.getType() == SemblanceType.LIST;
     }
 
-    public static boolean isSymbol(LispValue value) {
+    public static boolean isSymbol(final LispValue value) {
         return value.getType() == SemblanceType.SYMBOL;
     }
 
-    public static boolean isCallable(LispValue value) {
+    public static boolean isCallable(final LispValue value) {
         return value.getType() == SemblanceType.FUNCTION || value.getType() == SemblanceType.MACRO;
     }
 
-    public static boolean isAtom(LispValue value) {
+    public static boolean isAtom(final LispValue value) {
         return value instanceof Atom;
     }
 
-    public static List<LispValue> asList(LispCollection in) {
+    public static List<LispValue> asList(final LispCollection in) {
         return Iter.of(in.iterator()).toList();
     }
 
-    public static boolean isNilCollection(Object collection) {
+    public static boolean isNilCollection(final Object collection) {
         return collection instanceof LispCollection && ((LispCollection) collection).isNil();
     }
 
-    public static NumberAtom asNumber(LispValue value) {
+    public static NumberAtom asNumber(final LispValue value) {
         if (isNumber(value)) {
             return (NumberAtom) value;
         } else {
@@ -146,7 +154,7 @@ public final class Values {
         }
     }
 
-    private static boolean isNumber(LispValue value) {
+    private static boolean isNumber(final LispValue value) {
         return value.getType() == SemblanceType.FLOATIG_POINT || value.getType() == SemblanceType.INTEGER;
     }
 
@@ -154,7 +162,7 @@ public final class Values {
         INSTANCE;
 
         @Override
-        public LispValue apply(Object o) {
+        public LispValue apply(final Object o) {
             return atom(o);
         }
     }
@@ -163,7 +171,7 @@ public final class Values {
         INSTANCE;
 
         @Override
-        public Object apply(LispValue value) {
+        public Object apply(final LispValue value) {
             if (canBeConvertedToJavaObject(value)) {
                 return ((JavaConvertible) value).asJavaObject();
             } else {

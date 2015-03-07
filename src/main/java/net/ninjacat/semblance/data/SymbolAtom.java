@@ -10,11 +10,11 @@ public class SymbolAtom extends Atom {
 
     private final String value;
 
-    public SymbolAtom(String value) {
+    public SymbolAtom(final String value) {
         this.value = value;
     }
 
-    public SymbolAtom(String value, SourceInfo sourceInfo) {
+    public SymbolAtom(final String value, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
     }
@@ -36,11 +36,11 @@ public class SymbolAtom extends Atom {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SymbolAtom that = (SymbolAtom) o;
+        final SymbolAtom that = (SymbolAtom) o;
 
         if (!value.equals(that.value)) return false;
 

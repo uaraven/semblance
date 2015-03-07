@@ -30,9 +30,10 @@ public class RootContext extends DefaultContext {
         bindForm(new Div());
         bindForm(new Mul());
         bindForm(new Mod());
+        bindForm(new Progn());
     }
 
-    private void bindForm(SpecialForm form) {
+    private void bindForm(final SpecialForm form) {
         bind(form.name(), form);
     }
 }

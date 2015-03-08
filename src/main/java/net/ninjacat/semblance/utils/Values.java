@@ -166,7 +166,7 @@ public final class Values {
         }
     }
 
-    private static boolean isNumber(final LispValue value) {
+    public static boolean isNumber(final LispValue value) {
         return SemblanceType.FLOATIG_POINT == value.getType() || SemblanceType.INTEGER == value.getType();
     }
 

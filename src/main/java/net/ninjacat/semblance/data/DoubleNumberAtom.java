@@ -96,27 +96,27 @@ public class DoubleNumberAtom extends NumberAtom {
     }
 
     @Override
-    public SymbolAtom eq(final NumberAtom other) {
+    public boolean eq(final NumberAtom other) {
         if (getNumberType() == other.getNumberType()) {
-            return SymbolAtom.fromBoolean(0 == Double.compare(value, (Double) other.getValue()));
+            return 0 == Double.compare(value, (Double) other.getValue());
         }
         final NumberAtom<?> self = expandIfNeeded(other);
         return self.eq(other);
     }
 
     @Override
-    public SymbolAtom lt(final NumberAtom other) {
+    public boolean lt(final NumberAtom other) {
         if (getNumberType() == other.getNumberType()) {
-            return SymbolAtom.fromBoolean(0 < Double.compare(value, (Double) other.getValue()));
+            return 0 < Double.compare(value, (Double) other.getValue());
         }
         final NumberAtom<?> self = expandIfNeeded(other);
         return self.eq(other);
     }
 
     @Override
-    public SymbolAtom gt(final NumberAtom other) {
+    public boolean gt(final NumberAtom other) {
         if (getNumberType() == other.getNumberType()) {
-            return SymbolAtom.fromBoolean(0 > Double.compare(value, (Double) other.getValue()));
+            return 0 > Double.compare(value, (Double) other.getValue());
         }
         final NumberAtom<?> self = expandIfNeeded(other);
         return self.eq(other);

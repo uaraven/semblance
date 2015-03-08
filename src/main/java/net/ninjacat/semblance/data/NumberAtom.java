@@ -43,25 +43,25 @@ public abstract class NumberAtom<T> extends Atom {
      * Checks if this number is less then other.
      *
      * @param other Other number.
-     * @return T or F
+     * @return true or false
      */
-    public abstract SymbolAtom lt(NumberAtom<?> other);
+    public abstract boolean lt(NumberAtom<?> other);
 
     /**
      * Checks if this number is equal to other.
      *
      * @param other Other number.
-     * @return T or F
+     * @return true of false
      */
-    public abstract SymbolAtom eq(NumberAtom<?> other);
+    public abstract boolean eq(NumberAtom<?> other);
 
     /**
      * Checks if this number is greater then other.
      *
      * @param other Other number.
-     * @return T or F
+     * @return true or false
      */
-    public abstract SymbolAtom gt(NumberAtom<?> other);
+    public abstract boolean gt(NumberAtom<?> other);
 
     @Override
     public String repr() {

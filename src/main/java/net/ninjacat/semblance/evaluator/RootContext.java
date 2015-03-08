@@ -2,6 +2,7 @@ package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.builtin.spforms.*;
 import net.ninjacat.semblance.builtin.spforms.arithmetic.*;
+import net.ninjacat.semblance.builtin.spforms.comparison.*;
 import net.ninjacat.semblance.builtin.spforms.logic.And;
 import net.ninjacat.semblance.builtin.spforms.logic.Not;
 import net.ninjacat.semblance.builtin.spforms.logic.Or;
@@ -40,17 +41,26 @@ public class RootContext extends BaseContext {
 
         bindForm(new Quote());
         bindForm(new PrintLn());
+
         bindForm(new Add());
         bindForm(new Sub());
         bindForm(new Div());
         bindForm(new Mul());
         bindForm(new Mod());
+
         bindForm(new Progn());
         bindForm(new Let());
+
+        bindForm(new If());
+        bindForm(new Equal());
+        bindForm(new NotEqual());
+        bindForm(new GreaterThan());
+        bindForm(new GreaterEqual());
+        bindForm(new LessThan());
+        bindForm(new LessEqual());
         bindForm(new And());
         bindForm(new Not());
         bindForm(new Or());
-        bindForm(new If());
     }
 
     private void bindForm(final SpecialForm form) {

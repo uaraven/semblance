@@ -12,7 +12,7 @@
         <dependency>
             <groupId>net.ninjacat</groupId>
             <artifactId>smooth</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.2.1</version>
         </dependency>
 
         <dependency>

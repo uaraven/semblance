@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.builtin.spforms;
 
+import net.ninjacat.semblance.builtin.spforms.arithmetic.Add;
 import net.ninjacat.semblance.data.*;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;

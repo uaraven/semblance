@@ -39,6 +39,30 @@ public abstract class NumberAtom<T> extends Atom {
 
     public abstract NumberAtom<?> mul(NumberAtom<?> other);
 
+    /**
+     * Checks if this number is less then other.
+     *
+     * @param other Other number.
+     * @return T or F
+     */
+    public abstract SymbolAtom lt(NumberAtom<?> other);
+
+    /**
+     * Checks if this number is equal to other.
+     *
+     * @param other Other number.
+     * @return T or F
+     */
+    public abstract SymbolAtom eq(NumberAtom<?> other);
+
+    /**
+     * Checks if this number is greater then other.
+     *
+     * @param other Other number.
+     * @return T or F
+     */
+    public abstract SymbolAtom gt(NumberAtom<?> other);
+
     @Override
     public String repr() {
         return String.valueOf(getValue());

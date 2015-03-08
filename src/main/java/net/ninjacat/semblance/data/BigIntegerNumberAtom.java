@@ -90,6 +90,34 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
         }
     }
 
+
+    @Override
+    public SymbolAtom eq(final NumberAtom other) {
+        if (getNumberType() == other.getNumberType()) {
+            return SymbolAtom.fromBoolean(0 == value.compareTo((BigInteger) other.getValue()));
+        }
+        final NumberAtom<?> self = expandIfNeeded(other);
+        return self.eq(other);
+    }
+
+    @Override
+    public SymbolAtom lt(final NumberAtom<?> other) {
+        if (getNumberType() == other.getNumberType()) {
+            return SymbolAtom.fromBoolean(0 < value.compareTo((BigInteger) other.getValue()));
+        }
+        final NumberAtom<?> self = expandIfNeeded(other);
+        return self.eq(other);
+    }
+
+    @Override
+    public SymbolAtom gt(final NumberAtom<?> other) {
+        if (getNumberType() == other.getNumberType()) {
+            return SymbolAtom.fromBoolean(0 > value.compareTo((BigInteger) other.getValue()));
+        }
+        final NumberAtom<?> self = expandIfNeeded(other);
+        return self.eq(other);
+    }
+
     @Override
     public BigInteger asJavaObject() {
         return value;

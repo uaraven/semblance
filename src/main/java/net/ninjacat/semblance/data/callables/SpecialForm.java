@@ -7,6 +7,10 @@ import net.ninjacat.semblance.data.SList;
  */
 public abstract class SpecialForm extends ParametrizableCallable {
 
+    public SpecialForm(final String... definition) {
+        super(definition);
+    }
+
     /**
      * Creates a new special form.
      *

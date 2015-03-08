@@ -134,12 +134,24 @@ public final class Values {
         return SemblanceType.FUNCTION == value.getType() || SemblanceType.MACRO == value.getType();
     }
 
+    public static boolean isFalse(final LispValue value) {
+        return isSymbol(value) && asSymbol(value).equals(SymbolAtom.FALSE);
+    }
+
+    public static boolean isTrue(final LispValue value) {
+        return !isFalse(value);
+    }
+
     public static boolean isAtom(final LispValue value) {
         return value instanceof Atom;
     }
 
     public static List<LispValue> asList(final LispCollection in) {
         return Iter.of(in.iterator()).toList();
+    }
+
+    public static boolean isCollection(final Object collection) {
+        return collection instanceof LispCollection && ((LispCollection) collection).isNil();
     }
 
     public static boolean isNilCollection(final Object collection) {

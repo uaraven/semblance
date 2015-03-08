@@ -35,69 +35,90 @@ public class LongNumberAtom extends NumberAtom<Long> {
     @SuppressWarnings("unchecked")
     @Override
     public NumberAtom<?> add(final NumberAtom<?> other) {
-        final NumberAtom self = expandIfNeeded(other);
-        if (self == this) {
+        if (getNumberType() == other.getNumberType()) {
             if (willOverflow(value, (Long) other.getValue())) {
                 return convertToBigInt().add(other.convertToBigInt());
             } else {
                 return new LongNumberAtom(value + (Long) other.getValue());
             }
-        } else {
-            return self.add(other);
         }
+        final NumberAtom self = expandIfNeeded(other);
+        return self.add(other);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public NumberAtom<?> sub(final NumberAtom<?> other) {
-        final NumberAtom self = expandIfNeeded(other);
-        if (self == this) {
+        if (getNumberType() == other.getNumberType()) {
             if (willOverflow(value, (Long) other.getValue())) {
                 return convertToBigInt().sub(other.convertToBigInt());
             } else {
                 return new LongNumberAtom(value - (Long) other.getValue());
             }
-
-        } else {
-            return self.sub(other);
         }
+        final NumberAtom self = expandIfNeeded(other);
+        return self.sub(other);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public NumberAtom<?> div(final NumberAtom<?> other) {
-        final NumberAtom self = expandIfNeeded(other);
-        if (self == this) {
+        if (getNumberType() == other.getNumberType()) {
             return new LongNumberAtom(value / (Long) other.getValue());
-        } else {
-            return self.div(other);
         }
+        final NumberAtom self = expandIfNeeded(other);
+        return self.div(other);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public NumberAtom<?> mod(final NumberAtom<?> other) {
-        final NumberAtom self = expandIfNeeded(other);
-        if (self == this) {
+        if (getNumberType() == other.getNumberType()) {
             return new LongNumberAtom(value % (Long) other.getValue());
-        } else {
-            return self.mod(other);
         }
+        final NumberAtom self = expandIfNeeded(other);
+        return self.mod(other);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public NumberAtom<?> mul(final NumberAtom<?> other) {
-        final NumberAtom self = expandIfNeeded(other);
-        if (self == this) {
+        if (getNumberType() == other.getNumberType()) {
             if (willOverflow(value, (Long) other.getValue())) {
                 return convertToBigInt().mul(other.convertToBigInt());
             } else {
                 return new LongNumberAtom(value * (Long) other.getValue());
             }
-        } else {
-            return self.mul(other);
         }
+        final NumberAtom self = expandIfNeeded(other);
+        return self.mul(other);
+    }
+
+    @Override
+    public SymbolAtom eq(final NumberAtom other) {
+        if (getNumberType() == other.getNumberType()) {
+            return SymbolAtom.fromBoolean(0 == Long.compare(value, (Long) other.getValue()));
+        }
+        final NumberAtom<?> self = expandIfNeeded(other);
+        return self.eq(other);
+    }
+
+    @Override
+    public SymbolAtom lt(final NumberAtom<?> other) {
+        if (getNumberType() == other.getNumberType()) {
+            return SymbolAtom.fromBoolean(0 < Long.compare(value, (Long) other.getValue()));
+        }
+        final NumberAtom<?> self = expandIfNeeded(other);
+        return self.eq(other);
+    }
+
+    @Override
+    public SymbolAtom gt(final NumberAtom<?> other) {
+        if (getNumberType() == other.getNumberType()) {
+            return SymbolAtom.fromBoolean(0 > Long.compare(value, (Long) other.getValue()));
+        }
+        final NumberAtom<?> self = expandIfNeeded(other);
+        return self.eq(other);
     }
 
     @Override

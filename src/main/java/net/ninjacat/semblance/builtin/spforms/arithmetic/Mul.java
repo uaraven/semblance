@@ -1,4 +1,4 @@
-package net.ninjacat.semblance.builtin.spforms;
+package net.ninjacat.semblance.builtin.spforms.arithmetic;
 
 import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
@@ -11,10 +11,10 @@ import static net.ninjacat.semblance.utils.Values.*;
 /**
  * Created on 03/03/15.
  */
-public class Sub extends SpecialForm {
+public class Mul extends SpecialForm {
 
-    public Sub() {
-        super(list(symbol("-"), symbol("&rest"), symbol("values")));
+    public Mul() {
+        super(list(symbol("*"), symbol("&rest"), symbol("values")));
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Sub extends SpecialForm {
         NumberAtom accumulator = asNumber(evaluated.head());
         for (final LispValue value : evaluated.tail()) {
             //noinspection unchecked
-            accumulator = accumulator.sub(asNumber(value));
+            accumulator = accumulator.mul(asNumber(value));
         }
         return accumulator;
     }

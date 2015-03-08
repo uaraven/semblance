@@ -118,7 +118,7 @@ public class ParserTest {
         final SList expr = (SList) parse.head();
 
         assertThat("Function call should be quote", (SymbolAtom) expr.head(), is(Values.symbol("quote")));
-        assertThat("Function paramter should be list", (SList) expr.tail().head(), is(list(Values.symbol("one"))));
+        assertThat("Function parameter should be list", (SList) expr.tail().head(), is(list(Values.symbol("one"))));
     }
 
     @Test
@@ -133,7 +133,7 @@ public class ParserTest {
         final SList expr = (SList) parse.head();
 
         assertThat("Function call should be quote", (SymbolAtom) expr.head(), is(Values.symbol("quote")));
-        assertThat("Function paramter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
+        assertThat("Function parameter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
     }
 
     @Test

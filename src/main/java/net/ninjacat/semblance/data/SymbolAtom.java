@@ -22,6 +22,16 @@ public class SymbolAtom extends Atom {
         this.value = value;
     }
 
+    /**
+     * Converts boolean into T or F symbol
+     *
+     * @param boolValue Boolean value
+     * @return Either T or F.
+     */
+    public static SymbolAtom fromBoolean(final boolean boolValue) {
+        return boolValue ? TRUE : FALSE;
+    }
+
     @Override
     public Symbol asJavaObject() {
         return new Symbol(value);
@@ -31,7 +41,6 @@ public class SymbolAtom extends Atom {
     public String repr() {
         return value;
     }
-
 
     @Override
     public SemblanceType getType() {

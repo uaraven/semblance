@@ -90,6 +90,11 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
         }
     }
 
+    @Override
+    public boolean isInfinity() {
+        return false;
+    }
+
 
     @Override
     public boolean eq(final NumberAtom other) {

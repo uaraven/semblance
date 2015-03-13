@@ -95,6 +95,11 @@ public class LongNumberAtom extends NumberAtom<Long> {
     }
 
     @Override
+    public boolean isInfinity() {
+        return false;
+    }
+
+    @Override
     public boolean eq(final NumberAtom other) {
         if (getNumberType() == other.getNumberType()) {
             return 0 == Long.compare(value, (Long) other.getValue());

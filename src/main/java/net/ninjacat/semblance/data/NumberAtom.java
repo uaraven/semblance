@@ -39,6 +39,8 @@ public abstract class NumberAtom<T> extends Atom {
 
     public abstract NumberAtom<?> mul(NumberAtom<?> other);
 
+    public abstract boolean isInfinity();
+
     /**
      * Checks if this number is less then other.
      *
@@ -63,6 +65,10 @@ public abstract class NumberAtom<T> extends Atom {
      */
     public abstract boolean gt(NumberAtom<?> other);
 
+    public abstract SemblanceNumberType getNumberType();
+
+    public abstract T getValue();
+
     @Override
     public String repr() {
         return String.valueOf(getValue());
@@ -77,10 +83,6 @@ public abstract class NumberAtom<T> extends Atom {
     public String toString() {
         return "NumberAtom{" + getValue() + '}';
     }
-
-    public abstract SemblanceNumberType getNumberType();
-
-    public abstract T getValue();
 
     protected abstract NumberAtom<?> expandIfNeeded(NumberAtom other);
 

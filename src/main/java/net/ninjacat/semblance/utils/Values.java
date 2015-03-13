@@ -9,6 +9,7 @@ import net.ninjacat.semblance.java.Symbol;
 import net.ninjacat.smooth.functions.Func;
 import net.ninjacat.smooth.iterators.Iter;
 
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -168,6 +169,26 @@ public final class Values {
 
     public static boolean isNumber(final LispValue value) {
         return SemblanceType.FLOATIG_POINT == value.getType() || SemblanceType.INTEGER == value.getType();
+    }
+
+    public static NumberAtom longN(final long number) {
+        return new LongNumberAtom(number);
+    }
+
+    public static NumberAtom bigN(final String number) {
+        return new BigIntegerNumberAtom(new BigInteger(number));
+    }
+
+    public static NumberAtom bigN(final BigInteger number) {
+        return new BigIntegerNumberAtom(number);
+    }
+
+    public static NumberAtom bigN(final long number) {
+        return new BigIntegerNumberAtom(BigInteger.valueOf(number));
+    }
+
+    public static NumberAtom doubleN(final double number) {
+        return new DoubleNumberAtom(number);
     }
 
     private enum FromJavaConverter implements Func<LispValue, Object> {

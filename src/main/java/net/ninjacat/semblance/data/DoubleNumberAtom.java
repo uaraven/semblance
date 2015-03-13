@@ -123,6 +123,11 @@ public class DoubleNumberAtom extends NumberAtom {
     }
 
     @Override
+    public boolean isInfinity() {
+        return Double.isInfinite(value);
+    }
+
+    @Override
     public String repr() {
         return String.valueOf(value);
     }

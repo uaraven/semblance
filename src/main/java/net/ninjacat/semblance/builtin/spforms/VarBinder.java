@@ -5,10 +5,7 @@ import net.ninjacat.semblance.evaluator.Context;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
-/**
- * @author oleksiivoronin, date: 15-03-06.
- */
-public final class VarBinder {
+final class VarBinder {
 
     private VarBinder() {
     }

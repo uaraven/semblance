@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.data.callables;
 
+import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SymbolAtom;
@@ -92,13 +93,13 @@ public class Parameters implements Iterable<Parameter>, Serializable {
      * @param context          Context in which assign parameters.
      * @param actualParameters List of actual parameters.
      */
-    public void apply(final Context context, final SList actualParameters) {
-        final SList evaluated = context.evaluateList(actualParameters);
+    public void apply(final Context context, final LispCollection actualParameters) {
+        final LispCollection evaluated = context.evaluateList(actualParameters);
         applyList(context, evaluated);
     }
 
-    private void applyList(final Context context, final SList evaluated) {
-        SList params = evaluated;
+    private void applyList(final Context context, final LispCollection evaluated) {
+        SList params = toSList(evaluated);
         // assign all available parameters
         for (final Parameter parameter : this) {
             if (params.isNil()) {

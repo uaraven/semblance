@@ -22,8 +22,8 @@ public class ArithmeticTestCase {
         this.expected = expected;
     }
 
-    public static Builder mk() {
-        return new Builder();
+    public static Builder mk(final Operation operation) {
+        return new Builder(operation);
     }
 
     public void verifyResult() {
@@ -35,14 +35,13 @@ public class ArithmeticTestCase {
     }
 
     public static class Builder {
-        private Operation operation;
+        private final Operation operation;
         private NumberAtom op1;
         private NumberAtom op2;
         private NumberAtom result;
 
-        public Builder operation(final Operation action) {
+        public Builder(final Operation action) {
             operation = action;
-            return this;
         }
 
         public Builder op1(final NumberAtom opr1) {

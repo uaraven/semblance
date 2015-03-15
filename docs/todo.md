@@ -13,6 +13,3 @@ Reader todo
  
 Evaluator todo
 --------------
-
- - symbols should evaluate to variables (if no variable is defined, then throw exception?)
- - :keywords evaluate to their string representation (same as autobinding to string with the same value)

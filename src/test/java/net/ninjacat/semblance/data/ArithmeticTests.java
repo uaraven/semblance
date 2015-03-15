@@ -52,131 +52,122 @@ public class ArithmeticTests {
     };
 
     private static final List<ArithmeticTestCase> ADD_CASES = Lists.of(
-            mk().operation(ADD)
-                    .op1(longN(42))
+            mk(ADD).op1(longN(42))
                     .op2(longN(42))
                     .expect(longN(84)).build(),
 
-            mk().operation(ADD)
-                    .op1(longN(Long.MAX_VALUE))
+            mk(ADD).op1(longN(Long.MAX_VALUE))
                     .op2(longN(Long.MAX_VALUE))
                     .expect(bigN(valueOf(Long.MAX_VALUE).multiply(valueOf(2)))).build(),
 
-            mk().operation(ADD)
-                    .op1(longN(42))
+            mk(ADD).op1(longN(42))
                     .op2(bigN("42000000000000000000000000000"))
                     .expect(bigN("42000000000000000000000000042")).build(),
 
-            mk().operation(ADD)
-                    .op1(longN(42))
+            mk(ADD).op1(longN(42))
                     .op2(bigN("42"))
                     .expect(longN(84)).build(),
 
-            mk().operation(ADD)
-                    .op1(longN(42))
+            mk(ADD).op1(longN(42))
                     .op2(doubleN(42))
                     .expect(doubleN(84)).build(),
 
-            mk().operation(ADD)
-                    .op1(bigN("42"))
+            mk(ADD).op1(bigN("42"))
                     .op2(bigN("42000000000000000000000000000"))
                     .expect(bigN("42000000000000000000000000042")).build(),
 
-            mk().operation(ADD)
-                    .op1(doubleN(42.42))
+            mk(ADD).op1(doubleN(42.42))
                     .op2(bigN("42000000000000000000000000000"))
                     .expect(doubleN(42000000000000000000000000042.42d)).build()
     );
 
     private static final List<ArithmeticTestCase> MUL_CASES = Lists.of(
-            mk().operation(MUL)
-                    .op1(longN(42))
+            mk(MUL).op1(longN(42))
                     .op2(longN(2))
                     .expect(longN(84)).build(),
 
-            mk().operation(MUL)
-                    .op1(longN(Long.MAX_VALUE))
+            mk(MUL).op1(longN(Long.MAX_VALUE))
                     .op2(longN(2))
                     .expect(bigN(valueOf(Long.MAX_VALUE).multiply(valueOf(2)))).build(),
 
-            mk().operation(MUL)
+            mk(MUL)
                     .op1(bigN("42"))
                     .op2(bigN("42000000000000000000000000000"))
                     .expect(bigN("1764000000000000000000000000000")).build(),
 
-            mk().operation(MUL)
+            mk(MUL)
                     .op1(longN(42))
                     .op2(bigN("2"))
                     .expect(longN(84)).build(),
 
-            mk().operation(MUL)
+            mk(MUL)
                     .op1(longN(42))
                     .op2(doubleN(2.2))
                     .expect(doubleN(92.4)).build(),
 
-            mk().operation(MUL)
+            mk(MUL)
                     .op1(bigN("42"))
                     .op2(doubleN(2.2))
                     .expect(doubleN(92.4)).build()
     );
 
     private static final List<ArithmeticTestCase> DIV_CASES = Lists.of(
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(longN(42))
                     .op2(longN(2))
                     .expect(longN(21)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(longN(42))
                     .op2(longN(20))
                     .expect(longN(2)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(longN(42))
                     .op2(longN(22))
                     .expect(longN(1)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(longN(42))
                     .op2(longN(52))
                     .expect(longN(0)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(bigN(42))
                     .op2(bigN(20))
                     .expect(longN(2)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(bigN(42))
                     .op2(bigN(22))
                     .expect(longN(1)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(bigN(42))
                     .op2(bigN(52))
                     .expect(longN(0)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(longN(42))
                     .op2(bigN("2"))
                     .expect(longN(21)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(longN(42))
                     .op2(doubleN(2.0))
                     .expect(doubleN(21.0)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(bigN("42"))
                     .op2(doubleN(2.0))
                     .expect(doubleN(21.0)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(doubleN(42.0))
                     .op2(doubleN(2.0))
                     .expect(doubleN(21.0)).build(),
 
-            mk().operation(DIV)
+            mk(DIV)
                     .op1(bigN("1234567890123456789012345678901234567890"))
                     .op2(longN(2))
                     .expect(bigN("617283945061728394506172839450617283945")).build()
@@ -184,42 +175,42 @@ public class ArithmeticTests {
     );
 
     private static final List<ArithmeticTestCase> SUB_CASES = Lists.of(
-            mk().operation(SUB)
+            mk(SUB)
                     .op1(longN(42))
                     .op2(longN(2))
                     .expect(longN(40)).build(),
 
-            mk().operation(SUB)
+            mk(SUB)
                     .op1(longN(Long.MIN_VALUE))
                     .op2(longN(Long.MAX_VALUE))
                     .expect(bigN(BigInteger.valueOf(Long.MIN_VALUE).subtract(BigInteger.valueOf(Long.MAX_VALUE)))).build(),
 
-            mk().operation(SUB)
+            mk(SUB)
                     .op1(longN(42))
                     .op2(bigN("42000000000000000000000000042"))
                     .expect(bigN("-42000000000000000000000000000")).build(),
 
-            mk().operation(SUB)
+            mk(SUB)
                     .op1(bigN("-42000000000000000000000000042"))
                     .op2(bigN("42000000000000000000000000042"))
                     .expect(bigN("-84000000000000000000000000084")).build(),
 
-            mk().operation(SUB)
+            mk(SUB)
                     .op1(bigN("42000000000000000000000000042"))
                     .op2(bigN("42000000000000000000000000042"))
                     .expect(longN(0)).build(),
 
-            mk().operation(SUB)
+            mk(SUB)
                     .op1(doubleN(42))
                     .op2(longN(2))
                     .expect(doubleN(40)).build(),
 
-            mk().operation(SUB)
+            mk(SUB)
                     .op1(doubleN(42))
                     .op2(doubleN(41.5))
                     .expect(doubleN(0.5)).build(),
 
-            mk().operation(SUB)
+            mk(SUB)
                     .op1(doubleN(42))
                     .op2(bigN(40))
                     .expect(doubleN(2)).build()

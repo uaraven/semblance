@@ -90,6 +90,41 @@ Release Functions
   Let is similar to Common Lisp let*, all bindings are done one by one, not in parallel. Let evaluates to last
   value in `body`
 
+  **IF**
+
+    (if condition then-expr else-expr?)
+
+  Evaluates condition, if it is not equal to F executes then-expr, if condition is F and else-expr is present
+  it will be executed
+
+     (if (= a b)
+         (progn ()()...)
+         (println "False"))
+
+  **QUOTE**
+
+     (quote expression)
+     or
+     'expression
+
+  Returns expression without evaluating it, for example
+
+     (quote (+ 1 2))
+
+  will be evaluated to `(+ 1 2)`
+
+  **PROGN**
+
+    (progn (s-expression)*)
+
+  Executes multiple expressions one by one. Result of last expression is returned
+
+  **FN**
+
+    (fn (parameters) (s-expression)*)
+
+  Defines a nameless function.
+
 Beta functions
 ==============
 

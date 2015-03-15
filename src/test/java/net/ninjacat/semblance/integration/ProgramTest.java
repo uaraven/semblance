@@ -21,4 +21,13 @@ public class ProgramTest {
 
         assertThat(value, is(Values.number(4)));
     }
+
+    @Test
+    public void testFunctionShouldWork() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run("(var (f (fn (x y) (+ x y)))) (f 2 1)");
+
+        assertThat(value, is(Values.number(3)));
+    }
 }

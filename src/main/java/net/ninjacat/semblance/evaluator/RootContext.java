@@ -42,6 +42,8 @@ public class RootContext extends BaseContext {
         bindForm(new Quote());
         bindForm(new PrintLn());
 
+        bindForm(new Fn());
+
         bindForm(new Add());
         bindForm(new Sub());
         bindForm(new Div());

@@ -10,6 +10,7 @@ public class SymbolAtom extends Atom {
 
     public static final SymbolAtom TRUE = new SymbolAtom("T");
     public static final SymbolAtom FALSE = new SymbolAtom("F");
+    public static final SymbolAtom NONE = new SymbolAtom("");
 
     private final String value;
 

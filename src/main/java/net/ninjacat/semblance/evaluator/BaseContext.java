@@ -88,6 +88,13 @@ abstract class BaseContext implements Context {
         return last;
     }
 
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
     /**
      * Creates a named child context.
      *
@@ -107,7 +114,7 @@ abstract class BaseContext implements Context {
         }
         final LispCollection params = function.tail();
         final Callable func = asCallable(callable.get());
-        return func.apply(createChild(func.name().asJavaObject().getValue()), params);
+        return func.apply(this, params);
     }
 
 }

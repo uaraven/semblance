@@ -55,7 +55,7 @@ public class Interpreter {
     }
 
     private LispValue doRun(final SList program) {
-        final Context executionContext = LocalContext.namelessChildContext(rootContext);
+        final Context executionContext = LocalContext.namedChildContext("main", rootContext);
         LispValue evaluated = NilCollection.INSTANCE;
         for (final LispValue sExpression : program) {
             evaluated = executionContext.evaluate(sExpression);

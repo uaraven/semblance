@@ -91,6 +91,19 @@ public final class Values {
         }
     }
 
+    /**
+     * Converts any {@link LispCollection} to {@link SList}
+     */
+    public static SList toSList(final LispCollection value) {
+        if (isList(value)) {
+            return (SList) value;
+        } else if (isVector(value)) {
+            return new SList(value.getCollection());
+        } else {
+            throw new TypeMismatchException("Collection", value.getType(), getSourceInfo(value));
+        }
+    }
+
     public static LispCollection asCollection(final LispValue value) {
         if (value instanceof LispCollection) {
             return (LispCollection) value;
@@ -125,6 +138,10 @@ public final class Values {
 
     public static boolean isList(final LispValue value) {
         return SemblanceType.LIST == value.getType();
+    }
+
+    public static boolean isVector(final LispValue value) {
+        return SemblanceType.VECTOR == value.getType();
     }
 
     public static boolean isSymbol(final LispValue value) {

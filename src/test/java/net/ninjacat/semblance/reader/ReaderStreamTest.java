@@ -67,6 +67,51 @@ public class ReaderStreamTest {
     }
 
     @Test
+    public void shouldTokenizeExplicitPositiveDouble() throws Exception {
+        final ReaderStream stream = ReaderStream.readString("+42.42");
+
+        final List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have one token", tokens.size(), is(1));
+        assertThat("Token type should be double", tokens.get(0).getType(), is(Token.TokenType.Double));
+        assertThat("Token value should be '+42.42'", tokens.get(0).getValue(), is("+42.42"));
+    }
+
+    @Test
+    public void shouldTokenizeScientificDouble() throws Exception {
+        final ReaderStream stream = ReaderStream.readString("42e42");
+
+        final List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have one token", tokens.size(), is(1));
+        assertThat("Token type should be double", tokens.get(0).getType(), is(Token.TokenType.Double));
+        assertThat("Token value should be '4.2E43'", tokens.get(0).getValue(), is("4.2E43"));
+    }
+
+    @Test
+    public void shouldTokenizeNegativeScientificDouble() throws Exception {
+        final ReaderStream stream = ReaderStream.readString("-42e42");
+
+        final List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have one token", tokens.size(), is(1));
+        assertThat("Token type should be double", tokens.get(0).getType(), is(Token.TokenType.Double));
+        assertThat("Token value should be '-4.2E43'", tokens.get(0).getValue(), is("-4.2E43"));
+    }
+
+
+    @Test
+    public void shouldTokenizeScientificDoubleWithNegativeExponent() throws Exception {
+        final ReaderStream stream = ReaderStream.readString("42e-42");
+
+        final List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have one token", tokens.size(), is(1));
+        assertThat("Token type should be double", tokens.get(0).getType(), is(Token.TokenType.Double));
+        assertThat("Token value should be '4.2E-41'", tokens.get(0).getValue(), is("4.2E-41"));
+    }
+
+    @Test
     public void shouldTokenizeDoubleEvenWhenFractionalPartIsZero() throws Exception {
         final ReaderStream stream = ReaderStream.readString("42.0");
 
@@ -162,6 +207,27 @@ public class ReaderStreamTest {
         assertThat("Token value should be '", tokens.get(0).getValue(), is("'"));
         assertThat("Token value should be #", tokens.get(1).getValue(), is("#"));
     }
+
+    @Test
+    public void shouldTokenizeSymbolsWithComma() throws Exception {
+        final ReaderStream stream = ReaderStream.readString(",symbol");
+
+        final List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have 1 token", tokens.size(), is(1));
+        assertThat("Should have parse as symbol", tokens.get(0).getType(), is(Token.TokenType.Symbol));
+    }
+
+    @Test
+    public void shouldTokenizeSymbolsWithAt() throws Exception {
+        final ReaderStream stream = ReaderStream.readString("@symbol");
+
+        final List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have 1 token", tokens.size(), is(1));
+        assertThat("Should have parse as symbol", tokens.get(0).getType(), is(Token.TokenType.Symbol));
+    }
+
 
     @Test
     public void shouldTokenizeOneElementList() throws Exception {

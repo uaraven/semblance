@@ -125,6 +125,24 @@ Release Functions
 
   Defines a nameless function.
 
+  **DEFMACRO**
+
+    (defmacro name (parameters) (s-expression)*)
+
+  Defines a macro named `name` with a list of formal `parameters` and body of s-expressions. Major difference from
+  other LISPs around is that `defmacro` special form never evaluates the body, so there is no need to use backquote.
+  In fact backquote is not supported in Semblance.
+
+  You still need to use comma to escape parameters and you can still use `@` to unwrap lists.
+
+    (defmacro defun
+         (name params &rest body)
+         (var ,name (fn ,params ,@body)))
+
+  Example defines a `defun` macro which takes three parameters `name`, `params` and `body` and binds to symbol
+  in `name` a function with parameters `params` and `body` of s-expressions.
+
+
 Beta functions
 ==============
 

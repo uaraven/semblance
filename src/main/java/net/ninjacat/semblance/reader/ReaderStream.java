@@ -20,7 +20,8 @@ import java.util.regex.Pattern;
 public class ReaderStream {
 
     private static final Pattern INTEGER = Pattern.compile("(\\+|\\-)?\\d+");
-    private static final Pattern DOUBLE = Pattern.compile("(\\+|\\-)?\\d+(\\.\\d*)?");
+    private static final Pattern DOUBLE = Pattern.compile("((\\+|\\-)?\\d+(\\.\\d*)?)");
+    private static final Pattern DOUBLE_SCI = Pattern.compile("((\\+|\\-)?\\d+(e|E)(\\+|\\-)?\\d+)");
 
     private final Set<Character> specials;
     private final StreamTokenizer tokenizer;
@@ -48,6 +49,18 @@ public class ReaderStream {
 
     static ReaderStream readString(final String text) {
         return new ReaderStream(new ByteArrayInputStream(text.getBytes(Charset.forName("utf-8"))));
+    }
+
+    private static boolean isInteger(final String nval) {
+        return INTEGER.matcher(nval).matches();
+    }
+
+    private static boolean isDouble(final String nval) {
+        return DOUBLE.matcher(nval).matches();
+    }
+
+    private static boolean isScientificDouble(final String sval) {
+        return DOUBLE_SCI.matcher(sval).matches();
     }
 
     void registerSpecial(final char specialCharacter) {
@@ -87,6 +100,7 @@ public class ReaderStream {
         streamTokenizer.wordChars('*', '-');
         streamTokenizer.wordChars('/', '/');
         streamTokenizer.wordChars(':', ':');
+        streamTokenizer.wordChars('@', '@');
         streamTokenizer.whitespaceChars(0, ' ');
         streamTokenizer.commentChar(';');
         streamTokenizer.ordinaryChar('[');
@@ -122,6 +136,7 @@ public class ReaderStream {
                 case StreamTokenizer.TT_EOF:
                     result = Token.eof(currentPosition());
                     break;
+                case (int) '+':
                 case (int) '-':
                     result = parseNumber(true);
                     break;
@@ -218,6 +233,8 @@ public class ReaderStream {
             return parseNumber(false);
         } else if (isDouble(tokenizer.sval)) {
             return Token.doubleToken(tokenizer.nval, currentPosition());
+        } else if (isScientificDouble(tokenizer.sval)) {
+            return Token.doubleToken(Double.parseDouble(tokenizer.sval), currentPosition());
         } else {
             return Token.symbol(tokenizer.sval, currentPosition());
         }
@@ -254,14 +271,6 @@ public class ReaderStream {
             value += tokenizer.sval;
         }
         return Token.doubleToken(value, currentPosition());
-    }
-
-    private boolean isInteger(final String nval) {
-        return INTEGER.matcher(nval).matches();
-    }
-
-    private boolean isDouble(final String nval) {
-        return DOUBLE.matcher(nval).matches();
     }
 
     private boolean shouldIgnore(final Token token) {

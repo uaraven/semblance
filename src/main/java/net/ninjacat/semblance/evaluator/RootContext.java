@@ -43,6 +43,7 @@ public class RootContext extends BaseContext {
         bindForm(new PrintLn());
 
         bindForm(new Fn());
+        bindForm(new Defmacro());
 
         bindForm(new Add());
         bindForm(new Sub());

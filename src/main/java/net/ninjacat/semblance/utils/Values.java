@@ -169,7 +169,7 @@ public final class Values {
     }
 
     public static boolean isCollection(final Object collection) {
-        return collection instanceof LispCollection && ((LispCollection) collection).isNil();
+        return collection instanceof LispCollection && !((LispCollection) collection).isNil();
     }
 
     public static boolean isNilCollection(final Object collection) {

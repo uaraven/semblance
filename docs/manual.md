@@ -131,7 +131,7 @@ Release Functions
 
   Defines a macro named `name` with a list of formal `parameters` and body of s-expressions. Major difference from
   other LISPs around is that `defmacro` special form never evaluates the body, so there is no need to use backquote.
-  In fact backquote is not supported in Semblance.
+  In fact backquote is not supported in Semblance (yet).
 
   You still need to use comma to escape parameters and you can still use `@` to unwrap lists.
 

@@ -9,10 +9,16 @@ import static net.ninjacat.semblance.utils.Values.asNumber;
 import static net.ninjacat.semblance.utils.Values.isNumber;
 
 /**
- * @author oleksiivoronin, date: 15-03-07.
+ * Base class for equality functions.
  */
 public abstract class BaseEqual extends SpecialForm {
-    public BaseEqual(String... definition) {
+
+    /**
+     * Create new instance.
+     *
+     * @param definition Function definition.
+     */
+    protected BaseEqual(final String... definition) {
         super(definition);
     }
 

@@ -101,6 +101,7 @@ public class ReaderStream {
         streamTokenizer.wordChars('/', '/');
         streamTokenizer.wordChars(':', ':');
         streamTokenizer.wordChars('@', '@');
+        streamTokenizer.ordinaryChar(',');
         streamTokenizer.whitespaceChars(0, ' ');
         streamTokenizer.commentChar(';');
         streamTokenizer.ordinaryChar('[');

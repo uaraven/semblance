@@ -9,7 +9,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "DuplicateStringLiteralInspection"})
+@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "DuplicateStringLiteralInspection", "SpellCheckingInspection"})
 public class BigIntegerNumberAtomTest {
 
     private static final BigInteger TEST_NUMBER = new BigInteger("12332125234234213432143214532654325432543");

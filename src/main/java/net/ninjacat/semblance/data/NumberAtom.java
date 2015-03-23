@@ -7,6 +7,7 @@ import java.math.BigInteger;
 /**
  * Number atom
  */
+@SuppressWarnings({"BooleanMethodNameMustStartWithQuestion", "InstanceMethodNamingConvention"})
 public abstract class NumberAtom<T> extends Atom {
 
     protected NumberAtom() {
@@ -16,10 +17,23 @@ public abstract class NumberAtom<T> extends Atom {
         super(sourceInfo);
     }
 
+    /**
+     * Makes a number atom out of string.
+     *
+     * @param token String value.
+     * @return Number atom.
+     */
     public static NumberAtom<?> make(final String token) {
         return make(token, SourceInfo.UNKNOWN);
     }
 
+    /**
+     * Same as {@link #make}, but includes source code information.
+     *
+     * @param token      String value.
+     * @param sourceInfo Source code information.
+     * @return Number atom.
+     */
     public static NumberAtom<?> make(final String token, final SourceInfo sourceInfo) {
         final BigInteger bigInteger = new BigInteger(token);
         if (32 >= bigInteger.bitLength()) {
@@ -29,16 +43,50 @@ public abstract class NumberAtom<T> extends Atom {
         }
     }
 
+    /**
+     * Adds this number and a parameter.
+     *
+     * @param other number to add.
+     * @return New instance of number atom with value equal to sum of this number and other number.
+     */
     public abstract NumberAtom<?> add(NumberAtom<?> other);
 
+    /**
+     * Subtracts other number from this number.
+     *
+     * @param other number to subtract.
+     * @return New instance of number atom with value equal to difference of this number and other number.
+     */
     public abstract NumberAtom<?> sub(NumberAtom<?> other);
 
+    /**
+     * Divides this number by a parameter.
+     *
+     * @param other number to divide by.
+     * @return New instance of number atom with value equal to quotient of this number and other number.
+     */
     public abstract NumberAtom<?> div(NumberAtom<?> other);
 
+    /**
+     * Divides this number and a parameter by modulo. Both numbers must be integers.
+     *
+     * @param other number to divide by.
+     * @return New instance of number atom with value equal to remainder of this number and other number.
+     */
     public abstract NumberAtom<?> mod(NumberAtom<?> other);
 
+    /**
+     * Multiplicates this number by a parameter.
+     *
+     * @param other number to multiply by.
+     * @return New instance of number atom with value equal to multiplication result of this number
+     * and other number.
+     */
     public abstract NumberAtom<?> mul(NumberAtom<?> other);
 
+    /**
+     * @return true if this number represents infinity
+     */
     public abstract boolean isInfinity();
 
     /**
@@ -65,8 +113,14 @@ public abstract class NumberAtom<T> extends Atom {
      */
     public abstract boolean gt(NumberAtom<?> other);
 
+    /**
+     * @return Number type. {@link net.ninjacat.semblance.data.SemblanceNumberType}
+     */
     public abstract SemblanceNumberType getNumberType();
 
+    /**
+     * @return The value of this atom.
+     */
     public abstract T getValue();
 
     @Override

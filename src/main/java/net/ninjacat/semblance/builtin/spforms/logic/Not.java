@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.builtin.spforms.logic;
 
+import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
 import net.ninjacat.semblance.evaluator.Context;
@@ -10,10 +10,14 @@ import net.ninjacat.semblance.evaluator.Context;
 import static net.ninjacat.semblance.utils.Values.*;
 
 /**
- * @author oleksiivoronin, date: 15-03-07.
+ * NOT boolean operator
  */
+@SuppressWarnings("ClassNamingConvention")
 public class Not extends SpecialForm {
 
+    /**
+     * Creates new instance of NOT
+     */
     public Not() {
         super(list(symbol("not"), symbol("expression")));
     }
@@ -25,9 +29,9 @@ public class Not extends SpecialForm {
         }
         final LispValue head = parameters.head();
         if (isNilCollection(head) || isFalse(head)) {
-            return SymbolAtom.TRUE;
+            return Constants.TRUE;
         } else {
-            return SymbolAtom.FALSE;
+            return Constants.FALSE;
         }
     }
 }

@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.builtin.spforms.comparison;
 
+import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SList;
-import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.Vector;
 import net.ninjacat.semblance.evaluator.RootContext;
 import org.junit.Before;
@@ -28,7 +28,7 @@ public class EqualTest {
 
         final LispValue result = new Equal().apply(rootContext, params);
 
-        assertThat(asSymbol(result), is(SymbolAtom.TRUE));
+        assertThat(asSymbol(result), is(Constants.TRUE));
     }
 
     @Test
@@ -37,7 +37,7 @@ public class EqualTest {
 
         final LispValue result = new Equal().apply(rootContext, params);
 
-        assertThat(asSymbol(result), is(SymbolAtom.TRUE));
+        assertThat(asSymbol(result), is(Constants.TRUE));
     }
 
     @Test
@@ -46,7 +46,7 @@ public class EqualTest {
 
         final LispValue result = new Equal().apply(rootContext, params);
 
-        assertThat(asSymbol(result), is(SymbolAtom.FALSE));
+        assertThat(asSymbol(result), is(Constants.FALSE));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class EqualTest {
 
         final LispValue result = new Equal().apply(rootContext, params);
 
-        assertThat(asSymbol(result), is(SymbolAtom.FALSE));
+        assertThat(asSymbol(result), is(Constants.FALSE));
     }
 
     @Test
@@ -64,7 +64,7 @@ public class EqualTest {
 
         final LispValue result = new Equal().apply(rootContext, params);
 
-        assertThat(asSymbol(result), is(SymbolAtom.FALSE));
+        assertThat(asSymbol(result), is(Constants.FALSE));
     }
 
     @Test
@@ -73,7 +73,7 @@ public class EqualTest {
 
         final LispValue result = new Equal().apply(rootContext, params);
 
-        assertThat(asSymbol(result), is(SymbolAtom.TRUE));
+        assertThat(asSymbol(result), is(Constants.TRUE));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class EqualTest {
 
         final LispValue result = new Equal().apply(rootContext, params);
 
-        assertThat(asSymbol(result), is(SymbolAtom.FALSE));
+        assertThat(asSymbol(result), is(Constants.FALSE));
     }
 
     @Test
@@ -92,7 +92,7 @@ public class EqualTest {
 
         final LispValue result = new Equal().apply(rootContext, params);
 
-        assertThat(asSymbol(result), is(SymbolAtom.TRUE));
+        assertThat(asSymbol(result), is(Constants.TRUE));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class EqualTest {
 
         final LispValue result = new Equal().apply(rootContext, params);
 
-        assertThat(asSymbol(result), is(SymbolAtom.FALSE));
+        assertThat(asSymbol(result), is(Constants.FALSE));
     }
 
 }

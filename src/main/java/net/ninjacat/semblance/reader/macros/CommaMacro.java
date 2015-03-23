@@ -5,18 +5,17 @@ import net.ninjacat.semblance.reader.ReaderMacro;
 import net.ninjacat.semblance.utils.Values;
 
 /**
- * Back quote reader macro
+ * Reader macro for , (comma)
  */
-public class BackQuoteMacro implements ReaderMacro {
+public class CommaMacro implements ReaderMacro {
     @Override
     public String getMacroCharacter() {
-        return "`";
+        return ",";
     }
 
     @Override
     public LispValue replaceReaderMacro(final LispValue value) {
 
-        return Values.list(Values.symbol("backquote"), value);
+        return Values.list(Values.symbol("#--eval-me--#"), value);
     }
-
 }

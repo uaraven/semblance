@@ -7,11 +7,19 @@ import net.ninjacat.smooth.utils.Option;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Basic implementation of namespace.
+ */
 public class BaseNamespace implements Namespace {
 
     private final SymbolAtom name;
     private final Map<SymbolAtom, LispValue> bindings;
 
+    /**
+     * Creates a new namespace
+     *
+     * @param name Name of this namespace.
+     */
     public BaseNamespace(final SymbolAtom name) {
         this.name = name;
         bindings = new ConcurrentHashMap<>();

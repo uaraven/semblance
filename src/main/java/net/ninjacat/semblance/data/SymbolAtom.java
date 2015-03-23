@@ -9,30 +9,36 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static net.ninjacat.semblance.data.Constants.*;
 import static net.ninjacat.semblance.utils.Values.list;
 
 /**
- * Created on 24/02/15.
+ * Symbol atom.
  */
 public class SymbolAtom extends Atom {
 
-    public static final SymbolAtom NONE = new SymbolAtom("");
-    public static final SymbolAtom TRUE = new SymbolAtom("T");
-    public static final SymbolAtom FALSE = new SymbolAtom("F");
-
     private final String value;
     private final SList hierarchy;
-    private final boolean hierarchical;
 
+    /**
+     * Creates a new symbol atom.
+     *
+     * @param value value of instantiated atom.
+     */
     public SymbolAtom(final String value) {
         this(value, SourceInfo.UNKNOWN);
     }
 
+    /**
+     * Creates a new symbol atom.
+     *
+     * @param value      Value of instantiated atom.
+     * @param sourceInfo Source code information.
+     */
     public SymbolAtom(final String value, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
         hierarchy = buildHierarchy();
-        hierarchical = 1 < hierarchy.length();
     }
 
     /**
@@ -83,10 +89,15 @@ public class SymbolAtom extends Atom {
         return "SymbolAtom{" + value + '}';
     }
 
-    public boolean isHierarchical() {
-        return hierarchical;
-    }
-
+    /**
+     * Returns namespace hierarchy of this symbol in form of list.
+     * <p/>
+     * For symbol {@code list/private/length} following list will be returned:
+     * <p/>
+     * list(symbol("list"), symbol("private"))
+     *
+     * @return namespace hierarchy of this symbol.
+     */
     public SList getNameHierarchy() {
         return hierarchy;
     }
@@ -97,7 +108,7 @@ public class SymbolAtom extends Atom {
                 new ArrayList<String>() :
                 Arrays.asList(splitted).subList(0, value.length() - 1);
         if (parts.isEmpty()) {
-            return list(SymbolAtom.NONE);
+            return list(NONE);
         } else {
             return new SList(Iter.of(parts).map(Values.StringToSymbol.INSTANCE).toList());
         }

@@ -5,7 +5,7 @@ import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.Vector;
 import net.ninjacat.semblance.errors.runtime.UnexpectedEndRuntimeException;
-import net.ninjacat.semblance.reader.macros.BackquoteMacro;
+import net.ninjacat.semblance.reader.macros.BackQuoteMacro;
 import net.ninjacat.semblance.reader.macros.QuoteMacro;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.collections.Lists;
@@ -141,7 +141,7 @@ public class ParserTest {
     @Test
     public void shouldReplaceBackQuoteMacroForSymbol() throws Exception {
         final List<Token> tokens = Lists.of(Token.special('`', UNKNOWN), symbol("one", UNKNOWN));
-        parser.registerReaderMacro(new BackquoteMacro());
+        parser.registerReaderMacro(new BackQuoteMacro());
 
         final LispCollection parse = parser.parse(tokens);
 

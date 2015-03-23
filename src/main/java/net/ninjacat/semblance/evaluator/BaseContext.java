@@ -25,7 +25,7 @@ abstract class BaseContext implements Context {
         this.name = name;
         this.parent = parent;
         namespaces = new ConcurrentHashMap<>();
-        namespaces.put(SymbolAtom.NONE, new BaseNamespace(SymbolAtom.NONE));
+        namespaces.put(Constants.NONE, new BaseNamespace(Constants.NONE));
     }
 
     @Override

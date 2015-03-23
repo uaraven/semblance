@@ -67,7 +67,7 @@ public class ArithmeticTestCase {
     public abstract static class Operation implements Func2<NumberAtom, NumberAtom, NumberAtom> {
         private final String name;
 
-        public Operation(final String name) {
+        protected Operation(final String name) {
             this.name = name;
         }
 

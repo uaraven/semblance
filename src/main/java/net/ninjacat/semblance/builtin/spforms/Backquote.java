@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.builtin.spforms;
 
+import net.ninjacat.semblance.data.Constants.HiddenFunctions;
 import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SList;
@@ -18,9 +19,15 @@ import java.util.List;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
-public class Backquote extends SpecialForm {
+/**
+ * Backquote implementation.
+ */
+public class BackQuote extends SpecialForm {
 
-    public Backquote() {
+    /**
+     * Creates a new instance of BackQuote.
+     */
+    public BackQuote() {
         super("backquote", "&rest", "body");
     }
 
@@ -34,7 +41,12 @@ public class Backquote extends SpecialForm {
 
         for (final LispValue item : sExpr) {
             if (isCollection(item)) {
-                output.add(expandBQ(asCollection(item), parameterContext));
+                final LispCollection itemAsList = asCollection(item);
+                if (itemAsList.head().equals(HiddenFunctions.COMMA)) {
+                    output.add(parameterContext.evaluate(itemAsList));
+                } else {
+                    output.add(expandBQ(itemAsList, parameterContext));
+                }
             } else {
                 if (isSymbol(item) && isNonEscapedParameter(item)) {
                     output.addAll(expandParameter(item, parameterContext));

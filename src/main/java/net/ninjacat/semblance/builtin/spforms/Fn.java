@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.builtin.spforms;
 
+import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.callables.InterpretedFunction;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
@@ -12,8 +12,12 @@ import static net.ninjacat.semblance.utils.Values.asCollection;
 /**
  * Function declaration. Returns unnamed function.
  */
+@SuppressWarnings("ClassNamingConvention")
 public class Fn extends SpecialForm {
 
+    /**
+     * Creates a new instance of function
+     */
     public Fn() {
         super("fn", "params", "exprs");
     }
@@ -23,6 +27,6 @@ public class Fn extends SpecialForm {
         final LispCollection funcParams = asCollection(parameters.head());
         final LispCollection body = parameters.tail();
 
-        return new InterpretedFunction(SymbolAtom.NONE, funcParams, body);
+        return new InterpretedFunction(Constants.NONE, funcParams, body);
     }
 }

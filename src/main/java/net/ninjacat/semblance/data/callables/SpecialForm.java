@@ -3,11 +3,16 @@ package net.ninjacat.semblance.data.callables;
 import net.ninjacat.semblance.data.SList;
 
 /**
- * Created on 28/02/15.
+ * Abstract Special Form.
  */
 public abstract class SpecialForm extends ParametrizableCallable {
 
-    public SpecialForm(final String... definition) {
+    /**
+     * Creates new instance of the special form.
+     *
+     * @param definition Definition of special form.
+     */
+    protected SpecialForm(final String... definition) {
         super(definition);
     }
 

@@ -21,11 +21,10 @@ import static org.mockito.Mockito.when;
 public class PrognTest {
 
     public static final SymbolAtom SYMBOL = symbol(":final");
-    private Context context;
 
     @Before
     public void setUp() throws Exception {
-        context = mock(Context.class);
+        Context context = mock(Context.class);
 
         when(context.evaluate(any(SymbolAtom.class))).thenAnswer(new Answer<SymbolAtom>() {
             @Override

@@ -186,9 +186,9 @@ public class LongNumberAtom extends NumberAtom<Long> {
         }
     }
 
-    private boolean willOverflow(final long a, final long b) {
-        final long maximum = Long.signum(a) == Long.signum(b) ? Long.MAX_VALUE : Long.MIN_VALUE;
+    private boolean willOverflow(final long l1, final long l2) {
+        final long maximum = Long.signum(l1) == Long.signum(l2) ? Long.MAX_VALUE : Long.MIN_VALUE;
 
-        return (0 != a && (0 < b && b > maximum / a || 0 > b && b < maximum / a));
+        return (0 != l1 && (0 < l2 && l2 > maximum / l1 || 0 > l2 && l2 < maximum / l1));
     }
 }

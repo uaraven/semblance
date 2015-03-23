@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.builtin.spforms.comparison;
 
+import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.NumberAtom;
-import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.evaluator.LocalContext;
@@ -35,9 +35,9 @@ public class LessThan extends SpecialForm {
             final NumberAtom currentNumber = Values.asNumber(current);
             //noinspection unchecked
             if (!prevous.lt(currentNumber)) {
-                return SymbolAtom.FALSE;
+                return Constants.FALSE;
             }
         }
-        return SymbolAtom.TRUE;
+        return Constants.TRUE;
     }
 }

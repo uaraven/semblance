@@ -214,8 +214,9 @@ public class ReaderStreamTest {
 
         final List<Token> tokens = stream.tokenize();
 
-        assertThat("Should have 1 token", tokens.size(), is(1));
+        assertThat("Should have 2 token", tokens.size(), is(2));
         assertThat("Should have parse as symbol", tokens.get(0).getType(), is(Token.TokenType.Symbol));
+        assertThat("Should have parse as symbol", tokens.get(1).getType(), is(Token.TokenType.Symbol));
     }
 
     @Test

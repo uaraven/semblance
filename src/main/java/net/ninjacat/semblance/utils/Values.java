@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * Various utils simplifying value manipulations
  */
+@SuppressWarnings({"ConstantNamingConvention", "JavaDoc"})
 public final class Values {
     public static final SymbolAtom T = symbol("T");
     public static final SymbolAtom F = symbol("F");
@@ -93,6 +94,7 @@ public final class Values {
 
     /**
      * Converts any {@link LispCollection} to {@link SList}
+     * @return Collection as SList.
      */
     public static SList toSList(final LispCollection value) {
         if (isList(value)) {
@@ -153,7 +155,7 @@ public final class Values {
     }
 
     public static boolean isFalse(final LispValue value) {
-        return isSymbol(value) && asSymbol(value).equals(SymbolAtom.FALSE);
+        return isSymbol(value) && asSymbol(value).equals(Constants.FALSE);
     }
 
     public static boolean isTrue(final LispValue value) {

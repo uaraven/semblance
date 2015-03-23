@@ -6,8 +6,8 @@ import net.ninjacat.semblance.builtin.spforms.comparison.*;
 import net.ninjacat.semblance.builtin.spforms.logic.And;
 import net.ninjacat.semblance.builtin.spforms.logic.Not;
 import net.ninjacat.semblance.builtin.spforms.logic.Or;
+import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.NilCollection;
-import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 
 import static net.ninjacat.semblance.utils.Values.symbol;
@@ -25,8 +25,8 @@ public class RootContext extends BaseContext {
         super("/", null);
 
         bind(symbol("nil"), NilCollection.INSTANCE);
-        bind(symbol("T"), SymbolAtom.TRUE);
-        bind(symbol("F"), SymbolAtom.FALSE);
+        bind(symbol("T"), Constants.TRUE);
+        bind(symbol("F"), Constants.FALSE);
 
         bindSpecialForms();
     }
@@ -39,8 +39,9 @@ public class RootContext extends BaseContext {
     private void bindSpecialForms() {
         bindForm(new Var());
 
+        bindForm(new EvalMe());
         bindForm(new Quote());
-        bindForm(new Backquote());
+        bindForm(new BackQuote());
         bindForm(new PrintLn());
 
         bindForm(new Fn());

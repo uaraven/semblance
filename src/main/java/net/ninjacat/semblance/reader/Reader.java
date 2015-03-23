@@ -2,6 +2,7 @@ package net.ninjacat.semblance.reader;
 
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.errors.compile.ParsingException;
+import net.ninjacat.semblance.reader.macros.BackquoteMacro;
 import net.ninjacat.semblance.reader.macros.QuoteMacro;
 
 import java.io.InputStream;
@@ -21,6 +22,7 @@ public class Reader {
     public Reader() {
         macros = new HashSet<>();
         macros.add(new QuoteMacro());
+        macros.add(new BackquoteMacro());
     }
 
     /**

@@ -5,6 +5,7 @@ import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.Vector;
 import net.ninjacat.semblance.errors.runtime.UnexpectedEndRuntimeException;
+import net.ninjacat.semblance.reader.macros.BackquoteMacro;
 import net.ninjacat.semblance.reader.macros.QuoteMacro;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.collections.Lists;
@@ -135,6 +136,23 @@ public class ParserTest {
         assertThat("Function call should be quote", (SymbolAtom) expr.head(), is(Values.symbol("quote")));
         assertThat("Function parameter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
     }
+
+
+    @Test
+    public void shouldReplaceBackQuoteMacroForSymbol() throws Exception {
+        final List<Token> tokens = Lists.of(Token.special('`', UNKNOWN), symbol("one", UNKNOWN));
+        parser.registerReaderMacro(new BackquoteMacro());
+
+        final LispCollection parse = parser.parse(tokens);
+
+        assertThat("Should produce s-expression", parse.head(), instanceOf(SList.class));
+
+        final SList expr = (SList) parse.head();
+
+        assertThat("Function call should be backquote", (SymbolAtom) expr.head(), is(Values.symbol("backquote")));
+        assertThat("Function parameter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
+    }
+
 
     @Test
     public void shouldParseNestedList() throws Exception {

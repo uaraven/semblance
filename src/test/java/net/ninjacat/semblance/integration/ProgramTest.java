@@ -36,7 +36,7 @@ public class ProgramTest {
     @Test
     public void testShouldDefineMacro() throws Exception {
         final Interpreter interpreter = new Interpreter();
-        final LispValue value = interpreter.run("(defmacro mcr (x y) (,x (+ 1 ,y)))");
+        final LispValue value = interpreter.run("(defmacro mcr (x y) `(,x (+ 1 ,y)))");
 
         assertThat(value, instanceOf(Macro.class));
 
@@ -47,7 +47,7 @@ public class ProgramTest {
     @Test
     public void testShouldDefineAndExecuteMacro() throws Exception {
         final Interpreter interpreter = new Interpreter();
-        final LispValue value = interpreter.run("(defmacro mcr (x y) (,x (+ 1 ,y)))\n(mcr quote 2)");
+        final LispValue value = interpreter.run("(defmacro mcr (x y) `(,x (+ 1 ,y)))\n(mcr quote 2)");
 
         assertThat(isList(value), is(true));
         assertThat(asSList(value), is(list(symbol("+"), number(1), number(2))));

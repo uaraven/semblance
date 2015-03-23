@@ -75,7 +75,6 @@ Release Functions
 
   prints all values separated by space and returns NIL
 
-
   **LET**
 
     (let variables body)
@@ -113,6 +112,19 @@ Release Functions
 
   will be evaluated to `(+ 1 2)`
 
+
+  **BACKQUOTE**
+
+      (backquote expression)
+
+  Like quote, but prevents evaluation of every symbol, except those which are un-escaped by `,` (comma)
+  For example:
+
+      (backquote (+ ,a ,b))
+
+  will evaluate to `(+ 1 2)` if current context has `a` bound to `1` and `b` bound to `2`.
+  Short form of ` `expression` is supported as well.  
+
   **PROGN**
 
     (progn (s-expression)*)
@@ -129,15 +141,13 @@ Release Functions
 
     (defmacro name (parameters) (s-expression)*)
 
-  Defines a macro named `name` with a list of formal `parameters` and body of s-expressions. Major difference from
-  other LISPs around is that `defmacro` special form never evaluates the body, so there is no need to use backquote.
-  In fact backquote is not supported in Semblance (yet).
-
-  You still need to use comma to escape parameters and you can still use `@` to unwrap lists.
+  Defines a macro named `name` with a list of formal `parameters` and body of s-expressions. Just like
+  other lisp out there you can use backquote to escape macro body.
+  You need to use comma to un-escape parameters and you can still use `@` to unwrap lists.
 
     (defmacro defun
          (name params &rest body)
-         (var ,name (fn ,params ,@body)))
+         `(var ,name (fn ,params ,@body)))
 
   Example defines a `defun` macro which takes three parameters `name`, `params` and `body` and binds to symbol
   in `name` a function with parameters `params` and `body` of s-expressions.
@@ -153,6 +163,3 @@ Beta functions
     (var (name value) [(name value) ...])
   Binds evaluated *value* to symbol *name* in the current context. May evaluate and bind multiple variables.
   Returns latest evaluated value
-
-
-

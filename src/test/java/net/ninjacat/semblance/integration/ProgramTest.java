@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
 public class ProgramTest {
 
     @Test
-    public void shouldDoSimpleArithmetic() throws Exception {
+    public void testShouldDoSimpleArithmetic() throws Exception {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run("(+ 2 (- 4 2))");
@@ -47,7 +47,7 @@ public class ProgramTest {
     @Test
     public void testShouldDefineAndExecuteMacro() throws Exception {
         final Interpreter interpreter = new Interpreter();
-        final LispValue value = interpreter.run("(defmacro mcr (x y) (,x (+ 1 ,y))) (mcr 'quote 2)");
+        final LispValue value = interpreter.run("(defmacro mcr (x y) (,x (+ 1 ,y)))\n(mcr quote 2)");
 
         assertThat(isList(value), is(true));
         assertThat(asSList(value), is(list(symbol("+"), number(1), number(2))));

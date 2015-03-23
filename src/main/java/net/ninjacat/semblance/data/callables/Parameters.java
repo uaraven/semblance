@@ -98,6 +98,17 @@ public class Parameters implements Iterable<Parameter>, Serializable {
         applyList(context, evaluated);
     }
 
+    /**
+     * Assigns actual parameters according to formal parameter definition. Assignment is done in supplied context.
+     * Does not evaluates actual parameters, expressions are assigned as is.
+     *
+     * @param context          Context in which assign parameters.
+     * @param actualParameters List of actual parameters.
+     */
+    public void bindExpressions(final Context context, final LispCollection actualParameters) {
+        applyList(context, actualParameters);
+    }
+
     private void applyList(final Context context, final LispCollection evaluated) {
         SList params = toSList(evaluated);
         // assign all available parameters

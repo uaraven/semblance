@@ -40,7 +40,7 @@ public class Macro implements Callable {
         final Context parameterContext = LocalContext.namelessChildContext(context);
         final Context executionContext = LocalContext.namedChildContext(name.repr(), context);
 
-        formalParameters.apply(parameterContext, parameters);
+        formalParameters.bindExpressions(parameterContext, parameters);
 
         final LispCollection expandedBody = expandMacro(body, parameterContext);
         return executionContext.evaluateBlock(expandedBody);

@@ -19,13 +19,13 @@ abstract class BaseContext implements Context {
 
     private final String name;
     private final Context parent;
-
-    private final Map<SymbolAtom, LispValue> bindings;
+    private final Map<SymbolAtom, Namespace> namespaces;
 
     BaseContext(final String name, final Context parent) {
         this.name = name;
         this.parent = parent;
-        bindings = new ConcurrentHashMap<>();
+        namespaces = new ConcurrentHashMap<>();
+        namespaces.put(SymbolAtom.NONE, new BaseNamespace(SymbolAtom.NONE));
     }
 
     @Override
@@ -35,18 +35,13 @@ abstract class BaseContext implements Context {
 
     @Override
     public Option<LispValue> findSymbol(final SymbolAtom symbolName) {
-        if (bindings.containsKey(symbolName)) {
-            return Option.of(bindings.get(symbolName));
-        } else if (null != parent) {
-            return parent.findSymbol(symbolName);
-        } else {
-            return Option.absent();
-        }
+        return findInNamespace(symbolName);
     }
 
     @Override
     public void bind(final SymbolAtom symbolName, final LispValue value) {
-        bindings.put(symbolName, value);
+        final Namespace namespace = namespaces.get(asSymbol(symbolName.getNameHierarchy().head()));
+        namespace.bind(symbolName, value);
     }
 
     @Override
@@ -102,6 +97,29 @@ abstract class BaseContext implements Context {
      * @return Newly created context.
      */
     protected abstract Context createChild(String name);
+
+    protected Option<LispValue> findInNamespace(final SymbolAtom symbolName) {
+        final SymbolAtom rootNs = asSymbol(symbolName.getNameHierarchy().head());
+        if (!namespaces.containsKey(rootNs)) {
+            return lookInParent(symbolName);
+        } else {
+            final Namespace namespace = namespaces.get(rootNs);
+            final Option<LispValue> symbol = namespace.findSymbol(symbolName);
+            if (symbol.isPresent()) {
+                return symbol;
+            } else {
+                return lookInParent(symbolName);
+            }
+        }
+    }
+
+    private Option<LispValue> lookInParent(final SymbolAtom symbolName) {
+        if (null != parent) {
+            return parent.findSymbol(symbolName);
+        } else {
+            return Option.absent();
+        }
+    }
 
     private LispValue evaluateFunction(final SList function) {
         final LispValue head = function.head();

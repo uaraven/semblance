@@ -233,4 +233,15 @@ public final class Values {
         }
     }
 
+    /**
+     * Converts Java string to Symbol atom.
+     */
+    public enum StringToSymbol implements Func<LispValue, String> {
+        INSTANCE;
+
+        @Override
+        public LispValue apply(final String s) {
+            return symbol(s);
+        }
+    }
 }

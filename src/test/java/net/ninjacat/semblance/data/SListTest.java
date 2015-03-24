@@ -113,7 +113,7 @@ public class SListTest {
     public void shouldGenerateCorrectRepr() throws Exception {
         final SList list = smartList(1L, 2L);
 
-        assertThat("repr() should return correct string representation", list.repr(), is("(1, 2)"));
+        assertThat("repr() should return correct string representation", list.repr(), is("(1 2)"));
     }
 
     @Test

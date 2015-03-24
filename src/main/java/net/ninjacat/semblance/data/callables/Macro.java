@@ -33,12 +33,11 @@ public class Macro implements Callable {
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
         final Context macroContext = LocalContext.namelessChildContext(context);
-        final Context executionContext = LocalContext.namedChildContext(name.repr(), context);
 
         formalParameters.bindExpressions(macroContext, parameters);
         final LispValue expandedMacro = macroContext.evaluateBlock(body);
 
-        return executionContext.evaluateBlock(asCollection(expandedMacro));
+        return context.evaluateBlock(asCollection(expandedMacro));
     }
 
     @Override

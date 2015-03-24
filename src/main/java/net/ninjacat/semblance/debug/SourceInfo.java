@@ -1,11 +1,13 @@
 package net.ninjacat.semblance.debug;
 
+import java.io.Serializable;
+
 /**
  * Representation of source code information.
  * <br/>
  * Used for error reporting and debugging purposes
  */
-public class SourceInfo {
+public class SourceInfo implements Serializable {
     public static final SourceInfo UNKNOWN = new SourceInfo(0, 0);
 
     private final int line;

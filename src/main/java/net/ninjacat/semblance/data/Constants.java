@@ -23,6 +23,10 @@ public final class Constants {
          * Symbol for comma special form.
          */
         public static final SymbolAtom COMMA = new SymbolAtom("#--eval-me--#");
+        /**
+         * Symbol for unwrapping list form.
+         */
+        public static final SymbolAtom UNWRAP = new SymbolAtom("#--unwrap-me--#");
 
         private HiddenFunctions() {
         }

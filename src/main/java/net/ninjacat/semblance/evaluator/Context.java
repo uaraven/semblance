@@ -28,6 +28,14 @@ public interface Context {
     Option<LispValue> findSymbol(SymbolAtom name);
 
     /**
+     * Retrieves namespace by its name.
+     *
+     * @param name Name of the namespace.
+     * @return Namespace.
+     */
+    Option<Namespace> getNamespace(SymbolAtom name);
+
+    /**
      * Binds symbol to a value. Will overwrite current binding or create a new one
      *
      * @param name  name to bind to
@@ -58,4 +66,12 @@ public interface Context {
      * @return Result of the last expression.
      */
     LispValue evaluateBlock(LispCollection expressions);
+
+    /**
+     * Adds new namespace to this context. If namespace with the same name already exists in the context
+     * it will be overwritten.
+     *
+     * @param namespace Namespace to add.
+     */
+    void addNamespace(Namespace namespace);
 }

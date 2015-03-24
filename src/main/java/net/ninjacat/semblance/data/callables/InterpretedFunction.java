@@ -44,6 +44,6 @@ public class InterpretedFunction implements Callable {
 
     @Override
     public String repr() {
-        return String.format("(fn %s %s)", paramDeclaration, body);
+        return String.format("(fn %s %s)", paramDeclaration.repr(), body.repr());
     }
 }

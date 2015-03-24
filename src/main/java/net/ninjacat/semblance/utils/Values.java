@@ -27,7 +27,7 @@ public final class Values {
         if (atom instanceof LongNumberAtom) {
             return ((LongNumberAtom) atom).asJavaObject();
         } else {
-            throw new TypeMismatchException(SemblanceType.INTEGER, atom.getType(), getSourceInfo(atom));
+            throw new TypeMismatchException(SemblanceType.INTEGER, atom, getSourceInfo(atom));
         }
     }
 
@@ -80,7 +80,7 @@ public final class Values {
         if (isSymbol(value)) {
             return (SymbolAtom) value;
         } else {
-            throw new TypeMismatchException(SemblanceType.SYMBOL, value.getType(), getSourceInfo(value));
+            throw new TypeMismatchException(SemblanceType.SYMBOL, value, getSourceInfo(value));
         }
     }
 
@@ -88,7 +88,7 @@ public final class Values {
         if (isList(value)) {
             return (SList) value;
         } else {
-            throw new TypeMismatchException(SemblanceType.LIST, value.getType(), getSourceInfo(value));
+            throw new TypeMismatchException(SemblanceType.LIST, value, getSourceInfo(value));
         }
     }
 
@@ -102,7 +102,7 @@ public final class Values {
         } else if (isVector(value)) {
             return new SList(value.getCollection());
         } else {
-            throw new TypeMismatchException("Collection", value.getType(), getSourceInfo(value));
+            throw new TypeMismatchException("Collection", value, getSourceInfo(value));
         }
     }
 
@@ -110,7 +110,7 @@ public final class Values {
         if (value instanceof LispCollection) {
             return (LispCollection) value;
         } else {
-            throw new TypeMismatchException("Collection", value.getType(), getSourceInfo(value));
+            throw new TypeMismatchException("Collection", value, getSourceInfo(value));
         }
     }
 
@@ -182,7 +182,7 @@ public final class Values {
         if (isNumber(value)) {
             return (NumberAtom) value;
         } else {
-            throw new TypeMismatchException("Numeric", value.getType(), getSourceInfo(value));
+            throw new TypeMismatchException("Numeric", value, getSourceInfo(value));
         }
     }
 

@@ -84,6 +84,16 @@ abstract class BaseContext implements Context {
     }
 
     @Override
+    public Option<Namespace> getNamespace(final SymbolAtom namespaceName) {
+        return namespaces.containsKey(namespaceName) ? Option.of(namespaces.get(namespaceName)) : Option.<Namespace>absent();
+    }
+
+    @Override
+    public void addNamespace(final Namespace namespace) {
+        namespaces.put(namespace.getName(), namespace);
+    }
+
+    @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
                 "name='" + name + '\'' +

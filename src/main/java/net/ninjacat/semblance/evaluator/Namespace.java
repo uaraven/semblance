@@ -26,4 +26,12 @@ public interface Namespace {
      * @param value value
      */
     void bind(SymbolAtom name, LispValue value);
+
+    /**
+     * Creates a copy of this namespace with a new name.
+     *
+     * @param newName New name for the namespace.
+     * @return New namespace.
+     */
+    Namespace rename(SymbolAtom newName);
 }

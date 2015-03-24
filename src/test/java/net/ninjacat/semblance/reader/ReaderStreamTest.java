@@ -211,22 +211,25 @@ public class ReaderStreamTest {
     @Test
     public void shouldTokenizeSymbolsWithComma() throws Exception {
         final ReaderStream stream = ReaderStream.readString(",symbol");
+        stream.registerSpecial(',');
 
         final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have 2 token", tokens.size(), is(2));
-        assertThat("Should have parse as symbol", tokens.get(0).getType(), is(Token.TokenType.Symbol));
+        assertThat("Should have parse as symbol", tokens.get(0).getType(), is(Token.TokenType.Special));
         assertThat("Should have parse as symbol", tokens.get(1).getType(), is(Token.TokenType.Symbol));
     }
 
     @Test
     public void shouldTokenizeSymbolsWithAt() throws Exception {
         final ReaderStream stream = ReaderStream.readString("@symbol");
+        stream.registerSpecial('@');
 
         final List<Token> tokens = stream.tokenize();
 
-        assertThat("Should have 1 token", tokens.size(), is(1));
-        assertThat("Should have parse as symbol", tokens.get(0).getType(), is(Token.TokenType.Symbol));
+        assertThat("Should have 1 token", tokens.size(), is(2));
+        assertThat("Should have parse as symbol", tokens.get(0).getType(), is(Token.TokenType.Special));
+        assertThat("Should have parse as symbol", tokens.get(1).getType(), is(Token.TokenType.Symbol));
     }
 
 

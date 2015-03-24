@@ -72,6 +72,7 @@ public class ReaderStream {
     }
 
     List<Token> tokenize() throws ParsingException {
+        setupTokenizer();
         final List<Token> tokens = new LinkedList<>();
         Token token;
         do {
@@ -100,7 +101,9 @@ public class ReaderStream {
         streamTokenizer.wordChars('*', '-');
         streamTokenizer.wordChars('/', '/');
         streamTokenizer.wordChars(':', ':');
-        streamTokenizer.wordChars('@', '@');
+        for (final char spch : specials) {
+            streamTokenizer.ordinaryChar(spch);
+        }
         streamTokenizer.ordinaryChar(',');
         streamTokenizer.whitespaceChars(0, ' ');
         streamTokenizer.commentChar(';');

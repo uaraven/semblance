@@ -114,7 +114,7 @@ public class VectorTest {
     public void shouldGenerateCorrectRepr() throws Exception {
         final Vector vector = smartVector(1L, 2L);
 
-        assertThat("repr() should return correct string representation", vector.repr(), is("[1, 2]"));
+        assertThat("repr() should return correct string representation", vector.repr(), is("[1 2]"));
     }
 
     @Test

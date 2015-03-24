@@ -1,0 +1,5 @@
+
+(defmacro defun
+     (name params &rest body)
+     `(var (,name (fn ,params ,@body)))
+)

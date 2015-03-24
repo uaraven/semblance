@@ -153,6 +153,13 @@ Release Functions
   in `name` a function with parameters `params` and `body` of s-expressions.
 
 
+  **NAMESPACE**
+
+     (namespace name (s-expression)*)
+
+  Declares a new namespace with a name `name` in current context. Executes body and after execution binds
+  all declared symbols in the new namespace.
+
 Beta functions
 ==============
 

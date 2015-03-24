@@ -25,6 +25,11 @@ public class BaseNamespace implements Namespace {
         bindings = new ConcurrentHashMap<>();
     }
 
+    private BaseNamespace(final SymbolAtom name, final Map<SymbolAtom, LispValue> bindings) {
+        this.name = name;
+        this.bindings = new ConcurrentHashMap<>(bindings);
+    }
+
     @Override
     public SymbolAtom getName() {
         return name;
@@ -42,5 +47,10 @@ public class BaseNamespace implements Namespace {
     @Override
     public void bind(final SymbolAtom key, final LispValue value) {
         bindings.put(key, value);
+    }
+
+    @Override
+    public Namespace rename(final SymbolAtom newName) {
+        return new BaseNamespace(newName, bindings);
     }
 }

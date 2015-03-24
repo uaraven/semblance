@@ -1,11 +1,14 @@
 package net.ninjacat.semblance.reader;
 
+import net.ninjacat.semblance.data.Constants.HiddenFunctions;
 import net.ninjacat.semblance.data.LispCollection;
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.Vector;
 import net.ninjacat.semblance.errors.runtime.UnexpectedEndRuntimeException;
+import net.ninjacat.semblance.reader.macros.AtMacro;
 import net.ninjacat.semblance.reader.macros.BackQuoteMacro;
+import net.ninjacat.semblance.reader.macros.CommaMacro;
 import net.ninjacat.semblance.reader.macros.QuoteMacro;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.collections.Lists;
@@ -153,6 +156,53 @@ public class ParserTest {
         assertThat("Function parameter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
     }
 
+    @Test
+    public void shouldReplaceCommaMacroForSymbol() throws Exception {
+        final List<Token> tokens = Lists.of(Token.special(',', UNKNOWN), symbol("one", UNKNOWN));
+        parser.registerReaderMacro(new CommaMacro());
+
+        final LispCollection parse = parser.parse(tokens);
+
+        assertThat("Should produce s-expression", parse.head(), instanceOf(SList.class));
+
+        final SList expr = (SList) parse.head();
+
+        assertThat("Function call should be unwrap func", (SymbolAtom) expr.head(), is(HiddenFunctions.COMMA));
+        assertThat("Function parameter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
+    }
+
+    @Test
+    public void shouldReplaceAtMacroForSymbol() throws Exception {
+        final List<Token> tokens = Lists.of(Token.special('@', UNKNOWN), symbol("one", UNKNOWN));
+        parser.registerReaderMacro(new AtMacro());
+
+        final LispCollection parse = parser.parse(tokens);
+
+        assertThat("Should produce s-expression", parse.head(), instanceOf(SList.class));
+
+        final SList expr = (SList) parse.head();
+
+        assertThat("Function call should be unwrap func", (SymbolAtom) expr.head(), is(HiddenFunctions.UNWRAP));
+        assertThat("Function parameter should be symbol", (SymbolAtom) expr.tail().head(), is(Values.symbol("one")));
+    }
+
+
+    @Test
+    public void shouldReplaceCommaAtMacroForSymbols() throws Exception {
+        final List<Token> tokens = Lists.of(Token.special(',', UNKNOWN),
+                Token.special('@', UNKNOWN), symbol("one", UNKNOWN));
+        parser.registerReaderMacro(new AtMacro());
+        parser.registerReaderMacro(new CommaMacro());
+
+        final LispCollection parse = parser.parse(tokens);
+
+        assertThat("Should produce s-expression", parse.head(), instanceOf(SList.class));
+
+        final SList expr = (SList) parse.head();
+
+        assertThat("Should parse correctly", expr,
+                is(list(HiddenFunctions.COMMA, list(HiddenFunctions.UNWRAP, Values.symbol("one")))));
+    }
 
     @Test
     public void shouldParseNestedList() throws Exception {

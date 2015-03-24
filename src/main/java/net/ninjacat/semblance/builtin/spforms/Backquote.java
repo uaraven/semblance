@@ -22,12 +22,12 @@ import static net.ninjacat.semblance.utils.Values.*;
 /**
  * Backquote implementation.
  */
-public class BackQuote extends SpecialForm {
+public class Backquote extends SpecialForm {
 
     /**
      * Creates a new instance of BackQuote.
      */
-    public BackQuote() {
+    public Backquote() {
         super("backquote", "&rest", "body");
     }
 
@@ -36,14 +36,19 @@ public class BackQuote extends SpecialForm {
         return expandBQ(parameters, context);
     }
 
+    private static boolean isUnquote(final LispValue func) {
+        return func.equals(HiddenFunctions.COMMA);
+    }
+
     private LispCollection expandBQ(final LispCollection sExpr, final Context parameterContext) {
         final List<LispValue> output = new ArrayList<>();
 
         for (final LispValue item : sExpr) {
             if (isCollection(item)) {
                 final LispCollection itemAsList = asCollection(item);
-                if (itemAsList.head().equals(HiddenFunctions.COMMA)) {
-                    output.add(parameterContext.evaluate(itemAsList));
+                final LispValue head = itemAsList.head();
+                if (isHidden(head)) {
+                    processHidden(output, parameterContext, itemAsList);
                 } else {
                     output.add(expandBQ(itemAsList, parameterContext));
                 }
@@ -59,21 +64,45 @@ public class BackQuote extends SpecialForm {
         return new SList(output);
     }
 
+    private void processHidden(final List<LispValue> output, final Context context, final LispCollection itemAsList) {
+        final LispValue head = itemAsList.head();
+        final LispValue expression = itemAsList.tail().head();
+        if (isUnwrap(head)) {
+            unwrapList(output, context, expression);
+        } else {
+            if (isList(expression) && isUnwrap(asCollection(expression).head())) {
+                unwrapList(output, context, asCollection(expression).tail().head());
+            } else {
+                final LispValue unquoted = context.evaluate(expression);
+                output.add(unquoted);
+            }
+        }
+    }
+
+    private void unwrapList(final List<LispValue> output, final Context parameterContext, final LispValue param) {
+        final LispCollection coll = asCollection(parameterContext.evaluate(param));
+        for (final LispValue value : coll) {
+            output.add(value);
+        }
+    }
+
+    private boolean isUnwrap(final LispValue func) {
+        return func.equals(HiddenFunctions.UNWRAP);
+    }
+
+    private boolean isHidden(final LispValue func) {
+        return isUnwrap(func) || isUnquote(func);
+    }
+
     private boolean isNonEscapedParameter(final LispValue item) {
         return asSymbol(item).repr().startsWith(",");
     }
 
     private Collection<LispValue> expandParameter(final LispValue item, final Context parameterContext) {
-        final String paramName = item.repr().substring(1);
-        final boolean isExpandable = paramName.startsWith("@");
-        final SymbolAtom actualName = new SymbolAtom(isExpandable ? paramName.substring(1) : paramName);
+        final SymbolAtom actualName = asSymbol(item);
         final Option<LispValue> value = parameterContext.findSymbol(actualName);
         if (value.isPresent()) {
-            if (isExpandable) {
-                return expandList(value.get());
-            } else {
-                return Lists.of(value.get());
-            }
+            return Lists.of(value.get());
         } else {
             throw new UnboundSymbolException(asSymbol(item), getSourceInfo(item));
         }

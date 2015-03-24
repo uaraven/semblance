@@ -7,10 +7,7 @@ import net.ninjacat.semblance.builtin.spforms.comparison.*;
 import net.ninjacat.semblance.builtin.spforms.logic.And;
 import net.ninjacat.semblance.builtin.spforms.logic.Not;
 import net.ninjacat.semblance.builtin.spforms.logic.Or;
-import net.ninjacat.semblance.data.Constants;
-import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.data.NilCollection;
-import net.ninjacat.semblance.data.SList;
+import net.ninjacat.semblance.data.*;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
@@ -57,6 +54,18 @@ public class RootContext extends BaseContext {
     }
 
     /**
+     * Evaluates program in the this context. Any bindings made by the program are stored in the context.
+     *
+     * @param source InputStream containing program.
+     * @return Value evaluated.
+     * @throws ParsingException If program contains syntax errors.
+     */
+    public LispValue evaluateProgram(final LispCollection source) throws ParsingException {
+        return evaluateBlock(source);
+    }
+
+
+    /**
      * Loads program from stream and compiles it into another stream.
      * This method will not close neigher source nor destination streams.
      *
@@ -95,6 +104,7 @@ public class RootContext extends BaseContext {
 
         bindForm(new Fn());
         bindForm(new Defmacro());
+        bindForm(new Funcall());
 
         bindForm(new Add());
         bindForm(new Sub());

@@ -1,4 +1,7 @@
+; Semblance standard library
+; Part of Semblance project
 
+; macro 'defun' declares a function and binds it to a specified name in current context.
 (defmacro defun
      (name params &rest body)
      `(var (,name (fn ,params ,@body)))

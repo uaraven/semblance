@@ -115,7 +115,11 @@ public final class Values {
     }
 
     public static Callable asCallable(final LispValue value) {
-        return (Callable) value;
+        if (value instanceof Callable) {
+            return (Callable) value;
+        } else {
+            throw new TypeMismatchException("Callable", value, getSourceInfo(value));
+        }
     }
 
     public static boolean canBeConvertedToJavaObject(final LispValue value) {
@@ -208,6 +212,10 @@ public final class Values {
 
     public static NumberAtom doubleN(final double number) {
         return new DoubleNumberAtom(number);
+    }
+
+    public static long fromNumber(final NumberAtom number) {
+        return (Long) number.asJavaObject();
     }
 
     private enum FromJavaConverter implements Func<LispValue, Object> {

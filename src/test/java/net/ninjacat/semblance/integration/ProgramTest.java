@@ -52,4 +52,16 @@ public class ProgramTest {
         assertThat(isList(value), is(true));
         assertThat(asSList(value), is(list(symbol("+"), number(1), number(2))));
     }
+
+
+    @Test
+    public void testShouldExecuteLambda() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+        final LispValue value = interpreter.run(
+                "(funcall (fn (x y)" +
+                        "             (+ x y))" +
+                        "          (2 3))");
+
+        assertThat(value, is(number(5)));
+    }
 }

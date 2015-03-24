@@ -16,6 +16,13 @@ public class InterpretedFunction implements Callable {
     private final SymbolAtom name;
     private final LispCollection paramDeclaration;
 
+    /**
+     * Creates new instance of function.
+     *
+     * @param name             Function name.
+     * @param formalParameters Formal parameter declaration.
+     * @param body             List of s-expressions.
+     */
     public InterpretedFunction(final SymbolAtom name, final LispCollection formalParameters, final LispCollection body) {
         this.name = name;
         paramDeclaration = formalParameters;
@@ -44,6 +51,6 @@ public class InterpretedFunction implements Callable {
 
     @Override
     public String repr() {
-        return String.format("(fn %s %s)", paramDeclaration.repr(), body.repr());
+        return String.format("(fn %s %s %s)", name.repr(), paramDeclaration.repr(), body.repr());
     }
 }

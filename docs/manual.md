@@ -172,7 +172,7 @@ Release Functions
   Creates a function with parameters `params` and body defined by a list of expressions and binds it to name `name` in current context.
   Example:
     
-    (defun add (x y) (+ x y)
+    (defun add (x y) (+ x y))
     (add 1 2)
     
   will result in `3`

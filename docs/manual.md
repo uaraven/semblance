@@ -116,15 +116,16 @@ Release Functions
   **BACKQUOTE**
 
       (backquote expression)
+      or
+      `expression
 
   Like quote, but prevents evaluation of every symbol, except those which are un-escaped by `,` (comma)
   For example:
 
-      (backquote (+ ,a ,b))
+      `(+ ,a ,b)
 
   will evaluate to `(+ 1 2)` if current context has `a` bound to `1` and `b` bound to `2`.
-  Short form of ` `expression` is supported as well.  
-
+  
   **PROGN**
 
     (progn (s-expression)*)
@@ -159,12 +160,23 @@ Release Functions
 
   Declares a new namespace with a name `name` in current context. Executes body and after execution binds
   all declared symbols in the new namespace.
-
-Beta functions
-==============
-
-  These functions are implemented in the current version of Semblance, but may be removed in the final version
-
+  
+  **FUNCALL**
+  
+    TBD
+    
+  **DEFUN**
+  
+    (defun name (params) (s-expression)*)
+    
+  Creates a function with parameters `params` and body defined by a list of expressions and binds it to name `name` in current context.
+  Example:
+    
+    (defun add (x y) (+ x y)
+    (add 1 2)
+    
+  will result in `3`
+  
   **VAR**
 
     (var (name value) [(name value) ...])

@@ -1,9 +1,6 @@
 package net.ninjacat.semblance.utils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.charset.Charset;
 
 /**
@@ -11,6 +8,7 @@ import java.nio.charset.Charset;
  */
 public final class IOUtils {
     private static final int BUFFER_SIZE = 16 * 1024;
+    private static final String UTF_8 = "UTF-8";
 
     private IOUtils() {
     }
@@ -43,7 +41,17 @@ public final class IOUtils {
     public static String loadFromStream(final InputStream input) throws IOException {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             copy(input, baos);
-            return new String(baos.toByteArray(), Charset.forName("UTF-8"));
+            return new String(baos.toByteArray(), Charset.forName(UTF_8));
         }
+    }
+
+    /**
+     * Converts string into InputStream.
+     *
+     * @param source Source string.
+     * @return InputStream
+     */
+    public static InputStream asStream(final String source) {
+        return new ByteArrayInputStream(source.getBytes(Charset.forName(UTF_8)));
     }
 }

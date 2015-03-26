@@ -19,7 +19,7 @@ public class Funcall extends SpecialForm {
      * Create new instance.
      */
     public Funcall() {
-        super("funcall", "function", "paramers");
+        super("funcall", "function", "paramerters");
     }
 
     @Override

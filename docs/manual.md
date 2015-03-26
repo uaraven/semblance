@@ -163,7 +163,20 @@ Release Functions
   
   **FUNCALL**
   
-    TBD
+  Calls a function.
+
+     (funcall function (parameters))
+
+  For example:
+
+     (defun mult2 (x) (* 2 x))
+     (funcall mult2 (4))
+
+     or
+
+     (funcall
+        (fn (x) (* 2 x))
+        (4))
     
   **DEFUN**
   
@@ -182,3 +195,27 @@ Release Functions
     (var (name value) [(name value) ...])
   Binds evaluated *value* to symbol *name* in the current context. May evaluate and bind multiple variables.
   Returns latest evaluated value
+
+
+  **NAMESPACE**
+
+    (namespace name (s-expression)*)
+
+  Declares namespace named `name`. All variable, function and macro binding in the s-expressions will be bound
+  inside this namespace. Following example shows function `pi` and variable `e` bound in `math` namespace:
+
+    (namespace math
+       (var e 2.718)
+       (defun pi () 3.14))
+
+  Such bindings can be accessed using full name
+
+    (* 2 math/pi)
+    (println math/e)
+
+  Inside the namespace those names can be accessed without the qualifier.
+
+    (namespace math
+       (var pi 3.14))
+       (var tau (* 2 pi)))
+

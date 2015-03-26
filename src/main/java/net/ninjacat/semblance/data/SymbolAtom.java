@@ -2,15 +2,10 @@ package net.ninjacat.semblance.data;
 
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.java.Symbol;
-import net.ninjacat.semblance.utils.Values;
-import net.ninjacat.smooth.iterators.Iter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static net.ninjacat.semblance.data.Constants.*;
-import static net.ninjacat.semblance.utils.Values.list;
+import static net.ninjacat.semblance.data.Constants.FALSE;
+import static net.ninjacat.semblance.data.Constants.TRUE;
+import static net.ninjacat.semblance.utils.Values.symbol;
 
 /**
  * Symbol atom.
@@ -18,7 +13,8 @@ import static net.ninjacat.semblance.utils.Values.list;
 public class SymbolAtom extends Atom {
 
     private final String value;
-    private final SList hierarchy;
+    private final SymbolAtom localName;
+    private final SymbolAtom namespace;
 
     /**
      * Creates a new symbol atom.
@@ -38,7 +34,8 @@ public class SymbolAtom extends Atom {
     public SymbolAtom(final String value, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
-        hierarchy = buildHierarchy();
+        namespace = extractNamespace();
+        localName = extractLocalName();
     }
 
     /**
@@ -49,6 +46,13 @@ public class SymbolAtom extends Atom {
      */
     public static SymbolAtom fromBoolean(final boolean boolValue) {
         return boolValue ? TRUE : FALSE;
+    }
+
+    /**
+     * @return localname of namespaced symbol
+     */
+    public SymbolAtom getLocalName() {
+        return localName;
     }
 
     @Override
@@ -90,28 +94,38 @@ public class SymbolAtom extends Atom {
     }
 
     /**
-     * Returns namespace hierarchy of this symbol in form of list.
+     * Returns namespace namespace of this symbol in form of list.
      * <p/>
      * For symbol {@code list/private/length} following list will be returned:
      * <p/>
      * list(symbol("list"), symbol("private"))
      *
-     * @return namespace hierarchy of this symbol.
+     * @return namespace namespace of this symbol.
      */
-    public SList getNameHierarchy() {
-        return hierarchy;
+    public SymbolAtom getNamespace() {
+        return namespace;
     }
 
-    private SList buildHierarchy() {
-        final String[] splitted = value.split("/");
-        final List<String> parts = 1 == splitted.length ?
-                new ArrayList<String>() :
-                Arrays.asList(splitted).subList(0, value.length() - 1);
-        if (parts.isEmpty()) {
-            return list(NONE);
+    private SymbolAtom extractNamespace() {
+        final int splitterIndex = value.lastIndexOf('/');
+        if (splitterIndex >= 0) {
+            final String nsName = value.substring(0, splitterIndex);
+            if (!nsName.isEmpty()) {
+                return symbol(nsName);
+            }
+        }
+        return Constants.NONE;
+    }
+
+    private SymbolAtom extractLocalName() {
+        if (null == namespace || Constants.NONE.equals(namespace)) {
+            return this;
+        }
+        final int splitterIndex = value.lastIndexOf('/');
+        if (value.length() > 2 && splitterIndex >= 0) {
+            return symbol(value.substring(splitterIndex + 1));
         } else {
-            return new SList(Iter.of(parts).map(Values.StringToSymbol.INSTANCE).toList());
+            return this;
         }
     }
-
 }

@@ -9,6 +9,9 @@ import net.ninjacat.smooth.utils.Option;
  */
 public interface Namespace {
 
+    /**
+     * @return Namespace's name.
+     */
     SymbolAtom getName();
 
     /**

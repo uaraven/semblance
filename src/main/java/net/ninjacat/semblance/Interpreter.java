@@ -1,7 +1,6 @@
 package net.ninjacat.semblance;
 
 import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.data.NilCollection;
 import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
@@ -80,11 +79,7 @@ public class Interpreter {
 
     private LispValue doRun(final SList program) {
         final Context executionContext = LocalContext.namedChildContext("main", rootContext);
-        LispValue evaluated = NilCollection.INSTANCE;
-        for (final LispValue sExpression : program) {
-            evaluated = executionContext.evaluate(sExpression);
-        }
-        return evaluated;
+        return executionContext.evaluateBlock(program);
     }
 
 }

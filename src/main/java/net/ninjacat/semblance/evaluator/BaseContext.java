@@ -40,8 +40,8 @@ abstract class BaseContext implements Context {
 
     @Override
     public void bind(final SymbolAtom symbolName, final LispValue value) {
-        final Namespace namespace = namespaces.get(asSymbol(symbolName.getNameHierarchy().head()));
-        namespace.bind(symbolName, value);
+        final Namespace namespace = namespaces.get(symbolName.getNamespace());
+        namespace.bind(symbolName.getLocalName(), value);
     }
 
     @Override
@@ -101,6 +101,7 @@ abstract class BaseContext implements Context {
     }
 
     /**
+     /**
      * Creates a named child context.
      *
      * @param name The name of child context.
@@ -109,12 +110,12 @@ abstract class BaseContext implements Context {
     protected abstract Context createChild(String name);
 
     protected Option<LispValue> findInNamespace(final SymbolAtom symbolName) {
-        final SymbolAtom rootNs = asSymbol(symbolName.getNameHierarchy().head());
+        final SymbolAtom rootNs = symbolName.getNamespace();
         if (!namespaces.containsKey(rootNs)) {
             return lookInParent(symbolName);
         } else {
             final Namespace namespace = namespaces.get(rootNs);
-            final Option<LispValue> symbol = namespace.findSymbol(symbolName);
+            final Option<LispValue> symbol = namespace.findSymbol(symbolName.getLocalName());
             if (symbol.isPresent()) {
                 return symbol;
             } else {

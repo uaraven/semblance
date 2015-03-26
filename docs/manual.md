@@ -7,19 +7,25 @@ Behavior
 Translator
 ----------
 
-Semblance is interpreted language. Reader works in two passes, first performing lexical analysis and converting input stream into list of tokens which when parsed into list of S-expressions.
+Semblance is interpreted language. Reader works in two passes, first performing lexical analysis and converting input
+stream into list of tokens which when parsed into list of S-expressions.
 
-Interpreter has no knowledge of special characters used in input stream, like ` `'` or `,` (single quote, backtick and comma). This characters (called read macros) are handled by parser and expanded into correct lisp forms before interpretation. For example `'expr` is expanded into (quote expr). Users of interpreter can register their handlers to process more read macros.
+Interpreter has no knowledge of special characters used in input stream, like ` `'` or `,`
+(single quote, backquote and comma). This characters (called read macros) are handled by parser and expanded
+into correct lisp forms before interpretation. For example `'expr` is expanded into (quote expr).
+Users of interpreter can register their handlers to process more read macros.
 
-As all Semblance forms are JVM Serializable objects, so parsed program can be saved as standard Java Object stream. This allows to bypass translation phase for often-used programs and speed up execution.
+As all Semblance forms are JVM Serializable objects, so parsed program can be saved as standard Java Object stream.
+This allows to bypass translation phase for often-used programs and speed up execution.
 
 Semblance is *case sensitive*
 
 Symbols
 -------
 
-Symbols in the program can be bound to variables/functions/macros or can be unbound. Bound symbols are evaluated to the
-value they are bound to, unbound symbols are evaluated to themselves.
+Symbols in the program can be bound to variables/functions/macros or can be unbound. Bound symbols are evaluated to
+the value they are bound to, unbound symbols will cause run-time exception. The only exception to this rule are
+keyword symbols. Keywords are just symbols which start with a ':' and always evaluate to themselves.
 
 Consider following two short programs:
 
@@ -30,11 +36,16 @@ and
 
     (print var)
 
+and
+
+    (print :var)
+
 In the first program, symbol `var` is bound to result of computation of `1 + 2`. Statement (print var) will
 have `var` evaluated prior to calling `print` function and output will be `3`
 
-Second program does not have symbol `var` bound to any value, so symbol will evaluate to itself and `var` will
-be printed.
+Second program does not have symbol `var` bound to any value, so exception will be thrown.
+
+Last program will evaluate `:var` to itself and print `:var`
 
 **TODO Consider changing this behavior to generate exception when using unbound symbols**
 
@@ -66,8 +77,12 @@ Functions
 Release Functions
 =================
 
-  Semblance probably includes more special forms than Common Lisp. That's done mostly for efficiency and sometimes to avoid complex
-  parameter processing. Some of the special forms may later be rewritten as functions or macros in standard library.
+  Semblance probably includes more special forms than Common Lisp. That's done mostly for efficiency and sometimes
+  to avoid complex parameter processing. Some of the special forms may later be rewritten as functions
+  or macros in standard library.
+
+  For the user of the language it should not matter whether operation is implemented as special form, function or a
+  macro.
 
   **PRINTLN**
 
@@ -138,22 +153,6 @@ Release Functions
 
   Defines a nameless function.
 
-  **DEFMACRO**
-
-    (defmacro name (parameters) (s-expression)*)
-
-  Defines a macro named `name` with a list of formal `parameters` and body of s-expressions. Just like
-  other lisp out there you can use backquote to escape macro body.
-  You need to use comma to un-escape parameters and you can still use `@` to unwrap lists.
-
-    (defmacro defun
-         (name params &rest body)
-         `(var ,name (fn ,params ,@body)))
-
-  Example defines a `defun` macro which takes three parameters `name`, `params` and `body` and binds to symbol
-  in `name` a function with parameters `params` and `body` of s-expressions.
-
-
   **NAMESPACE**
 
      (namespace name (s-expression)*)
@@ -218,4 +217,25 @@ Release Functions
     (namespace math
        (var pi 3.14))
        (var tau (* 2 pi)))
+
+Macros
+------
+
+  Currently there is no macro expansion phase in the program execution time, however there are plans to introduce
+  such phase. In the time being macros are expanded as they are executed.
+
+  **DEFMACRO**
+
+    (defmacro name (parameters) (s-expression)*)
+
+  Defines a macro named `name` with a list of formal `parameters` and body of s-expressions. Just like
+  other lisp out there you can use backquote to escape macro body.
+  You need to use comma to un-escape parameters and you can still use `@` to unwrap lists.
+
+    (defmacro defun
+         (name params &rest body)
+         `(var ,name (fn ,params ,@body)))
+
+  Example defines a `defun` macro which takes three parameters `name`, `params` and `body` and binds to symbol
+  in `name` a function with parameters `params` and `body` of s-expressions.
 

@@ -3,6 +3,16 @@
 
 ; macro 'defun' declares a function and binds it to a specified name in current context.
 (defmacro defun
-     (name params &rest body)
-     `(var (,name (fn ,params ,@body)))
+    (name params &rest body)
+    `(var (,name (fn ,params ,@body)))
+)
+
+(defmacro when
+    (condition &rest body)
+    `(if ,condition (progn ,@body))
+)
+
+(defmacro until
+    (condition &rest body)
+    `(if (not ,condition) (progn ,@body))
 )

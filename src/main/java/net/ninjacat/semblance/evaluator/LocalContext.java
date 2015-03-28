@@ -31,9 +31,4 @@ public class LocalContext extends BaseContext {
     public static Context namedChildContext(final String name, final Context parent) {
         return new LocalContext(name, parent);
     }
-
-    @Override
-    protected Context createChild(final String name) {
-        return namedChildContext(name, this);
-    }
 }

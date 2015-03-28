@@ -12,5 +12,6 @@ public enum SemblanceType {
     VECTOR,
     FUNCTION,
     MACRO,
+    RETURN, // internal wrapper around return value
     SPECIAL // this is internal type, it will never appear in programs
 }

@@ -74,7 +74,7 @@ public class RootContext extends BaseContext {
      * @return Lisp collection representing a program.
      * @throws ParsingException if program cannot be compiled.
      */
-    public LispValue compile(final InputStream source, final OutputStream dest) throws ParsingException {
+    public LispValue compileToStream(final InputStream source, final OutputStream dest) throws ParsingException {
         final Reader reader = new Reader();
         final SList program = reader.read(source);
 
@@ -87,11 +87,6 @@ public class RootContext extends BaseContext {
         return program;
     }
 
-    @Override
-    protected Context createChild(final String name) {
-        return LocalContext.namedChildContext(name, this);
-    }
-
     private void bindSpecialForms() {
         bindForm(new Var());
 
@@ -102,18 +97,18 @@ public class RootContext extends BaseContext {
         bindForm(new Backquote());
         bindForm(new PrintLn());
 
+        bindForm(new Namespace());
+        bindForm(new Progn());
         bindForm(new Fn());
         bindForm(new Defmacro());
         bindForm(new Funcall());
+        bindForm(new Return());
 
         bindForm(new Add());
         bindForm(new Sub());
         bindForm(new Div());
         bindForm(new Mul());
         bindForm(new Mod());
-
-        bindForm(new Namespace());
-        bindForm(new Progn());
 
         bindForm(new If());
         bindForm(new Equal());

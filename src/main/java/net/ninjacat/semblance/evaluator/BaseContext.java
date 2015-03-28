@@ -79,6 +79,9 @@ abstract class BaseContext implements Context {
         LispValue last = NilCollection.INSTANCE;
         for (final LispValue expr : expressions) {
             last = evaluate(expr);
+            if (last.getType() == SemblanceType.RETURN) {
+                return asReturnValue(last).getValue();
+            }
         }
         return last;
     }
@@ -99,15 +102,6 @@ abstract class BaseContext implements Context {
                 "name='" + name + '\'' +
                 '}';
     }
-
-    /**
-     /**
-     * Creates a named child context.
-     *
-     * @param name The name of child context.
-     * @return Newly created context.
-     */
-    protected abstract Context createChild(String name);
 
     protected Option<LispValue> findInNamespace(final SymbolAtom symbolName) {
         final SymbolAtom rootNs = symbolName.getNamespace();

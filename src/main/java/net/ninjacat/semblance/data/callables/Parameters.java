@@ -60,7 +60,7 @@ public class Parameters implements Iterable<Parameter>, Serializable {
             }
         }
         if (null == tempRest && Sweeper.Rest == sweeper) {
-            throw new ParameterException("&resp parameter not specified", definitions.getSourceInfo());
+            throw new ParameterException("&rest parameter not specified", definitions.getSourceInfo());
         }
         restParameter = Option.of(tempRest);
     }

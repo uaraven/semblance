@@ -92,6 +92,14 @@ public final class Values {
         }
     }
 
+    public static ReturnValue asReturnValue(final LispValue value) {
+        if (value.getType() == SemblanceType.RETURN) {
+            return (ReturnValue) value;
+        } else {
+            throw new TypeMismatchException(SemblanceType.RETURN, value, getSourceInfo(value));
+        }
+    }
+
     /**
      * Converts any {@link LispCollection} to {@link SList}
      * @return Collection as SList.

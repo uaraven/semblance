@@ -218,6 +218,23 @@ Release Functions
        (var pi 3.14))
        (var tau (* 2 pi)))
 
+  **RETURN**
+
+    (return [value])
+
+  Returns from block. Block is defined by `progn`, `let`, `fn` or `namespace`. Optional return value can be supplied.
+  If `return` is called outside of the block, then program itself will terminate.
+
+    (let ((x 1)
+          (y 2))
+         (return y)
+         x)
+
+  Result of the `let` expression above will be 2, not 1.
+
+  `return` can accept the name of the block, which can be used to return from nested blocks, however named
+  blocks are not yet completely supported.
+
 Macros
 ------
 

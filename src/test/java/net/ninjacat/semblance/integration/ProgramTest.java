@@ -66,4 +66,13 @@ public class ProgramTest {
         assertThat(value, is(number(3)));
     }
 
+    @Test
+    public void testSimpleReturnShouldWork() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run("(let ((x 1) (y 2)) (return y) x)");
+
+        assertThat(value, is(number(2)));
+    }
+
 }

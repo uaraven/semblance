@@ -16,3 +16,8 @@
     (condition &rest body)
     `(if (not ,condition) (progn ,@body))
 )
+
+(defmacro let
+    (var-decl &rest body)
+    `(progn (var ,@var-decl) ,@body)
+)

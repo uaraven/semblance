@@ -16,6 +16,7 @@ import static net.ninjacat.semblance.utils.Values.asSymbol;
  * <p/>
  * (namespace name &rest body)
  */
+@CreatesContext
 public class Namespace extends SpecialForm {
 
     /**

@@ -13,8 +13,9 @@ import net.ninjacat.semblance.utils.Values;
 import static net.ninjacat.semblance.utils.Values.asSList;
 
 /**
- * @author oleksiivoronin, date: 15-03-07.
+ * If special form.
  */
+@CreatesContext
 public class If extends SpecialForm {
 
     public If() {

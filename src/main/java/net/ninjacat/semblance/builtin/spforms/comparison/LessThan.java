@@ -6,12 +6,11 @@ import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.NumberAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.semblance.evaluator.LocalContext;
 import net.ninjacat.semblance.utils.Require;
 import net.ninjacat.semblance.utils.Values;
 
 /**
- * @author oleksiivoronin, date: 15-03-07.
+ * &lt; evaluator.
  */
 public class LessThan extends SpecialForm {
 
@@ -24,11 +23,9 @@ public class LessThan extends SpecialForm {
 
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
-        final Context localContext = LocalContext.namelessChildContext(context);
-
         Require.that(parameters).hasAtLeast(2);
 
-        final LispValue value = localContext.evaluate(parameters.head());
+        final LispValue value = context.evaluate(parameters.head());
 
         for (final LispValue current : parameters.tail()) {
             final NumberAtom prevous = Values.asNumber(value);

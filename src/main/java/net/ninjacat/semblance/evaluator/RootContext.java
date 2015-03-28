@@ -114,7 +114,6 @@ public class RootContext extends BaseContext {
 
         bindForm(new Namespace());
         bindForm(new Progn());
-        bindForm(new Let());
 
         bindForm(new If());
         bindForm(new Equal());

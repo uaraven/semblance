@@ -8,14 +8,17 @@ import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.smooth.functions.Predicate;
 import net.ninjacat.smooth.iterators.Iter;
 
-import static net.ninjacat.semblance.utils.Values.*;
+import static net.ninjacat.semblance.utils.Values.isFalse;
 
 /**
- * @author oleksiivoronin, date: 15-03-07.
+ * OR special form
  */
 public class Or extends SpecialForm {
+    /**
+     * Creates a new instance of OR
+     */
     public Or() {
-        super(list(symbol("or"), symbol("&rest"), symbol("parameters")));
+        super("or", "&rest", "parameters");
     }
 
     @Override

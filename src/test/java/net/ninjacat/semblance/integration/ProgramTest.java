@@ -11,7 +11,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Created on 03/03/15.
+ * Interpreter integration test. Here should go tests which verify correctness of interpreter, context and
+ * built-in special forms. Tests that verify standard library should be placed in {@link StandardLibraryTest}
  */
 public class ProgramTest {
 
@@ -25,12 +26,14 @@ public class ProgramTest {
     }
 
     @Test
-    public void testFunctionShouldWork() throws Exception {
+    public void testShouldExecuteLambda() throws Exception {
         final Interpreter interpreter = new Interpreter();
+        final LispValue value = interpreter.run(
+                "(funcall (fn (x y)" +
+                        "             (+ x y))" +
+                        "          (2 3))");
 
-        final LispValue value = interpreter.run("(var (f (fn (x y) (+ x y)))) (f 2 1)");
-
-        assertThat(value, is(number(3)));
+        assertThat(value, is(number(5)));
     }
 
     @Test
@@ -55,13 +58,12 @@ public class ProgramTest {
 
 
     @Test
-    public void testShouldExecuteLambda() throws Exception {
+    public void testFunctionShouldWork() throws Exception {
         final Interpreter interpreter = new Interpreter();
-        final LispValue value = interpreter.run(
-                "(funcall (fn (x y)" +
-                        "             (+ x y))" +
-                        "          (2 3))");
 
-        assertThat(value, is(number(5)));
+        final LispValue value = interpreter.run("(var (f (fn (x y) (+ x y)))) (f 2 1)");
+
+        assertThat(value, is(number(3)));
     }
+
 }

@@ -13,6 +13,7 @@ import static net.ninjacat.semblance.utils.Values.asCollection;
 /**
  * Call function
  */
+@CreatesContext
 public class Funcall extends SpecialForm {
 
     /**

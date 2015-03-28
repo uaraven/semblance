@@ -77,6 +77,13 @@ public class Interpreter {
         }
     }
 
+    /**
+     * @return This interpreter's root context.
+     */
+    public Context getRootContext() {
+        return rootContext;
+    }
+
     private LispValue doRun(final SList program) {
         final Context executionContext = LocalContext.namedChildContext("main", rootContext);
         return executionContext.evaluateBlock(program);

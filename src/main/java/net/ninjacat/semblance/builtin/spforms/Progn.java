@@ -12,6 +12,7 @@ import static net.ninjacat.semblance.utils.Values.symbol;
 /**
  * @author oleksiivoronin, date: 15-03-06.
  */
+@CreatesContext
 public class Progn extends SpecialForm {
 
     /**

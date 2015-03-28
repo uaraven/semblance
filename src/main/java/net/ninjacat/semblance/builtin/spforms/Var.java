@@ -5,16 +5,13 @@ import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
 
-import static net.ninjacat.semblance.utils.Values.list;
-import static net.ninjacat.semblance.utils.Values.symbol;
-
 /**
- * (var name value [name value]...)
+ * (var (name value) [(name value)]...)
  */
 public class Var extends SpecialForm {
 
     public Var() {
-        super(list(symbol("var"), symbol("&rest"), symbol("bindings")));
+        super("var", "&rest", "bindings");
     }
 
     @Override

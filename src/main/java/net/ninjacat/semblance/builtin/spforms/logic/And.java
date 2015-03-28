@@ -8,14 +8,14 @@ import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.smooth.functions.Predicate;
 import net.ninjacat.smooth.iterators.Iter;
 
-import static net.ninjacat.semblance.utils.Values.*;
+import static net.ninjacat.semblance.utils.Values.isFalse;
 
 /**
  * @author oleksiivoronin, date: 15-03-07.
  */
 public class And extends SpecialForm {
     public And() {
-        super(list(symbol("and"), symbol("&rest"), symbol("parameters")));
+        super("and", "&rest", "parameters");
     }
 
     @Override

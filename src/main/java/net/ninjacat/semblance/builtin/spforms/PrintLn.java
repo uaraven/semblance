@@ -6,9 +6,6 @@ import net.ninjacat.semblance.data.NilCollection;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
 
-import static net.ninjacat.semblance.utils.Values.list;
-import static net.ninjacat.semblance.utils.Values.symbol;
-
 /**
  * (println val1 val2 val3)
  * <p/>
@@ -18,8 +15,11 @@ import static net.ninjacat.semblance.utils.Values.symbol;
  */
 public class PrintLn extends SpecialForm {
 
+    /**
+     * Creates new instance of println special form
+     */
     public PrintLn() {
-        super(list(symbol("println"), symbol("&rest"), symbol("arguments")));
+        super("println", "&rest", "arguments");
     }
 
     @Override

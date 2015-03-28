@@ -7,7 +7,8 @@ import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
 import net.ninjacat.semblance.evaluator.Context;
 
-import static net.ninjacat.semblance.utils.Values.*;
+import static net.ninjacat.semblance.utils.Values.isFalse;
+import static net.ninjacat.semblance.utils.Values.isNilCollection;
 
 /**
  * NOT boolean operator
@@ -19,7 +20,7 @@ public class Not extends SpecialForm {
      * Creates new instance of NOT
      */
     public Not() {
-        super(list(symbol("not"), symbol("expression")));
+        super("not", "expression");
     }
 
     @Override

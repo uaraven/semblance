@@ -6,15 +6,18 @@ import net.ninjacat.semblance.data.NumberAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.evaluator.Context;
 
-import static net.ninjacat.semblance.utils.Values.*;
+import static net.ninjacat.semblance.utils.Values.asNumber;
 
 /**
- * Created on 03/03/15.
+ * Modulo
  */
 public class Mod extends SpecialForm {
 
+    /**
+     * Creates new instance
+     */
     public Mod() {
-        super(list(symbol("/"), symbol("&rest"), symbol("values")));
+        super("/", "&rest", "values");
     }
 
     @Override

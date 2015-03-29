@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.evaluator;
 
+import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.utils.Values;
@@ -14,7 +15,7 @@ public class LocalContextTest {
 
     @Test
     public void keywordShouldEvaluateToItself() throws Exception {
-        final BaseContext context = new LocalContext("", null);
+        final BaseContext context = new LocalContext(Constants.NONE, null);
 
         final LispValue value = context.evaluate(KEYWORD_SYMBOL);
 

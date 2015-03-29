@@ -30,7 +30,7 @@ public class Namespace extends SpecialForm {
     public LispValue apply(final Context context, final LispCollection parameters) {
         final SymbolAtom name = asSymbol(parameters.head());
         final LispCollection body = parameters.tail();
-        final Context localContext = LocalContext.namedChildContext(name.repr(), context);
+        final Context localContext = LocalContext.namedChildContext(name, context);
 
         final LispValue result = localContext.evaluateBlock(body);
 

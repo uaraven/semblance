@@ -28,6 +28,6 @@ public class Funcall extends SpecialForm {
         final Callable callable = asCallable(context.evaluate(parameters.head()));
         final LispCollection params = context.evaluateList(asCollection(parameters.tail().head()));
 
-        return callable.apply(LocalContext.namedChildContext(callable.name().repr(), context), params);
+        return callable.apply(LocalContext.namedChildContext(callable.name(), context), params);
     }
 }

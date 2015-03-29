@@ -37,7 +37,7 @@ public class InterpretedFunction implements Callable {
 
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
-        final Context localContext = LocalContext.namedChildContext(name.repr(), context);
+        final Context localContext = LocalContext.namedChildContext(name, context);
 
         formalParameters.apply(localContext, parameters);
 

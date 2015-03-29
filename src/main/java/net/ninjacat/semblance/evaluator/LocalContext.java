@@ -1,5 +1,8 @@
 package net.ninjacat.semblance.evaluator;
 
+import net.ninjacat.semblance.data.Constants;
+import net.ninjacat.semblance.data.SymbolAtom;
+
 /**
  * Implementation of context for use everywhere where local context is required: blocks, functions, macros, etc.
  *
@@ -7,7 +10,7 @@ package net.ninjacat.semblance.evaluator;
  */
 public class LocalContext extends BaseContext {
 
-    protected LocalContext(final String name, final Context parent) {
+    protected LocalContext(final SymbolAtom name, final Context parent) {
         super(name, parent);
     }
 
@@ -18,7 +21,7 @@ public class LocalContext extends BaseContext {
      * @return New local context.
      */
     public static Context namelessChildContext(final Context parent) {
-        return new LocalContext("", parent);
+        return new LocalContext(Constants.NONE, parent);
     }
 
     /**
@@ -28,7 +31,7 @@ public class LocalContext extends BaseContext {
      * @param parent Parent context.
      * @return New local context.
      */
-    public static Context namedChildContext(final String name, final Context parent) {
+    public static Context namedChildContext(final SymbolAtom name, final Context parent) {
         return new LocalContext(name, parent);
     }
 }

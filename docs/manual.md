@@ -47,8 +47,6 @@ Second program does not have symbol `var` bound to any value, so exception will 
 
 Last program will evaluate `:var` to itself and print `:var`
 
-**TODO Consider changing this behavior to generate exception when using unbound symbols**
-
 
 Function parameters
 -------------------
@@ -218,12 +216,19 @@ Release Functions
        (var pi 3.14))
        (var tau (* 2 pi)))
 
+  **BLOCK**
+
+    (block name forms*)
+
+  Defines a named block. Last evaluated value is returned from block unless `return` is called inside.
+
   **RETURN**
 
     (return [value])
 
-  Returns from block. Block is defined by `progn`, `let`, `fn` or `namespace`. Optional return value can be supplied.
-  If `return` is called outside of the block, then program itself will terminate.
+  Returns from block. Block is defined by `block`, `progn`, `let`, `fn` or `namespace`. Optional return value can
+  be supplied. If no return value is supplied, then `NIL` will be returned. If `return` is called outside of the block,
+  then program itself will terminate.
 
     (let ((x 1)
           (y 2))
@@ -232,8 +237,31 @@ Release Functions
 
   Result of the `let` expression above will be 2, not 1.
 
-  `return` can accept the name of the block, which can be used to return from nested blocks, however named
-  blocks are not yet completely supported.
+  **RETURN-FROM**
+
+    (return-from block-name [value])
+
+  Returns from a named block. Named block is defined by `block`, `defun` or `namespace`. If value is not supplied `NIL`
+  will be returned. If there is no block named `block-name` in the execution stack then program will terminate and
+  value supplied to `return-from` will be returned.
+
+    (block b1
+        (block b2
+            (block b3
+                (return-from b1 5))
+         2 )
+     3)
+
+  will return `5`.
+
+    (block b1
+        (block b2
+              (block b3
+                    (return-from b2 5))
+         2 )
+     3)
+
+  will return `3`, as atom `3` will be last thing evaluated after execution of block `b2` is terminated by `return-from b2`.
 
 Macros
 ------

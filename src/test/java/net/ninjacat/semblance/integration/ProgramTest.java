@@ -75,4 +75,22 @@ public class ProgramTest {
         assertThat(value, is(number(2)));
     }
 
+    @Test
+    public void testReturnFromNestedNamedBlockShouldWork() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run("(block b1 (block b2 (block b3 (return 5 b1)) 2 ) 3)");
+
+        assertThat(value, is(number(5)));
+    }
+
+    @Test
+    public void testReturnFromPartiallyNamedBlockShouldWork() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run("(block b1 (block b2 (block b3 (return 5 b2)) 2 ) 3)");
+
+        assertThat(value, is(number(3)));
+    }
+
 }

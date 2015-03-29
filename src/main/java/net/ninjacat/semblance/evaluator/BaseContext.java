@@ -17,11 +17,11 @@ import static net.ninjacat.semblance.utils.Values.*;
  */
 abstract class BaseContext implements Context {
 
-    private final String name;
+    private final SymbolAtom name;
     private final Context parent;
     private final Map<SymbolAtom, Namespace> namespaces;
 
-    BaseContext(final String name, final Context parent) {
+    BaseContext(final SymbolAtom name, final Context parent) {
         this.name = name;
         this.parent = parent;
         namespaces = new ConcurrentHashMap<>();
@@ -29,7 +29,7 @@ abstract class BaseContext implements Context {
     }
 
     @Override
-    public String getName() {
+    public SymbolAtom getName() {
         return name;
     }
 
@@ -58,7 +58,12 @@ abstract class BaseContext implements Context {
                 }
             }
         } else if (isList(expression)) {
-            return evaluateFunction(asSList(expression));
+            final SList function = asSList(expression);
+            if (function.isNil()) {
+                return function;
+            } else {
+                return evaluateFunction(function);
+            }
         } else {
             return expression;
         }
@@ -80,7 +85,8 @@ abstract class BaseContext implements Context {
         for (final LispValue expr : expressions) {
             last = evaluate(expr);
             if (last.getType() == SemblanceType.RETURN) {
-                return asReturnValue(last).getValue();
+                final ReturnValue returnValue = asReturnValue(last);
+                return evaluateReturnValue(returnValue);
             }
         }
         return last;
@@ -116,6 +122,17 @@ abstract class BaseContext implements Context {
                 return lookInParent(symbolName);
             }
         }
+    }
+
+    private LispValue evaluateReturnValue(final ReturnValue returnValue) {
+        if (returnValue.isScoped() && !returnValue.getScope().equals(getName()) && !isRootContext()) {
+            return returnValue;
+        }
+        return returnValue.getValue();
+    }
+
+    private boolean isRootContext() {
+        return getName().equals(Constants.ROOT);
     }
 
     private Option<LispValue> lookInParent(final SymbolAtom symbolName) {

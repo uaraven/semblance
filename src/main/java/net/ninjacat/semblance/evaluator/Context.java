@@ -15,9 +15,9 @@ public interface Context {
     /**
      * Context name.
      *
-     * @return current context name. Empty string for nameless contexts
+     * @return current context name. {@link net.ninjacat.semblance.data.Constants#NONE} for nameless contexts
      */
-    String getName();
+    SymbolAtom getName();
 
     /**
      * Find symbol declared in this context. Will search through parent contexts if symbol is not defined

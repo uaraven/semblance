@@ -31,7 +31,7 @@ public class RootContext extends BaseContext {
      * Creates new instance of root context
      */
     public RootContext() {
-        super("/", null);
+        super(symbol("/"), null);
 
         bind(symbol("nil"), NilCollection.INSTANCE);
         bind(symbol("T"), Constants.TRUE);
@@ -99,6 +99,7 @@ public class RootContext extends BaseContext {
 
         bindForm(new Namespace());
         bindForm(new Progn());
+        bindForm(new Block());
         bindForm(new Fn());
         bindForm(new Defmacro());
         bindForm(new Funcall());

@@ -49,6 +49,13 @@ public class ReturnValue implements LispValue, DebugInfoProvider {
         return value;
     }
 
+    /**
+     * @return {@code true} if return is scoped
+     */
+    public boolean isScoped() {
+        return !scope.equals(Constants.NONE);
+    }
+
     @Override
     public SemblanceType getType() {
         return SemblanceType.RETURN;

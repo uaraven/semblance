@@ -19,8 +19,6 @@ Evaluator todo
 Library todo
 ------------
 
- - (named) blocks
- - return special form
  - loop special form
  - tailrec special form and call tail optimization in functions/macros
  - do-list, do-times macros

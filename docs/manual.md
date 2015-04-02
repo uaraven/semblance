@@ -72,6 +72,21 @@ Positional parameters are supported as usual. Optional parameters are supported 
 Functions
 ---------
 
+Data types
+----------
+
+  **LIST**
+  
+    (value value ...)
+    
+  **VECTOR**
+    
+    [value value ...]
+    
+  **MAP**
+  
+    {key value key value ... ...}
+
 Release Functions
 =================
 

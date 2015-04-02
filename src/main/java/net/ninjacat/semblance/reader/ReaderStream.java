@@ -36,6 +36,9 @@ public class ReaderStream {
         linePosition = 0;
     }
 
+    /**
+     * Closes reader stream and releases all underlying resources.
+     */
     public void close() {
         try {
             reader.close();
@@ -219,6 +222,10 @@ public class ReaderStream {
                 return Token.openBracket(currentPosition());
             case ']':
                 return Token.closeBracket(currentPosition());
+            case '{':
+                return Token.openBrace(currentPosition());
+            case '}':
+                return Token.closeBrace(currentPosition());
             case '\n':
                 final Token token = Token.carriageReturn(currentPosition());
                 linePosition = 0;

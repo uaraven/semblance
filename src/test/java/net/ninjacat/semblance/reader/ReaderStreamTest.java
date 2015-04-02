@@ -352,4 +352,19 @@ public class ReaderStreamTest {
 
     }
 
+    @Test
+    public void shouldParseMap() throws Exception {
+        final ReaderStream stream = ReaderStream.readString("{:one 1 :two 2}");
+
+        final List<Token> tokens = stream.tokenize();
+        assertThat("Should have 6 tokens", tokens.size(), is(6));
+        assertThat("Token type should be OpenBrace", tokens.get(0).getType(), is(Token.TokenType.OpenBrace));
+        assertThat("Token type should be Symbol", tokens.get(1).getType(), is(Token.TokenType.Symbol));
+        assertThat("Token type should be Int", tokens.get(2).getType(), is(Token.TokenType.Integer));
+        assertThat("Token type should be Symbol", tokens.get(3).getType(), is(Token.TokenType.Symbol));
+        assertThat("Token type should be Int", tokens.get(4).getType(), is(Token.TokenType.Integer));
+        assertThat("Token type should be CloseParen", tokens.get(5).getType(), is(Token.TokenType.CloseBrace));
+
+    }
+
 }

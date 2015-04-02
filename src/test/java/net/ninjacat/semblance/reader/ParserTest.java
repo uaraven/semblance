@@ -1,10 +1,7 @@
 package net.ninjacat.semblance.reader;
 
 import net.ninjacat.semblance.data.Constants.HiddenFunctions;
-import net.ninjacat.semblance.data.LispCollection;
-import net.ninjacat.semblance.data.SList;
-import net.ninjacat.semblance.data.SymbolAtom;
-import net.ninjacat.semblance.data.Vector;
+import net.ninjacat.semblance.data.*;
 import net.ninjacat.semblance.errors.runtime.UnexpectedEndRuntimeException;
 import net.ninjacat.semblance.reader.macros.AtMacro;
 import net.ninjacat.semblance.reader.macros.BackQuoteMacro;
@@ -228,4 +225,21 @@ public class ParserTest {
 
     }
 
+    @Test
+    public void shouldParseMap() throws Exception {
+        final List<Token> tokens = Lists.of(
+                Token.openBrace(UNKNOWN),
+                Token.symbol(":key", UNKNOWN),
+                Token.integer("12", UNKNOWN),
+                Token.closeBrace(UNKNOWN));
+
+        final LispCollection parse = parser.parse(tokens);
+
+        assertThat("Should produce s-expression", parse.head(), instanceOf(SMap.class));
+
+        final SMap map = (SMap) parse.head();
+
+        assertThat("Should have one entry", map.length(), is(1));
+        assertThat("Should have correct entry", map.get(Values.symbol(":key")), is(number(12)));
+    }
 }

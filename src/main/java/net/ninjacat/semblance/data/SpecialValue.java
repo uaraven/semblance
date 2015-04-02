@@ -7,6 +7,7 @@ public class SpecialValue implements LispValue {
 
     public static final SpecialValue LIST_END = new SpecialValue();
     public static final SpecialValue PROGRAM_END = new SpecialValue();
+    public static final SpecialValue MAP_END = new SpecialValue();
 
     @Override
     public SemblanceType getType() {

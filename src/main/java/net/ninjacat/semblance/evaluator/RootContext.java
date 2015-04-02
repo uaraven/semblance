@@ -104,6 +104,7 @@ public class RootContext extends BaseContext {
         bindForm(new Defmacro());
         bindForm(new Funcall());
         bindForm(new Return());
+        bindForm(new Loop());
 
         bindForm(new Add());
         bindForm(new Sub());

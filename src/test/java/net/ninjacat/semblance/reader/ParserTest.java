@@ -20,8 +20,7 @@ import static net.ninjacat.semblance.debug.SourceInfo.UNKNOWN;
 import static net.ninjacat.semblance.reader.Token.integer;
 import static net.ninjacat.semblance.reader.Token.symbol;
 import static net.ninjacat.semblance.utils.Values.*;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 @SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "DuplicateStringLiteralInspection"})
@@ -241,5 +240,23 @@ public class ParserTest {
 
         assertThat("Should have one entry", map.length(), is(1));
         assertThat("Should have correct entry", map.get(Values.symbol(":key")), is(number(12)));
+    }
+
+
+    @Test
+    public void shouldParseMapWithNilValue() throws Exception {
+        final List<Token> tokens = Lists.of(
+                Token.openBrace(UNKNOWN),
+                Token.symbol(":key", UNKNOWN),
+                Token.closeBrace(UNKNOWN));
+
+        final LispCollection parse = parser.parse(tokens);
+
+        assertThat("Should produce s-expression", parse.head(), instanceOf(SMap.class));
+
+        final SMap map = (SMap) parse.head();
+
+        assertThat("Should have one entry", map.length(), is(1));
+        assertThat("Should have correct entry", map.get(Values.symbol(":key")), equalTo((LispValue) NilCollection.INSTANCE));
     }
 }

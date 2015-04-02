@@ -125,7 +125,7 @@ class ParserIterator implements Iterator<LispValue> {
             }
             final LispValue value = parseInternal();
             if (SemblanceType.SPECIAL == value.getType()) {
-                if (SpecialValue.MAP_END.equals(key)) {
+                if (SpecialValue.MAP_END.equals(value)) {
                     map.put(key, NilCollection.INSTANCE);
                     return new SMap(map, token.getSourceInfo());
                 } else {

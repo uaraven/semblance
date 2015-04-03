@@ -19,7 +19,12 @@ Evaluator todo
 Library todo
 ------------
 
- - loop special form
  - tailrec special form and call tail optimization in functions/macros
  - do-list, do-times macros
  - map macros
+ - include
+
+Interpreter todo
+----------------
+
+ - REPL

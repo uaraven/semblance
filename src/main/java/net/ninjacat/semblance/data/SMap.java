@@ -6,8 +6,10 @@ import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.JavaConvertible;
 import net.ninjacat.smooth.functions.Func;
 import net.ninjacat.smooth.iterators.Iter;
+import net.ninjacat.smooth.utils.Option;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -69,11 +71,7 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
      * @return Value for given key or {@link NilCollection#INSTANCE}
      */
     public LispValue get(final LispValue key) {
-        if (contents.containsKey(key)) {
-            return contents.get(key);
-        } else {
-            return NilCollection.INSTANCE;
-        }
+        return Option.of(contents.get(key)).or(NilCollection.INSTANCE);
     }
 
     @Override
@@ -106,5 +104,27 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
      */
     public int length() {
         return contents.size();
+    }
+
+    /**
+     * Map literal cannot be evaluated during the reading phase. All function calls/atoms are stored in the map as
+     * literals. This method is called when map object is accessed in the execution context and evaluates all
+     * keys and values within this context. This only happens once as map literal is evaluated.
+     *
+     * @param context Evaluation context.
+     * @return this map with updated keys and values.
+     */
+    public LispValue evaluateValues(final Context context) {
+        final Map<LispValue, LispValue> updated = new HashMap<>();
+
+        synchronized (contents) {
+            for (final Map.Entry<LispValue, LispValue> entry : contents.entrySet()) {
+                updated.put(context.evaluate(entry.getKey()), context.evaluate(entry.getValue()));
+            }
+            contents.clear();
+            contents.putAll(updated);
+        }
+
+        return this;
     }
 }

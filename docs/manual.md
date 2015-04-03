@@ -29,23 +29,23 @@ keyword symbols. Keywords are just symbols which start with a ':' and always eva
 
 Consider following two short programs:
 
-    (defvar var (+ 1 2))
-    (print var)
+    (set v (+ 1 2))
+    (println v)
 
 and
 
-    (print var)
+    (println v)
 
 and
 
-    (print :var)
+    (println :v)
 
-In the first program, symbol `var` is bound to result of computation of `1 + 2`. Statement (print var) will
-have `var` evaluated prior to calling `print` function and output will be `3`
+In the first program, symbol `v` is bound to result of computation of `1 + 2`. Statement `(println v)` will
+have `var` evaluated prior to calling `println` function and output will be `3`
 
-Second program does not have symbol `var` bound to any value, so exception will be thrown.
+Second program does not have symbol `v` bound to any value, so exception will be thrown.
 
-Last program will evaluate `:var` to itself and print `:var`
+Last program will evaluate `:v` to itself and print `:v`
 
 
 Function parameters
@@ -79,13 +79,39 @@ Functions
   
     (value value ...)
     
+  List is a function itself. Expression `(list-var 3)` will return value of the fourth list elevent (lists are 
+  zero-based)
+  
+    (let ((x '(1 2 3))) (x 1))
+    ('(1 2 3) 1)
+    
+  Both expressions above will return **2**
+    
   **VECTOR**
     
     [value value ...]
     
+  Vector is a function as well, so examples of index-based access of lists above can be applied to vectors as well.
+  
+    (let ((x [1 2 3])) (x 1))
+    ([1 2 3] 1)
+    
   **MAP**
   
     {key value key value ... ...}
+    
+  Keys can be anything, but customary they are keywords. Map is a function, just like lists or vectors.
+  Map can accept either one or two parameters. If one parameter is supplied then it is treated as map key and 
+  corresponding value (or NIL) is returned. IF two parameters are supplied, then first is treated as key and the 
+  second one as a value and that value is stored in the map associated with a key.
+  
+    ({:a 1 :b 2 :c 3} :b)
+    
+  will return **2**
+  
+    ({:a 1 :b 2 :c3} :b 5)
+    
+  will associate key **:b** with value **5** and will return value **5** as well.
 
 ### Release Functions
 

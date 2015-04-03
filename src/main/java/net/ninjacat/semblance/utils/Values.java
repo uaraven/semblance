@@ -52,6 +52,7 @@ public final class Values {
         return new DoubleNumberAtom(value);
     }
 
+    @SuppressWarnings("QuestionableName")
     public static LispValue string(final String value) {
         return new StringAtom(value);
     }
@@ -97,6 +98,14 @@ public final class Values {
             return (ReturnValue) value;
         } else {
             throw new TypeMismatchException(SemblanceType.RETURN, value, getSourceInfo(value));
+        }
+    }
+
+    public static SMap asSMap(final LispValue value) {
+        if (isMap(value)) {
+            return (SMap) value;
+        } else {
+            throw new TypeMismatchException(SemblanceType.MAP, value, getSourceInfo(value));
         }
     }
 
@@ -154,6 +163,10 @@ public final class Values {
         return SemblanceType.LIST == value.getType();
     }
 
+    public static boolean isMap(final LispValue value) {
+        return SemblanceType.MAP == value.getType();
+    }
+
     public static boolean isVector(final LispValue value) {
         return SemblanceType.VECTOR == value.getType();
     }
@@ -163,7 +176,8 @@ public final class Values {
     }
 
     public static boolean isCallable(final LispValue value) {
-        return SemblanceType.FUNCTION == value.getType() || SemblanceType.MACRO == value.getType();
+        return SemblanceType.FUNCTION == value.getType() || SemblanceType.MACRO == value.getType() ||
+                value instanceof Callable;
     }
 
     public static boolean isFalse(final LispValue value) {

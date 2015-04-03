@@ -22,11 +22,6 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
         this.sourceInfo = sourceInfo;
     }
 
-    @Override
-    public SourceInfo getSourceInfo() {
-        return sourceInfo;
-    }
-
     /**
      * Returns first element of the collection.
      *
@@ -38,8 +33,8 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
     /**
      * Returns collection of all elements except the first one. Type of new collection will be the same as of original collection.
      *
-     * @return {@link net.ninjacat.semblance.data.LispCollection} containing all of the elements but the first. Will return
-     * {@link net.ninjacat.semblance.data.NilCollection} if original collection contains only one element.
+     * @return LispCollection containing all of the elements but the first. Will return
+     * {@link NilCollection} if original collection contains only one element.
      * @throws net.ninjacat.semblance.errors.runtime.CollectionException if original collection is empty.
      */
     public abstract LispCollection tail();
@@ -56,9 +51,24 @@ public abstract class LispCollection implements Iterable<LispValue>, LispValue, 
      */
     public abstract boolean isNil();
 
+    /**
+     * @return This collection as list of values
+     */
     public abstract List<LispValue> getCollection();
 
+    /**
+     * Creates new collection of the same type as this collection (vector or list) and fills it with supplied values.
+     *
+     * @param values List of values for new collection
+     * @param <T>    Type of collection.
+     * @return New collection.
+     */
     public abstract <T extends LispCollection> T createSame(LispCollection values);
+
+    @Override
+    public SourceInfo getSourceInfo() {
+        return sourceInfo;
+    }
 
     protected enum ValueToString implements Func<String, LispValue> {
         REPR;

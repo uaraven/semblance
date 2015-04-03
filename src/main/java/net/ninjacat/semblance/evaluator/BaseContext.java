@@ -64,6 +64,8 @@ abstract class BaseContext implements Context {
             } else {
                 return evaluateFunction(function);
             }
+        } else if (isMap(expression)) {
+            return asSMap(expression).evaluateValues(this);
         } else {
             return expression;
         }
@@ -150,10 +152,10 @@ abstract class BaseContext implements Context {
 
     private LispValue evaluateFunction(final SList function) {
         final LispValue head = function.head();
-        if (!isSymbol(head)) {
+        if (!isSymbol(head) && !isCallable(head)) {
             throw new FunctionExpectedException(function);
         }
-        final Option<LispValue> callable = findSymbol(asSymbol(head));
+        final Option<LispValue> callable = isCallable(head) ? Option.of(evaluate(head)) : findSymbol(asSymbol(head));
         if (!callable.isPresent() || !isCallable(callable.get())) {
             throw new FunctionExpectedException(head);
         }

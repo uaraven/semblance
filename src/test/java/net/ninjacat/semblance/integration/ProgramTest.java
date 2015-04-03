@@ -108,15 +108,15 @@ public class ProgramTest {
     public void testShouldBreakLoop() throws Exception {
         final Interpreter interpreter = new Interpreter();
 
-        final LispValue value = interpreter.run("" +
+        final LispValue value = interpreter.run(
                 "(let ((x 5) (y 0)) " +
-                "     (loop (> x 0) " +
-                "           (set x (- x 1)) " +
-                "           (set y (+ y 1)) " +
-                "           (if (= y 3) " +
-                "               (break y))" +
-                "     )" +
-                ")");
+                        "     (loop (> x 0) " +
+                        "           (set x (- x 1)) " +
+                        "           (set y (+ y 1)) " +
+                        "           (if (= y 3) " +
+                        "               (break y))" +
+                        "     )" +
+                        ")");
 
         assertThat(value, is(number(3)));
     }
@@ -126,5 +126,89 @@ public class ProgramTest {
         final Interpreter interpreter = new Interpreter();
 
         interpreter.run("(break 1)");
+    }
+
+    @Test
+    public void testShouldAccessVectorAsFunction() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(set x [1 2 3 4])" +
+                        "(x 2)");
+
+        assertThat(value, is(number(3)));
+    }
+
+    @Test
+    public void testShouldAccessListAsFunction() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(set x '(1 2 3 4))" +
+                        "(x 2)");
+
+        assertThat(value, is(number(3)));
+    }
+
+    @Test
+    public void testShouldAccessInPlaceListAsFunction() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "('(1 2 3 4) 2)");
+
+        assertThat(value, is(number(3)));
+    }
+
+
+    @Test
+    public void testShouldAccessInPlaceVectorAsFunction() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "([1 2 3 4] 2)");
+
+        assertThat(value, is(number(3)));
+    }
+
+    @Test
+    public void testShouldAccessInPlaceMapAsFunction() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "({:a 1 :b 2 :c 3} :b)");
+
+        assertThat(value, is(number(2)));
+    }
+
+    @Test
+    public void testShouldAccessMapAsFunction() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(var (x {:a 1 :b (+ 2 3) :c 3}))" +
+                        "(x :b)");
+
+        assertThat(value, is(number(5)));
+    }
+
+
+    @Test
+    public void testShouldUpdateMapAsFunction() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(var (x {:a 1 :b (+ 2 3) :c 3}))" +
+                        "(x :b (- 4 2))" +
+                        "(x :b)");
+
+        assertThat(value, is(number(2)));
     }
 }

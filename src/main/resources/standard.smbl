@@ -32,3 +32,11 @@
     (name value)
     `(var (,name ,value))
 )
+
+(defmacro fn*
+    (&rest body)
+    `(fn (__it__)
+         (let ((it __it__))
+         ,@body)
+     )
+)

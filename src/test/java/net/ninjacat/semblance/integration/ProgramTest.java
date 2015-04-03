@@ -211,4 +211,26 @@ public class ProgramTest {
 
         assertThat(value, is(number(2)));
     }
+
+    @Test
+    public void testShouldEvaluateLambdaInPlace() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "((fn (x) (* x x)) 3)");
+
+        assertThat(value, is(number(9)));
+    }
+
+    @Test
+    public void testShouldEvaluateLambdaWithItInPlace() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "((fn* (* it it)) 3)");
+
+        assertThat(value, is(number(9)));
+    }
 }

@@ -10,7 +10,7 @@ Behavior
 Semblance is interpreted language. Reader works in two passes, first performing lexical analysis and converting input
 stream into list of tokens which when parsed into list of S-expressions.
 
-Interpreter has no knowledge of special characters used in input stream, like ` `'` or `,`
+Interpreter has no knowledge of special characters used in input stream, like `'`, `` `  `` or `,`
 (single quote, backquote and comma). This characters (called read macros) are handled by parser and expanded
 into correct lisp forms before interpretation. For example `'expr` is expanded into (quote expr).
 Users of interpreter can register their handlers to process more read macros.
@@ -25,7 +25,7 @@ Symbols
 
 Symbols in the program can be bound to variables/functions/macros or can be unbound. Bound symbols are evaluated to
 the value they are bound to, unbound symbols will cause run-time exception. The only exception to this rule are
-keyword symbols. Keywords are just symbols which start with a ':' and always evaluate to themselves.
+keyword symbols. Keywords are just symbols which start with a `:` and always evaluate to themselves.
 
 Consider following two short programs:
 
@@ -41,11 +41,11 @@ and
     (println :v)
 
 In the first program, symbol `v` is bound to result of computation of `1 + 2`. Statement `(println v)` will
-have `var` evaluated prior to calling `println` function and output will be `3`
+have `var` evaluated prior to calling `println` function and output will be **3**
 
 Second program does not have symbol `v` bound to any value, so exception will be thrown.
 
-Last program will evaluate `:v` to itself and print `:v`
+Last program will evaluate `:v` to itself and print **:v**
 
 
 Function parameters
@@ -146,7 +146,7 @@ Functions
 
     (if condition then-expr else-expr?)
 
-  Evaluates condition, if it is not equal to F executes then-expr, if condition is F and else-expr is present
+  Evaluates condition, if it is not equal to **F** executes then-expr, if condition is **F** and else-expr is present
   it will be executed
 
      (if (= a b)
@@ -190,6 +190,16 @@ Functions
     (fn (parameters) (s-expression)*)
 
   Defines a nameless function.
+  
+  **FN\***
+  
+    (fn* (s-expression)*)
+  
+  Defines a nameless function with a single implicit parameter named `it`.
+  
+    ((fn* (* it it)) 3)
+    
+  Will evalute square of **3** and return **9**
 
   **NAMESPACE**
 

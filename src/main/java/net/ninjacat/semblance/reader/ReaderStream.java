@@ -102,6 +102,7 @@ public class ReaderStream {
         streamTokenizer.wordChars('!', '!');
         streamTokenizer.wordChars('$', '&');
         streamTokenizer.wordChars('*', '-');
+        streamTokenizer.wordChars('_', '_');
         streamTokenizer.wordChars('/', '/');
         streamTokenizer.wordChars(':', ':');
         for (final char spch : specials) {

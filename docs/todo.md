@@ -23,6 +23,7 @@ Library todo
  - do-list, do-times macros
  - map macros
  - include
+ - list/vector indices - negative, splices, keywords like :head, :tail, :last, etc.
 
 Interpreter todo
 ----------------

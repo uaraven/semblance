@@ -3,6 +3,7 @@ package net.ninjacat.semblance.integration;
 import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.Macro;
+import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import org.junit.Test;
 
 import static net.ninjacat.semblance.utils.Values.*;
@@ -93,4 +94,37 @@ public class ProgramTest {
         assertThat(value, is(number(3)));
     }
 
+    @Test
+    public void testShouldLoopWhileConditionIsTrue() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run("(let ((x 5) (y 0)) " +
+                "(loop (> x 0) (set x (- x 1)) (set y (+ y 1)) y))");
+
+        assertThat(value, is(number(5)));
+    }
+
+    @Test
+    public void testShouldBreakLoop() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run("" +
+                "(let ((x 5) (y 0)) " +
+                "     (loop (> x 0) " +
+                "           (set x (- x 1)) " +
+                "           (set y (+ y 1)) " +
+                "           (if (= y 3) " +
+                "               (break y))" +
+                "     )" +
+                ")");
+
+        assertThat(value, is(number(3)));
+    }
+
+    @Test(expected = SemblanceRuntimeException.class)
+    public void testBrakShouldFailOutsideLoop() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        interpreter.run("(break 1)");
+    }
 }

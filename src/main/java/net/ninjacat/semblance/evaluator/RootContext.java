@@ -105,6 +105,7 @@ public class RootContext extends BaseContext {
         bindForm(new Funcall());
         bindForm(new Return());
         bindForm(new Loop());
+        bindForm(new Break());
 
         bindForm(new Add());
         bindForm(new Sub());

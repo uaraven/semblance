@@ -1,11 +1,11 @@
 Semblance 2
-~~~~~~~~~~~
+===========
 
 Behavior
-========
+--------
 
-Translator
-----------
+### Translator
+
 
 Semblance is interpreted language. Reader works in two passes, first performing lexical analysis and converting input
 stream into list of tokens which when parsed into list of S-expressions.
@@ -72,8 +72,8 @@ Positional parameters are supported as usual. Optional parameters are supported 
 Functions
 ---------
 
-Data types
-----------
+### Data types
+
 
   **LIST**
   
@@ -87,8 +87,7 @@ Data types
   
     {key value key value ... ...}
 
-Release Functions
-=================
+### Release Functions
 
   Semblance probably includes more special forms than Common Lisp. That's done mostly for efficiency and sometimes
   to avoid complex parameter processing. Some of the special forms may later be rewritten as functions
@@ -114,7 +113,7 @@ Release Functions
           (y 2))
          (+ x y))
 
-  Let is similar to Common Lisp let*, all bindings are done one by one, not in parallel. Let evaluates to last
+  Let is similar to Common Lisp `let*`, all bindings are done one by one, not in parallel. Let evaluates to last
   value in `body`
 
   **IF**
@@ -200,14 +199,20 @@ Release Functions
     (defun add (x y) (+ x y))
     (add 1 2)
     
-  will result in `3`
+  will result in **3**
   
   **VAR**
 
     (var (name value) [(name value) ...])
-  Binds evaluated *value* to symbol *name* in the current context. May evaluate and bind multiple variables.
+  Binds evaluated `value` to symbol `name` in the current context. May evaluate and bind multiple variables.
   Returns latest evaluated value
+  
+  
+  **SET**
+  
+    (set name expression)
 
+  Binds evaluated `expression` to a `name` in current context. Essentially works as `var`, but only for one variable
 
   **NAMESPACE**
 
@@ -267,7 +272,7 @@ Release Functions
          2 )
      3)
 
-  will return `5`.
+  will return **5**.
 
     (block b1
         (block b2
@@ -276,8 +281,26 @@ Release Functions
          2 )
      3)
 
-  will return `3`, as atom `3` will be last thing evaluated after execution of block `b2` is terminated by `return-from b2`.
-
+  will return **3**, as atom **3** will be last thing evaluated after execution of block `b2` is terminated by `return-from b2`.
+  
+  **LOOP**
+  
+    (loop condition-expression (s-expression)*)
+    
+  Loops through list of `s-expressions` while `condition-expression` evaluates to `T`.
+  To break out of the loop use `break` special form. `return` form will not work as loop creates implicit
+  block which will eat return value and return to `condition-expression` evaluation.
+      
+      (let ((x 5) (y 0))
+           (loop (> x 0)
+                 (set x (- x 1)) 
+                 (set y (+ y 1)) 
+                 (if (= y 3)
+                     (break y)) 
+      )) 
+      
+  The program above will return **3**
+     
 Macros
 ------
 

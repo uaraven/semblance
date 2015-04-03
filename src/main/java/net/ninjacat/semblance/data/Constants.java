@@ -12,6 +12,7 @@ public final class Constants {
     public static final SymbolAtom TRUE = new SymbolAtom("T");
     public static final SymbolAtom FALSE = new SymbolAtom("F");
     public static final SymbolAtom ROOT = new SymbolAtom("/");
+    public static final SymbolAtom LOOP = new SymbolAtom("''loop''");
 
     private Constants() {
     }

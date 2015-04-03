@@ -21,14 +21,14 @@ public class Loop extends SpecialForm {
 
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
-        final Context localContext = LocalContext.namelessChildContext(context);
+        final Context localContext = LocalContext.namedChildContext(Constants.LOOP, context);
         final LispValue condition = parameters.head();
         final LispCollection expressions = parameters.tail();
         LispValue result = NilCollection.INSTANCE;
         while (Values.isTrue(localContext.evaluate(condition))) {
             result = localContext.evaluateBlock(expressions);
-            if (result.getType() == SemblanceType.RETURN) {
-                return ((ReturnValue) result).getValue();
+            if (result.getType() == SemblanceType.BREAK) {
+                return ((BreakValue) result).getValue();
             }
         }
         return result;

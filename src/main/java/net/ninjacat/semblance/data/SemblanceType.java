@@ -13,5 +13,5 @@ public enum SemblanceType {
     FUNCTION,
     MACRO,
     RETURN, // internal wrapper around return value
-    MAP, SPECIAL // this is internal type, it will never appear in programs
+    MAP, BREAK, SPECIAL // this is internal type, it will never appear in programs
 }

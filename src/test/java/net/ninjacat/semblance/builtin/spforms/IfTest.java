@@ -25,7 +25,7 @@ public class IfTest {
     @Test
     public void shouldReturnValueOfTrueBranch() throws Exception {
         final SList program = list(
-                symbol("if"), list(COND_TRUE),
+                symbol("if"), COND_TRUE,
                 list(QUOTE, SYMBOL_A)
         );
         final Context rootContext = new RootContext();
@@ -38,7 +38,7 @@ public class IfTest {
     @Test
     public void shouldReturnNil() throws Exception {
         final SList program = list(
-                symbol("if"), list(COND_FALSE),
+                symbol("if"), COND_FALSE,
                 list(QUOTE, SYMBOL_A)
         );
         final Context rootContext = new RootContext();
@@ -51,7 +51,7 @@ public class IfTest {
     @Test
     public void shouldReturnValueOfFalseBranch() throws Exception {
         final SList program = list(
-                symbol("if"), list(COND_FALSE),
+                symbol("if"), COND_FALSE,
                 list(QUOTE, SYMBOL_A),
                 list(QUOTE, SYMBOL_B)
         );

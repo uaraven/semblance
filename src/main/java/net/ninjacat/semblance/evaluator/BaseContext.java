@@ -109,6 +109,11 @@ abstract class BaseContext implements Context {
                 '}';
     }
 
+    @Override
+    public boolean hasParent(final SymbolAtom contextName) {
+        return name.equals(contextName) || null != parent && parent.hasParent(contextName);
+    }
+
     protected Option<LispValue> findInNamespace(final SymbolAtom symbolName) {
         final SymbolAtom rootNs = symbolName.getNamespace();
         if (!namespaces.containsKey(rootNs)) {
@@ -156,5 +161,4 @@ abstract class BaseContext implements Context {
         final Callable func = asCallable(callable.get());
         return func.apply(this, params);
     }
-
 }

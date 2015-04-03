@@ -27,3 +27,8 @@
     (block-name &optional value)
     `(return ,value ,block-name)
 )
+
+(defmacro set
+    (name value)
+    `(var (,name ,value))
+)

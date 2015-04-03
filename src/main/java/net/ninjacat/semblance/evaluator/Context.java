@@ -74,4 +74,13 @@ public interface Context {
      * @param namespace Namespace to add.
      */
     void addNamespace(Namespace namespace);
+
+
+    /**
+     * Checks if this context has parent context with give name. Will check this context name also.
+     *
+     * @param name name of parent context
+     * @return {@code true} if this context's or this context's parent's name is equal to supplied parameter
+     */
+    boolean hasParent(SymbolAtom name);
 }

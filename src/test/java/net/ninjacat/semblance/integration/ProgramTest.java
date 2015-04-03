@@ -152,6 +152,40 @@ public class ProgramTest {
         assertThat(value, is(number(3)));
     }
 
+
+    @Test
+    public void testShouldGetListSlice() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(set x '(1 2 3 4))" +
+                        "(x 1 2)");
+
+        assertThat(value, is((LispValue) smartList(2L, 3L)));
+    }
+
+    @Test
+    public void testShouldGetListHeadViaOperator() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(set x '(1 2 3 4))" +
+                        "(x :head)");
+
+        assertThat(value, is(number(1)));
+    }
+
+    @Test
+    public void testShouldGetListTailViaOperator() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(set x '(1 2 3 4))" +
+                        "(x :tail)");
+
+        assertThat(value, is((LispValue) smartList(2L, 3L, 4L)));
+    }
+
     @Test
     public void testShouldAccessInPlaceListAsFunction() throws Exception {
 

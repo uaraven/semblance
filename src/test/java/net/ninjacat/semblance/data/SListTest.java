@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "DuplicateStringLiteralInspection"})
 public class SListTest {
@@ -119,15 +120,27 @@ public class SListTest {
     @Test
     public void listAsFunctionShouldReturnValueByIndex() throws Exception {
         final SList list = smartList(1L, 2L);
+        when(context.evaluate(number(1))).thenReturn(number(1));
 
         final LispValue value = list.apply(context, smartList(1L));
 
         assertThat("list.apply should return value by index", value, is(atom(2L)));
     }
 
+    @Test
+    public void listAsFunctionShouldReturnValueByNegativeIndex() throws Exception {
+        final SList list = smartList(1L, 2L, 3L, 4L);
+        when(context.evaluate(number(-2))).thenReturn(number(-2));
+
+        final LispValue value = list.apply(context, smartList(-2L));
+
+        assertThat("list.apply should return value by index", value, is(atom(3L)));
+    }
+
     @Test(expected = CollectionIndexOutOfBoundsException.class)
     public void listAsFunctionShouldFailWhenIndexIsOutOfBounds() throws Exception {
         final SList list = smartList(1L, 2L);
+        when(context.evaluate(number(3))).thenReturn(number(3));
 
         list.apply(context, smartList(3L));
     }

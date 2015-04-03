@@ -2,9 +2,6 @@ package net.ninjacat.semblance.data;
 
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
-import net.ninjacat.semblance.errors.runtime.CollectionIndexOutOfBoundsException;
-import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
-import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 
@@ -29,7 +26,7 @@ import static java.util.Collections.unmodifiableList;
  *     (v length) returns vector size
  * </pre>
  */
-public class Vector extends LispCollection implements Callable {
+public class Vector extends LispCollection {
 
     private final List<LispValue> collection;
 
@@ -74,31 +71,6 @@ public class Vector extends LispCollection implements Callable {
     }
 
     @Override
-    public LispValue apply(final Context context, final LispCollection parameters) {
-        if (parameters.isNil()) {
-            throw new ValueExpectedException(getSourceInfo());
-        } else {
-            final LispValue value = context.evaluate(parameters.head());
-            final long index = Values.getLongValue(value);
-            try {
-                return collection.get((int) index);
-            } catch (final IndexOutOfBoundsException ex) {
-                throw new CollectionIndexOutOfBoundsException(index, collection.size(), parameters.getSourceInfo(), ex);
-            }
-        }
-    }
-
-    /**
-     * Gets vector element by index.
-     *
-     * @param index Index of the element.
-     * @return Value of the element at the index.
-     */
-    public LispValue get(final int index) {
-        return collection.get(index);
-    }
-
-    @Override
     public LispValue head() {
         if (isNil()) {
             throw new CollectionException("Cannot get head of empty vector", getSourceInfo());
@@ -137,6 +109,12 @@ public class Vector extends LispCollection implements Callable {
     @Override
     public List<LispValue> getCollection() {
         return Collections.unmodifiableList(collection);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends LispCollection> T createNew(final List<LispValue> values) {
+        return (T) new Vector(values);
     }
 
     @SuppressWarnings("all")

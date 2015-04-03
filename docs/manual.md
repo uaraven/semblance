@@ -96,6 +96,35 @@ Functions
     (let ((x [1 2 3])) (x 1))
     ([1 2 3] 1)
     
+  If index is negative it will be treated as index from the end of the list. 
+  
+    ('(1 2 3 4) -1) --> 4
+  Vectors and lists support additional operations. For example if supplied with two indices it will return a slice of the
+  list.
+  
+    ('(1 2 3 4) 1 2) --> (2 3)
+    
+  Some of operations are denoted by keywords, for example `head` (or `car`) and `tail` (or `cdr`) are implemented as
+  collection operations `:head` and `:tail` (of course `car` and `cdr` are still supported)
+  
+    ('(1 2 3) :head) --> 1
+    ('(1 2 3) :tail) --> (2 3)
+    
+  Other supported operations are:
+    
+   - last - take the last element of collection 
+   - reverse - reverse the collection 
+   - take n - take first `n` elements of collection
+   - drop n - take all but first `n` elements of collection
+    
+  Some of keyword operations can accept parameters.
+  
+    ('(1 2 3) :drop 2) --> (3)
+    
+  However lists and vectors support the same operations their performance can be very different. Vectors are fast when
+  accessing items by index, lists are fast when evaluating tail or appending/prepending values.
+  
+    
   **MAP**
   
     {key value key value ... ...}

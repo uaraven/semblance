@@ -2,9 +2,6 @@ package net.ninjacat.semblance.data;
 
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
-import net.ninjacat.semblance.errors.runtime.CollectionIndexOutOfBoundsException;
-import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
-import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.iterators.Iter;
 
@@ -29,7 +26,7 @@ import static java.util.Collections.unmodifiableList;
  *     (L length) returns list size
  * </pre>
  */
-public class SList extends LispCollection implements Callable {
+public class SList extends LispCollection {
 
     private static final SymbolAtom NAME = new SymbolAtom("--list-get");
 
@@ -80,30 +77,6 @@ public class SList extends LispCollection implements Callable {
     }
 
     @Override
-    public LispValue apply(final Context context, final LispCollection parameters) {
-        if (parameters.isNil()) {
-            throw new ValueExpectedException(getSourceInfo());
-        } else {
-            final long index = Values.getLongValue(parameters.head());
-            try {
-                return collection.get((int) index);
-            } catch (final IndexOutOfBoundsException ex) {
-                throw new CollectionIndexOutOfBoundsException(index, collection.size(), parameters.getSourceInfo(), ex);
-            }
-        }
-    }
-
-    /**
-     * Get value by its index.
-     *
-     * @param index Index of the element.
-     * @return Value of the list element.
-     */
-    public LispValue get(final int index) {
-        return collection.get(index);
-    }
-
-    @Override
     public LispValue head() {
         if (isNil()) {
             throw new CollectionException("Cannot get head of empty list", getSourceInfo());
@@ -142,6 +115,12 @@ public class SList extends LispCollection implements Callable {
     @Override
     public List<LispValue> getCollection() {
         return Collections.unmodifiableList(collection);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T extends LispCollection> T createNew(final List<LispValue> values) {
+        return (T) new SList(values);
     }
 
     @SuppressWarnings("all")

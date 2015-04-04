@@ -12,10 +12,21 @@ public class StringAtom extends Atom {
 
     private final String value;
 
+    /**
+     * Creates a new string atom.
+     *
+     * @param value Value of the new string atom.
+     */
     public StringAtom(final String value) {
         this.value = value;
     }
 
+    /**
+     * Creates a new string atom.
+     *
+     * @param value      Value of the new string atom.
+     * @param sourceInfo Source code information for the atom.
+     */
     public StringAtom(final String value, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
@@ -62,7 +73,7 @@ public class StringAtom extends Atom {
     @Override
     public int compareTo(@Nonnull final LispValue other) {
         if (other.getClass().equals(getClass())) {
-            return ((StringAtom) other).value.compareTo(value);
+            return value.compareTo(((StringAtom) other).value);
         } else {
             throw new ClassCastException(String.format("%s is not compatible with %s", getType(), other.getType()));
         }

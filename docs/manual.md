@@ -113,14 +113,20 @@ Functions
   Other supported operations are:
     
    - :last - take the last element of collection 
-   - :reverse - reverse the collection 
+   - :reverse - reverse the collection
    - :take n - take first `n` elements of collection
    - :drop n - take all but first `n` elements of collection
-   - :sort - sort collection
+   - :sort - sort collection. `:sort` may accept additional parameter `:desc` to sort in descending order. Attempt to
+     sort a collection which holds elements of different types will cause runtime error.
     
   Some of keyword operations can accept parameters.
   
     ('(1 2 3) :drop 2) --> (3)
+    ('("bz" "ac" "ba") :sort) --> ("ac", "ba", "bz")
+    ('("bz" "ac" "ba") :sort :desc) --> ("bz", "ba", "ac")
+    
+  Collection operations like `:reverse` or `:sort` do not modify collection which they work on, they create a new 
+  one.
     
   However lists and vectors support the same operations their performance can be very different. Vectors are fast when
   accessing items by index, lists are fast when evaluating tail or appending/prepending values.

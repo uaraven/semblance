@@ -7,6 +7,7 @@ import java.math.BigInteger;
 /**
  * Basic representation of number atom, used for number that are integer and fit into 31 bit + 1 sign bit.
  */
+@SuppressWarnings("InstanceMethodNamingConvention")
 public class LongNumberAtom extends NumberAtom<Long> {
 
     private final long value;
@@ -191,4 +192,6 @@ public class LongNumberAtom extends NumberAtom<Long> {
 
         return (0 != l1 && (0 < l2 && l2 > maximum / l1 || 0 > l2 && l2 < maximum / l1));
     }
+
+
 }

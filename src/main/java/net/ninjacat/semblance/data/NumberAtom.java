@@ -117,8 +117,14 @@ public abstract class NumberAtom<T> extends Atom {
      */
     public abstract boolean gt(NumberAtom<?> other);
 
+    @Override
+    public abstract boolean equals(Object obj);
+
+    @Override
+    public abstract int hashCode();
+
     /**
-     * @return Number type. {@link net.ninjacat.semblance.data.SemblanceNumberType}
+     * @return Number type. {@link SemblanceNumberType}
      */
     public abstract SemblanceNumberType getNumberType();
 
@@ -149,9 +155,9 @@ public abstract class NumberAtom<T> extends Atom {
             if (eq(number)) {
                 return 0;
             } else if (gt(number)) {
-                return 1;
-            } else {
                 return -1;
+            } else {
+                return 1;
             }
         } else {
             throw new ClassCastException(String.format("%s is not compatible with %s", getType(), other.getType()));

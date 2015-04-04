@@ -3,6 +3,7 @@ package net.ninjacat.semblance.data.collections.operations;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,12 +13,11 @@ public class ReverseOperation implements ListOperation {
 
     @Override
     public LispValue apply(final LispCollection source, final LispCollection parameters) {
-        final LispCollection result = source.createNew(source.getCollection());
-        final List<LispValue> data = result.getCollection();
+        final List<LispValue> data = new ArrayList<>(source.getCollection());
         for (int i = 0; i < data.size() / 2; i++) {
             swap(data, i, data.size() - i - 1);
         }
-        return result;
+        return source.createNew(data);
     }
 
     private void swap(final List<LispValue> data, final int i1, final int i2) {

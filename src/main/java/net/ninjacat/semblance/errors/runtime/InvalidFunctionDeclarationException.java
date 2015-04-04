@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.errors.runtime;
 
-import net.ninjacat.semblance.data.SList;
+import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.utils.Values;
 
 /**

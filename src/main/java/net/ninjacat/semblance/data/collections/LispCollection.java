@@ -1,17 +1,19 @@
-package net.ninjacat.semblance.data;
+package net.ninjacat.semblance.data.collections;
 
-import net.ninjacat.semblance.data.collections.HeadOperation;
-import net.ninjacat.semblance.data.collections.ListOperation;
-import net.ninjacat.semblance.data.collections.TailOperation;
+import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.SymbolAtom;
+import net.ninjacat.semblance.data.collections.operations.*;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 import net.ninjacat.semblance.errors.runtime.CollectionIndexOutOfBoundsException;
+import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.JavaConvertible;
 import net.ninjacat.smooth.functions.Func;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,6 +26,11 @@ import static net.ninjacat.semblance.utils.Values.*;
 public abstract class LispCollection implements Iterable<LispValue>, DebugInfoProvider, JavaConvertible, Callable {
     private static final SymbolAtom HEAD = new SymbolAtom(":head");
     private static final SymbolAtom TAIL = new SymbolAtom(":tail");
+    private static final SymbolAtom LAST = new SymbolAtom(":last");
+    private static final SymbolAtom TAKE = new SymbolAtom(":take");
+    private static final SymbolAtom DROP = new SymbolAtom(":drop");
+    private static final SymbolAtom REVERSE = new SymbolAtom(":reverse");
+    private static final SymbolAtom SORT = new SymbolAtom(":sort");
 
     private static final Map<SymbolAtom, ListOperation> OPERATIONS = new ConcurrentHashMap<>();
     private final SourceInfo sourceInfo;
@@ -37,6 +44,11 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
 
         addOperation(HEAD, new HeadOperation());
         addOperation(TAIL, new TailOperation());
+        addOperation(LAST, new LastOperation());
+        addOperation(TAKE, new TakeOperation());
+        addOperation(DROP, new DropOperation());
+        addOperation(REVERSE, new ReverseOperation());
+        addOperation(SORT, new SortOperation());
     }
 
     /**
@@ -61,7 +73,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
      *
      * @return number of elements in collection.
      */
-    public abstract long length();
+    public abstract int length();
 
     /**
      * @return {@code true} if the collection is empty
@@ -98,7 +110,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         } else {
             final LispValue value = context.evaluate(parameters.head());
             if (isSymbol(value)) {
-                return executeOperation(parameters.tail(), value);
+                return executeOperation(context.evaluateList(parameters.tail()), value);
             } else {
                 if (parameters.length() == 1) {
                     if (isNumber(value)) {
@@ -158,6 +170,15 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         }
     }
 
+    @Override
+    public int compareTo(@Nonnull final LispValue other) {
+        if (other.getType() == getType()) {
+            return getCollection().equals(asCollection(other).getCollection()) ? 0 : 1;
+        } else {
+            throw new TypeMismatchException(getType(), other, SourceInfo.UNKNOWN);
+        }
+    }
+
     protected final void addOperation(final SymbolAtom name, final ListOperation operation) {
         OPERATIONS.put(name, operation);
     }
@@ -166,7 +187,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         if (index >= 0) {
             return index;
         } else {
-            return (int) (length() + index);
+            return length() + index;
         }
     }
 

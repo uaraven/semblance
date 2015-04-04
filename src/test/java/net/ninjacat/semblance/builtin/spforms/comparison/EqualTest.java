@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.builtin.spforms.comparison;
 
 import net.ninjacat.semblance.data.Constants;
-import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.data.SList;
-import net.ninjacat.semblance.data.Vector;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.SList;
+import net.ninjacat.semblance.data.collections.Vector;
 import net.ninjacat.semblance.evaluator.RootContext;
 import org.junit.Before;
 import org.junit.Test;

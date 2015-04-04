@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.builtin.spforms;
 
 import net.ninjacat.semblance.data.Callable;
-import net.ninjacat.semblance.data.LispValue;
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.utils.IOUtils;
 import net.ninjacat.smooth.utils.Option;

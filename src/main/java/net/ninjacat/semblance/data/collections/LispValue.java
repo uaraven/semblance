@@ -1,4 +1,6 @@
-package net.ninjacat.semblance.data;
+package net.ninjacat.semblance.data.collections;
+
+import net.ninjacat.semblance.data.SemblanceType;
 
 import java.io.Serializable;
 
@@ -7,9 +9,9 @@ import java.io.Serializable;
  * <br>
  * All values are divided into atoms and lists
  */
-public interface LispValue extends Serializable {
+public interface LispValue extends Serializable, Comparable<LispValue> {
     /**
-     * @return {@link net.ninjacat.semblance.data.SemblanceType} type of the value
+     * @return {@link SemblanceType} type of the value
      */
     SemblanceType getType();
 

@@ -1,5 +1,7 @@
 package net.ninjacat.semblance.data;
 
+import net.ninjacat.semblance.data.collections.LispCollection;
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 
 /**

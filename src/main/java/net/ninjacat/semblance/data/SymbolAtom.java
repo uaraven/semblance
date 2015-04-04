@@ -1,6 +1,8 @@
 package net.ninjacat.semblance.data;
 
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.SourceInfo;
+import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.java.Symbol;
 
 import static net.ninjacat.semblance.data.Constants.FALSE;
@@ -104,6 +106,15 @@ public class SymbolAtom extends Atom {
      */
     public SymbolAtom getNamespace() {
         return namespace;
+    }
+
+    @Override
+    public int compareTo(final LispValue other) {
+        if (other.getClass().equals(getClass())) {
+            return ((SymbolAtom) other).value.compareTo(value);
+        } else {
+            throw new TypeMismatchException(getType(), other, SourceInfo.UNKNOWN);
+        }
     }
 
     private SymbolAtom extractNamespace() {

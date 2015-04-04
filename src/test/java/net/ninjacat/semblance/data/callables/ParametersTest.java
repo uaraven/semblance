@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.data.callables;
 
-import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.data.NilCollection;
-import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SymbolAtom;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.NilCollection;
+import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.runtime.ParameterException;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;

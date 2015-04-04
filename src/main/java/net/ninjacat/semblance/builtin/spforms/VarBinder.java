@@ -1,6 +1,10 @@
 package net.ninjacat.semblance.builtin.spforms;
 
-import net.ninjacat.semblance.data.*;
+import net.ninjacat.semblance.data.SymbolAtom;
+import net.ninjacat.semblance.data.collections.LispCollection;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.NilCollection;
+import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.evaluator.Context;
 
 import static net.ninjacat.semblance.utils.Values.*;

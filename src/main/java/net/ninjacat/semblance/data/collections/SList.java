@@ -1,5 +1,7 @@
-package net.ninjacat.semblance.data;
+package net.ninjacat.semblance.data.collections;
 
+import net.ninjacat.semblance.data.SemblanceType;
+import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 import net.ninjacat.semblance.utils.Values;
@@ -97,7 +99,7 @@ public class SList extends LispCollection {
     }
 
     @Override
-    public long length() {
+    public int length() {
         return collection.size();
     }
 

@@ -112,10 +112,11 @@ Functions
     
   Other supported operations are:
     
-   - last - take the last element of collection 
-   - reverse - reverse the collection 
-   - take n - take first `n` elements of collection
-   - drop n - take all but first `n` elements of collection
+   - :last - take the last element of collection 
+   - :reverse - reverse the collection 
+   - :take n - take first `n` elements of collection
+   - :drop n - take all but first `n` elements of collection
+   - :sort - sort collection
     
   Some of keyword operations can accept parameters.
   

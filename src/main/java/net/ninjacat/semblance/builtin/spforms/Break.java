@@ -2,9 +2,9 @@ package net.ninjacat.semblance.builtin.spforms;
 
 import net.ninjacat.semblance.data.BreakValue;
 import net.ninjacat.semblance.data.Constants;
-import net.ninjacat.semblance.data.LispCollection;
-import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.SpecialForm;
+import net.ninjacat.semblance.data.collections.LispCollection;
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Require;

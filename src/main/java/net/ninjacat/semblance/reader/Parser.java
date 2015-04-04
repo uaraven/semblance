@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.reader;
 
-import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.data.SList;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.UnknownExpressionException;
 import net.ninjacat.semblance.reader.converters.*;
@@ -18,14 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 class Parser {
 
     private static final Map<Token.TokenType, TokenConverter> CONVERTERS = new HashMap<>();
-
-    static {
-        CONVERTERS.put(Token.TokenType.Symbol, new SymbolConverter());
-        CONVERTERS.put(Token.TokenType.String, new StringConverter());
-        CONVERTERS.put(Token.TokenType.Integer, new NumberConverter());
-        CONVERTERS.put(Token.TokenType.Double, new DoubleConverter());
-    }
-
     private final Map<String, ReaderMacro> readerMacros;
 
     Parser() {
@@ -43,6 +35,13 @@ class Parser {
             result.add(parserIterator.next());
         }
         return new SList(result, tokens.isEmpty() ? SourceInfo.UNKNOWN : tokens.get(0).getSourceInfo());
+    }
+
+    static {
+        CONVERTERS.put(Token.TokenType.Symbol, new SymbolConverter());
+        CONVERTERS.put(Token.TokenType.String, new StringConverter());
+        CONVERTERS.put(Token.TokenType.Integer, new NumberConverter());
+        CONVERTERS.put(Token.TokenType.Double, new DoubleConverter());
     }
 
 }

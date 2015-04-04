@@ -1,5 +1,6 @@
-package net.ninjacat.semblance.data;
+package net.ninjacat.semblance.data.collections;
 
+import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 
@@ -51,7 +52,7 @@ public class NilCollection extends SList {
     }
 
     @Override
-    public long length() {
+    public int length() {
         return 0;
     }
 

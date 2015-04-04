@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.integration;
 
 import net.ninjacat.semblance.Interpreter;
-import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.data.NilCollection;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.NilCollection;
 import org.hamcrest.core.IsSame;
 import org.junit.Test;
 

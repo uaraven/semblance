@@ -1,6 +1,10 @@
 package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.data.*;
+import net.ninjacat.semblance.data.collections.LispCollection;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.NilCollection;
+import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
 import net.ninjacat.semblance.errors.runtime.UnboundSymbolException;
 import net.ninjacat.smooth.utils.Option;

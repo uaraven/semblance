@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.data;
 
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.java.JavaConvertible;

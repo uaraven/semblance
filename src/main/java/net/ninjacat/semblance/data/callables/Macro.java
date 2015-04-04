@@ -1,6 +1,9 @@
 package net.ninjacat.semblance.data.callables;
 
-import net.ninjacat.semblance.data.*;
+import net.ninjacat.semblance.data.SemblanceType;
+import net.ninjacat.semblance.data.SymbolAtom;
+import net.ninjacat.semblance.data.collections.LispCollection;
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.evaluator.LocalContext;
 
@@ -10,7 +13,7 @@ import static net.ninjacat.semblance.utils.Values.asSList;
 /**
  * Implements macro callable. When applied performs macro expansion and execution.
  */
-public class Macro implements Callable {
+public class Macro extends AbstractCallable {
 
     private final SymbolAtom name;
     private final LispCollection params;

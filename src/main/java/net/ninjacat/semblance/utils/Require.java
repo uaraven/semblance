@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.utils;
 
-import net.ninjacat.semblance.data.LispCollection;
+import net.ninjacat.semblance.data.collections.LispCollection;
 
 /**
  * @author oleksiivoronin, date: 15-03-07.

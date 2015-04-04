@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.data.callables;
 
 import net.ninjacat.semblance.data.Callable;
-import net.ninjacat.semblance.data.SList;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
+import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.runtime.InvalidFunctionDeclarationException;
 import net.ninjacat.smooth.functions.Func;
 import net.ninjacat.smooth.iterators.Iter;

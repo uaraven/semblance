@@ -1,8 +1,12 @@
 package net.ninjacat.semblance.data;
 
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.SourceInfo;
 
+import javax.annotation.Nonnull;
 import java.math.BigInteger;
+
+import static net.ninjacat.semblance.utils.Values.asNumber;
 
 /**
  * Number atom
@@ -136,6 +140,22 @@ public abstract class NumberAtom<T> extends Atom {
     @Override
     public String toString() {
         return "NumberAtom{" + getValue() + '}';
+    }
+
+    @Override
+    public int compareTo(@Nonnull final LispValue other) {
+        if (other.getType() == SemblanceType.INTEGER) {
+            final NumberAtom<?> number = asNumber(other);
+            if (eq(number)) {
+                return 0;
+            } else if (gt(number)) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            throw new ClassCastException(String.format("%s is not compatible with %s", getType(), other.getType()));
+        }
     }
 
     protected abstract NumberAtom<?> expandIfNeeded(NumberAtom other);

@@ -159,4 +159,5 @@ public class DoubleNumberAtom extends NumberAtom {
             return other;
         }
     }
+
 }

@@ -1,5 +1,6 @@
-package net.ninjacat.semblance.data;
+package net.ninjacat.semblance.data.collections;
 
+import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 import net.ninjacat.semblance.errors.runtime.CollectionIndexOutOfBoundsException;
 import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
@@ -31,14 +32,14 @@ public class SListTest {
     public void shouldReturnCorrectLength() throws Exception {
         final SList list = smartList(1L, 2L, 3L);
 
-        assertThat("length of list should be equal to 3", list.length(), is(3L));
+        assertThat("length of list should be equal to 3", list.length(), is(3));
     }
 
     @Test
     public void lengthShouldBeZeroWhenListIsEmpty() throws Exception {
         final LispCollection list = smartList();
 
-        assertThat("length of list should be equal to 0", list.length(), is(0L));
+        assertThat("length of list should be equal to 0", list.length(), is(0));
     }
 
     @Test
@@ -103,7 +104,7 @@ public class SListTest {
 
         final List<?> list = slist.asJavaObject();
 
-        assertThat("Number of elements in Java list should match number of elements in slist", (long) list.size(), is(slist.length()));
+        assertThat("Number of elements in Java list should match number of elements in slist", list.size(), is(slist.length()));
         assertThat("First element in Java list should match same element in slist",
                 atom(list.get(0)), is(slist.get(0)));
         assertThat("Second element in Java list should match same element in slist",

@@ -1,4 +1,4 @@
-package net.ninjacat.semblance.data;
+package net.ninjacat.semblance.data.collections;
 
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 import net.ninjacat.semblance.java.JavaConvertible;
@@ -44,7 +44,7 @@ public class NilCollectionTest {
     public void lengthShouldReturnZero() throws Exception {
         final LispCollection list = getLispCollection();
 
-        assertThat("Length should be 0", list.length(), is(0L));
+        assertThat("Length should be 0", list.length(), is(0));
     }
 
     @Test

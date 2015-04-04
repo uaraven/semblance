@@ -1,13 +1,18 @@
-package net.ninjacat.semblance.data;
+package net.ninjacat.semblance.data.collections;
 
+import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.SemblanceType;
+import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
+import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.JavaConvertible;
 import net.ninjacat.smooth.functions.Func;
 import net.ninjacat.smooth.iterators.Iter;
 import net.ninjacat.smooth.utils.Option;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,5 +131,14 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
         }
 
         return this;
+    }
+
+    @Override
+    public int compareTo(@Nonnull final LispValue other) {
+        if (other.getType() == getType()) {
+            return contents.equals(((SMap) other).contents) ? 0 : 1;
+        } else {
+            throw new TypeMismatchException(getType(), other, SourceInfo.UNKNOWN);
+        }
     }
 }

@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.errors.runtime;
 
-import net.ninjacat.semblance.data.LispValue;
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.utils.Values;
 
 /**

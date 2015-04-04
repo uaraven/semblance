@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.reader;
 
-import net.ninjacat.semblance.data.SList;
+import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.reader.macros.AtMacro;
-import net.ninjacat.semblance.reader.macros.BackQuoteMacro;
+import net.ninjacat.semblance.reader.macros.BackquoteMacro;
 import net.ninjacat.semblance.reader.macros.CommaMacro;
 import net.ninjacat.semblance.reader.macros.QuoteMacro;
 
@@ -24,7 +24,7 @@ public class Reader {
     public Reader() {
         macros = new HashSet<>();
         macros.add(new QuoteMacro());
-        macros.add(new BackQuoteMacro());
+        macros.add(new BackquoteMacro());
         macros.add(new CommaMacro());
         macros.add(new AtMacro());
     }

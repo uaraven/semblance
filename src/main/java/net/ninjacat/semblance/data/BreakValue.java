@@ -1,7 +1,9 @@
 package net.ninjacat.semblance.data;
 
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
+import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.utils.Values;
 
 /**
@@ -42,5 +44,15 @@ public class BreakValue implements LispValue, DebugInfoProvider {
     @Override
     public SourceInfo getSourceInfo() {
         return sourceInfo;
+    }
+
+
+    @Override
+    public int compareTo(final LispValue other) {
+        if (other.getClass().equals(getClass())) {
+            return ((BreakValue) other).value.compareTo(value);
+        } else {
+            throw new TypeMismatchException(getType(), other, SourceInfo.UNKNOWN);
+        }
     }
 }

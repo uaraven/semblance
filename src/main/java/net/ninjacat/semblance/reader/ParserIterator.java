@@ -1,7 +1,9 @@
 package net.ninjacat.semblance.reader;
 
-import net.ninjacat.semblance.data.*;
-import net.ninjacat.semblance.data.Vector;
+import net.ninjacat.semblance.data.SemblanceType;
+import net.ninjacat.semblance.data.SpecialValue;
+import net.ninjacat.semblance.data.collections.*;
+import net.ninjacat.semblance.data.collections.Vector;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.UnknownExpressionRuntimeException;
 import net.ninjacat.semblance.errors.runtime.UnexpectedEndRuntimeException;

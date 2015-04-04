@@ -1,7 +1,11 @@
 package net.ninjacat.semblance.builtin.spforms;
 
 import net.ninjacat.semblance.builtin.spforms.arithmetic.Sub;
-import net.ninjacat.semblance.data.*;
+import net.ninjacat.semblance.data.DoubleNumberAtom;
+import net.ninjacat.semblance.data.LongNumberAtom;
+import net.ninjacat.semblance.data.collections.LispCollection;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
 import org.junit.Before;

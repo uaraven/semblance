@@ -1,5 +1,6 @@
-package net.ninjacat.semblance.data;
+package net.ninjacat.semblance.data.collections;
 
+import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 import net.ninjacat.semblance.errors.runtime.CollectionIndexOutOfBoundsException;
 import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
@@ -31,14 +32,14 @@ public class VectorTest {
     public void shouldReturnCorrectLength() throws Exception {
         final Vector vector = smartVector(1L, 2L, 3L);
 
-        assertThat("length of vector should be equal to 3", vector.length(), is(3L));
+        assertThat("length of vector should be equal to 3", vector.length(), is(3));
     }
 
     @Test
     public void lengthShouldBeZeroWhenVectorIsEmpty() throws Exception {
         final Vector vector = smartVector();
 
-        assertThat("length of vector should be equal to 0", vector.length(), is(0L));
+        assertThat("length of vector should be equal to 0", vector.length(), is(0));
     }
 
     @Test
@@ -103,7 +104,7 @@ public class VectorTest {
 
         final List<?> list = vector.asJavaObject();
 
-        assertThat("Number of elements in Java list should match number of elements in vector", (long) list.size(), is(vector.length()));
+        assertThat("Number of elements in Java list should match number of elements in vector", list.size(), is(vector.length()));
         assertThat("First element in Java list should match same element in vector",
                 atom(list.get(0)), is(vector.get(0)));
         assertThat("Second element in Java list should match same element in vector",

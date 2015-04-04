@@ -1,6 +1,7 @@
 package net.ninjacat.semblance.utils;
 
 import net.ninjacat.semblance.data.*;
+import net.ninjacat.semblance.data.collections.*;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;

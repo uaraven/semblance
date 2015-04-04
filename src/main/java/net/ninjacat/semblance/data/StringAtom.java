@@ -1,6 +1,9 @@
 package net.ninjacat.semblance.data;
 
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.SourceInfo;
+
+import javax.annotation.Nonnull;
 
 /**
  * Created on 24/02/15.
@@ -54,5 +57,14 @@ public class StringAtom extends Atom {
     @Override
     public String toString() {
         return "StringAtom{\'" + value + "\'}";
+    }
+
+    @Override
+    public int compareTo(@Nonnull final LispValue other) {
+        if (other.getClass().equals(getClass())) {
+            return ((StringAtom) other).value.compareTo(value);
+        } else {
+            throw new ClassCastException(String.format("%s is not compatible with %s", getType(), other.getType()));
+        }
     }
 }

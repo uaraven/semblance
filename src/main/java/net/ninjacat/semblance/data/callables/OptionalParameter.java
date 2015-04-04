@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.data.callables;
 
-import net.ninjacat.semblance.data.LispValue;
-import net.ninjacat.semblance.data.NilCollection;
 import net.ninjacat.semblance.data.SymbolAtom;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.NilCollection;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
 import net.ninjacat.smooth.utils.Option;

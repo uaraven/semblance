@@ -212,4 +212,18 @@ public class CollectionTests {
 
         assertThat(value, is((LispValue) smartList("ac", "ba", "bz")));
     }
+
+    @Test
+    public void testLispOperationMapDouble() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(let (" +
+                        "       (double (fn (x) (* 2 x)))" +
+                        "     )" +
+                        "   ('(1 2 3) :map double)" +
+                        ")");
+
+        assertThat(value, is((LispValue) smartList(2L, 4L, 6L)));
+    }
 }

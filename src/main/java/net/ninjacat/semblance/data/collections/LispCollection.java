@@ -14,6 +14,7 @@ import net.ninjacat.semblance.java.JavaConvertible;
 import net.ninjacat.smooth.functions.Func;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,6 +32,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
     private static final SymbolAtom DROP = new SymbolAtom(":drop");
     private static final SymbolAtom REVERSE = new SymbolAtom(":reverse");
     private static final SymbolAtom SORT = new SymbolAtom(":sort");
+    private static final SymbolAtom MAP = new SymbolAtom(":map");
 
     private static final Map<SymbolAtom, ListOperation> OPERATIONS = new ConcurrentHashMap<>();
     private final SourceInfo sourceInfo;
@@ -49,6 +51,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         addOperation(DROP, new DropOperation());
         addOperation(REVERSE, new ReverseOperation());
         addOperation(SORT, new SortOperation());
+        addOperation(MAP, new MapOperation());
     }
 
     /**
@@ -120,7 +123,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         } else {
             final LispValue value = context.evaluate(parameters.head());
             if (isSymbol(value)) {
-                return executeOperation(context.evaluateList(parameters.tail()), value);
+                return executeOperation(context, context.evaluateList(parameters.tail()), value);
             } else {
                 if (parameters.length() == 1) {
                     if (isNumber(value)) {
@@ -167,6 +170,22 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
     }
 
     /**
+     * Applies callable for each element in collection and creates a new collection of the same type as
+     * this collection containing result of function application.
+     *
+     * @param context    Execution context for function application.
+     * @param applicator Function to apply to elements of collection.
+     * @return New collection of results of function application.
+     */
+    public LispCollection foreach(@Nonnull final Context context, @Nonnull final Callable applicator) {
+        final List<LispValue> result = new ArrayList<>(getCollection().size());
+        for (final LispValue item : getCollection()) {
+            result.add(applicator.apply(context, list(item)));
+        }
+        return createNew(result);
+    }
+
+    /**
      * Get an element by its index.
      *
      * @param index Index of the element.
@@ -201,10 +220,12 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         }
     }
 
-    private LispValue executeOperation(final LispCollection parameters, final LispValue value) {
+    private LispValue executeOperation(@Nonnull final Context context,
+                                       @Nonnull final LispCollection parameters,
+                                       @Nonnull final LispValue value) {
         final SymbolAtom keyword = asSymbol(value);
         if (OPERATIONS.containsKey(keyword)) {
-            return OPERATIONS.get(keyword).apply(this, parameters);
+            return OPERATIONS.get(keyword).apply(context, this, parameters);
         } else {
             throw new net.ninjacat.semblance.errors.runtime.UnsupportedOperationException(keyword.repr(), keyword.getSourceInfo());
         }

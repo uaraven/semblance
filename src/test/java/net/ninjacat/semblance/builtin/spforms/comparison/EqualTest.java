@@ -78,7 +78,7 @@ public class EqualTest {
 
     @Test
     public void shouldReturnFalseForStringAndSymbol() throws Exception {
-        final SList params = list(string("42"), symbol("42"));
+        final SList params = list(string("42"), symbol(":42"));
 
         final LispValue result = new Equal().apply(rootContext, params);
 

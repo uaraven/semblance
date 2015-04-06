@@ -100,6 +100,9 @@ public class ReaderStream {
         streamTokenizer.wordChars('0', '9');
         streamTokenizer.wordChars(128 + 32, Integer.MAX_VALUE);
         streamTokenizer.wordChars('!', '!');
+        streamTokenizer.wordChars('=', '=');
+        streamTokenizer.wordChars('>', '>');
+        streamTokenizer.wordChars('<', '<');
         streamTokenizer.wordChars('$', '&');
         streamTokenizer.wordChars('*', '-');
         streamTokenizer.wordChars('_', '_');

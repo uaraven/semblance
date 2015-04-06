@@ -155,9 +155,9 @@ public abstract class NumberAtom<T> extends Atom {
             if (eq(number)) {
                 return 0;
             } else if (gt(number)) {
-                return -1;
-            } else {
                 return 1;
+            } else {
+                return -1;
             }
         } else {
             throw new ClassCastException(String.format("%s is not compatible with %s", getType(), other.getType()));

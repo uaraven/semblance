@@ -121,6 +121,9 @@ Data types
      sort a collection which holds elements of different types will cause runtime error.
    - :map - apply a function to each element of the collection. Function that accepts one parameter
      should be supplied as additional parameter to `:map`
+   - :filter - apply a predicate function to each element of the collection. If function returns **T** then
+     that element is included in the resulting collection. `:filter` requires one parameter that is 
+     unary function that returns either **T** or **F**.
     
   Some of keyword operations can accept parameters.
   
@@ -130,9 +133,12 @@ Data types
     
     (let ((double (fn (x) (* 2 x))))
          ('(1 2 3) :map double) )  --> (2 4 6)
+         
+    (let ((is-odd (fn (x) (!= 0 (% x 2)) )) )
+         ('(1 2 3 4) :filter is-odd)) --> (1 3)
     
-  Collection operations like `:reverse`, `:sort` or `:map` do not modify collection which they work on, they create 
-  a new one.
+  Collection operations like `:reverse`, `:sort`, `:map` or `:filter` do not modify collection which they work on, 
+  they create a new one.
     
   Though lists and vectors support the same operations their performance can be very different. Vectors are fast when
   accessing items by index, lists are fast when evaluating tail or appending/prepending values.

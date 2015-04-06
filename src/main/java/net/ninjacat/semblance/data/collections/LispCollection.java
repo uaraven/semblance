@@ -19,20 +19,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static net.ninjacat.semblance.data.collections.operations.Operation.*;
 import static net.ninjacat.semblance.utils.Values.*;
 
 /**
  * Parent class for lists and vectors
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public abstract class LispCollection implements Iterable<LispValue>, DebugInfoProvider, JavaConvertible, Callable {
-    private static final SymbolAtom HEAD = new SymbolAtom(":head");
-    private static final SymbolAtom TAIL = new SymbolAtom(":tail");
-    private static final SymbolAtom LAST = new SymbolAtom(":last");
-    private static final SymbolAtom TAKE = new SymbolAtom(":take");
-    private static final SymbolAtom DROP = new SymbolAtom(":drop");
-    private static final SymbolAtom REVERSE = new SymbolAtom(":reverse");
-    private static final SymbolAtom SORT = new SymbolAtom(":sort");
-    private static final SymbolAtom MAP = new SymbolAtom(":map");
 
     private static final Map<SymbolAtom, ListOperation> OPERATIONS = new ConcurrentHashMap<>();
     private final SourceInfo sourceInfo;
@@ -52,6 +46,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         addOperation(REVERSE, new ReverseOperation());
         addOperation(SORT, new SortOperation());
         addOperation(MAP, new MapOperation());
+        addOperation(FILTER, new FilterOperation());
     }
 
     /**
@@ -208,8 +203,8 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         }
     }
 
-    protected final void addOperation(final SymbolAtom name, final ListOperation operation) {
-        OPERATIONS.put(name, operation);
+    protected final void addOperation(final Operation name, final ListOperation operation) {
+        OPERATIONS.put(name.asSymbol(), operation);
     }
 
     private int normalize(final int index) {

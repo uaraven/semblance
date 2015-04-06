@@ -11,13 +11,14 @@ import static net.ninjacat.semblance.utils.Values.asNumber;
 /**
  * Modulo
  */
+@SuppressWarnings("ClassNamingConvention")
 public class Mod extends SpecialForm {
 
     /**
      * Creates new instance
      */
     public Mod() {
-        super("/", "&rest", "values");
+        super("%", "&rest", "values");
     }
 
     @Override

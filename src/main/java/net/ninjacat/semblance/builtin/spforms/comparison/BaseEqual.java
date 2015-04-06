@@ -1,7 +1,6 @@
 package net.ninjacat.semblance.builtin.spforms.comparison;
 
 import net.ninjacat.semblance.data.NumberAtom;
-import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.smooth.functions.Predicate;
 
@@ -11,7 +10,7 @@ import static net.ninjacat.semblance.utils.Values.isNumber;
 /**
  * Base class for equality functions.
  */
-public abstract class BaseEqual extends SpecialForm {
+public abstract class BaseEqual extends BaseComparison {
 
     /**
      * Create new instance.

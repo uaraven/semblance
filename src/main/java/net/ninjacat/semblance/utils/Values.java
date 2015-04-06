@@ -241,6 +241,10 @@ public final class Values {
         return (Long) number.asJavaObject();
     }
 
+    public static LispValue booleanAsAtom(final boolean value) {
+        return value ? Constants.TRUE : Constants.FALSE;
+    }
+
     private enum FromJavaConverter implements Func<LispValue, Object> {
         INSTANCE;
 

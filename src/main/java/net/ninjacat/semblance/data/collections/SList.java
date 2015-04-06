@@ -125,6 +125,7 @@ public class SList extends LispCollection {
         return (T) new SList(values);
     }
 
+
     @SuppressWarnings("all")
     @Override
     public boolean equals(final Object o) {

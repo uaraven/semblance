@@ -103,6 +103,16 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
      */
     public abstract <T extends LispCollection> T createNew(List<LispValue> values);
 
+    /**
+     * Searches for an element inside the collection.
+     *
+     * @param itemToFind Element to look for.
+     * @return index of element in the collection or -1 if element is not in the collection.
+     */
+    public int indexOf(@Nonnull final LispValue itemToFind) {
+        return getCollection().indexOf(itemToFind);
+    }
+
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
         if (parameters.isNil()) {

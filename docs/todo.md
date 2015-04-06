@@ -8,8 +8,7 @@ Reader todo
    bind "file-name" to --source-file-name variable
 
         (--file-block "file-name" ()() ... ())
- - map {} support
-
+ - multi-line strings """ ... """
  
 Evaluator todo
 --------------
@@ -21,9 +20,8 @@ Library todo
 
  - tailrec special form and call tail optimization in functions/macros
  - do-list, do-times macros
- - map macros
+ - map :contains
  - include
- - list/vector indices - negative, splices, keywords like :head, :tail, :last, etc.
 
 Interpreter todo
 ----------------

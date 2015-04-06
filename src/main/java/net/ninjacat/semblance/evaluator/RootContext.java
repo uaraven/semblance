@@ -3,6 +3,8 @@ package net.ninjacat.semblance.evaluator;
 import net.ninjacat.semblance.builtin.spforms.*;
 import net.ninjacat.semblance.builtin.spforms.Namespace;
 import net.ninjacat.semblance.builtin.spforms.arithmetic.*;
+import net.ninjacat.semblance.builtin.spforms.collections.Contains;
+import net.ninjacat.semblance.builtin.spforms.collections.Find;
 import net.ninjacat.semblance.builtin.spforms.comparison.*;
 import net.ninjacat.semblance.builtin.spforms.logic.And;
 import net.ninjacat.semblance.builtin.spforms.logic.Not;
@@ -127,6 +129,9 @@ public class RootContext extends BaseContext {
         bindForm(new And());
         bindForm(new Not());
         bindForm(new Or());
+
+        bindForm(new Contains());
+        bindForm(new Find());
 
         loadLibrary();
     }

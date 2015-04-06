@@ -40,3 +40,13 @@
          ,@body)
      )
 )
+
+(defmacro car
+    (list-form)
+    `(,list-form :head)
+)
+
+(defmacro cdr
+    (list-form)
+    `(,list-form :tail)
+)

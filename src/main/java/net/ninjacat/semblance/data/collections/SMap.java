@@ -47,8 +47,9 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
         if (parameters.length() == 2) {
+            final LispValue key = context.evaluate(parameters.head());
             final LispValue value = context.evaluate(parameters.tail().head());
-            return put(context.evaluate(parameters.head()), value);
+            return put(key, value);
         } else if (parameters.length() == 1) {
             final LispValue key = context.evaluate(parameters.head());
             return get(key);
@@ -77,6 +78,10 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
      */
     public LispValue get(final LispValue key) {
         return Option.of(contents.get(key)).or(NilCollection.INSTANCE);
+    }
+
+    public boolean contains(final LispValue key) {
+        return contents.containsKey(key);
     }
 
     @Override
@@ -140,5 +145,25 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
         } else {
             throw new TypeMismatchException(getType(), other, SourceInfo.UNKNOWN);
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        final SMap sMap = (SMap) o;
+
+        return contents.equals(sMap.contents);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return contents.hashCode();
     }
 }

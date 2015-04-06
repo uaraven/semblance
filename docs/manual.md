@@ -69,10 +69,9 @@ Positional parameters are supported as usual. Optional parameters are supported 
 
  Keyword parameter support will be added later.
 
-Functions
----------
 
-### Data types
+Data types
+----------
 
 
   **LIST**
@@ -82,7 +81,8 @@ Functions
   List is a function itself. Expression `(list-var 3)` will return value of the fourth list elevent (lists are 
   zero-based)
   
-    (let ((x '(1 2 3))) (x 1))
+    (let ((x '(1 2 3))) 
+         (x 1))
     ('(1 2 3) 1)
     
   Both expressions above will return **2**
@@ -93,7 +93,8 @@ Functions
     
   Vector is a function as well, so examples of index-based access of lists above can be applied to vectors as well.
   
-    (let ((x [1 2 3])) (x 1))
+    (let ((x [1 2 3])) 
+         (x 1))
     ([1 2 3] 1)
     
   If index is negative it will be treated as index from the end of the list. 
@@ -128,9 +129,8 @@ Functions
   Collection operations like `:reverse` or `:sort` do not modify collection which they work on, they create a new 
   one.
     
-  However lists and vectors support the same operations their performance can be very different. Vectors are fast when
+  Though lists and vectors support the same operations their performance can be very different. Vectors are fast when
   accessing items by index, lists are fast when evaluating tail or appending/prepending values.
-  
     
   **MAP**
   
@@ -148,8 +148,36 @@ Functions
     ({:a 1 :b 2 :c3} :b 5)
     
   will associate key **:b** with value **5** and will return value **5** as well.
+  
+      
+  There are more operations available for collections.
+  
+  **CONTAINS**
+  
+    (contains collection element)
+    
+  Checks whether `collection` contains an `element`. If `collection` is a map, then check if key equal to  `element` is
+  present in the map. For list and vector linear search for element is performed.
+  Result is either **T** or **F**
+  
+    (contains {:a 1 :b 2} :a) --> T
+    (contains {:a 1 :b 2} :c) --> F
+    (contains '(1 2 3) 2) --> T
+    (contains [1 2 3] 4) --> F
+  
+  **FIND**
+  
+    (find collection element)
 
-### Release Functions
+  Returns zero-based index of `element` in the `collection`. If there is no `element` in the `collection` then **-1** 
+  is returned. `find` works on both lists and vectors. Bear in mind that access by index is O(n) for lists 
+  and O(1) for vectors.
+  
+    (find '(1 2 3) 3) --> 2
+    (find [1 2 3] 4) --> -1 
+
+Functions
+---------
 
   Semblance probably includes more special forms than Common Lisp. That's done mostly for efficiency and sometimes
   to avoid complex parameter processing. Some of the special forms may later be rewritten as functions

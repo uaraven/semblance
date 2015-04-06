@@ -6,8 +6,7 @@ import net.ninjacat.semblance.data.collections.NilCollection;
 import org.hamcrest.core.IsSame;
 import org.junit.Test;
 
-import static net.ninjacat.semblance.utils.Values.number;
-import static net.ninjacat.semblance.utils.Values.symbol;
+import static net.ninjacat.semblance.utils.Values.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -62,6 +61,26 @@ public class StandardLibraryTest {
         final LispValue value = interpreter.run("(block b1 (block b2 (block b3 (return-from b1 5)) 2 ) 3)");
 
         assertThat(value, is(number(5)));
+    }
+
+    @Test
+    public void testCarShouldReturnListHead() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(car '(1 2 3 4 5))");
+
+        assertThat(value, is(number(1)));
+    }
+
+    @Test
+    public void testCdrShouldReturnListTail() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(cdr '(1 2 3 4 5))");
+
+        assertThat(value, is((LispValue) smartList(2L, 3L, 4L, 5L)));
     }
 
 }

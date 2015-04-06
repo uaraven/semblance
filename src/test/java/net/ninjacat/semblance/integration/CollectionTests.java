@@ -124,6 +124,26 @@ public class CollectionTests {
     }
 
     @Test
+    public void testLispOperationHead() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "('(1 2 3 4 5) :head)");
+
+        assertThat(value, is(number(1)));
+    }
+
+    @Test
+    public void testLispOperationTail() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "('(1 2 3 4 5) :tail)");
+
+        assertThat(value, is((LispValue) smartList(2L, 3L, 4L, 5L)));
+    }
+
+    @Test
     public void testLispOperationLast() throws Exception {
         final Interpreter interpreter = new Interpreter();
 

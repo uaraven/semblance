@@ -80,9 +80,30 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
         return Option.of(contents.get(key)).or(NilCollection.INSTANCE);
     }
 
+    /**
+     * Checks if this map contains the key.
+     *
+     * @param key Key to check.
+     * @return {@code true} or {@code false}
+     */
     public boolean contains(final LispValue key) {
         return contents.containsKey(key);
     }
+
+    /**
+     * @return List of map's keys.
+     */
+    public SList keys() {
+        return new SList(contents.keySet());
+    }
+
+    /**
+     * @return List of map's values.
+     */
+    public SList values() {
+        return new SList(contents.values());
+    }
+
 
     @Override
     public SourceInfo getSourceInfo() {

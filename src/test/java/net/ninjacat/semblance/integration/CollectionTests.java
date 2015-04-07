@@ -1,11 +1,12 @@
 package net.ninjacat.semblance.integration;
 
 import net.ninjacat.semblance.Interpreter;
+import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.collections.LispValue;
 import org.junit.Test;
 
-import static net.ninjacat.semblance.utils.Values.number;
-import static net.ninjacat.semblance.utils.Values.smartList;
+import static net.ninjacat.semblance.utils.Values.*;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -112,6 +113,47 @@ public class CollectionTests {
     }
 
     @Test
+    public void testShouldReturnMapKeys() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(keys {:a 1 :b 2 :c 3})");
+
+        assertThat(asSList(value).getCollection(), containsInAnyOrder((LispValue) symbol(":a"),
+                (LispValue) symbol(":b"), (LispValue) symbol(":c")));
+    }
+
+    @Test
+    public void testShouldTrueIfMapContainsKey() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(contains {:a 1 :b 2 :c 3} :b)");
+
+        assertThat(value, is((LispValue) Constants.TRUE));
+    }
+
+    @Test
+    public void testShouldFalseIfMapDoesNotContainKey() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(contains {:a 1 :b 2 :c 3} :z)");
+
+        assertThat(value, is((LispValue) Constants.FALSE));
+    }
+
+    @Test
+    public void testShouldReturnMapValues() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(values {:a 1 :b 2 :c 3})");
+
+        assertThat(asSList(value).getCollection(), containsInAnyOrder(number(1), number(2), number(3)));
+    }
+
+    @Test
     public void testShouldUpdateMapAsFunction() throws Exception {
         final Interpreter interpreter = new Interpreter();
 
@@ -202,6 +244,47 @@ public class CollectionTests {
 
         assertThat(value, is((LispValue) smartList(5L, 4L, 3L, 2L, 1L)));
     }
+
+    @Test
+    public void testShouldTrueIfCollectionContainsKey() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(contains [1 2 3] 2)");
+
+        assertThat(value, is((LispValue) Constants.TRUE));
+    }
+
+    @Test
+    public void testShouldFalseIfCollectionDoesNotContainKey() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(contains [1 2 3] 5)");
+
+        assertThat(value, is((LispValue) Constants.FALSE));
+    }
+
+    @Test
+    public void testFindElementIndex() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(find [1 2 3] 3)");
+
+        assertThat(value, is(number(2)));
+    }
+
+    @Test
+    public void testFindShouldReturnMinusOneIfCannotFindElement() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(find [:a :b :c] :d)");
+
+        assertThat(value, is(number(-1)));
+    }
+
 
     @Test
     public void testLispOperationSortStrings() throws Exception {

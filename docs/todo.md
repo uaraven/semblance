@@ -3,7 +3,7 @@ Reader todo
  
  - document numbers
  - document strings
- - document case-sensivity and the absense of |text|
+ - document the absence of |text|
  - wrap program into additional named block with the name of file, and implement --file-block macro to
    bind "file-name" to --source-file-name variable
 
@@ -20,7 +20,6 @@ Library todo
 
  - tailrec special form and call tail optimization in functions/macros
  - do-list, do-times macros
- - map 'keys' and 'values' operations 
  - include
 
 Interpreter todo

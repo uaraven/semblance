@@ -212,4 +212,26 @@ public class CollectionTests {
 
         assertThat(value, is((LispValue) smartList("ac", "ba", "bz")));
     }
+
+    @Test
+    public void testLispOperationMapDouble() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(let ((double (fn (x) (* 2 x))))" +
+                        "('(1 2 3) :map double))");
+
+        assertThat(value, is((LispValue) smartList(2L, 4L, 6L)));
+    }
+
+    @Test
+    public void testLispOperationFilterOdd() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(let ((is-odd(fn(x) (!= 0 (% x 2)) )))" +
+                        "('(1 2 3 4) :filter is-odd))");
+
+        assertThat(value, is((LispValue) smartList(1L, 3L)));
+    }
 }

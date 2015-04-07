@@ -20,10 +20,15 @@ Library todo
 
  - tailrec special form and call tail optimization in functions/macros
  - do-list, do-times macros
- - map :contains
+ - map 'keys' and 'values' operations 
  - include
 
 Interpreter todo
 ----------------
 
  - REPL
+ 
+Tests todo
+----------
+ - % (mod) operation
+ - comparison operations other than equal

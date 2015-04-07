@@ -186,6 +186,17 @@ Data types
   
     (find '(1 2 3) 3) --> 2
     (find [1 2 3] 4) --> -1 
+    
+  **KEYS** and **VALUES**
+    
+    (keys map-form)
+    (values map-form)
+    
+  `keys` and `values` are map-specific operations. Former retrieves keys from a map as list, latter does the same
+  for values. Order of elements in those lists is not defined.
+  
+    (keys {:a 1 :b 2 :c 3}) --> (:b :a :c) or (:a :c :b) or any other combination
+    (values {:a 1 :b 2 :c 3}) --> (1 2 3) or (2 1 3) or any other combination
 
 Functions
 ---------
@@ -205,7 +216,7 @@ Functions
 
   **LET**
 
-    (let variables body)
+    (let variables &rest body)
 
   where `variables` is list of (name value) definitions and `body` is sequence of S-expressions.
   Example:
@@ -219,7 +230,7 @@ Functions
 
   **IF**
 
-    (if condition then-expr else-expr?)
+    (if condition then-expr &optional else-expr)
 
   Evaluates condition, if it is not equal to **F** executes then-expr, if condition is **F** and else-expr is present
   it will be executed

@@ -13,5 +13,15 @@ public enum SemblanceType {
     FUNCTION,
     MACRO,
     RETURN, // internal wrapper around return value
-    MAP, BREAK, SPECIAL // this is internal type, it will never appear in programs
+    MAP,
+    BREAK,
+    RECURSIVE,
+    SPECIAL; // this are internal types, they will never appear in programs
+
+    /**
+     * @return {@code true} if this type should break block execution
+     */
+    public boolean isBreak() {
+        return this == BREAK || this == RECURSIVE;
+    }
 }

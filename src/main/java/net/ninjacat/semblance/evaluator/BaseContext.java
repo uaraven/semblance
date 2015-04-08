@@ -1,10 +1,14 @@
 package net.ninjacat.semblance.evaluator;
 
-import net.ninjacat.semblance.data.*;
+import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.Constants;
+import net.ninjacat.semblance.data.SemblanceType;
+import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
 import net.ninjacat.semblance.data.collections.SList;
+import net.ninjacat.semblance.data.special.ReturnValue;
 import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
 import net.ninjacat.semblance.errors.runtime.UnboundSymbolException;
 import net.ninjacat.smooth.utils.Option;
@@ -93,6 +97,8 @@ abstract class BaseContext implements Context {
             if (last.getType() == SemblanceType.RETURN) {
                 final ReturnValue returnValue = asReturnValue(last);
                 return evaluateReturnValue(returnValue);
+            } else if (last.getType().isBreak()) {
+                return last; // return immediately on break
             }
         }
         return last;

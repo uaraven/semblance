@@ -1,15 +1,20 @@
-package net.ninjacat.semblance.data;
+package net.ninjacat.semblance.data.special;
 
+import net.ninjacat.semblance.data.Constants;
+import net.ninjacat.semblance.data.SemblanceType;
+import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.utils.Values;
 
+import javax.annotation.Nonnull;
+
 /**
  * Represents special value of return operation
  */
-public class ReturnValue implements LispValue, DebugInfoProvider {
+public class ReturnValue implements LispValue, DebugInfoProvider, WrappedValue {
 
     private final LispValue value;
     private final SymbolAtom scope;
@@ -47,6 +52,7 @@ public class ReturnValue implements LispValue, DebugInfoProvider {
     /**
      * @return wrapped returned value.
      */
+    @Override
     public LispValue getValue() {
         return value;
     }
@@ -74,11 +80,32 @@ public class ReturnValue implements LispValue, DebugInfoProvider {
     }
 
     @Override
-    public int compareTo(final LispValue other) {
+    public int compareTo(@Nonnull final LispValue other) {
         if (other.getClass().equals(getClass())) {
             return ((ReturnValue) other).value.compareTo(value);
         } else {
             throw new TypeMismatchException(getType(), other, SourceInfo.UNKNOWN);
         }
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+
+        final ReturnValue thatValue = (ReturnValue) other;
+
+        return value.equals(thatValue.value) && scope.equals(thatValue.scope);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = value.hashCode();
+        result = 31 * result + scope.hashCode();
+        return result;
     }
 }

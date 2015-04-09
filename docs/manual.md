@@ -323,6 +323,40 @@ Functions
     
   will result in **3**
   
+  **RECUR**
+  
+    (recur values*)
+    
+  Initiates recursive call of the enclosing function. Program behavior is undefined if `recur` is called outside of 
+  function.
+  Consider following function
+  
+    (defun rec (x) 
+          (if (= 0 x) "Tada" 
+                      (rec (- x 1))))
+  
+  It will call itself, decreasing its parameter by one and once reached *0* it will terminate returning string "Tada".
+  This will work well if funtion `rec` is called with parameter less than [about] 500. If called as `rec(1000)` the
+  program will crash with StackOverflow exception.
+  `recur` is similar to its namesake in Clojure, it evaluates its parameters, then rebinds them and jumps back to the 
+  recursion point. It is not necessary that `recur` is in tail position, but it is usually a good idea. The recur 
+  expression must match the arity of the recursion point. 
+  
+  See next code block for an example of `recur` usage.
+   
+    (defun rec (x) 
+          (if (= 0 x) "Tada" 
+                      (rec (- x 1))))
+    (defun rec2 (x) 
+          (if (= 0 x) "Tada" 
+                      (recur (- x 1))))
+
+    (rec 1000) --> Will fail
+    (rec 5000) --> Will complete successfully
+  
+  
+  Semblance recurs
+  
   **VAR**
 
     (var (name value) [(name value) ...])

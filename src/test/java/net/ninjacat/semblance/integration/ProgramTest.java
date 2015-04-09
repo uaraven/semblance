@@ -121,6 +121,24 @@ public class ProgramTest {
         assertThat(value, is(number(3)));
     }
 
+
+    @Test
+    public void testShouldContinueLoop() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(let ((x 5) (y 0)) " +
+                        "     (loop (> x 0) " +
+                        "           (set x (- x 1)) " +
+                        "           (if (= x 3) " +
+                        "               (recur))" +
+                        "           (set y (+ y 1)) " +
+                        "     )" +
+                        ")");
+
+        assertThat(value, is(number(4)));
+    }
+
     @Test(expected = SemblanceRuntimeException.class)
     public void testBrakShouldFailOutsideLoop() throws Exception {
         final Interpreter interpreter = new Interpreter();
@@ -149,5 +167,29 @@ public class ProgramTest {
                 "((fn* (* it it)) 3)");
 
         assertThat(value, is(number(9)));
+    }
+
+    @Test
+    public void testShouldEvaluateRecursiveCalls() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(defun rec (x) (if (= 0 x) \"Tada\" (recur (- x 1)))) (rec 100)"
+        );
+
+        assertThat(value, is(string("Tada")));
+    }
+
+    @Test
+    public void testShouldEvaluateHugeNumberOfRecursiveCalls() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(defun rec (x) (if (= 0 x) \"Tada\" (recur (- x 1)))) (rec 1000)"
+        );
+
+        assertThat(value, is(string("Tada")));
     }
 }

@@ -19,7 +19,7 @@ public class NamespaceTest {
     public void testShouldBindVarInNamespace() throws Exception {
         final RootContext context = new RootContext();
 
-        context.evaluateProgram(IOUtils.asStream(
+        context.evaluateHere(IOUtils.asStream(
                 "(namespace math (var(pi 3.14))) math/pi"));
 
         final Option<net.ninjacat.semblance.evaluator.Namespace> namespace = context.getNamespace(symbol("math"));
@@ -35,7 +35,7 @@ public class NamespaceTest {
     public void testShouldBindFunctionInNamespace() throws Exception {
         final RootContext context = new RootContext();
 
-        final LispValue value = context.evaluateProgram(IOUtils.asStream(
+        final LispValue value = context.evaluateHere(IOUtils.asStream(
                 "(namespace math (defun pi () 3.14)) (math/pi)"));
 
         final Option<net.ninjacat.semblance.evaluator.Namespace> namespace = context.getNamespace(symbol("math"));

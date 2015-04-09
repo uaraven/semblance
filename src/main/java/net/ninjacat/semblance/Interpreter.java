@@ -5,7 +5,6 @@ import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.semblance.evaluator.LocalContext;
 import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.reader.Reader;
 import net.ninjacat.semblance.utils.Values;
@@ -13,8 +12,6 @@ import net.ninjacat.semblance.utils.Values;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-
-import static net.ninjacat.semblance.utils.Values.symbol;
 
 /**
  * Semblance interpreter.
@@ -87,8 +84,7 @@ public class Interpreter {
     }
 
     private LispValue doRun(final SList program) {
-        final Context executionContext = LocalContext.namedChildContext(symbol("main"), rootContext);
-        return executionContext.evaluateBlock(program);
+        return rootContext.evaluateProgram(program);
     }
 
 }

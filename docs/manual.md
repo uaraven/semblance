@@ -352,7 +352,7 @@ Functions
                       (recur (- x 1))))
 
     (rec 1000) --> Will fail
-    (rec 5000) --> Will complete successfully
+    (rec2 5000) --> Will complete successfully
   
   
   Semblance recurs
@@ -361,7 +361,8 @@ Functions
 
     (var (name value) [(name value) ...])
   Binds evaluated `value` to symbol `name` in the current context. May evaluate and bind multiple variables.
-  Returns latest evaluated value
+  Evaluation is done sequentally, so later binds have access to already bound variables.
+  Returns latest evaluated value.
   
   
   **SET**

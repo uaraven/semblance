@@ -38,6 +38,19 @@ public class ProgramTest {
     }
 
     @Test
+    public void testVarShouldBindSequentally() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+        final LispValue value = interpreter.run(
+                "(var" +
+                        "(x 1)" +
+                        "(y (+ x 1))" +
+                        "(z (+ y 1))" +
+                        ")");
+
+        assertThat(value, is(number(3)));
+    }
+
+    @Test
     public void testShouldDefineMacro() throws Exception {
         final Interpreter interpreter = new Interpreter();
         final LispValue value = interpreter.run("(defmacro mcr (x y) `(,x (+ 1 ,y)))");

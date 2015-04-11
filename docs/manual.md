@@ -113,6 +113,7 @@ Data types
     
   Other supported operations are:
     
+   - :length - take number of elements in a collection
    - :last - take the last element of collection 
    - :reverse - reverse the collection
    - :take n - take first `n` elements of collection
@@ -124,9 +125,14 @@ Data types
    - :filter - apply a predicate function to each element of the collection. If function returns **T** then
      that element is included in the resulting collection. `:filter` requires one parameter that is 
      unary function that returns either **T** or **F**.
+   - :append - adds parameters to a collection. If there is only one parameter and that parameter is a collection,
+     then this parameter will be unwrapped and its elements will be appended to a collection
+   - :prepend - same as append, but elements are inserted at the beginning of the collection. Both `:append` and 
+     `:prepend` create new collection and do not modify existing
     
   Some of keyword operations can accept parameters.
   
+    ('(1 2 3) :length) --> 3
     ('(1 2 3) :drop 2) --> (3)
     ('("bz" "ac" "ba") :sort) --> ("ac", "ba", "bz")
     ('("bz" "ac" "ba") :sort :desc) --> ("bz", "ba", "ac")
@@ -136,6 +142,11 @@ Data types
          
     (let ((is-odd (fn (x) (!= 0 (% x 2)) )) )
          ('(1 2 3 4) :filter is-odd)) --> (1 3)
+         
+    ('(1 2) :append 3 4) --> (1 2 3 4)
+    ([1 2] :append '(3 4)) --> [1 2 3 4]
+    ([3 4] :prepend '(1 2)) --> [1 2 3 4]
+    ('(3 4) :prepend 1 2) --> (1 2 3 4)
     
   Collection operations like `:reverse`, `:sort`, `:map` or `:filter` do not modify collection which they work on, 
   they create a new one.
@@ -232,8 +243,8 @@ Functions
 
     (if condition then-expr &optional else-expr)
 
-  Evaluates condition, if it is not equal to **F** executes then-expr, if condition is **F** and else-expr is present
-  it will be executed
+  Evaluates condition, if it is not equal to **F** or **NIL** executes then-expr, if condition is **F** or **NIL** and 
+  else-expr is present it will be executed
 
      (if (= a b)
          (progn ()()...)
@@ -336,11 +347,12 @@ Functions
                       (rec (- x 1))))
   
   It will call itself, decreasing its parameter by one and once reached *0* it will terminate returning string "Tada".
-  This will work well if funtion `rec` is called with parameter less than [about] 500. If called as `rec(1000)` the
+  This will work well if function `rec` is called with parameter less than [about] 500. If called as `rec(1000)` the
   program will crash with StackOverflow exception.
   `recur` is similar to its namesake in Clojure, it evaluates its parameters, then rebinds them and jumps back to the 
-  recursion point. It is not necessary that `recur` is in tail position, but it is usually a good idea. The recur 
-  expression must match the arity of the recursion point. 
+  recursion point. No check is performed to verify that `recur` is in tail position, however if there are any operators
+  after the `recur` they will never receive control. The recur expression must match the arity of the recursion point,
+  i.e. of the function inside which it is called. 
   
   See next code block for an example of `recur` usage.
    
@@ -370,6 +382,33 @@ Functions
     (set name expression)
 
   Binds evaluated `expression` to a `name` in current context. Essentially works as `var`, but only for one variable
+  
+  
+  **SET\***
+  
+    (set* (name value)*)
+    
+  Both `var` and `set` work in current context. If you need to change value of a global binding you need to use `set*`
+  `set*` will first try to find existing binding with a name `name` and rebind new value to it. If there is no
+  existing binding with such name in all outer scopes, then new local binding will be created.
+  
+    (let (x 1)
+         (progn ; new block
+            (set* (x 2))  
+         )
+         (println x) --> prints 2
+    )     
+
+    (let (x 1)
+         (progn ; new block
+            (set (x 2))  ; creates new binding in progn block context
+         )
+         (println x) --> prints 1
+    )     
+  
+  **TODO** set* syntax is closer to var, than to set. 
+  
+    
 
   **NAMESPACE**
 
@@ -457,7 +496,23 @@ Functions
       )) 
       
   The program above will return **3**
-     
+  
+  
+  **DO-LIST**
+    
+    (do-list list-form element &rest body)
+    
+  Loops over `list-form` iteratively binding its elements to `element` symbol and executing `body`.
+  
+    (var res) 
+    (do-list [1 2 3] 
+             x 
+             (update (res 
+                      (res :prepend x))
+             )
+    ) 
+    
+  `res` will contain **(3 2 1)** after this program is executed 
 Macros
 ------
 

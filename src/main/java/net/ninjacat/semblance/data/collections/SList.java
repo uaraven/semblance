@@ -125,6 +125,19 @@ public class SList extends LispCollection {
         return (T) new SList(values);
     }
 
+    @Override
+    public LispCollection append(final LispCollection lispValues) {
+        final List<LispValue> temp = new LinkedList<>(collection);
+        temp.addAll(lispValues.getCollection());
+        return createNew(temp);
+    }
+
+    @Override
+    public LispCollection prepend(final LispCollection lispValues) {
+        final List<LispValue> temp = new LinkedList<>(lispValues.getCollection());
+        temp.addAll(collection);
+        return createNew(temp);
+    }
 
     @SuppressWarnings("all")
     @Override

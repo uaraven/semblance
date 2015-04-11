@@ -183,7 +183,7 @@ public final class Values {
     }
 
     public static boolean isFalse(final LispValue value) {
-        return isSymbol(value) && asSymbol(value).equals(Constants.FALSE);
+        return Constants.FALSE.equals(value) || NilCollection.INSTANCE.equals(value);
     }
 
     public static boolean isTrue(final LispValue value) {

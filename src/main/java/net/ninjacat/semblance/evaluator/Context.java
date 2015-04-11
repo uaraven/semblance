@@ -83,4 +83,21 @@ public interface Context {
      * @return {@code true} if this context's or this context's parent's name is equal to supplied parameter
      */
     boolean hasParent(SymbolAtom name);
+
+    /**
+     * Updates already bound symbol. Looks in all parent context for a bound symbol. If no bound symbol found, binds
+     * it in local context
+     *
+     * @param name  Symbol name.
+     * @param value Value to bound to name
+     */
+    void update(SymbolAtom name, LispValue value);
+
+    /**
+     * Updates already bound symbol or tries to bind it in parent.
+     *
+     * @param symbolName Symbol name.
+     * @param value      Value to bound to name.
+     */
+    void updateExisting(final SymbolAtom symbolName, final LispValue value);
 }

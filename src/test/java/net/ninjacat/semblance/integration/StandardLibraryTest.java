@@ -83,4 +83,14 @@ public class StandardLibraryTest {
         assertThat(value, is((LispValue) smartList(2L, 3L, 4L, 5L)));
     }
 
+    @Test
+    public void testShouldLoopOverList() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(var res) (do-list [1 2 3] x (set* (res (res :prepend x)))) res");
+
+        assertThat(value, is((LispValue) smartList(3L, 2L, 1L)));
+
+    }
 }

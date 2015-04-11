@@ -38,6 +38,35 @@ public class IfTest {
     @Test
     public void shouldReturnNil() throws Exception {
         final SList program = list(
+                symbol("if"), NilCollection.INSTANCE,
+                list(QUOTE, SYMBOL_A)
+        );
+        final Context rootContext = new RootContext();
+
+        final LispValue result = rootContext.evaluate(program);
+
+        assertThat((NilCollection) result, is(NilCollection.INSTANCE));
+    }
+
+
+    @Test
+    public void shouldReturnValueOfFalseBranch() throws Exception {
+        final SList program = list(
+                symbol("if"), COND_FALSE,
+                list(QUOTE, SYMBOL_A),
+                list(QUOTE, SYMBOL_B)
+        );
+        final Context rootContext = new RootContext();
+
+        final LispValue result = rootContext.evaluate(program);
+
+        assertThat((SymbolAtom) result, is(SYMBOL_B));
+    }
+
+
+    @Test
+    public void shouldReturnNilWhenConditionIsNil() throws Exception {
+        final SList program = list(
                 symbol("if"), COND_FALSE,
                 list(QUOTE, SYMBOL_A)
         );
@@ -49,9 +78,9 @@ public class IfTest {
     }
 
     @Test
-    public void shouldReturnValueOfFalseBranch() throws Exception {
+    public void shouldReturnValueOfFalseBranchWhenConditionIsNil() throws Exception {
         final SList program = list(
-                symbol("if"), COND_FALSE,
+                symbol("if"), NilCollection.INSTANCE,
                 list(QUOTE, SYMBOL_A),
                 list(QUOTE, SYMBOL_B)
         );

@@ -50,3 +50,14 @@
     (list-form)
     `(,list-form :tail)
 )
+
+; Calls body for each element of the list, list contents are bound to symbol 'element'
+; TODO rewrite in functional style [maybe]
+(defmacro do-list (list-form element &rest body)
+    `(let ((ll ,list-form))
+         (loop ll
+               (var (,element (ll :head)))
+               ,@body
+               (set ll (ll :tail))
+    ))
+)

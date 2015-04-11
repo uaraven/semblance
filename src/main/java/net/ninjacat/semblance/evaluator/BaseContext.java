@@ -53,6 +53,26 @@ abstract class BaseContext implements Context {
     }
 
     @Override
+    public void update(final SymbolAtom symbolName, final LispValue value) {
+        final Option<LispValue> bound = findSymbol(symbolName);
+        if (bound.isPresent()) {
+            updateExisting(symbolName, value);
+        } else {
+            bind(symbolName, value);
+        }
+    }
+
+    @Override
+    public void updateExisting(final SymbolAtom symbolName, final LispValue value) {
+        final Namespace namespace = namespaces.get(symbolName.getNamespace());
+        if (namespace.findSymbol(symbolName).isPresent()) {
+            namespace.bind(symbolName, value);
+        } else if (parent != null) {
+            parent.updateExisting(symbolName, value);
+        }
+    }
+
+    @Override
     public LispValue evaluate(final LispValue expression) {
         if (isSymbol(expression)) {
             if (asSymbol(expression).repr().startsWith(":")) {

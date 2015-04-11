@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.evaluator;
 
+import net.ninjacat.semblance.Update;
 import net.ninjacat.semblance.builtin.spforms.*;
 import net.ninjacat.semblance.builtin.spforms.Namespace;
 import net.ninjacat.semblance.builtin.spforms.arithmetic.*;
@@ -115,6 +116,7 @@ public class RootContext extends BaseContext {
 
     private void bindSpecialForms() {
         bindForm(new Var());
+        bindForm(new Update());
 
         bindForm(new EvalMe());
         bindForm(new UnwrapMe());

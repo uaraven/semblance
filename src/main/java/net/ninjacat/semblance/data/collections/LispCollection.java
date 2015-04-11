@@ -47,6 +47,9 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         addOperation(SORT, new SortOperation());
         addOperation(MAP, new MapOperation());
         addOperation(FILTER, new FilterOperation());
+        addOperation(APPEND, new AppendOperation());
+        addOperation(PREPEND, new PrependOperation());
+        addOperation(LENGTH, new LengthOperation());
     }
 
     /**
@@ -100,6 +103,22 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
      * @return New collection of the same type as this.
      */
     public abstract <T extends LispCollection> T createNew(List<LispValue> values);
+
+    /**
+     * Adds new elements to the end of a collection
+     *
+     * @param lispValues values to add
+     * @return new collection
+     */
+    public abstract LispCollection append(final LispCollection lispValues);
+
+    /**
+     * Inserts new elements into beginning of a collection
+     *
+     * @param lispValues values to add
+     * @return new collection
+     */
+    public abstract LispCollection prepend(final LispCollection lispValues);
 
     /**
      * Searches for an element inside the collection.

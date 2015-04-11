@@ -16,7 +16,10 @@ public enum Operation {
     REVERSE(":reverse"),
     SORT(":sort"),
     MAP(":map"),
-    FILTER(":filter");
+    FILTER(":filter"),
+    APPEND(":append"),
+    PREPEND(":prepend"),
+    LENGTH(":length");
 
     private final String name;
 

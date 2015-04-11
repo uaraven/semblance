@@ -317,4 +317,45 @@ public class CollectionTests {
 
         assertThat(value, is((LispValue) smartList(1L, 3L)));
     }
+
+    @Test
+    public void testShouldAppendItems() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "('(1 2) :append 3 4)");
+
+        assertThat(value, is((LispValue) smartList(1L, 2L, 3L, 4L)));
+    }
+
+    @Test
+    public void testShouldPrependItems() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "([1 2] :prepend 3 4)");
+
+        assertThat(value, is((LispValue) smartVector(3L, 4L, 1L, 2L)));
+    }
+
+
+    @Test
+    public void testShouldAppendUnwrapped() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "('(1 2) :append [3 4])");
+
+        assertThat(value, is((LispValue) smartList(1L, 2L, 3L, 4L)));
+    }
+
+    @Test
+    public void testShouldPrependUnwrapped() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "([1 2] :prepend '(3 4))");
+
+        assertThat(value, is((LispValue) smartVector(3L, 4L, 1L, 2L)));
+    }
 }

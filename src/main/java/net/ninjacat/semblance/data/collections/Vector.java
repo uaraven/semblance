@@ -119,6 +119,21 @@ public class Vector extends LispCollection {
         return (T) new Vector(values);
     }
 
+    @Override
+    public LispCollection append(final LispCollection lispValues) {
+        final List<LispValue> temp = new ArrayList<>(collection);
+        temp.addAll(lispValues.getCollection());
+        return createNew(temp);
+    }
+
+    @Override
+    public LispCollection prepend(final LispCollection lispValues) {
+        final List<LispValue> temp = new ArrayList<>(lispValues.getCollection());
+        temp.addAll(collection);
+        return createNew(temp);
+    }
+
+
     @SuppressWarnings("all")
     @Override
     public boolean equals(final Object o) {

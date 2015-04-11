@@ -6,14 +6,13 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 
 /**
- * (var (name value) [(name value)]...)
+ * (set (name value) [(name value)]...)
  */
 
-// This has to be renamed to 'set' and set from standard.smbl should be removed to sset (as in simple set)
 public class Var extends SpecialForm {
 
     public Var() {
-        super("var", "&rest", "bindings");
+        super("set", "&rest", "bindings");
     }
 
     @Override

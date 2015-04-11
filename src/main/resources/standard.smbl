@@ -4,7 +4,7 @@
 ; macro 'defun' declares a function and binds it to a specified name in current context.
 (defmacro defun
     (name params &rest body)
-    `(var (,name (fn ,params
+    `(set (,name (fn ,params
                      (block ,name ,@body))))
 )
 
@@ -20,7 +20,7 @@
 
 (defmacro let
     (var-decl &rest body)
-    `(progn (var ,@var-decl) ,@body)
+    `(progn (set ,@var-decl) ,@body)
 )
 
 (defmacro return-from
@@ -28,9 +28,9 @@
     `(return ,value ,block-name)
 )
 
-(defmacro set
+(defmacro set1
     (name value)
-    `(var (,name ,value))
+    `(set (,name ,value))
 )
 
 (defmacro fn*
@@ -56,8 +56,8 @@
 (defmacro do-list (list-form element &rest body)
     `(let ((ll ,list-form))
          (loop ll
-               (var (,element (ll :head)))
+               (set (,element (ll :head)))
                ,@body
-               (set ll (ll :tail))
+               (set1 ll (ll :tail))
     ))
 )

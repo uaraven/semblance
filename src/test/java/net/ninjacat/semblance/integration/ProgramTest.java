@@ -41,7 +41,7 @@ public class ProgramTest {
     public void testVarShouldBindSequentally() throws Exception {
         final Interpreter interpreter = new Interpreter();
         final LispValue value = interpreter.run(
-                "(var" +
+                "(set" +
                         "(x 1)" +
                         "(y (+ x 1))" +
                         "(z (+ y 1))" +
@@ -75,7 +75,7 @@ public class ProgramTest {
     public void testFunctionShouldWork() throws Exception {
         final Interpreter interpreter = new Interpreter();
 
-        final LispValue value = interpreter.run("(var (f (fn (x y) (+ x y)))) (f 2 1)");
+        final LispValue value = interpreter.run("(set (f (fn (x y) (+ x y)))) (f 2 1)");
 
         assertThat(value, is(number(3)));
     }
@@ -112,7 +112,7 @@ public class ProgramTest {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run("(let ((x 5) (y 0)) " +
-                "(loop (> x 0) (set x (- x 1)) (set y (+ y 1)) y))");
+                "(loop (> x 0) (set1 x (- x 1)) (set1 y (+ y 1)) y))");
 
         assertThat(value, is(number(5)));
     }
@@ -124,8 +124,8 @@ public class ProgramTest {
         final LispValue value = interpreter.run(
                 "(let ((x 5) (y 0)) " +
                         "     (loop (> x 0) " +
-                        "           (set x (- x 1)) " +
-                        "           (set y (+ y 1)) " +
+                        "           (set1 x (- x 1)) " +
+                        "           (set1 y (+ y 1)) " +
                         "           (if (= y 3) " +
                         "               (break y))" +
                         "     )" +
@@ -142,10 +142,10 @@ public class ProgramTest {
         final LispValue value = interpreter.run(
                 "(let ((x 5) (y 0)) " +
                         "     (loop (> x 0) " +
-                        "           (set x (- x 1)) " +
+                        "           (set1 x (- x 1)) " +
                         "           (if (= x 3) " +
                         "               (recur))" +
-                        "           (set y (+ y 1)) " +
+                        "           (set1 y (+ y 1)) " +
                         "     )" +
                         ")");
 

@@ -369,26 +369,26 @@ Functions
   
   Semblance recurs
   
-  **VAR**
+  **SET**
 
-    (var (name value) [(name value) ...])
+    (set (name value) [(name value) ...])
   Binds evaluated `value` to symbol `name` in the current context. May evaluate and bind multiple variables.
   Evaluation is done sequentally, so later binds have access to already bound variables.
   Returns latest evaluated value.
   
   
-  **SET**
+  **SET1**
   
-    (set name expression)
+    (set1 name expression)
 
-  Binds evaluated `expression` to a `name` in current context. Essentially works as `var`, but only for one variable
+  Binds evaluated `expression` to a `name` in current context. Essentially works as `set`, but only for one variable
   
   
   **SET\***
   
     (set* (name value)*)
     
-  Both `var` and `set` work in current context. If you need to change value of a global binding you need to use `set*`
+  Both `set` and `set1` work in current context. If you need to change value of a global binding you need to use `set*`
   `set*` will first try to find existing binding with a name `name` and rebind new value to it. If there is no
   existing binding with such name in all outer scopes, then new local binding will be created.
   
@@ -406,10 +406,6 @@ Functions
          (println x) --> prints 1
     )     
   
-  **TODO** set* syntax is closer to var, than to set. 
-  
-    
-
   **NAMESPACE**
 
     (namespace name (s-expression)*)
@@ -418,7 +414,7 @@ Functions
   inside this namespace. Following example shows function `pi` and variable `e` bound in `math` namespace:
 
     (namespace math
-       (var e 2.718)
+       (set1 e 2.718)
        (defun pi () 3.14))
 
   Such bindings can be accessed using full name
@@ -429,8 +425,8 @@ Functions
   Inside the namespace those names can be accessed without the qualifier.
 
     (namespace math
-       (var pi 3.14))
-       (var tau (* 2 pi)))
+       (set1 pi 3.14))
+       (set1 tau (* 2 pi)))
 
   **BLOCK**
 
@@ -504,10 +500,10 @@ Functions
     
   Loops over `list-form` iteratively binding its elements to `element` symbol and executing `body`.
   
-    (var res) 
+    (set res) 
     (do-list [1 2 3] 
              x 
-             (update (res 
+             (set* (res 
                       (res :prepend x))
              )
     ) 
@@ -529,7 +525,7 @@ Macros
 
     (defmacro defun
          (name params &rest body)
-         `(var ,name (fn ,params ,@body)))
+         `(set1 ,name (fn ,params ,@body)))
 
   Example defines a `defun` macro which takes three parameters `name`, `params` and `body` and binds to symbol
   in `name` a function with parameters `params` and `body` of s-expressions.

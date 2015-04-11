@@ -20,7 +20,7 @@ public class NamespaceTest {
         final RootContext context = new RootContext();
 
         context.evaluateHere(IOUtils.asStream(
-                "(namespace math (var(pi 3.14))) math/pi"));
+                "(namespace math (set (pi 3.14))) math/pi"));
 
         final Option<net.ninjacat.semblance.evaluator.Namespace> namespace = context.getNamespace(symbol("math"));
 

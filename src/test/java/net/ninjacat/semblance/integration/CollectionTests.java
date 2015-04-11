@@ -18,7 +18,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(set x [1 2 3 4])" +
+                "(set1 x [1 2 3 4])" +
                         "(x 2)");
 
         assertThat(value, is(number(3)));
@@ -30,7 +30,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(set x '(1 2 3 4))" +
+                "(set1 x '(1 2 3 4))" +
                         "(x 2)");
 
         assertThat(value, is(number(3)));
@@ -42,7 +42,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(set x '(1 2 3 4))" +
+                "(set1 x '(1 2 3 4))" +
                         "(x 1 2)");
 
         assertThat(value, is((LispValue) smartList(2L, 3L)));
@@ -53,7 +53,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(set x '(1 2 3 4))" +
+                "(set1 x '(1 2 3 4))" +
                         "(x :head)");
 
         assertThat(value, is(number(1)));
@@ -64,7 +64,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(set x '(1 2 3 4))" +
+                "(set1 x '(1 2 3 4))" +
                         "(x :tail)");
 
         assertThat(value, is((LispValue) smartList(2L, 3L, 4L)));
@@ -106,7 +106,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(var (x {:a 1 :b (+ 2 3) :c 3}))" +
+                "(set (x {:a 1 :b (+ 2 3) :c 3}))" +
                         "(x :b)");
 
         assertThat(value, is(number(5)));
@@ -158,7 +158,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(var (x {:a 1 :b (+ 2 3) :c 3}))" +
+                "(set (x {:a 1 :b (+ 2 3) :c 3}))" +
                         "(x :b (- 4 2))" +
                         "(x :b)");
 

@@ -88,7 +88,7 @@ public class StandardLibraryTest {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(var res) (do-list [1 2 3] x (set* (res (res :prepend x)))) res");
+                "(set res) (do-list [1 2 3] x (set* (res (res :prepend x)))) res");
 
         assertThat(value, is((LispValue) smartList(3L, 2L, 1L)));
 

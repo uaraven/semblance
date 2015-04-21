@@ -112,19 +112,19 @@ public class LongNumberAtom extends NumberAtom<Long> {
     @Override
     public boolean lt(final NumberAtom<?> other) {
         if (getNumberType() == other.getNumberType()) {
-            return 0 < Long.compare(value, (Long) other.getValue());
+            return Long.compare(value, (Long) other.getValue()) < 0;
         }
         final NumberAtom<?> self = expandIfNeeded(other);
-        return self.eq(other);
+        return self.lt(other);
     }
 
     @Override
     public boolean gt(final NumberAtom<?> other) {
         if (getNumberType() == other.getNumberType()) {
-            return 0 < Long.compare(value, (Long) other.getValue());
+            return Long.compare(value, (Long) other.getValue()) > 0;
         }
         final NumberAtom<?> self = expandIfNeeded(other);
-        return self.eq(other);
+        return self.gt(other);
     }
 
     @Override

@@ -509,6 +509,24 @@ Functions
     ) 
     
   `res` will contain **(3 2 1)** after this program is executed 
+  
+  **DO-TIMES**
+    
+    (do-list element upper-limit &rest body)
+    
+  Assigns zero to `element` and executes a body. Increases `element` by one and repeats until `element` is 
+  less than `upper-limit`
+  
+    (set res) 
+    (do-times x 
+              3 
+              (set* (res 
+                        (res :append x))
+              )
+    ) 
+    
+  `res` will contain **(0 1 2)** after this program is executed
+     
 Macros
 ------
 

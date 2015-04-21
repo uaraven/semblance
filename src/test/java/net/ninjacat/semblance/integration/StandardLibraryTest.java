@@ -93,4 +93,16 @@ public class StandardLibraryTest {
         assertThat(value, is((LispValue) smartList(3L, 2L, 1L)));
 
     }
+
+
+    @Test
+    public void testShouldLoopNumberOfTimes() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(set res) (do-times x 3 (set* (res (res :append x)))) res");
+
+        assertThat(value, is((LispValue) smartList(0L, 1L, 2L)));
+
+    }
 }

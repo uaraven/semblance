@@ -102,25 +102,28 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
             return 0 == value.compareTo((BigInteger) other.getValue());
         }
         final NumberAtom<?> self = expandIfNeeded(other);
-        return self.eq(other);
+        final NumberAtom<?> otExp = other.expandIfNeeded(self);
+        return self.eq(otExp);
     }
 
     @Override
     public boolean lt(final NumberAtom<?> other) {
         if (getNumberType() == other.getNumberType()) {
-            return 0 < value.compareTo((BigInteger) other.getValue());
+            return value.compareTo((BigInteger) other.getValue()) < 0;
         }
         final NumberAtom<?> self = expandIfNeeded(other);
-        return self.eq(other);
+        final NumberAtom<?> otExp = other.expandIfNeeded(self);
+        return self.lt(otExp);
     }
 
     @Override
     public boolean gt(final NumberAtom<?> other) {
         if (getNumberType() == other.getNumberType()) {
-            return 0 > value.compareTo((BigInteger) other.getValue());
+            return value.compareTo((BigInteger) other.getValue()) > 0;
         }
         final NumberAtom<?> self = expandIfNeeded(other);
-        return self.eq(other);
+        final NumberAtom<?> otExp = other.expandIfNeeded(self);
+        return self.gt(otExp);
     }
 
     @Override

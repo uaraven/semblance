@@ -61,3 +61,12 @@
                (set1 ll (ll :tail))
     ))
 )
+
+(defmacro do-times (element max-value &rest body)
+    `(let ((,element 0))
+          (loop (< ,element ,max-value)
+             ,@body
+             (set1 ,element (+ 1 ,element))
+          )
+     )
+)

@@ -101,25 +101,28 @@ public class DoubleNumberAtom extends NumberAtom {
             return 0 == Double.compare(value, (Double) other.getValue());
         }
         final NumberAtom<?> self = expandIfNeeded(other);
-        return self.eq(other);
+        final NumberAtom<?> otExp = other.expandIfNeeded(self);
+        return self.eq(otExp);
     }
 
     @Override
     public boolean lt(final NumberAtom other) {
         if (getNumberType() == other.getNumberType()) {
-            return 0 < Double.compare(value, (Double) other.getValue());
+            return Double.compare(value, (Double) other.getValue()) < 0;
         }
         final NumberAtom<?> self = expandIfNeeded(other);
-        return self.eq(other);
+        final NumberAtom<?> otExp = other.expandIfNeeded(self);
+        return self.lt(otExp);
     }
 
     @Override
     public boolean gt(final NumberAtom other) {
         if (getNumberType() == other.getNumberType()) {
-            return 0 > Double.compare(value, (Double) other.getValue());
+            return Double.compare(value, (Double) other.getValue()) > 0;
         }
         final NumberAtom<?> self = expandIfNeeded(other);
-        return self.eq(other);
+        final NumberAtom<?> otExp = other.expandIfNeeded(self);
+        return self.gt(otExp);
     }
 
     @Override

@@ -145,7 +145,7 @@ public abstract class NumberAtom<T> extends Atom {
 
     @Override
     public String toString() {
-        return "NumberAtom{" + getValue() + '}';
+        return "NumberAtom{" + getNumberType() + ":" + getValue() + '}';
     }
 
     @Override

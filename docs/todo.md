@@ -18,7 +18,7 @@ Evaluator todo
 Library todo
 ------------
 
- - do-list, do-times macros
+ - do-times macros
  - include
 
 Interpreter todo

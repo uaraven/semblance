@@ -39,6 +39,13 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
         contents = new ConcurrentHashMap<>(data);
     }
 
+    /**
+     * Creates new instance of empty map
+     */
+    public SMap() {
+        this(new ConcurrentHashMap<LispValue, LispValue>(), SourceInfo.UNKNOWN);
+    }
+
     @Override
     public SymbolAtom name() {
         return NAME;
@@ -157,6 +164,15 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
         }
 
         return this;
+    }
+
+    /**
+     * Modifies this map by adding elements from supplied map
+     *
+     * @param map other map to join with this one
+     */
+    public void addAll(final SMap map) {
+        contents.putAll(map.contents);
     }
 
     @Override

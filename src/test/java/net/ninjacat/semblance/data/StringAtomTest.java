@@ -35,6 +35,22 @@ public class StringAtomTest {
         assertThat("Type name should be STRING", symbol.getType(), is(SemblanceType.STRING));
     }
 
+    @Test
+    public void equalShouldReturnTrueOnEqualStrings() throws Exception {
+        final Atom atom1 = new StringAtom("This is string atom!");
+        final Atom atom2 = new StringAtom("This is string atom!");
+
+        assertThat("Equals should return true", atom1.equals(atom2), is(true));
+    }
+
+    @Test
+    public void equalShouldReturnFalseOnDifferentStrings() throws Exception {
+        final Atom atom1 = new StringAtom("This is not a string atom!");
+        final Atom atom2 = new StringAtom("This is string atom!");
+
+        assertThat("Equals should return true", atom1.equals(atom2), is(false));
+    }
+
     private Atom getAtom() {
         return new StringAtom(TEST_STRING);
     }

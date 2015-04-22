@@ -67,4 +67,24 @@ public class SubTest {
 
         sub.apply(context, params);
     }
+
+    @Test
+    public void shouldSubtractLists() throws Exception {
+        final SList params = list(smartList(1L, 2L, 3L), smartList(1L, 3L));
+        final Sub sub = new Sub();
+
+        final LispValue value = sub.apply(context, params);
+
+        assertThat("Should subtract lists", value, is((LispValue) smartList(2L)));
+    }
+
+    @Test
+    public void shouldSubtractListFromVector() throws Exception {
+        final SList params = list(smartVector(1L, 2L, 3L), smartList(1L, 3L));
+        final Sub sub = new Sub();
+
+        final LispValue value = sub.apply(context, params);
+
+        assertThat("Should subtract lists", value, is((LispValue) smartVector(2L)));
+    }
 }

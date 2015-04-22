@@ -78,4 +78,11 @@ public class StringAtom extends Atom {
             throw new ClassCastException(String.format("%s is not compatible with %s", getType(), other.getType()));
         }
     }
+
+    /**
+     * @return String value of the StringAtom
+     */
+    public String getValue() {
+        return value;
+    }
 }

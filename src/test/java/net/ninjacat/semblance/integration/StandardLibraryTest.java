@@ -13,6 +13,7 @@ import static org.junit.Assert.assertThat;
 /**
  * Standard library integration tests
  */
+@SuppressWarnings("InstanceMethodNamingConvention")
 public class StandardLibraryTest {
 
     @Test
@@ -84,6 +85,26 @@ public class StandardLibraryTest {
     }
 
     @Test
+    public void testCarShouldReturnVectorHead() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(car [1 2 3 4 5])");
+
+        assertThat(value, is(number(1)));
+    }
+
+    @Test
+    public void testCdrShouldReturnVectorTail() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(cdr [1 2 3])");
+
+        assertThat(value, is((LispValue) smartVector(2L, 3L)));
+    }
+
+    @Test
     public void testShouldLoopOverList() throws Exception {
         final Interpreter interpreter = new Interpreter();
 
@@ -91,7 +112,6 @@ public class StandardLibraryTest {
                 "(set res) (do-list [1 2 3] x (set* (res (res :prepend x)))) res");
 
         assertThat(value, is((LispValue) smartList(3L, 2L, 1L)));
-
     }
 
 
@@ -103,6 +123,6 @@ public class StandardLibraryTest {
                 "(set res) (do-times x 3 (set* (res (res :append x)))) res");
 
         assertThat(value, is((LispValue) smartList(0L, 1L, 2L)));
-
     }
+
 }

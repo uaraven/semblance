@@ -218,6 +218,43 @@ Functions
 
   For the user of the language it should not matter whether operation is implemented as special form, function or a
   macro.
+  
+  **+**
+  
+    (+ parameter*)
+  
+  Addition, union or concatenation, depending on first parameter.
+  
+  Depending on type of first parameter following operations are performed:
+    - Number - addition.
+    - String - concatenation.
+    - Collection - union. resulting collection will be of the same type as first parameter
+    - Map - union
+    
+  If any of the other parameters' type is different from the first parameter's type then `TypeMismatchException` will
+  be thrown. 
+  
+    (+ 1 2 3) -> 6
+    (+ "1" "2" "3") -> "123"
+    (+ '(1 2) [3]) -> '(1 2 3)
+    (+ [1 2] '(3)) -> [1 2 3]
+    (+ {:a 1} {:b 2}) -> {:a 1 :b 2}
+   
+  **-**
+   
+    (- param*)
+    
+  Arithmetic subrtaction or collection subtraction. 
+  
+  If the first parameter is number, then subtracts second parameter from the first, then, if there are more 
+  parameters, subtracts third parameter from the result, etc.
+  If the first parameter is collection then this operation will return collection of the same type as first parameter
+  which will be a complement of all other parameters in first parameter. 
+  
+    (- 3 2 1) -> 0
+    (- '(1 2 3 4) [1] '(2 4)) -> (3)
+    (- [1 2 3] '(1 5)) -> (2 3)
+
 
   **PRINTLN**
 
@@ -514,8 +551,8 @@ Functions
     
     (do-list element upper-limit &rest body)
     
-  Assigns zero to `element` and executes a body. Increases `element` by one and repeats until `element` is 
-  less than `upper-limit`
+  Assigns zero to `element` and executes a body. Increases `element` by one and repeats execution of a body
+  while `element` is less than `upper-limit`
   
     (set res) 
     (do-times x 

@@ -79,6 +79,14 @@ public final class Values {
         }
     }
 
+    public static StringAtom asString(final LispValue value) {
+        if (isString(value)) {
+            return (StringAtom) value;
+        } else {
+            throw new TypeMismatchException(SemblanceType.STRING, value, getSourceInfo(value));
+        }
+    }
+
     public static SymbolAtom asSymbol(final LispValue value) {
         if (isSymbol(value)) {
             return (SymbolAtom) value;
@@ -188,6 +196,10 @@ public final class Values {
 
     public static boolean isTrue(final LispValue value) {
         return !isFalse(value);
+    }
+
+    public static boolean isString(final LispValue value) {
+        return value.getType() == SemblanceType.STRING;
     }
 
     public static boolean isAtom(final LispValue value) {

@@ -254,6 +254,21 @@ Functions
     (- 3 2 1) -> 0
     (- '(1 2 3 4) [1] '(2 4)) -> (3)
     (- [1 2 3] '(1 5)) -> (2 3)
+    (- {:a 1 :b 2} {:b 1 :c 2}) -> {:a 1}
+    
+  **\***
+  
+    (* param*)
+    
+  Arithmetic multiplication on numbers or scalar or cartesian product on collections.
+  If the first parameter is number, then arithmetic product of all parameters is returned.
+  If the first parameter is collection then only one more parameter is expected, which can be either number or another
+  collection. If the second parameter is number, then scalar product of list or vector and that number is evaluated,
+  otherwise cartesian product of collections is evaluated.
+  
+    (* 1 2 3) -> 6
+    (* '(1 2 3) 2) -> (2 4 6)
+    (* [1 2] '("a" "b")) -> [(1 "a") (1 "b") (2 "a") (2 "b")]
 
 
   **PRINTLN**

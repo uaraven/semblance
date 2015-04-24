@@ -6,8 +6,11 @@ import net.ninjacat.semblance.data.LongNumberAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
+import net.ninjacat.semblance.data.collections.SMap;
+import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
+import net.ninjacat.smooth.collections.Maps;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.invocation.InvocationOnMock;
@@ -56,7 +59,7 @@ public class SubTest {
 
         final LispValue value = sub.apply(context, params);
 
-        assertThat("Result should be an integer", value, instanceOf(DoubleNumberAtom.class));
+        assertThat("Result should be a double", value, instanceOf(DoubleNumberAtom.class));
         assertThat("Result should be equal to 3.5", (Double) asNumber(value).getValue(), is(2.5d));
     }
 
@@ -86,5 +89,21 @@ public class SubTest {
         final LispValue value = sub.apply(context, params);
 
         assertThat("Should subtract lists", value, is((LispValue) smartVector(2L)));
+    }
+
+    @Test
+    public void shouldSubtractMaps() throws Exception {
+        final SList params = list(new SMap(Maps.<LispValue, LispValue>of(
+                        symbol(":a"), number(1),
+                        symbol(":b"), number(2)), SourceInfo.UNKNOWN),
+                new SMap(Maps.<LispValue, LispValue>of(
+                        symbol(":b"), number(1),
+                        symbol(":c"), number(2)), SourceInfo.UNKNOWN));
+        final Sub sub = new Sub();
+
+        final LispValue value = sub.apply(context, params);
+
+        assertThat("Should subtract lists", value, is((LispValue)
+                new SMap(Maps.<LispValue, LispValue>of(symbol(":a"), number(1)), SourceInfo.UNKNOWN)));
     }
 }

@@ -32,15 +32,17 @@ public class Add extends SpecialForm {
         final LispValue head = evaluated.head();
         if (isNumber(head)) {
             return numericAdd(evaluated);
-        } else if (isString(head)) {
-            return concatenate(evaluated);
-        } else if (isCollection(head)) {
-            return collectionUnion(evaluated);
-        } else if (isMap(head)) {
-            return mapUnion(evaluated);
-        } else {
-            throw new SemblanceRuntimeException("Invalid argument types", parameters.getSourceInfo());
         }
+        if (isString(head)) {
+            return concatenate(evaluated);
+        }
+        if (isCollection(head)) {
+            return collectionUnion(evaluated);
+        }
+        if (isMap(head)) {
+            return mapUnion(evaluated);
+        }
+        throw new SemblanceRuntimeException("Invalid argument types", parameters.getSourceInfo());
     }
 
     private static LispValue mapUnion(final LispCollection evaluated) {

@@ -72,6 +72,8 @@ public final class Values {
             return string(value.toString());
         } else if (value instanceof Long) {
             return number((Long) value);
+        } else if (value instanceof Double) {
+            return number((double) value);
         } else if (value instanceof Symbol) {
             return symbol(((Symbol) value).getValue());
         } else {
@@ -121,6 +123,7 @@ public final class Values {
 
     /**
      * Converts any {@link LispCollection} to {@link SList}
+     *
      * @return Collection as SList.
      */
     public static SList toSList(final LispCollection value) {

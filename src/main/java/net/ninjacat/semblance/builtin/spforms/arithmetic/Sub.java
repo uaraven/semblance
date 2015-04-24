@@ -4,6 +4,8 @@ import net.ninjacat.semblance.data.NumberAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.SMap;
+import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
 
 import java.util.ArrayList;
@@ -28,11 +30,16 @@ public class Sub extends SpecialForm {
     public LispValue apply(final Context context, final LispCollection parameters) {
         final LispCollection evaluated = context.evaluateList(parameters);
         final LispValue head = evaluated.head();
-        if (isCollection(head)) {
-            return difference(evaluated);
-        } else {
+        if (isNumber(head)) {
             return subtract(evaluated);
         }
+        if (isCollection(head)) {
+            return difference(evaluated);
+        }
+        if (isMap(head)) {
+            return mapDifference(evaluated);
+        }
+        throw new TypeMismatchException("NUMBER, COLLECTION or MAP", head, parameters.getSourceInfo());
     }
 
     private static LispValue difference(final LispCollection evaluated) {
@@ -43,6 +50,15 @@ public class Sub extends SpecialForm {
         }
         return head.createNew(collection);
     }
+
+    private static LispValue mapDifference(final LispCollection evaluated) {
+        final SMap result = asSMap(evaluated.head()).duplicate();
+        for (final LispValue item : evaluated.tail()) {
+            result.removeAll(asSMap(item));
+        }
+        return result;
+    }
+
 
     private LispValue subtract(final LispCollection evaluated) {
         NumberAtom accumulator = asNumber(evaluated.head());

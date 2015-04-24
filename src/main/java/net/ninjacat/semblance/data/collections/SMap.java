@@ -203,4 +203,22 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
     public int hashCode() {
         return contents.hashCode();
     }
+
+    /**
+     * @return Duplicate of this Map
+     */
+    public SMap duplicate() {
+        return new SMap(contents, SourceInfo.UNKNOWN);
+    }
+
+    /**
+     * Removes from this map all the keys which are present in the other map. This method mutates this map!
+     *
+     * @param other Other map
+     */
+    public void removeAll(final SMap other) {
+        for (final LispValue key : other.keys().getCollection()) {
+            contents.remove(key);
+        }
+    }
 }

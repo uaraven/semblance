@@ -3,6 +3,7 @@ package net.ninjacat.semblance.integration;
 import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.NilCollection;
 import org.junit.Test;
 
 import static net.ninjacat.semblance.utils.Values.*;
@@ -368,5 +369,19 @@ public class CollectionTests {
 
         assertThat(value, is((LispValue) vector(smartList(1L, "a"), smartList(2L, "b"))));
 
+    }
+
+
+    @Test
+    public void testShouldZipThreeCollections() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(list/zip '(1 2) [\"a\"] [:c :d])");
+
+        assertThat(value, is((LispValue) list(
+                        list(number(1), string("a"), symbol(":c")),
+                        list(number(2), NilCollection.INSTANCE, symbol(":d"))))
+        );
     }
 }

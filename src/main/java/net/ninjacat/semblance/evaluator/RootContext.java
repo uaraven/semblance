@@ -4,10 +4,7 @@ import net.ninjacat.semblance.Update;
 import net.ninjacat.semblance.builtin.spforms.*;
 import net.ninjacat.semblance.builtin.spforms.Namespace;
 import net.ninjacat.semblance.builtin.spforms.arithmetic.*;
-import net.ninjacat.semblance.builtin.spforms.collections.Contains;
-import net.ninjacat.semblance.builtin.spforms.collections.Find;
-import net.ninjacat.semblance.builtin.spforms.collections.MapKeys;
-import net.ninjacat.semblance.builtin.spforms.collections.MapValues;
+import net.ninjacat.semblance.builtin.spforms.collections.*;
 import net.ninjacat.semblance.builtin.spforms.comparison.*;
 import net.ninjacat.semblance.builtin.spforms.logic.And;
 import net.ninjacat.semblance.builtin.spforms.logic.Not;
@@ -115,6 +112,8 @@ public class RootContext extends BaseContext {
     }
 
     private void bindSpecialForms() {
+        prepareDefaultNamespaces();
+
         bindForm(new Var());
         bindForm(new Update());
 
@@ -158,7 +157,13 @@ public class RootContext extends BaseContext {
         bindForm(new MapKeys());
         bindForm(new MapValues());
 
+        bindForm(new Zip());
+
         loadLibrary();
+    }
+
+    private void prepareDefaultNamespaces() {
+        addNamespace(new BaseNamespace(symbol("list")));
     }
 
     private void loadLibrary() {

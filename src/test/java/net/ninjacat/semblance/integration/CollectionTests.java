@@ -358,4 +358,15 @@ public class CollectionTests {
 
         assertThat(value, is((LispValue) smartVector(3L, 4L, 1L, 2L)));
     }
+
+    @Test
+    public void testShouldZipTwoCollections() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(list/zip [1 2] [\"a\" \"b\"])");
+
+        assertThat(value, is((LispValue) vector(smartList(1L, "a"), smartList(2L, "b"))));
+
+    }
 }

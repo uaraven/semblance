@@ -1,10 +1,10 @@
 package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.Update;
+import net.ninjacat.semblance.builtin.lib.collections.*;
 import net.ninjacat.semblance.builtin.spforms.*;
 import net.ninjacat.semblance.builtin.spforms.Namespace;
 import net.ninjacat.semblance.builtin.spforms.arithmetic.*;
-import net.ninjacat.semblance.builtin.spforms.collections.*;
 import net.ninjacat.semblance.builtin.spforms.comparison.*;
 import net.ninjacat.semblance.builtin.spforms.logic.And;
 import net.ninjacat.semblance.builtin.spforms.logic.Not;
@@ -152,11 +152,11 @@ public class RootContext extends BaseContext {
         bindForm(new Not());
         bindForm(new Or());
 
-        bindForm(new Contains());
         bindForm(new Find());
         bindForm(new MapKeys());
         bindForm(new MapValues());
 
+        bindForm(new Contains());
         bindForm(new Zip());
 
         loadLibrary();

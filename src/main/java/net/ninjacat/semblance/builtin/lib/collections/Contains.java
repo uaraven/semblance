@@ -1,5 +1,6 @@
-package net.ninjacat.semblance.builtin.spforms.collections;
+package net.ninjacat.semblance.builtin.lib.collections;
 
+import net.ninjacat.semblance.builtin.spforms.collections.CollectionSpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SMap;

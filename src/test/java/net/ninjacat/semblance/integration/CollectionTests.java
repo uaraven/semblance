@@ -271,7 +271,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(find [1 2 3] 3)");
+                "(list/find [1 2 3] 3)");
 
         assertThat(value, is(number(2)));
     }
@@ -281,7 +281,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(find [:a :b :c] :d)");
+                "(list/find [:a :b :c] :d)");
 
         assertThat(value, is(number(-1)));
     }

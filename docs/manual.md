@@ -186,17 +186,6 @@ Data types
     (contains {:a 1 :b 2} :c) --> F
     (contains '(1 2 3) 2) --> T
     (contains [1 2 3] 4) --> F
-  
-  **FIND**
-  
-    (find collection element)
-
-  Returns zero-based index of `element` in the `collection`. If there is no `element` in the `collection` then **-1** 
-  is returned. `find` works on both lists and vectors. Bear in mind that access by index is O(n) for lists 
-  and O(1) for vectors.
-  
-    (find '(1 2 3) 3) --> 2
-    (find [1 2 3] 4) --> -1 
     
   **KEYS** and **VALUES**
     
@@ -208,6 +197,30 @@ Data types
   
     (keys {:a 1 :b 2 :c 3}) --> (:b :a :c) or (:a :c :b) or any other combination
     (values {:a 1 :b 2 :c 3}) --> (1 2 3) or (2 1 3) or any other combination
+
+  More list/vector-specific operation are available in `list` namespace
+  
+  **LIST/FIND**
+  
+    (list/find collection element)
+
+  Returns zero-based index of `element` in the `collection`. If there is no `element` in the `collection` then **-1** 
+  is returned. `find` works on both lists and vectors. Bear in mind that access by index is O(n) for lists 
+  and O(1) for vectors.
+  
+    (list/find '(1 2 3) 3) --> 2
+    (list/find [1 2 3] 4) --> -1 
+    
+  **LIST/ZIP**
+    
+    (list/zip collection*)
+    
+  Returns list of lists where i-th list contains i-th element from each of the argument collections. Returned list has
+  same length as the first collection. If any other collection is shorter than first one, `NIL` will be placed instead
+  of its elements.
+  
+    (list/zip [1 2 3] ["a"] [:b :c]) -> ((1 "a" :b) (2 NIL :c) (3 NIL NIL))
+
 
 Functions
 ---------

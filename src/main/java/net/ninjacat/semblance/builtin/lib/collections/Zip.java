@@ -1,4 +1,4 @@
-package net.ninjacat.semblance.builtin.spforms.collections;
+package net.ninjacat.semblance.builtin.lib.collections;
 
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;

@@ -1,5 +1,6 @@
-package net.ninjacat.semblance.builtin.spforms.collections;
+package net.ninjacat.semblance.builtin.lib.collections;
 
+import net.ninjacat.semblance.builtin.spforms.collections.CollectionSpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
@@ -10,13 +11,14 @@ import static net.ninjacat.semblance.utils.Values.number;
 /**
  * Searches for an element in the collection.
  */
+@SuppressWarnings("ALL")
 public class Find extends CollectionSpecialForm {
 
     /**
      * Create new instance.
      */
     public Find() {
-        super("find", "list-form", "value");
+        super("list/find", "list-form", "value");
     }
 
     @Override

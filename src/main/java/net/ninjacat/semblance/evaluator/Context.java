@@ -5,6 +5,8 @@ import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.smooth.utils.Option;
 
+import java.util.Collection;
+
 /**
  * Execution context
  * <p/>
@@ -34,6 +36,16 @@ public interface Context {
      * @return Namespace.
      */
     Option<Namespace> getNamespace(SymbolAtom name);
+
+    /**
+     * Retrieves namespace by its name. If namespace is not available in current context, continues searching through
+     * parents
+     *
+     * @param name Name of the namespace.
+     * @return Namespace or absent
+     */
+    Option<Namespace> findNamespace(SymbolAtom name);
+
 
     /**
      * Binds symbol to a value. Will overwrite current binding or create a new one
@@ -100,4 +112,11 @@ public interface Context {
      * @param value      Value to bound to name.
      */
     void updateExisting(final SymbolAtom symbolName, final LispValue value);
+
+    /**
+     * Sets bindings in this context
+     *
+     * @param bindings collection of {@link Binding}
+     */
+    void setBindings(Collection<Binding> bindings);
 }

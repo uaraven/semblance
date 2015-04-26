@@ -370,6 +370,17 @@ Functions
   Declares a new namespace with a name `name` in current context. Executes body and after execution binds
   all declared symbols in the new namespace.
   
+  **USE**
+  
+     (use namespace (s-expression)*)
+     
+  Creates new block and imports all binding from `namespace` into this block, so they are available without namespace
+  reference.
+  
+     (use list
+       (find [1 2 3] 3)
+     ) 
+     
   **FUNCALL**
   
   Calls a function.

@@ -14,6 +14,7 @@ import net.ninjacat.semblance.errors.runtime.UnboundSymbolException;
 import net.ninjacat.smooth.utils.Option;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -130,6 +131,15 @@ abstract class BaseContext implements Context {
     }
 
     @Override
+    public Option<Namespace> findNamespace(final SymbolAtom namespaceName) {
+        final Option<Namespace> namespace = getNamespace(namespaceName);
+        if (!namespace.isPresent() && parent != null) {
+            return parent.findNamespace(namespaceName);
+        }
+        return namespace;
+    }
+
+    @Override
     public void addNamespace(final Namespace namespace) {
         namespaces.put(namespace.getName(), namespace);
     }
@@ -144,6 +154,13 @@ abstract class BaseContext implements Context {
     @Override
     public boolean hasParent(final SymbolAtom contextName) {
         return name.equals(contextName) || null != parent && parent.hasParent(contextName);
+    }
+
+    @Override
+    public void setBindings(final Collection<Binding> bindings) {
+        for (final Binding binding : bindings) {
+            bind(binding.getName(), binding.getValue());
+        }
     }
 
     protected Option<LispValue> findInNamespace(final SymbolAtom symbolName) {

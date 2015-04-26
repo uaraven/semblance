@@ -4,6 +4,8 @@ import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.smooth.utils.Option;
 
+import java.util.Collection;
+
 /**
  * The namespace.
  */
@@ -37,4 +39,9 @@ public interface Namespace {
      * @return New namespace.
      */
     Namespace rename(SymbolAtom newName);
+
+    /**
+     * @return Collection of bindings in this namespace
+     */
+    Collection<Binding> getBindings();
 }

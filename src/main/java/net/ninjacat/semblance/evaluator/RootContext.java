@@ -125,6 +125,7 @@ public class RootContext extends BaseContext {
         bindForm(new PrintLn());
 
         bindForm(new Namespace());
+        bindForm(new Use());
         bindForm(new Progn());
         bindForm(new Block());
         bindForm(new Fn());

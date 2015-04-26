@@ -205,4 +205,16 @@ public class ProgramTest {
 
         assertThat(value, is(string("Tada")));
     }
+
+    @Test
+    public void testUseShouldMakeNamespaceBindingsAvailable() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(use list (find [1 2 3] 3))"
+        );
+
+        assertThat(value, is(number(2)));
+    }
 }

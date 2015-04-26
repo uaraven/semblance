@@ -18,7 +18,6 @@ Evaluator todo
 Library todo
 ------------
 
- - do-times macros
  - include
 
 Interpreter todo
@@ -29,4 +28,3 @@ Interpreter todo
 Tests todo
 ----------
  - % (mod) operation
- - comparison operations other than equal

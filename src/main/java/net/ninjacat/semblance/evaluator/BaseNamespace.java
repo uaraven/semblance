@@ -4,6 +4,9 @@ import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.smooth.utils.Option;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -52,5 +55,14 @@ public class BaseNamespace implements Namespace {
     @Override
     public Namespace rename(final SymbolAtom newName) {
         return new BaseNamespace(newName, bindings);
+    }
+
+    @Override
+    public Collection<Binding> getBindings() {
+        final List<Binding> export = new ArrayList<>(bindings.size());
+        for (final Map.Entry<SymbolAtom, LispValue> entry : bindings.entrySet()) {
+            export.add(new Binding(entry.getKey(), entry.getValue()));
+        }
+        return export;
     }
 }

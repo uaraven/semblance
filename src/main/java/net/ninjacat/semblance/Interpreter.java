@@ -9,9 +9,9 @@ import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.reader.Reader;
 import net.ninjacat.semblance.utils.Values;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Semblance interpreter.
@@ -56,6 +56,37 @@ public class Interpreter {
         return doRun(program);
     }
 
+    /**
+     * Compiles a Semblance program to a stream.
+     *
+     * @param source      Source stream
+     * @param destination Stream to write compiled program to
+     * @throws IOException      If source file cannot be read, or destination cannot be written to
+     * @throws ParsingException If source has syntax errors
+     */
+    public void compile(final InputStream source, final OutputStream destination) throws IOException, ParsingException {
+        final Reader reader = new Reader();
+        final SList program = reader.read(source);
+        try (ObjectOutputStream oos = new ObjectOutputStream(destination)) {
+            oos.writeObject(program);
+        }
+    }
+
+    /**
+     * Compiles a Semblance program.
+     * Will create new file in destination folder with the same name as source file and .sc extension
+     *
+     * @param source            Source file
+     * @param destinationFolder Folder where to put compiled file
+     * @throws IOException      If source file cannot be read, or destination cannot be written to
+     * @throws ParsingException If source has syntax errors
+     */
+    public void compile(final File source, final String destinationFolder) throws IOException, ParsingException {
+        try (InputStream input = new FileInputStream(source);
+             OutputStream output = new FileOutputStream(getDestinationFileName(source, destinationFolder).toFile())) {
+            compile(input, output);
+        }
+    }
 
     /**
      * Runs script from a binary file.
@@ -81,6 +112,12 @@ public class Interpreter {
      */
     public Context getRootContext() {
         return rootContext;
+    }
+
+    private static Path getDestinationFileName(final File source, final String destinationFolder) {
+        final Path sourceFileName = Paths.get(source.getAbsolutePath()).getFileName();
+        final String destFileName = sourceFileName.getName(0).toString();
+        return Paths.get(destinationFolder, destFileName, "sc");
     }
 
     private LispValue doRun(final SList program) {

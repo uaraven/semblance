@@ -74,7 +74,7 @@ public class RootContext extends BaseContext {
 
     /**
      * Loads program from stream and compiles it into another stream.
-     * This method will not close neigher source nor destination streams.
+     * This method will not close neither source nor destination streams.
      *
      * @param source InputStream with program source.
      * @param dest   OutputStream to receive binary representation of a program.

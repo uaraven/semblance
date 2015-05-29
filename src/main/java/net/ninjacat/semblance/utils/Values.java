@@ -97,6 +97,14 @@ public final class Values {
         }
     }
 
+    public static Vector asVector(final LispValue value) {
+        if (isVector(value)) {
+            return (Vector) value;
+        } else {
+            throw new TypeMismatchException(SemblanceType.VECTOR, value, getSourceInfo(value));
+        }
+    }
+
     public static SList asSList(final LispValue value) {
         if (isList(value)) {
             return (SList) value;
@@ -259,6 +267,14 @@ public final class Values {
 
     public static LispValue booleanAsAtom(final boolean value) {
         return value ? Constants.TRUE : Constants.FALSE;
+    }
+
+    public static String cleanString(final LispValue value) {
+        if (isString(value)) {
+            return asString(value).getValue();
+        } else {
+            return value.repr();
+        }
     }
 
     private enum FromJavaConverter implements Func<LispValue, Object> {

@@ -1,6 +1,8 @@
 ; Semblance standard library
 ; Part of Semblance project
 
+(set (--VERSION-- '[1 9 0 "SNAPSHOT"]))
+
 ; macro 'defun' declares a function and binds it to a specified name in current context.
 (defmacro defun
     (name params &rest body)

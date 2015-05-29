@@ -34,6 +34,7 @@ import static net.ninjacat.semblance.utils.Values.symbol;
  * Created on 01/03/15.
  */
 public class RootContext extends BaseContext {
+
     /**
      * Creates new instance of root context
      */
@@ -55,8 +56,7 @@ public class RootContext extends BaseContext {
      * @throws ParsingException If program contains syntax errors.
      */
     public LispValue evaluateProgram(final InputStream source) throws ParsingException {
-        final Reader reader = new Reader();
-        final SList program = reader.read(source);
+        final SList program = readProgram(source);
         final Context executionContext = LocalContext.namedChildContext(symbol("main"), this);
         return unwrapWrappers(executionContext.evaluateBlock(program));
     }
@@ -82,8 +82,7 @@ public class RootContext extends BaseContext {
      * @throws ParsingException if program cannot be compiled.
      */
     public LispValue compileToStream(final InputStream source, final OutputStream dest) throws ParsingException {
-        final Reader reader = new Reader();
-        final SList program = reader.read(source);
+        final SList program = readProgram(source);
 
         try (final ObjectOutputStream outputStream = new ObjectOutputStream(dest)) {
             outputStream.writeObject(program);
@@ -102,9 +101,30 @@ public class RootContext extends BaseContext {
      * @throws ParsingException If program contains source errors.
      */
     public LispValue evaluateHere(final InputStream source) throws ParsingException {
-        final Reader reader = new Reader();
-        final SList program = reader.read(source);
+        final SList program = readProgram(source);
         return unwrapWrappers(evaluateBlock(program));
+    }
+
+    /**
+     * Evaluates program in supplied context. Used by REPL
+     *
+     * @param source  Program source
+     * @param context Execution context
+     * @return evaluated value
+     * @throws ParsingException If syntax error is encountered during evaluation.
+     */
+    public LispValue evaluateInContext(final String source, final Context context) throws ParsingException {
+        return context.evaluateBlock(readProgram(source));
+    }
+
+    private SList readProgram(final InputStream source) throws ParsingException {
+        final Reader reader = new Reader();
+        return reader.read(source);
+    }
+
+    private SList readProgram(final String source) throws ParsingException {
+        final Reader reader = new Reader();
+        return reader.readString(source);
     }
 
     private LispValue unwrapWrappers(final LispValue value) {

@@ -449,22 +449,31 @@ Functions
 
     (set (name value) [(name value) ...])
   Binds evaluated `value` to symbol `name` in the current context. May evaluate and bind multiple variables.
-  Evaluation is done sequentally, so later binds have access to already bound variables.
+  Evaluation is done sequentially, so later binds have access to already bound variables. 
+  Values are optional, if value is omitted `NIL` will be bound to the name. 
   Returns latest evaluated value.
+  Examples:
+  
+     (set (pi 3.14) (tau 6.28) (e 2.71)) -> 2.71
+     (set (empty) (also-empty)) -> NIL
+     (set empty also-empty)   -> NIL
+     
+  Last variant is a shortened version of the second one. 
   
   
   **SET1**
   
     (set1 name expression)
 
-  Binds evaluated `expression` to a `name` in current context. Essentially works as `set`, but only for one variable
+  Binds evaluated `expression` to a `name` in current context. Essentially works as `set`, but only for one variable.
+  `expression` cannot be omitted.
   
   
   **SET\***
   
     (set* (name value)*)
     
-  Both `set` and `set1` work in current context. If you need to change value of a global binding you need to use `set*`
+  Both `set` and `set1` work in current context. If you need to change value of a global binding you need to use `set*`.
   `set*` will first try to find existing binding with a name `name` and rebind new value to it. If there is no
   existing binding with such name in all outer scopes, then new local binding will be created.
   

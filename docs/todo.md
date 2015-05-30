@@ -22,8 +22,6 @@ Library todo
 
 Interpreter todo
 ----------------
-
- - REPL
  
 Tests todo
 ----------

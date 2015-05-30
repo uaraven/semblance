@@ -160,14 +160,14 @@ Data types
     
   Keys can be anything, but customary they are keywords. Map is a function, just like lists or vectors.
   Map can accept either one or two parameters. If one parameter is supplied then it is treated as map key and 
-  corresponding value (or NIL) is returned. IF two parameters are supplied, then first is treated as key and the 
+  corresponding value (or NIL) is returned. If two parameters are supplied, then first is treated as key and the 
   second one as a value and that value is stored in the map associated with a key.
   
     ({:a 1 :b 2 :c 3} :b)
     
   will return **2**
   
-    ({:a 1 :b 2 :c3} :b 5)
+    ({:a 1 :b 2 :c 3} :b 5)
     
   will associate key **:b** with value **5** and will return value **5** as well.
   

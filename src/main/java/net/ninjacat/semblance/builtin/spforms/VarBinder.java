@@ -20,7 +20,9 @@ final class VarBinder {
         if (isList(binding)) {
             final SList bindingList = asSList(binding);
             final SymbolAtom name = asSymbol(bindingList.head());
-            value = context.evaluate(bindingList.tail().head());
+            if (!bindingList.tail().isNil()) {
+                value = context.evaluate(bindingList.tail().head());
+            }
             context.bind(name, value);
         } else {
             context.bind(asSymbol(binding), value);

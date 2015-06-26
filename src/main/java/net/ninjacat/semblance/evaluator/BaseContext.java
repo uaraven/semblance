@@ -13,10 +13,7 @@ import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
 import net.ninjacat.semblance.errors.runtime.UnboundSymbolException;
 import net.ninjacat.smooth.utils.Option;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static net.ninjacat.semblance.utils.Values.*;
@@ -160,6 +157,22 @@ abstract class BaseContext implements Context {
     public void setBindings(final Collection<Binding> bindings) {
         for (final Binding binding : bindings) {
             bind(binding.getName(), binding.getValue());
+        }
+    }
+
+    @Override
+    public List<String> getSourceFolders() {
+        if (parent != null) {
+            return parent.getSourceFolders();
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public void setSourceFolders(final List<String> sourceFolders) {
+        if (parent != null) {
+            parent.setSourceFolders(sourceFolders);
         }
     }
 

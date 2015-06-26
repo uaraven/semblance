@@ -5,7 +5,7 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.reader.Token;
 
 /**
- * Created on 27/02/15.
+ * Converts symbol token to {@link SymbolAtom}
  */
 public class SymbolConverter implements TokenConverter {
     @Override

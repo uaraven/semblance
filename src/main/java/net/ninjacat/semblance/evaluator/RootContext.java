@@ -19,13 +19,16 @@ import net.ninjacat.semblance.data.special.WrappedValue;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
-import net.ninjacat.semblance.reader.Reader;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import static net.ninjacat.semblance.evaluator.SourceLoader.readProgram;
 import static net.ninjacat.semblance.utils.Values.symbol;
 
 /**
@@ -34,6 +37,8 @@ import static net.ninjacat.semblance.utils.Values.symbol;
  * Created on 01/03/15.
  */
 public class RootContext extends BaseContext {
+
+    private final List<String> sourceFolders;
 
     /**
      * Creates new instance of root context
@@ -46,6 +51,7 @@ public class RootContext extends BaseContext {
         bind(symbol("F"), Constants.FALSE);
 
         bindSpecialForms();
+        sourceFolders = new ArrayList<>();
     }
 
     /**
@@ -57,6 +63,19 @@ public class RootContext extends BaseContext {
      */
     public LispValue evaluateProgram(final InputStream source) throws ParsingException {
         final SList program = readProgram(source);
+        final Context executionContext = LocalContext.namedChildContext(symbol("main"), this);
+        return unwrapWrappers(executionContext.evaluateBlock(program));
+    }
+
+    /**
+     * Evaluates program in the this context. Any bindings made by the program are not stored in the context.
+     *
+     * @param source InputStream containing program.
+     * @return Value evaluated.
+     * @throws ParsingException If program contains syntax errors.
+     */
+    public LispValue evaluateCompiledProgram(final InputStream source) throws ParsingException {
+        final SList program = SourceLoader.readCompiled(source);
         final Context executionContext = LocalContext.namedChildContext(symbol("main"), this);
         return unwrapWrappers(executionContext.evaluateBlock(program));
     }
@@ -117,14 +136,15 @@ public class RootContext extends BaseContext {
         return context.evaluateBlock(readProgram(source));
     }
 
-    private SList readProgram(final InputStream source) throws ParsingException {
-        final Reader reader = new Reader();
-        return reader.read(source);
+    @Override
+    public List<String> getSourceFolders() {
+        return Collections.unmodifiableList(sourceFolders);
     }
 
-    private SList readProgram(final String source) throws ParsingException {
-        final Reader reader = new Reader();
-        return reader.readString(source);
+    @Override
+    public void setSourceFolders(final List<String> sourceFolders) {
+        this.sourceFolders.clear();
+        this.sourceFolders.addAll(sourceFolders);
     }
 
     private LispValue unwrapWrappers(final LispValue value) {
@@ -133,6 +153,8 @@ public class RootContext extends BaseContext {
 
     private void bindSpecialForms() {
         prepareDefaultNamespaces();
+
+        bindForm(new Include());
 
         bindForm(new Var());
         bindForm(new Update());

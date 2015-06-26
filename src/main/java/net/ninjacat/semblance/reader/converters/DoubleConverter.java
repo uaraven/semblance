@@ -5,7 +5,7 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.reader.Token;
 
 /**
- * Created on 27/02/15.
+ * Converts double number token into {@link DoubleNumberAtom}
  */
 public class DoubleConverter implements TokenConverter {
     @Override

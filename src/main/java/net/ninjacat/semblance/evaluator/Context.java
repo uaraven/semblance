@@ -6,6 +6,7 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.smooth.utils.Option;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Execution context
@@ -119,4 +120,16 @@ public interface Context {
      * @param bindings collection of {@link Binding}
      */
     void setBindings(Collection<Binding> bindings);
+
+    /**
+     * @return List of folders to look for sources.
+     */
+    List<String> getSourceFolders();
+
+    /**
+     * Sets list of folders to look for sources.
+     *
+     * @param sourceFolders List of source folders.
+     */
+    void setSourceFolders(List<String> sourceFolders);
 }

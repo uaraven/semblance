@@ -1,0 +1,74 @@
+; Semblance standard library
+; Part of Semblance project
+
+(set (--VERSION-- '[1 9 0 "SNAPSHOT"]))
+
+; macro 'defun' declares a function and binds it to a specified name in current context.
+(defmacro defun
+    (name params &rest body)
+    `(set (,name (fn ,params
+                     (block ,name ,@body))))
+)
+
+(defmacro when
+    (condition &rest body)
+    `(if ,condition (progn ,@body))
+)
+
+(defmacro until
+    (condition &rest body)
+    `(if (not ,condition) (progn ,@body))
+)
+
+(defmacro let
+    (var-decl &rest body)
+    `(progn (set ,@var-decl) ,@body)
+)
+
+(defmacro return-from
+    (block-name &optional value)
+    `(return ,value ,block-name)
+)
+
+(defmacro set1
+    (name value)
+    `(set (,name ,value))
+)
+
+(defmacro fn*
+    (&rest body)
+    `(fn (__it__)
+         (let ((it __it__))
+         ,@body)
+     )
+)
+
+(defmacro car
+    (list-form)
+    `(,list-form :head)
+)
+
+(defmacro cdr
+    (list-form)
+    `(,list-form :tail)
+)
+
+; Calls body for each element of the list, list contents are bound to symbol 'element'
+; TODO rewrite in functional style [maybe]
+(defmacro do-list (list-form element &rest body)
+    `(let ((ll ,list-form))
+         (loop ll
+               (set (,element (ll :head)))
+               ,@body
+               (set1 ll (ll :tail))
+    ))
+)
+
+(defmacro do-times (element max-value &rest body)
+    `(let ((,element 0))
+          (loop (< ,element ,max-value)
+             ,@body
+             (set1 ,element (+ 1 ,element))
+          )
+     )
+)

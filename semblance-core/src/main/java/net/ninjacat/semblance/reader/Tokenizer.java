@@ -1,6 +1,7 @@
 package net.ninjacat.semblance.reader;
 
 import net.ninjacat.smooth.collections.Collect;
+import net.ninjacat.smooth.utils.Option;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Set;
  * <p/>
  * This class is not thread-safe.
  */
+@SuppressWarnings("ClassWithTooManyFields")
 public class Tokenizer {
     public static final int EOF_MARK = -1;
     private static final Set<Character> WHITESPACE = Collect.setOf(
@@ -27,8 +29,10 @@ public class Tokenizer {
     private final List<Character> buffer;
     private final java.io.Reader reader;
     private final StringBuilder tokenValue;
+    private Option<Character> commentSymbol;
     private int line;
     private int position;
+    private TextType textType;
 
     /**
      * Creates a new instance of Tokenizer
@@ -45,6 +49,7 @@ public class Tokenizer {
 
         buffer = new ArrayList<>(LOOKAHEAD_BUF_SIZE);
         tokenValue = new StringBuilder();
+        textType = TextType.EOF;
 
         setupForGeneralParsing();
     }
@@ -56,6 +61,22 @@ public class Tokenizer {
      */
     public String getTokenValue() {
         return tokenValue.toString();
+    }
+
+    /**
+     * Returns first character of the token that was read from input during last call to {@link #nextToken()}. When
+     * TextType is {@link Tokenizer.TextType#SYMBOL}, this function actually returns full token.
+     * <p/>
+     * If last token was EOF, this function returns -1
+     *
+     * @return character of the token.
+     */
+    public int getTokenChar() {
+        if (textType == TextType.EOF) {
+            return -1;
+        } else {
+            return tokenValue.charAt(0);
+        }
     }
 
     /**
@@ -82,10 +103,10 @@ public class Tokenizer {
         tokenValue.setLength(0);
         final int chr = skipWhitespace();
         if (EOF_MARK == chr) {
-            return TextType.EOF;
+            return setToken(TextType.EOF);
         } else {
             pushBack((char) chr);
-            return readWord();
+            return setToken(readWord());
         }
     }
 
@@ -98,14 +119,20 @@ public class Tokenizer {
 
         whitespace.addAll(WHITESPACE);
         symbols.addAll(SYMBOLS);
+        commentSymbol = Option.of(';');
     }
 
     /**
      * Resets parsing rules for parsing of strings
      */
     public final void setupForStringParsing() {
-        setupForGeneralParsing();
+        whitespace.clear();
+        symbols.clear();
+
+        symbols.add('"');
         symbols.add('\\');
+        commentSymbol = Option.absent();
+        eolIsSignificant();
     }
 
     /**
@@ -129,8 +156,29 @@ public class Tokenizer {
         }
     }
 
-    void registerSpecial(final char specialCharacter) {
-        symbols.add(specialCharacter);
+    /**
+     * Reads a single character from input. Does not care about tokenization.
+     *
+     * @return character or -1 if input has terminated
+     * @throws IOException if underlying reader throws the exception
+     */
+    public int nextChar() throws IOException {
+        if (buffer.isEmpty()) {
+            return reader.read();
+        } else {
+            return buffer.remove(0);
+        }
+    }
+
+    void registerSpecials(final Set<Character> specials) {
+        for (final Character ch : specials) {
+            symbols.add(ch);
+        }
+    }
+
+    private TextType setToken(final TextType tokenTextType) {
+        textType = tokenTextType;
+        return tokenTextType;
     }
 
     private String peek(final int count) throws IOException {
@@ -150,7 +198,7 @@ public class Tokenizer {
 
     private TextType readWord() throws IOException {
         while (true) {
-            final int chr = getChar();
+            final int chr = nextChar();
             if (EOF_MARK == chr) {
                 if (tokenValue.length() > 0) {
                     return TextType.WORD;
@@ -159,17 +207,28 @@ public class Tokenizer {
                 }
             }
             final char read = (char) chr;
-            if (symbols.contains(read)) {
-                if (tokenValue.length() == 0) {
-                    tokenValue.append(read);
-                    return TextType.SEPARATOR;
-                } else {
-                    pushBack(read);
-                    return TextType.WORD;
-                }
+            if (commentSymbol.isPresent() && commentSymbol.get().equals(read)) {
+                skipComments();
             } else {
-                tokenValue.append(read);
+                if (symbols.contains(read)) {
+                    if (tokenValue.length() == 0) {
+                        tokenValue.append(read);
+                        return TextType.SYMBOL;
+                    } else {
+                        pushBack(read);
+                        return TextType.WORD;
+                    }
+                } else {
+                    tokenValue.append(read);
+                }
             }
+        }
+    }
+
+    private void skipComments() throws IOException {
+        int nextChar = nextChar();
+        while (nextChar != '\r' && nextChar != '\n' && nextChar != -1) {
+            nextChar = nextChar();
         }
     }
 
@@ -182,9 +241,9 @@ public class Tokenizer {
     }
 
     private int skipWhitespace() throws IOException {
-        int chr = getChar();
+        int chr = nextChar();
         while (chr >= 0 && whitespace.contains((char) chr)) {
-            chr = getChar();
+            chr = nextChar();
             if (chr == '\n') {
                 line += 1;
                 position = 0;
@@ -193,14 +252,6 @@ public class Tokenizer {
             }
         }
         return chr;
-    }
-
-    private int getChar() throws IOException {
-        if (buffer.isEmpty()) {
-            return reader.read();
-        } else {
-            return buffer.remove(0);
-        }
     }
 
     /**
@@ -214,7 +265,7 @@ public class Tokenizer {
         /**
          * Separator token. Which character is treated as separator depends on current Tokenizer configuration
          */
-        SEPARATOR,
+        SYMBOL,
         /**
          * Any word token. Numbers are words as well.
          */

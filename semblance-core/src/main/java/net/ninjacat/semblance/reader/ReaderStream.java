@@ -21,10 +21,10 @@ public class ReaderStream {
 
     private static final Pattern INTEGER = Pattern.compile("(\\+|\\-)?\\d+");
     private static final Pattern DOUBLE = Pattern.compile("((\\+|\\-)?\\d+(\\.\\d*)?)");
-    private static final Pattern DOUBLE_SCI = Pattern.compile("((\\+|\\-)?\\d+(e|E)(\\+|\\-)?\\d+)");
+    private static final Pattern DOUBLE_SCI = Pattern.compile("(\\+|\\-)?\\d+(\\.\\d+)?(e|E)(\\+|\\-)?\\d+");
 
     private final Set<Character> specials;
-    private final StreamTokenizer tokenizer;
+    private final Tokenizer tokenizer;
     private final InputStreamReader reader;
 
     private int linePosition;
@@ -68,10 +68,11 @@ public class ReaderStream {
 
     void registerSpecial(final char specialCharacter) {
         specials.add(specialCharacter);
+        tokenizer.registerSpecials(specials);
     }
 
     SourceInfo currentPosition() {
-        return new SourceInfo(tokenizer.lineno(), linePosition);
+        return new SourceInfo(tokenizer.getLine(), linePosition);
     }
 
     List<Token> tokenize() throws ParsingException {
@@ -87,75 +88,36 @@ public class ReaderStream {
         return tokens;
     }
 
-    private StreamTokenizer setupTokenizer() {
-        final StreamTokenizer streamTokenizer = new StreamTokenizer(reader);
-        resetTokenizer(streamTokenizer);
-        return streamTokenizer;
+    private Tokenizer setupTokenizer() {
+        return new Tokenizer(reader);
     }
 
-    private void resetTokenizer(final StreamTokenizer streamTokenizer) {
-        streamTokenizer.resetSyntax();
-        streamTokenizer.wordChars('a', 'z');
-        streamTokenizer.wordChars('A', 'Z');
-        streamTokenizer.wordChars('0', '9');
-        streamTokenizer.wordChars(128 + 32, Integer.MAX_VALUE);
-        streamTokenizer.wordChars('!', '!');
-        streamTokenizer.wordChars('=', '=');
-        streamTokenizer.wordChars('>', '>');
-        streamTokenizer.wordChars('<', '<');
-        streamTokenizer.wordChars('$', '&');
-        streamTokenizer.wordChars('*', '-');
-        streamTokenizer.wordChars('_', '_');
-        streamTokenizer.wordChars('/', '/');
-        streamTokenizer.wordChars(':', ':');
-        for (final char spch : specials) {
-            streamTokenizer.ordinaryChar(spch);
-        }
-        streamTokenizer.ordinaryChar(',');
-        streamTokenizer.whitespaceChars(0, ' ');
-        streamTokenizer.commentChar(';');
-        streamTokenizer.ordinaryChar('[');
-        streamTokenizer.ordinaryChar(']');
-        streamTokenizer.eolIsSignificant(true);
+    private void resetTokenizer(final Tokenizer streamTokenizer) {
+        streamTokenizer.setupForGeneralParsing();
+        streamTokenizer.registerSpecials(specials);
     }
 
     private void resetTokenizerForString() {
-        tokenizer.resetSyntax();
-        tokenizer.wordChars('a', 'z');
-        tokenizer.wordChars('A', 'Z');
-        tokenizer.wordChars('0', '9');
-        tokenizer.wordChars(128 + 32, Integer.MAX_VALUE);
-        tokenizer.ordinaryChar(' ');
-        tokenizer.ordinaryChar('\t');
-        tokenizer.ordinaryChar('\\');
-        tokenizer.eolIsSignificant(true);
-    }
-
-    private void resetTokenizerForEscape() {
-        tokenizer.resetSyntax();
-        tokenizer.eolIsSignificant(true);
+        tokenizer.setupForStringParsing();
     }
 
     private Token nextToken() throws ParsingException {
         try {
-            final int token = tokenizer.nextToken();
+            final Tokenizer.TextType token = tokenizer.nextToken();
             final Token result;
             switch (token) {
-                case StreamTokenizer.TT_WORD:
+                case WORD:
                     result = parseWord();
                     break;
-                case StreamTokenizer.TT_EOF:
+                case EOF:
                     result = Token.eof(currentPosition());
                     break;
-                case (int) '+':
-                case (int) '-':
-                    result = parseNumber(true);
-                    break;
-                case (int) '"':
-                    result = parseString();
-                    break;
                 default:
-                    result = parseChar();
+                    if (tokenizer.getTokenChar() == '\"') {
+                        result = parseString();
+                    } else {
+                        result = parseChar();
+                    }
                     break;
             }
             linePosition += result.getValue().length();
@@ -170,20 +132,21 @@ public class ReaderStream {
         final StringBuilder builder = new StringBuilder();
         try {
             while (true) {
-                int token = tokenizer.nextToken();
-                if ('"' == token) {
-                    break;
-                }
-                if ('\\' == token) {
-                    token = readEscapedChar();
-                } else if (StreamTokenizer.TT_EOL == token || StreamTokenizer.TT_EOF == token) {
-                    tokenizer.pushBack();
+                final Tokenizer.TextType tokenType = tokenizer.nextToken();
+                final int token = tokenizer.getTokenChar();
+                if ('\n' == token || '\r' == token || -1 == token) {
                     throw new UnterminatedStringException(currentPosition());
                 }
-                if (StreamTokenizer.TT_WORD == token) {
-                    builder.append(tokenizer.sval);
-                } else {
-                    builder.append((char) token);
+                if (tokenType == Tokenizer.TextType.SYMBOL) {
+                    if ('"' == token) {
+                        break;
+                    } else if ('\\' == token) {
+                        builder.append((char) readEscapedChar());
+                    } else {
+                        builder.append((char) token);
+                    }
+                } else if (tokenType == Tokenizer.TextType.WORD) {
+                    builder.append(tokenizer.getTokenValue());
                 }
             }
         } finally {
@@ -193,11 +156,12 @@ public class ReaderStream {
 
     }
 
-    private int readEscapedChar() throws IOException {
-        resetTokenizerForEscape();
+    private int readEscapedChar() throws IOException, UnterminatedStringException {
         try {
-            final int token = tokenizer.nextToken();
+            final int token = tokenizer.nextChar();
             switch (token) {
+                case -1:
+                    throw new UnterminatedStringException(currentPosition());
                 case 't':
                     return '\t';
                 case 'n':
@@ -217,7 +181,8 @@ public class ReaderStream {
     }
 
     private Token parseChar() {
-        switch (tokenizer.ttype) {
+        final char ttype = (char) tokenizer.getTokenChar();
+        switch (ttype) {
             case '(':
                 return Token.openParen(currentPosition());
             case ')':
@@ -235,57 +200,25 @@ public class ReaderStream {
                 linePosition = 0;
                 return token;
             default:
-                if (specials.contains((char) tokenizer.ttype)) {
-                    return Token.special((char) tokenizer.ttype, currentPosition());
+                if (specials.contains(ttype)) {
+                    return Token.special(ttype, currentPosition());
                 } else {
-                    return Token.symbol(String.valueOf((char) tokenizer.ttype), currentPosition());
+                    return Token.symbol(String.valueOf(ttype), currentPosition());
                 }
         }
     }
 
     private Token parseWord() throws IOException {
-        if (isInteger(tokenizer.sval)) {
-            return parseNumber(false);
-        } else if (isDouble(tokenizer.sval)) {
-            return Token.doubleToken(tokenizer.nval, currentPosition());
-        } else if (isScientificDouble(tokenizer.sval)) {
-            return Token.doubleToken(Double.parseDouble(tokenizer.sval), currentPosition());
+        final String sval = tokenizer.getTokenValue();
+        if (isInteger(sval)) {
+            return Token.integer(sval, currentPosition());// parseNumber(false);
+        } else if (isDouble(sval)) {
+            return Token.doubleToken(sval, currentPosition());
+        } else if (isScientificDouble(sval)) {
+            return Token.doubleToken(Double.parseDouble(sval), currentPosition());
         } else {
-            return Token.symbol(tokenizer.sval, currentPosition());
+            return Token.symbol(sval, currentPosition());
         }
-    }
-
-    private Token parseNumber(final boolean negative) throws IOException {
-        final String val;
-        if (negative) {
-            final int token = tokenizer.nextToken();
-            if (StreamTokenizer.TT_WORD == token && isInteger(tokenizer.sval)) {
-                val = "-" + tokenizer.sval;
-            } else {
-                tokenizer.pushBack();
-                val = tokenizer.sval;
-            }
-        } else {
-            val = tokenizer.sval;
-        }
-        final int token = tokenizer.nextToken();
-        if ('.' == token || 'e' == token || 'E' == token) {
-            return parseDouble(val + Character.toString((char) token));
-        } else {
-            tokenizer.pushBack();
-            return Token.integer(val, currentPosition());
-        }
-    }
-
-    private Token parseDouble(final String s) throws IOException {
-        String value = s;
-        final int token = tokenizer.nextToken();
-        if (StreamTokenizer.TT_WORD != token) {
-            tokenizer.pushBack();
-        } else {
-            value += tokenizer.sval;
-        }
-        return Token.doubleToken(value, currentPosition());
     }
 
     private boolean shouldIgnore(final Token token) {

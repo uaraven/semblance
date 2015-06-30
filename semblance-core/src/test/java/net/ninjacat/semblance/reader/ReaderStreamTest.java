@@ -99,6 +99,17 @@ public class ReaderStreamTest {
         assertThat("Token value should be '-4.2E43'", tokens.get(0).getValue(), is("-4.2E43"));
     }
 
+    @Test
+    public void shouldTokenizeComplicatedScientificDouble() throws Exception {
+        final ReaderStream stream = ReaderStream.readString("-42.33e+42");
+
+        final List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have one token", tokens.size(), is(1));
+        assertThat("Token type should be double", tokens.get(0).getType(), is(Token.TokenType.Double));
+        assertThat("Token value should be '-4.233E43'", tokens.get(0).getValue(), is("-4.233E43"));
+    }
+
 
     @Test
     public void shouldTokenizeScientificDoubleWithNegativeExponent() throws Exception {

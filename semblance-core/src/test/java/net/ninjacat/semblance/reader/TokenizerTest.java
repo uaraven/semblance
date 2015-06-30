@@ -19,13 +19,13 @@ public class TokenizerTest {
         assertThat(tokenizer.nextToken(), is(Tokenizer.TextType.WORD));
         assertThat(tokenizer.getTokenValue(), is("number"));
 
-        assertThat(tokenizer.nextToken(), is(Tokenizer.TextType.SEPARATOR));
+        assertThat(tokenizer.nextToken(), is(Tokenizer.TextType.SYMBOL));
         assertThat(tokenizer.getTokenValue(), is("("));
 
         assertThat(tokenizer.nextToken(), is(Tokenizer.TextType.WORD));
         assertThat(tokenizer.getTokenValue(), is("123"));
 
-        assertThat(tokenizer.nextToken(), is(Tokenizer.TextType.SEPARATOR));
+        assertThat(tokenizer.nextToken(), is(Tokenizer.TextType.SYMBOL));
         assertThat(tokenizer.getTokenValue(), is(")"));
 
         assertThat(tokenizer.nextToken(), is(Tokenizer.TextType.EOF));

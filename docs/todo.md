@@ -1,14 +1,10 @@
 Reader todo
 -----------
  
- - document numbers
- - document strings
- - document the absence of |text|
  - wrap program into additional named block with the name of file, and implement --file-block macro to
    bind "file-name" to --source-file-name variable
 
         (--file-block "file-name" ()() ... ())
- - multi-line strings """ ... """
  
 Evaluator todo
 --------------
@@ -18,7 +14,7 @@ Evaluator todo
 Library todo
 ------------
 
- - include
+ - include - done, not fully tested
 
 Interpreter todo
 ----------------

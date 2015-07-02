@@ -289,7 +289,7 @@ Functions
    
     (- param*)
     
-  Arithmetic subrtaction or collection subtraction. 
+  Arithmetic subtraction or collection subtraction. 
   
   If the first parameter is number, then subtracts second parameter from the first, then, if there are more 
   parameters, subtracts third parameter from the result, etc.
@@ -378,6 +378,11 @@ Functions
     (progn (s-expression)*)
 
   Executes multiple expressions one by one. Result of last expression is returned
+  
+    (progn
+      (println "1")
+      (println "2")
+      (+ 1 1))  -> 2 (and prints "1" and "2")
 
   **FN**
 

@@ -152,7 +152,7 @@ public class ReaderStreamTest {
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be string", tokens.get(0).getType(), is(Token.TokenType.String));
-        assertThat("Token value should be 'string'", tokens.get(0).getValue(), is("str\"ing"));
+        assertThat("Token value should be 'str\"ing'", tokens.get(0).getValue(), is("str\"ing"));
     }
 
     @Test
@@ -163,7 +163,7 @@ public class ReaderStreamTest {
 
         assertThat("Should have one token", tokens.size(), is(1));
         assertThat("Token type should be string", tokens.get(0).getType(), is(Token.TokenType.String));
-        assertThat("Token value should be 'string'", tokens.get(0).getValue(), is("s\t\r\"i\ng"));
+        assertThat("Token value should be correct", tokens.get(0).getValue(), is("s\t\r\"i\ng"));
     }
 
 

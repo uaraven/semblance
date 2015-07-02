@@ -128,6 +128,9 @@ public class ReaderStream {
     }
 
     private Token parseString() throws IOException, UnterminatedStringException {
+        if (tokenizer.isFrontEqualTo("\"\"")) {
+            return parseMultilineString();
+        }
         resetTokenizerForString();
         final StringBuilder builder = new StringBuilder();
         try {
@@ -154,6 +157,41 @@ public class ReaderStream {
         }
         return Token.string(builder.toString(), currentPosition());
 
+    }
+
+    private Token parseMultilineString() throws IOException, UnterminatedStringException {
+        // skipping two more quotes in buffer
+        tokenizer.clearBuffer();
+        resetTokenizerForString();
+        final StringBuilder builder = new StringBuilder();
+        try {
+            while (true) {
+                final Tokenizer.TextType tokenType = tokenizer.nextToken();
+                final int token = tokenizer.getTokenChar();
+                if (-1 == token) {
+                    throw new UnterminatedStringException(currentPosition());
+                }
+                if (tokenType == Tokenizer.TextType.SYMBOL) {
+                    if ('"' == token) {
+                        if (tokenizer.isFrontEqualTo("\"\"")) {
+                            tokenizer.clearBuffer();
+                            break;
+                        } else {
+                            builder.append((char) token);
+                        }
+                    } else if ('\\' == token) {
+                        builder.append((char) readEscapedChar());
+                    } else {
+                        builder.append((char) token);
+                    }
+                } else if (tokenType == Tokenizer.TextType.WORD) {
+                    builder.append(tokenizer.getTokenValue());
+                }
+            }
+        } finally {
+            resetTokenizer(tokenizer);
+        }
+        return Token.string(builder.toString(), currentPosition());
     }
 
     private int readEscapedChar() throws IOException, UnterminatedStringException {

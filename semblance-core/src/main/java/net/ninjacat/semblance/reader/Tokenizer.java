@@ -17,6 +17,7 @@ import java.util.Set;
 @SuppressWarnings("ClassWithTooManyFields")
 public class Tokenizer {
     public static final int EOF_MARK = -1;
+
     private static final Set<Character> WHITESPACE = Collect.setOf(
             ' ', '\t', '\n', '\r'
     );
@@ -146,14 +147,24 @@ public class Tokenizer {
         symbols.add('\r');
     }
 
+    /**
+     * Checks if front of the input is equal to provided string. String length cannot exceed the size of internal peek
+     * buffer, which is 5 by default.
+     *
+     * @param text Text to compare with input
+     * @return {@code true} if front of the input is equal to supplied text
+     * @throws IOException Re-thrown from input reader failure
+     */
     public boolean isFrontEqualTo(final String text) throws IOException {
         final String peeked = peek(text.length());
-        if (peeked.equals(text)) {
-            return true;
-        } else {
-            buffer.clear(); // ignore peeked text
-            return false;
-        }
+        return peeked.equals(text);
+    }
+
+    /**
+     * Clears the peek buffer. See also {@link #isFrontEqualTo(String)}
+     */
+    public void clearBuffer() {
+        buffer.clear();
     }
 
     /**
@@ -182,18 +193,14 @@ public class Tokenizer {
     }
 
     private String peek(final int count) throws IOException {
-        if (buffer.isEmpty()) {
-            if (count > LOOKAHEAD_BUF_SIZE) {
-                throw new IllegalArgumentException("peek count is greater than supported");
-            }
-            final int read = reader.read(cbuf);
-            for (int i = 0; i < read; i++) {
-                buffer.add(cbuf[i]);
-            }
-            return new String(cbuf, 0, read);
-        } else {
-            throw new IllegalStateException("Internal lookahead buffer is not empty, cannot peek");
+        if (count + buffer.size() > LOOKAHEAD_BUF_SIZE) {
+            throw new IllegalArgumentException("peek count is greater than supported");
         }
+        final int read = reader.read(cbuf, 0, count);
+        for (int i = 0; i < read; i++) {
+            buffer.add(cbuf[i]);
+        }
+        return new String(cbuf, 0, read);
     }
 
     private TextType readWord() throws IOException {
@@ -233,11 +240,7 @@ public class Tokenizer {
     }
 
     private void pushBack(final char read) {
-        if (buffer.isEmpty()) {
-            buffer.add(read);
-        } else {
-            throw new IllegalStateException("Cannot push-back a character when buffer is not empty");
-        }
+        buffer.add(0, read);
     }
 
     private int skipWhitespace() throws IOException {

@@ -47,6 +47,8 @@ Second program does not have symbol `v` bound to any value, so exception will be
 
 Last program will evaluate `:v` to itself and print **:v**
 
+Semblance does not support `|...|` syntax for symbols.  
+
 
 Function parameters
 -------------------
@@ -73,12 +75,42 @@ Positional parameters are supported as usual. Optional parameters are supported 
 Data types
 ----------
 
+  **NUMBERS**
+  
+  Semblance has two number types - `integer` and `double`. 
+  
+  Internally integers can be represented as signed 64-bit numbers (long) *or* arbitrary size numbers (BigInteger).
+   
+  If result of operation cannot fit in the 64 bits, then it will be widened to BigInteger automatically. If the
+  result *can* fit into 64 bits (even if operands were BigIntegers) it will be transformed to long. This means that
+  as long as your numbers fit into signed 64-bit number, you get better performance, however, if they don't fit
+  you don't need to worry.
+  
+  Promoting to double is also done automatically if one of the operands is double.  
+  
+  **STRINGS**
+
+  Strings are everything inside double quotes. Some special characters can be escaped with backslash `\`, like
+  `t`,`n`,`r`,`f`,`b`. Escapes for any other characters will be ignored, so `\y` will be interpreted just as `y`.
+  Double quote character inside the string should be escaped.
+  
+  Examples of the strings:
+  
+     "String"
+     "S\tring" -> S<tab code>ring
+     "\"S\tri\ng\"" -> "S<tab code>tri<cr code>g"
+  
+  Multi-line strings are supported with triple double quotes. No escape processing is done for multi-line strings.
+   
+      """This is a
+      multiline
+      string"""
 
   **LIST**
   
     (value value ...)
     
-  List is a function itself. Expression `(list-var 3)` will return value of the fourth list elevent (lists are 
+  List is a function itself. Expression `(list-var 3)` will return value of the fourth list element (lists are 
   zero-based)
   
     (let ((x '(1 2 3))) 

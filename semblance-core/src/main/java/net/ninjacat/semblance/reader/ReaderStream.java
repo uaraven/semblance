@@ -179,8 +179,6 @@ public class ReaderStream {
                         } else {
                             builder.append((char) token);
                         }
-                    } else if ('\\' == token) {
-                        builder.append((char) readEscapedChar());
                     } else {
                         builder.append((char) token);
                     }

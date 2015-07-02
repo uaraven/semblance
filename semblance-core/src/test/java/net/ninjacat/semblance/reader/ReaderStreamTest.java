@@ -403,15 +403,30 @@ public class ReaderStreamTest {
     }
 
     @Test
-    public void shouldParseMultilineStringsWithEscapes() throws Exception {
-        final ReaderStream stream = ReaderStream.readString("\"\"\"Multiline\\\"\\\t\\\nString\"\"\"");
+    public void shouldNotParseEscapesInMultiline() throws Exception {
+        final ReaderStream stream = ReaderStream.readString("\"\"\"Multiline\\\"\\t\\nString\"\"\"");
 
         final List<Token> tokens = stream.tokenize();
 
         assertThat("Should have 1 token", tokens.size(), is(1));
         assertThat("Token type should be string", tokens.get(0).getType(), is(Token.TokenType.String));
-        assertThat("Token value should be multiline string", tokens.get(0).getValue(), is("Multiline\"\t\nString"));
+        assertThat("Token value should be multiline string", tokens.get(0).getValue(), is("Multiline\\\"\\t\\nString"));
     }
 
+    @Test
+    public void shouldParseMultilineStringsWithOtherText() throws Exception {
+        final ReaderStream stream = ReaderStream.readString("Look \"\"\"Multiline\nString\"\"\" Wow");
+
+        final List<Token> tokens = stream.tokenize();
+
+        assertThat("Should have 1 token", tokens.size(), is(3));
+        assertThat("Token type should be string", tokens.get(0).getType(), is(Token.TokenType.Symbol));
+        assertThat("Token type should be string", tokens.get(1).getType(), is(Token.TokenType.String));
+        assertThat("Token type should be string", tokens.get(2).getType(), is(Token.TokenType.Symbol));
+        assertThat("Token value should be Look", tokens.get(0).getValue(), is("Look"));
+        assertThat("Token value should be multiline string", tokens.get(1).getValue(), is("Multiline\nString"));
+        assertThat("Token value should be Wow", tokens.get(2).getValue(), is("Wow"));
+
+    }
 
 }

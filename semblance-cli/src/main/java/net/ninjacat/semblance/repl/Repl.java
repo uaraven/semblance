@@ -19,14 +19,6 @@ import static net.ninjacat.semblance.utils.Values.*;
 @SuppressWarnings("ClassNamingConvention")
 public abstract class Repl {
 
-    private final LispValue quitRepl = new SpecialForm("quit") {
-        @Override
-        public LispValue apply(final Context context, final LispCollection parameters) {
-            print("\n(Bye)\n");
-            System.exit(0);
-            return NilCollection.INSTANCE;
-        }
-    };
     private final Context replContext;
     private final RootContext rootContext;
 
@@ -35,6 +27,14 @@ public abstract class Repl {
      */
     protected Repl() {
         rootContext = new RootContext();
+        final LispValue quitRepl = new SpecialForm("quit") {
+            @Override
+            public LispValue apply(final Context context, final LispCollection parameters) {
+                print("\n(Bye)\n");
+                System.exit(0);
+                return NilCollection.INSTANCE;
+            }
+        };
         rootContext.bind(symbol("quit"), quitRepl);
         replContext = LocalContext.namedChildContext(symbol("repl"), rootContext);
     }

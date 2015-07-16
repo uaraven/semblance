@@ -15,12 +15,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>net.ninjacat</groupId>
-            <artifactId>smooth</artifactId>
-            <version>0.1.6</version>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <version>3.0.0</version>

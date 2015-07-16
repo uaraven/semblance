@@ -48,7 +48,7 @@ public class StringAtomTest {
         final Atom atom1 = new StringAtom("This is not a string atom!");
         final Atom atom2 = new StringAtom("This is string atom!");
 
-        assertThat("Equals should return true", atom1.equals(atom2), is(false));
+        assertThat("Equals should return false", atom1.equals(atom2), is(false));
     }
 
     private Atom getAtom() {

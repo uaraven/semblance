@@ -37,4 +37,9 @@ public class ParsingException extends Exception {
     public SourceInfo getSourceInfo() {
         return sourceInfo;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Failed at %s -> %s", sourceInfo, getMessage());
+    }
 }

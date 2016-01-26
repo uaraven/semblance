@@ -4,6 +4,7 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
+import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.reader.Reader;
@@ -18,6 +19,7 @@ import java.nio.file.Paths;
  */
 public class Interpreter {
 
+    private static final String COMPILED_EXT = ".smc";
     private final RootContext rootContext;
 
     /**
@@ -33,8 +35,8 @@ public class Interpreter {
      *
      * @param stream Script source.
      * @return Value returned from script.
-     * @throws ParsingException                                                In case of syntax error.
-     * @throws net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException In case of runtime exception.
+     * @throws ParsingException          In case of syntax error.
+     * @throws SemblanceRuntimeException In case of runtime exception.
      */
     public LispValue run(final InputStream stream) throws ParsingException {
         final Reader reader = new Reader();
@@ -47,8 +49,8 @@ public class Interpreter {
      *
      * @param text Script source.
      * @return Value returned from script.
-     * @throws ParsingException                                                In case of syntax error.
-     * @throws net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException In case of runtime exception.
+     * @throws ParsingException          In case of syntax error.
+     * @throws SemblanceRuntimeException In case of runtime exception.
      */
     public LispValue run(final String text) throws ParsingException {
         final Reader reader = new Reader();
@@ -93,13 +95,12 @@ public class Interpreter {
      *
      * @param fileName Name of file containing compiled program.
      * @return Value returned from script.
-     * @throws ParsingException                                                In case of syntax error.
-     * @throws net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException In case of runtime exception.
+     * @throws ParsingException          In case of syntax error.
+     * @throws SemblanceRuntimeException In case of runtime exception.
      */
     public LispValue runCompiledFile(final String fileName) throws ParsingException {
-        try (
-                final FileInputStream fis = new FileInputStream(fileName);
-                final ObjectInputStream dis = new ObjectInputStream(fis)) {
+        try (final FileInputStream fis = new FileInputStream(fileName);
+             final ObjectInputStream dis = new ObjectInputStream(fis)) {
             final SList program = Values.asSList((LispValue) dis.readObject());
             return doRun(program);
         } catch (final Exception e) {
@@ -117,7 +118,9 @@ public class Interpreter {
     private static Path getDestinationFileName(final File source, final String destinationFolder) {
         final Path sourceFileName = Paths.get(source.getAbsolutePath()).getFileName();
         final String destFileName = sourceFileName.getName(0).toString();
-        return Paths.get(destinationFolder, destFileName, "sc");
+        final int extPos = destFileName.lastIndexOf('.');
+        final String destName = (extPos > 0 ? destFileName.substring(0, extPos) : destFileName) + COMPILED_EXT;
+        return Paths.get(destinationFolder, destName);
     }
 
     private LispValue doRun(final SList program) {

@@ -119,7 +119,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(keys {:a 1 :b 2 :c 3})");
+                "(map/keys {:a 1 :b 2 :c 3})");
 
         assertThat(asSList(value).getCollection(), containsInAnyOrder((LispValue) symbol(":a"),
                 (LispValue) symbol(":b"), (LispValue) symbol(":c")));
@@ -150,7 +150,7 @@ public class CollectionTests {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(values {:a 1 :b 2 :c 3})");
+                "(map/values {:a 1 :b 2 :c 3})");
 
         assertThat(asSList(value).getCollection(), containsInAnyOrder(number(1), number(2), number(3)));
     }

@@ -15,7 +15,7 @@ public class MapKeys extends SpecialForm {
      * Create a new instance.
      */
     public MapKeys() {
-        super("keys", "map-form");
+        super("map/keys", "map-form");
     }
 
     @Override

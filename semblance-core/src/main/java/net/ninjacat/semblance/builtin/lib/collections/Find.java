@@ -11,7 +11,7 @@ import static net.ninjacat.semblance.utils.Values.number;
 /**
  * Searches for an element in the collection.
  */
-@SuppressWarnings("ALL")
+@SuppressWarnings("ClassNamingConvention")
 public class Find extends CollectionSpecialForm {
 
     /**

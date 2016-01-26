@@ -207,6 +207,7 @@ public class RootContext extends BaseContext {
 
     private void prepareDefaultNamespaces() {
         addNamespace(new BaseNamespace(symbol("list")));
+        addNamespace(new BaseNamespace(symbol("map")));
     }
 
     private void loadLibrary() {

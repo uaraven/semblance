@@ -219,16 +219,16 @@ Data types
     (contains '(1 2 3) 2) --> T
     (contains [1 2 3] 4) --> F
     
-  **KEYS** and **VALUES**
+  **MAP/KEYS** and **MAP/VALUES**
     
-    (keys map-form)
-    (values map-form)
+    (map/keys map-form)
+    (map/values map-form)
     
   `keys` and `values` are map-specific operations. Former retrieves keys from a map as list, latter does the same
   for values. Order of elements in those lists is not defined.
   
-    (keys {:a 1 :b 2 :c 3}) --> (:b :a :c) or (:a :c :b) or any other combination
-    (values {:a 1 :b 2 :c 3}) --> (1 2 3) or (2 1 3) or any other combination
+    (map/keys {:a 1 :b 2 :c 3}) --> (:b :a :c) or (:a :c :b) or any other combination
+    (map/values {:a 1 :b 2 :c 3}) --> (1 2 3) or (2 1 3) or any other combination
 
   More list/vector-specific operation are available in `list` namespace
   

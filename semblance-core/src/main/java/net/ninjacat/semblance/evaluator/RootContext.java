@@ -158,6 +158,7 @@ public class RootContext extends BaseContext {
 
         bindForm(new Var());
         bindForm(new Update());
+        bindForm(new net.ninjacat.semblance.builtin.lib.collections.List());
 
         bindForm(new EvalMe());
         bindForm(new UnwrapMe());

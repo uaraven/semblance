@@ -14,6 +14,28 @@ import static org.junit.Assert.assertThat;
 public class CollectionTests {
 
     @Test
+    public void testShouldCreateEvaluatedList() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(list (+ 1 2) (- 5 1) (/ 10 2))");
+
+        assertThat(value, is((LispValue) smartList(3, 4, 5)));
+    }
+
+    @Test
+    public void testShouldCreateNonEvaluatedList() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "'((+ 1 2))");
+
+        assertThat(value, is((LispValue) list(list(symbol("+"), number(1), number(2)))));
+    }
+
+    @Test
     public void testShouldAccessVectorAsFunction() throws Exception {
 
         final Interpreter interpreter = new Interpreter();
@@ -111,6 +133,18 @@ public class CollectionTests {
                         "(x :b)");
 
         assertThat(value, is(number(5)));
+    }
+
+
+    @Test
+    public void testShouldAccessMapAsFunction2() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(set (x {:a 1 :b (+ 2 3) :c 3}))" +
+                        "(list (x :b) (x :c))");
+
+        assertThat(value, is((LispValue) smartList(5L, 3L)));
     }
 
     @SuppressWarnings("RedundantCast")

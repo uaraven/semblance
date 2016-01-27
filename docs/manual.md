@@ -117,6 +117,11 @@ Data types
          (x 1))
     ('(1 2 3) 1)
     
+  List can be defined using function `list`. `list` will evaluate its parameters, while `quote` operation will not
+    
+    '( (+ 2 3))      => ((+ 2 3))
+    (list (+ 2 3))   => ( 5 )
+    
   Both expressions above will return **2**
     
   **VECTOR**

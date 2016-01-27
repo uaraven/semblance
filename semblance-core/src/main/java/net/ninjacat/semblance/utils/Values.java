@@ -72,6 +72,8 @@ public final class Values {
             return string(value.toString());
         } else if (value instanceof Long) {
             return number((Long) value);
+        } else if (value instanceof Integer) {
+            return number(((Integer) value).longValue());
         } else if (value instanceof Double) {
             return number((double) value);
         } else if (value instanceof Symbol) {

@@ -8,6 +8,7 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.JavaConvertible;
+import net.ninjacat.smooth.collections.Maps;
 import net.ninjacat.smooth.functions.Func;
 import net.ninjacat.smooth.iterators.Iter;
 import net.ninjacat.smooth.utils.Option;
@@ -27,6 +28,7 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
     private static final SymbolAtom NAME = new SymbolAtom("--map-access");
     private final SourceInfo sourceInfo;
     private final Map<LispValue, LispValue> contents;
+    private volatile boolean evaluated;
 
     /**
      * Creates new instance of map
@@ -36,6 +38,7 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
      */
     public SMap(final Map<LispValue, LispValue> data, final SourceInfo sourceInfo) {
         this.sourceInfo = sourceInfo;
+        evaluated = false;
         contents = new ConcurrentHashMap<>(data);
     }
 
@@ -44,6 +47,16 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
      */
     public SMap() {
         this(new ConcurrentHashMap<LispValue, LispValue>(), SourceInfo.UNKNOWN);
+    }
+
+    /**
+     * Convinience factory method
+     *
+     * @param pairs List of keys and values
+     * @return New Map
+     */
+    public static SMap newSMap(final LispValue... pairs) {
+        return new SMap(Maps.<LispValue, LispValue>of(pairs), SourceInfo.UNKNOWN);
     }
 
     @Override
@@ -111,7 +124,6 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
         return new SList(contents.values());
     }
 
-
     @Override
     public SourceInfo getSourceInfo() {
         return sourceInfo;
@@ -153,6 +165,9 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
      * @return this map with updated keys and values.
      */
     public LispValue evaluateValues(final Context context) {
+        if (evaluated) {
+            return this;
+        }
         final Map<LispValue, LispValue> updated = new HashMap<>();
 
         synchronized (contents) {
@@ -161,8 +176,8 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
             }
             contents.clear();
             contents.putAll(updated);
+            evaluated = true;
         }
-
         return this;
     }
 

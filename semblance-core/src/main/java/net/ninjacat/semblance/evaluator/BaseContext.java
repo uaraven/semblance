@@ -92,6 +92,8 @@ abstract class BaseContext implements Context {
             }
         } else if (isMap(expression)) {
             return asSMap(expression).evaluateValues(this);
+        } else if (isVector(expression)) {
+            return asVector(expression).evaluateValues(this);
         } else {
             return expression;
         }

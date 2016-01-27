@@ -419,4 +419,15 @@ public class CollectionTests {
                         list(number(2), NilCollection.INSTANCE, symbol(":d"))))
         );
     }
+
+    @Test
+    public void testShouldCreateEvaluatedVector() throws Exception {
+
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "[(+ 1 2) (- 5 1) (/ 10 2)]");
+
+        assertThat(value, is((LispValue) smartVector(3, 4, 5)));
+    }
 }

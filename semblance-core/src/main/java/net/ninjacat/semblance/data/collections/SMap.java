@@ -165,20 +165,11 @@ public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
      * @return this map with updated keys and values.
      */
     public LispValue evaluateValues(final Context context) {
-        if (evaluated) {
-            return this;
-        }
         final Map<LispValue, LispValue> updated = new HashMap<>();
-
-        synchronized (contents) {
-            for (final Map.Entry<LispValue, LispValue> entry : contents.entrySet()) {
-                updated.put(context.evaluate(entry.getKey()), context.evaluate(entry.getValue()));
-            }
-            contents.clear();
-            contents.putAll(updated);
-            evaluated = true;
+        for (final Map.Entry<LispValue, LispValue> entry : contents.entrySet()) {
+            updated.put(context.evaluate(entry.getKey()), context.evaluate(entry.getValue()));
         }
-        return this;
+        return new SMap(updated, getSourceInfo());
     }
 
     /**

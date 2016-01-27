@@ -4,7 +4,9 @@ import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
+import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
+import net.ninjacat.smooth.functions.Func;
 import net.ninjacat.smooth.iterators.Iter;
 
 import java.util.*;
@@ -168,5 +170,23 @@ public class Vector extends LispCollection {
     @Override
     public SymbolAtom name() {
         return null;
+    }
+
+    /**
+     * Vector literal cannot be evaluated during the reading phase. All function calls/atoms are stored in the vector as
+     * literals. This method is called when vector object is accessed in the execution context and evaluates all
+     * keys and values within this context. This only happens once as vector literal is evaluated.
+     *
+     * @param context Evaluation context.
+     * @return new Vector with updated keys and values.
+     */
+
+    public LispValue evaluateValues(final Context context) {
+        return new Vector(Iter.of(collection).map(new Func<LispValue, LispValue>() {
+            @Override
+            public LispValue apply(final LispValue value) {
+                return context.evaluate(value);
+            }
+        }).toList(), getSourceInfo());
     }
 }

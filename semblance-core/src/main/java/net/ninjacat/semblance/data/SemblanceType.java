@@ -25,4 +25,5 @@ public enum SemblanceType {
     public boolean isBreak() {
         return this == BREAK || this == RECURSIVE;
     }
+
 }

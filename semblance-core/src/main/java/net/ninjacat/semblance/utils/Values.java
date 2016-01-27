@@ -131,6 +131,14 @@ public final class Values {
         }
     }
 
+    public static OpaqueValue<?> asOpaque(final LispValue value) {
+        if (isOpaque(value)) {
+            return (OpaqueValue) value;
+        } else {
+            throw new TypeMismatchException(SemblanceType.OPAQUE, value, getSourceInfo(value));
+        }
+    }
+
     /**
      * Converts any {@link LispCollection} to {@link SList}
      *
@@ -188,6 +196,10 @@ public final class Values {
 
     public static boolean isMap(final LispValue value) {
         return SemblanceType.MAP == value.getType();
+    }
+
+    public static boolean isOpaque(final LispValue value) {
+        return SemblanceType.OPAQUE == value.getType();
     }
 
     public static boolean isVector(final LispValue value) {

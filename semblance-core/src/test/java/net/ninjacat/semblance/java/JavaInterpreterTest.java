@@ -1,11 +1,14 @@
 package net.ninjacat.semblance.java;
 
 import net.ninjacat.semblance.Interpreter;
+import net.ninjacat.semblance.data.OpaqueValue;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import org.junit.Test;
 
 import static net.ninjacat.semblance.utils.Values.symbol;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 public class JavaInterpreterTest {
 
@@ -14,6 +17,56 @@ public class JavaInterpreterTest {
         final Interpreter interpreter = createJavaInterpreter();
 
         assertThat(interpreter.getRootContext().findNamespace(symbol("java")), notNullValue());
+    }
+
+    @Test
+    public void testShouldCreateJavaObjectWithDefaultConstructor() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final LispValue value = interpreter.run("(java/new net.ninjacat.semblance.java.Pojo)");
+
+        assertThat(value, instanceOf(OpaqueValue.class));
+        assertThat(((OpaqueValue) value).getValue(), instanceOf(Pojo.class));
+    }
+
+    @Test
+    public void testShouldCreateJavaObjectWithParametrizedConstructor() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final LispValue value = interpreter.run("(java/new net.ninjacat.semblance.java.Pojo 10 \"Woho\" 4.2)");
+
+        assertThat(value, instanceOf(OpaqueValue.class));
+        assertThat(((OpaqueValue) value).getValue(), instanceOf(Pojo.class));
+        final Pojo pojo = (Pojo) ((OpaqueValue) value).getValue();
+
+        assertThat(pojo.getIntValue(), is(10));
+        assertThat(pojo.getStringValue(), is("Woho"));
+        assertThat(pojo.getDoubleValue(), is(4.2));
+    }
+
+    @Test
+    public void testShouldCreateJavaObjectWithObjectConstructor() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        interpreter.getRootContext().bind(symbol("pojo"), new OpaqueValue<>(new Pojo(1, "2", 3.3)));
+
+        final LispValue value = interpreter.run("(java/new net.ninjacat.semblance.java.Pojo pojo)");
+
+        assertThat(value, instanceOf(OpaqueValue.class));
+        assertThat(((OpaqueValue) value).getValue(), instanceOf(Pojo.class));
+        final Pojo pojo = (Pojo) ((OpaqueValue) value).getValue();
+
+        assertThat(pojo.getIntValue(), is(1));
+        assertThat(pojo.getStringValue(), is("2"));
+        assertThat(pojo.getDoubleValue(), is(3.3));
+    }
+
+
+    @Test(expected = SemblanceRuntimeException.class)
+    public void testShouldFailToCreateUnknownJavaObject() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        interpreter.run("(java/new net.ninjacat.semblance.java.Pojo2)");
     }
 
     private Interpreter createJavaInterpreter() {

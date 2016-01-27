@@ -19,7 +19,9 @@ import net.ninjacat.semblance.data.special.WrappedValue;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
+import net.ninjacat.smooth.utils.Option;
 
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
@@ -44,7 +46,16 @@ public class RootContext extends BaseContext {
      * Creates new instance of root context
      */
     public RootContext() {
-        super(symbol("/"), null);
+        this(new DefaultUndefinedFunctionStrategy());
+    }
+
+    /**
+     * Creates new instnace of root context with custom {@link UndefinedFunctionStrategy}
+     *
+     * @param undefinedFunctionStrategy Strategy to resolve undefined functions
+     */
+    public RootContext(@Nonnull final UndefinedFunctionStrategy undefinedFunctionStrategy) {
+        super(symbol("/"), null, Option.of(undefinedFunctionStrategy));
 
         bind(symbol("nil"), NilCollection.INSTANCE);
         bind(symbol("T"), Constants.TRUE);
@@ -53,6 +64,7 @@ public class RootContext extends BaseContext {
         bindSpecialForms();
         sourceFolders = new ArrayList<>();
     }
+
 
     /**
      * Evaluates program in the this context. Any bindings made by the program are not stored in the context.

@@ -132,4 +132,16 @@ public interface Context {
      * @param sourceFolders List of source folders.
      */
     void setSourceFolders(List<String> sourceFolders);
+
+    /**
+     * @return Strategy to resolve undefined functions.
+     */
+    UndefinedFunctionStrategy getUndefinedFunctionStrategy();
+
+    /**
+     * Sets strategy to handle undefined functions
+     *
+     * @param undefinedFunctionStrategy Instance of {@link UndefinedFunctionStrategy}
+     */
+    void setUndefinedFunctionStrategy(final UndefinedFunctionStrategy undefinedFunctionStrategy);
 }

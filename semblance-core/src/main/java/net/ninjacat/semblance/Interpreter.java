@@ -6,6 +6,7 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
+import net.ninjacat.semblance.evaluator.ContextModifier;
 import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.reader.Reader;
 import net.ninjacat.semblance.utils.Values;
@@ -28,6 +29,16 @@ public class Interpreter {
      */
     public Interpreter() {
         rootContext = new RootContext();
+    }
+
+    /**
+     * Creates a new interpreter with a supplied root context consumer. Allows to bind functions, change
+     *
+     * @param contextModifier Root context provider.
+     */
+    public Interpreter(final ContextModifier contextModifier) {
+        rootContext = new RootContext();
+        contextModifier.modify(rootContext);
     }
 
     /**

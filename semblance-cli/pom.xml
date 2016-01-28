@@ -6,19 +6,14 @@
 
     <parent>
         <groupId>net.ninjacat</groupId>
-        <version>1.9.0-SNAPSHOT</version>
         <artifactId>semblance</artifactId>
+        <version>1.9.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>semblance-cli</artifactId>
     <version>${project.version}</version>
 
     <dependencies>
-        <dependency>
-            <groupId>net.ninjacat</groupId>
-            <artifactId>smooth</artifactId>
-            <version>0.1.5</version>
-        </dependency>
 
         <dependency>
             <groupId>net.ninjacat</groupId>

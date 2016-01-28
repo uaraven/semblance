@@ -4,8 +4,8 @@ import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.OpaqueValue;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
+import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Test;
-import org.junit.internal.matchers.IsCollectionContaining;
 
 import static net.ninjacat.semblance.utils.Values.symbol;
 import static org.hamcrest.core.Is.is;

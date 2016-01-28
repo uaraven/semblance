@@ -6,13 +6,14 @@ import net.ninjacat.smooth.functions.Func;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Type;
 import java.math.BigInteger;
 import java.util.Map;
 
 import static net.ninjacat.semblance.utils.Values.asNumber;
 
 /**
- * Compatibility handler for Numeric types
+ * Compatibility handler for Integer types
  */
 @SuppressWarnings("unchecked")
 public class IntegerTypeCompatibility implements TypeCompatibility {
@@ -54,7 +55,7 @@ public class IntegerTypeCompatibility implements TypeCompatibility {
         }
     };
 
-    private static final Map<Class, Func<Object, LispValue>> CONVERT_MAP = Maps.of(
+    private static final Map<Type, Func<Object, LispValue>> CONVERT_MAP = Maps.of(
             Integer.class, INT_FUNC,
             int.class, INT_FUNC,
             Long.class, LONG_FUNC,
@@ -65,26 +66,31 @@ public class IntegerTypeCompatibility implements TypeCompatibility {
             short.class, SHORT_FUNC,
             Character.class, CHAR_FUNC,
             char.class, CHAR_FUNC,
-            BigInteger.class, BIGINT_FUNC
+            BigInteger.class, BIGINT_FUNC,
+            Object.class, LONG_FUNC
     );
 
     @Override
-    public boolean isCompatible(@Nonnull final Class<?> javaType, @Nullable final LispValue value) {
-        return javaType.isAssignableFrom(Integer.class)
-                || javaType.isAssignableFrom(Long.class)
-                || javaType.isAssignableFrom(Byte.class)
-                || javaType.isAssignableFrom(Short.class)
-                || javaType.isAssignableFrom(Character.class)
-                || javaType.isAssignableFrom(BigInteger.class)
-                || javaType.isAssignableFrom(int.class)
-                || javaType.isAssignableFrom(long.class)
-                || javaType.isAssignableFrom(byte.class)
-                || javaType.isAssignableFrom(short.class)
-                || javaType.isAssignableFrom(char.class);
+    public boolean isCompatible(@Nonnull final Type javaType, @Nullable final LispValue value) {
+        if (!(javaType instanceof Class)) {
+            return false;
+        }
+        final Class clazz = (Class) javaType;
+        return clazz.isAssignableFrom(Integer.class)
+                || clazz.isAssignableFrom(Long.class)
+                || clazz.isAssignableFrom(Byte.class)
+                || clazz.isAssignableFrom(Short.class)
+                || clazz.isAssignableFrom(Character.class)
+                || clazz.isAssignableFrom(BigInteger.class)
+                || clazz.isAssignableFrom(int.class)
+                || clazz.isAssignableFrom(long.class)
+                || clazz.isAssignableFrom(byte.class)
+                || clazz.isAssignableFrom(short.class)
+                || clazz.isAssignableFrom(char.class);
     }
 
     @Override
-    public <T> T convertToJava(@Nonnull final Class<T> javaType, @Nonnull final LispValue value) {
+    public <T> T convertToJava(@Nonnull final Type javaType, @Nonnull final LispValue value) {
         return (T) CONVERT_MAP.get(javaType).apply(value);
     }
 

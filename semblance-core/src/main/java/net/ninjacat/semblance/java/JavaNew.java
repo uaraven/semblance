@@ -10,8 +10,8 @@ import net.ninjacat.smooth.utils.Option;
 
 import java.lang.reflect.Constructor;
 
-import static net.ninjacat.semblance.java.Parameters.convertParameters;
-import static net.ninjacat.semblance.java.Parameters.findMatchingConstructor;
+import static net.ninjacat.semblance.java.types.CallHelpers.convertParameters;
+import static net.ninjacat.semblance.java.types.CallHelpers.findMatchingConstructor;
 import static net.ninjacat.semblance.utils.Values.asSymbol;
 
 /**
@@ -47,7 +47,7 @@ public class JavaNew extends SpecialForm {
             throw new JavaInteropException("Cannot find constructor matching " + parameters.repr(), parameters.getSourceInfo());
         }
 
-        final Object[] initArgs = convertParameters(constructor.get().getParameterTypes(), constructorParams);
+        final Object[] initArgs = convertParameters(constructor.get().getGenericParameterTypes(), constructorParams);
 
         try {
             return new OpaqueValue<>(constructor.get().newInstance(initArgs));

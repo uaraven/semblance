@@ -6,12 +6,13 @@ import net.ninjacat.smooth.functions.Func;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Type;
 import java.util.Map;
 
 import static net.ninjacat.semblance.utils.Values.asNumber;
 
 /**
- * Compatibility handler for Numeric types
+ * Compatibility handler for floating point types
  */
 @SuppressWarnings("unchecked")
 public class FloatingPointTypeCompatibility implements TypeCompatibility {
@@ -29,23 +30,28 @@ public class FloatingPointTypeCompatibility implements TypeCompatibility {
         }
     };
 
-    private static final Map<Class, Func<Object, LispValue>> CONVERT_MAP = Maps.of(
+    private static final Map<Type, Func<Object, LispValue>> CONVERT_MAP = Maps.of(
             Double.class, DOUBLE_FUNC,
             double.class, DOUBLE_FUNC,
             Float.class, FLOAT_FUNC,
-            float.class, FLOAT_FUNC
+            float.class, FLOAT_FUNC,
+            Object.class, DOUBLE_FUNC
     );
 
     @Override
-    public boolean isCompatible(@Nonnull final Class<?> javaType, @Nullable final LispValue value) {
-        return javaType.isAssignableFrom(Double.class)
-                || javaType.isAssignableFrom(Float.class)
-                || javaType.isAssignableFrom(double.class)
-                || javaType.isAssignableFrom(float.class);
+    public boolean isCompatible(@Nonnull final Type javaType, @Nullable final LispValue value) {
+        if (!(javaType instanceof Class)) {
+            return false;
+        }
+        final Class<?> clazz = (Class<?>) javaType;
+        return clazz.isAssignableFrom(Double.class)
+                || clazz.isAssignableFrom(Float.class)
+                || clazz.isAssignableFrom(double.class)
+                || clazz.isAssignableFrom(float.class);
     }
 
     @Override
-    public <T> T convertToJava(@Nonnull final Class<T> javaType, @Nonnull final LispValue value) {
+    public <T> T convertToJava(@Nonnull final Type javaType, @Nonnull final LispValue value) {
         return (T) CONVERT_MAP.get(javaType).apply(value);
     }
 

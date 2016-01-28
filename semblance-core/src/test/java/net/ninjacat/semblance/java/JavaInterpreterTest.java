@@ -5,10 +5,13 @@ import net.ninjacat.semblance.data.OpaqueValue;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import org.junit.Test;
+import org.junit.internal.matchers.IsCollectionContaining;
 
 import static net.ninjacat.semblance.utils.Values.symbol;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertThat;
 
 public class JavaInterpreterTest {
 
@@ -61,6 +64,17 @@ public class JavaInterpreterTest {
         assertThat(pojo.getDoubleValue(), is(3.3));
     }
 
+    @Test
+    public void testShouldCreateJavaObjectWithListInParameter() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final LispValue value = interpreter.run("(java/new net.ninjacat.semblance.java.CollectionPojo '(1 2 3))");
+
+        assertThat(value, instanceOf(OpaqueValue.class));
+        assertThat(((OpaqueValue) value).getValue(), instanceOf(CollectionPojo.class));
+        final CollectionPojo cpojo = (CollectionPojo) ((OpaqueValue) value).getValue();
+        assertThat(cpojo.getData(), IsCollectionContaining.hasItems(1, 2, 3));
+    }
 
     @Test(expected = SemblanceRuntimeException.class)
     public void testShouldFailToCreateUnknownJavaObject() throws Exception {

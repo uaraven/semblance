@@ -24,6 +24,7 @@
     <modules>
         <module>semblance-core</module>
         <module>semblance-cli</module>
+        <module>semblance-java</module>
     </modules>
 
     <packaging>pom</packaging>

@@ -76,6 +76,18 @@ public class JavaInterpreterTest {
         assertThat(cpojo.getData(), IsCollectionContaining.hasItems(1, 2, 3));
     }
 
+    @Test
+    public void testShouldCreateJavaObjectWithArrayInParameter() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final LispValue value = interpreter.run("(java/new net.ninjacat.semblance.java.ArrayPojo '(1 2 3))");
+
+        assertThat(value, instanceOf(OpaqueValue.class));
+        assertThat(((OpaqueValue) value).getValue(), instanceOf(ArrayPojo.class));
+        final ArrayPojo cpojo = (ArrayPojo) ((OpaqueValue) value).getValue();
+        assertThat(cpojo.getData(), is(new int[]{1, 2, 3}));
+    }
+
     @Test(expected = SemblanceRuntimeException.class)
     public void testShouldFailToCreateUnknownJavaObject() throws Exception {
         final Interpreter interpreter = createJavaInterpreter();

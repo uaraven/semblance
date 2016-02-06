@@ -17,4 +17,13 @@ public interface JavaArrayMaker {
      */
     @Nonnull
     Object covertToJavaArray(@Nonnull LispCollection collection);
+
+    /**
+     * Converts Java array into {@link LispCollection}
+     *
+     * @param array Source array
+     * @return Collection
+     */
+    @Nonnull
+    LispCollection convertFromJavaArray(@Nonnull Object array);
 }

@@ -3,14 +3,16 @@ package net.ninjacat.semblance.java;
 @SuppressWarnings("ClassNamingConvention")
 public class Pojo {
 
-    private final int intValue;
-    private final String stringValue;
-    private final Double doubleValue;
+    public int intValue;
+    public String stringValue;
+    public Double doubleValue;
+    public boolean boolValue;
 
     public Pojo() {
         intValue = 42;
         stringValue = "";
         doubleValue = 42e42;
+        boolValue = true;
     }
 
     public Pojo(final int intValue, final String stringValue, final Double doubleValue) {
@@ -18,18 +20,21 @@ public class Pojo {
         this.intValue = intValue;
         this.stringValue = stringValue;
         this.doubleValue = doubleValue;
+        boolValue = false;
     }
 
     public Pojo(final String str) {
         doubleValue = 0.0;
         intValue = 0;
         stringValue = str;
+        boolValue = false;
     }
 
     public Pojo(final Pojo other) {
         doubleValue = other.getDoubleValue();
         intValue = other.getIntValue();
         stringValue = other.getStringValue();
+        boolValue = other.isBoolValue();
     }
 
     public int getIntValue() {
@@ -42,5 +47,9 @@ public class Pojo {
 
     public Double getDoubleValue() {
         return doubleValue;
+    }
+
+    public boolean isBoolValue() {
+        return boolValue;
     }
 }

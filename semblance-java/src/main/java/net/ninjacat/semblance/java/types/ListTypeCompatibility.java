@@ -32,7 +32,8 @@ public class ListTypeCompatibility implements TypeCompatibility {
             short[].class, short.class,
             char[].class, char.class,
             double[].class, double.class,
-            float[].class, float.class
+            float[].class, float.class,
+            String[].class, String.class
     );
 
     private static final Func<Object, LispValue> SIMPLE_VALUE_CONVERTER = new Func<Object, LispValue>() {

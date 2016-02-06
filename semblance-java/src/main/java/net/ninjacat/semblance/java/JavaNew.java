@@ -1,6 +1,5 @@
 package net.ninjacat.semblance.java;
 
-import net.ninjacat.semblance.data.OpaqueValue;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
@@ -50,7 +49,7 @@ public class JavaNew extends SpecialForm {
         final Object[] initArgs = convertParameters(constructor.get().getGenericParameterTypes(), constructorParams);
 
         try {
-            return new OpaqueValue<>(constructor.get().newInstance(initArgs));
+            return new JavaWrapperValue(constructor.get().newInstance(initArgs));
         } catch (final Exception e) {
             throw new SemblanceRuntimeException("Failed to create instance of " + className,
                     parameters.getSourceInfo(), e);

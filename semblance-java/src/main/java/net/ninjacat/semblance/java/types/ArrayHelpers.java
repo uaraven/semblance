@@ -21,7 +21,8 @@ public final class ArrayHelpers {
             char.class, new CharArrayMaker(),
             float.class, new FloatArrayMaker(),
             double.class, new DoubleArrayMaker(),
-            BigInteger.class, new BigIntArrayMaker()
+            BigInteger.class, new BigIntArrayMaker(),
+            String.class, new StringArrayMaker()
     );
 
     private static final JavaArrayMaker DEFAULT = new ObjectArrayMaker();

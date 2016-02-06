@@ -2,9 +2,11 @@ package net.ninjacat.semblance.java.types.arrays;
 
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.java.types.CallHelpers;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 
 /**
  * Creates a float[] array from {@link LispCollection}
@@ -21,5 +23,16 @@ public class FloatArrayMaker implements JavaArrayMaker {
             i += 1;
         }
         return result;
+    }
+
+    @Nonnull
+    @Override
+    public LispCollection convertFromJavaArray(@Nonnull final Object array) {
+        final float[] data = (float[]) array;
+        final ArrayList<LispValue> values = new ArrayList<>();
+        for (final float item : data) {
+            values.add(CallHelpers.toLispValue(item));
+        }
+        return new SList(values);
     }
 }

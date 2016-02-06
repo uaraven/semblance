@@ -9,17 +9,17 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 
 /**
- * Creates a short[] array from {@link LispCollection}
+ * Converts String arrays
  */
-public class ShortArrayMaker implements JavaArrayMaker {
+public class StringArrayMaker implements JavaArrayMaker {
 
     @Nonnull
     @Override
     public Object covertToJavaArray(@Nonnull final LispCollection collection) {
-        final short[] result = new short[collection.length()];
+        final String[] result = new String[collection.length()];
         int i = 0;
         for (final LispValue value : collection) {
-            result[i] = (Short) CallHelpers.convertValue(short.class, value);
+            result[i] = (String) CallHelpers.convertValue(String.class, value);
             i += 1;
         }
         return result;
@@ -28,9 +28,9 @@ public class ShortArrayMaker implements JavaArrayMaker {
     @Nonnull
     @Override
     public LispCollection convertFromJavaArray(@Nonnull final Object array) {
-        final short[] data = (short[]) array;
+        final String[] data = (String[]) array;
         final ArrayList<LispValue> values = new ArrayList<>();
-        for (final short item : data) {
+        for (final String item : data) {
             values.add(CallHelpers.toLispValue(item));
         }
         return new SList(values);

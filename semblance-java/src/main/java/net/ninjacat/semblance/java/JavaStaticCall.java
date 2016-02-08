@@ -5,18 +5,11 @@ import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.semblance.java.types.CallHelpers;
-import net.ninjacat.smooth.functions.Predicate;
-import net.ninjacat.smooth.iterators.Iter;
 import net.ninjacat.smooth.utils.Option;
-import net.ninjacat.smooth.utils.Try;
 
 import java.lang.reflect.Method;
-import java.util.List;
-import java.util.concurrent.Callable;
 
-import static net.ninjacat.semblance.java.types.CallHelpers.convertParameters;
-import static net.ninjacat.semblance.java.types.CallHelpers.toLispValue;
+import static net.ninjacat.semblance.java.types.CallHelpers.*;
 import static net.ninjacat.semblance.utils.Values.asSymbol;
 
 /**
@@ -40,43 +33,18 @@ public class JavaStaticCall extends SpecialForm {
         final String staticName = asSymbol(parameters.head()).repr();
         final LispCollection params = context.evaluateList(parameters.tail());
 
-        final Option<Class> clazz = extractClassName(staticName);
-        if (!clazz.isPresent()) {
-            throw new JavaInteropException(String.format("Cannot get class for static method %s.", staticName));
-        }
-        final Option<Method> method = getStaticMethod(clazz.get(), staticName, params);
+        final StaticReference reference = new StaticReference(staticName);
+        final Option<Method> method = findMatchingMethod(reference.getMethods(), params);
+
         if (!method.isPresent()) {
             throw new JavaInteropException(String.format("Cannot find method %s.", staticName));
         }
 
         try {
             final Object[] args = convertParameters(method.get().getGenericParameterTypes(), params);
-            return toLispValue(method.get().invoke(clazz.get(), args));
+            return toLispValue(method.get().invoke(reference.getClazz(), args));
         } catch (final Exception e) {
             throw new JavaInteropException(String.format("Failed to execute method %s(%s)", staticName, params), SourceInfo.UNKNOWN, e);
         }
-    }
-
-    private static Option<Method> getStaticMethod(final Class aClass, final String staticName, final LispCollection params) {
-        final int dot = staticName.lastIndexOf('.');
-        final String methodName = staticName.substring(dot + 1);
-        final List<Method> methods = Iter.of(aClass.getMethods()).filter(new Predicate<Method>() {
-            @Override
-            public boolean matches(final Method method) {
-                return methodName.equals(method.getName());
-            }
-        }).toList();
-        return CallHelpers.findMatchingMethod(methods, params);
-    }
-
-    private static Option<Class> extractClassName(final String staticName) {
-        final int dot = staticName.lastIndexOf('.');
-        return Try.execute(new Callable<Class>() {
-            @Override
-            public Class call() throws Exception {
-                final String className = staticName.substring(0, dot);
-                return Class.forName(className);
-            }
-        }).get();
     }
 }

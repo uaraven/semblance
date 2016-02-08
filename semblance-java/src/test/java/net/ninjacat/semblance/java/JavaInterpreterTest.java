@@ -148,6 +148,7 @@ public class JavaInterpreterTest {
 
         assertThat(pojo.isBoolValue(), is(false));
     }
+
     @Test
     public void testSetIntField() throws Exception {
         final Interpreter interpreter = createJavaInterpreter();
@@ -159,6 +160,19 @@ public class JavaInterpreterTest {
 
         assertThat(pojo.getIntValue(), is(150));
     }
+
+    @Test
+    public void testSetIntFieldViaSet() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final Pojo pojo = new Pojo(10, "20", 30.3);
+        interpreter.getRootContext().bind(symbol("x"), new JavaWrapperValue(pojo));
+
+        interpreter.run("(java/set x intValue 150)");
+
+        assertThat(pojo.getIntValue(), is(150));
+    }
+
 
     @Test
     public void testSetStringField() throws Exception {
@@ -207,6 +221,17 @@ public class JavaInterpreterTest {
 
         assertThat(value, instanceOf(SList.class));
         assertThat(value, Is.<LispValue>is(smartList("one", "two")));
+    }
+
+
+    @Test
+    public void testGetStrFieldViaGet() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        interpreter.getRootContext().bind(symbol("x"), new JavaWrapperValue(new Pojo("striiing")));
+        final LispValue value = interpreter.run("(java/get x stringValue)");
+
+        assertThat(value, is(string("striiing")));
     }
 
     @Test
@@ -260,7 +285,7 @@ public class JavaInterpreterTest {
 
         final LispValue value = interpreter.run("(pojo toStr '(\"No\" \"Yes\") v)");
 
-        assertThat(value, Is.is(string("Yes: true")));
+        assertThat(value, is(string("Yes: true")));
     }
 
     @Test
@@ -269,7 +294,7 @@ public class JavaInterpreterTest {
 
         final LispValue value = interpreter.run("(java/scall net.ninjacat.semblance.java.Pojo.name)");
 
-        assertThat(value, Is.is(string("Pojo")));
+        assertThat(value, is(string("Pojo")));
     }
 
     @Test
@@ -279,6 +304,25 @@ public class JavaInterpreterTest {
         final LispValue value = interpreter.run("(java/scall net.ninjacat.semblance.java.Pojo.toStr (list 1 2 3 4))");
 
         assertThat(value, Is.<LispValue>is(smartList("1", "2", "3", "4")));
+    }
+
+    @Test
+    public void testStaticFieldGet() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        Pojo.sLong = 42L;
+        final LispValue value = interpreter.run("(java/get net.ninjacat.semblance.java.Pojo.sLong)");
+
+        assertThat(value, Is.<LispValue>is(longN(42)));
+    }
+
+    @Test
+    public void testStaticFieldSet() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        interpreter.run("(java/set net.ninjacat.semblance.java.Pojo.sStr \"Static\")");
+
+        assertThat(Pojo.sStr, is("Static"));
     }
 
     @Test(expected = SemblanceRuntimeException.class)

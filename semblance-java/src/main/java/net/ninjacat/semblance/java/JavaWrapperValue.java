@@ -6,6 +6,7 @@ import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.SourceInfo;
+import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.types.CallHelpers;
 import net.ninjacat.smooth.functions.Predicate;
@@ -19,8 +20,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import static net.ninjacat.semblance.java.types.CallHelpers.convertParameters;
-import static net.ninjacat.semblance.utils.Values.asSymbol;
-import static net.ninjacat.semblance.utils.Values.symbol;
+import static net.ninjacat.semblance.utils.Values.*;
 
 /**
  * Opaque value providing a way to call methods and access fields of the wrapped java object.
@@ -37,6 +37,14 @@ public class JavaWrapperValue extends OpaqueValue<Object> implements Callable {
     public JavaWrapperValue(@Nonnull final Object value) {
         super(value);
         clazz = value.getClass();
+    }
+
+    public static JavaWrapperValue asWrapper(final LispValue value) {
+        if (value instanceof JavaWrapperValue) {
+            return (JavaWrapperValue) value;
+        } else {
+            throw new SemblanceRuntimeException(String.format("Cannot use %s as Java object", value), getSourceInfo(value));
+        }
     }
 
     @Override

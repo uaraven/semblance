@@ -6,6 +6,9 @@ import net.ninjacat.smooth.iterators.Iter;
 @SuppressWarnings("ClassNamingConvention")
 public class Pojo {
 
+    public static long sLong;
+    public static String sStr;
+
     public int intValue;
     public String stringValue;
     public Double doubleValue;

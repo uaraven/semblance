@@ -17,5 +17,7 @@ public class JavaNamespace extends BaseNamespace {
 
         bind(symbol("new"), new JavaNew());
         bind(symbol("scall"), new JavaStaticCall());
+        bind(symbol("get"), new JavaGetField());
+        bind(symbol("set"), new JavaSetField());
     }
 }

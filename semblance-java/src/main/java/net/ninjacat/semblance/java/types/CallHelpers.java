@@ -5,6 +5,8 @@ import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
+import net.ninjacat.semblance.debug.SourceInfo;
+import net.ninjacat.semblance.java.JavaInteropException;
 import net.ninjacat.semblance.java.JavaTypeConversionException;
 import net.ninjacat.semblance.java.JavaWrapperValue;
 import net.ninjacat.semblance.java.Symbol;
@@ -137,6 +139,21 @@ public final class CallHelpers {
             } else {
                 return new JavaWrapperValue(pojo);
             }
+        }
+    }
+
+    /**
+     * Extracts element class from array class
+     *
+     * @param javaType Array class
+     * @return Class of array's element
+     */
+    public static Class getArrayElementType(final Class javaType) {
+        final String elementTypeName = javaType.getCanonicalName().substring(0, javaType.getCanonicalName().length() - 2);
+        try {
+            return Class.forName(elementTypeName);
+        } catch (final ClassNotFoundException e) {
+            throw new JavaInteropException("Cannot determine array element type for " + javaType.getCanonicalName(), SourceInfo.UNKNOWN, e);
         }
     }
 

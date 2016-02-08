@@ -16,5 +16,6 @@ public class JavaNamespace extends BaseNamespace {
         super(symbol("java"));
 
         bind(symbol("new"), new JavaNew());
+        bind(symbol("scall"), new JavaStaticCall());
     }
 }

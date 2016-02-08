@@ -9,7 +9,16 @@ import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 public class JavaInteropException extends SemblanceRuntimeException {
 
     /**
-     * Creates a new intsance of JavaInteropException.
+     * Creates a new instance of JavaInteropException without source code information.
+     *
+     * @param message Error message.
+     */
+    public JavaInteropException(final String message) {
+        this(message, SourceInfo.UNKNOWN);
+    }
+
+    /**
+     * Creates a new instance of JavaInteropException.
      *
      * @param message    Error message.
      * @param sourceInfo Source code information.
@@ -19,7 +28,7 @@ public class JavaInteropException extends SemblanceRuntimeException {
     }
 
     /**
-     * Creates a new intsance of JavaInteropException.
+     * Creates a new instance of JavaInteropException.
      *
      * @param message    Error message.
      * @param sourceInfo Source code information.

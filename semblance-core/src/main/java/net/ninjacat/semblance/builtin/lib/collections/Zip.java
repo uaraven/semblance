@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.builtin.lib.collections;
 
-import net.ninjacat.semblance.data.callables.SpecialForm;
+import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
@@ -19,7 +19,7 @@ import static net.ninjacat.semblance.utils.Values.asCollection;
  * zip operation
  */
 @SuppressWarnings("ClassNamingConvention")
-public class Zip extends SpecialForm {
+public class Zip extends BuiltInFunction {
 
     /**
      * Creates new instance
@@ -28,9 +28,18 @@ public class Zip extends SpecialForm {
         super("list/zip", "collection1", "collection2");
     }
 
+    private static void addAll(final List<Iterator<LispValue>> iters, final List<LispValue> zipped) {
+        for (final Iterator<LispValue> iter : iters) {
+            if (iter.hasNext()) {
+                zipped.add(iter.next());
+            } else {
+                zipped.add(NilCollection.INSTANCE);
+            }
+        }
+    }
+
     @Override
-    public LispValue apply(final Context context, final LispCollection parameters) {
-        final LispCollection evaluated = context.evaluateList(parameters);
+    protected LispValue applyFunction(final Context context, final LispCollection evaluated) {
         final LispCollection main = asCollection(evaluated.head());
         final LispCollection rest = evaluated.tail();
 
@@ -52,15 +61,5 @@ public class Zip extends SpecialForm {
         }
 
         return main.createNew(result);
-    }
-
-    private void addAll(final List<Iterator<LispValue>> iters, final List<LispValue> zipped) {
-        for (final Iterator<LispValue> iter : iters) {
-            if (iter.hasNext()) {
-                zipped.add(iter.next());
-            } else {
-                zipped.add(NilCollection.INSTANCE);
-            }
-        }
     }
 }

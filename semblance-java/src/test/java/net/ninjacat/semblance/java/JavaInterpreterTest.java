@@ -249,6 +249,38 @@ public class JavaInterpreterTest {
         assertThat(value, Is.<LispValue>is(doubleN(25.0)));
     }
 
+    @Test
+    public void testMethodCallWithArraysAndStrings() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final Pojo pojo = new Pojo();
+
+        interpreter.getRootContext().bind(symbol("pojo"), new JavaWrapperValue(pojo));
+        interpreter.getRootContext().bind(symbol("v"), Constants.TRUE);
+
+        final LispValue value = interpreter.run("(pojo toStr '(\"No\" \"Yes\") v)");
+
+        assertThat(value, Is.is(string("Yes: true")));
+    }
+
+    @Test
+    public void testStaticMethodCall() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final LispValue value = interpreter.run("(java/scall net.ninjacat.semblance.java.Pojo.name)");
+
+        assertThat(value, Is.is(string("Pojo")));
+    }
+
+    @Test
+    public void testStaticMethodCallWithParams() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final LispValue value = interpreter.run("(java/scall net.ninjacat.semblance.java.Pojo.toStr (list 1 2 3 4))");
+
+        assertThat(value, Is.<LispValue>is(smartList("1", "2", "3", "4")));
+    }
+
     @Test(expected = SemblanceRuntimeException.class)
     public void testShouldFailToCreateUnknownJavaObject() throws Exception {
         final Interpreter interpreter = createJavaInterpreter();

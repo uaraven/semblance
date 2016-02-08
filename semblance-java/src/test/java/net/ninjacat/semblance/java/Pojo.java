@@ -1,5 +1,8 @@
 package net.ninjacat.semblance.java;
 
+import net.ninjacat.smooth.functions.Func;
+import net.ninjacat.smooth.iterators.Iter;
+
 @SuppressWarnings("ClassNamingConvention")
 public class Pojo {
 
@@ -37,6 +40,19 @@ public class Pojo {
         boolValue = other.isBoolValue();
     }
 
+    public static String name() {
+        return Pojo.class.getSimpleName();
+    }
+
+    public static String[] toStr(final Integer[] input) {
+        return Iter.of(input).map(new Func<String, Integer>() {
+            @Override
+            public String apply(final Integer integer) {
+                return String.valueOf(integer);
+            }
+        }).toArray(new String[input.length]);
+    }
+
     public int getIntValue() {
         return intValue;
     }
@@ -55,5 +71,9 @@ public class Pojo {
 
     public double power(final int x, final long y) {
         return Math.pow(x, y);
+    }
+
+    public String toStr(final String[] x, final boolean y) {
+        return String.format("%s: %s", x[y ? 1 : 0], y);
     }
 }

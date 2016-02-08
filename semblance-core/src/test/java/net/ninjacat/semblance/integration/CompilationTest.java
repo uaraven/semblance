@@ -23,7 +23,7 @@ public class CompilationTest {
         final File tempFile = File.createTempFile("tmp", "smbl");
         try (final InputStream input = getClass().getResourceAsStream("/test_program.smbl");
              final OutputStream output = new FileOutputStream(tempFile)) {
-            context.compileToStream(input, output);
+            RootContext.compileToStream(input, output);
         }
 
         final Interpreter interpreter = new Interpreter();

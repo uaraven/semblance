@@ -109,7 +109,8 @@ public class ListTypeCompatibility implements TypeCompatibility {
         if (PRIMITIVE_MAP.containsKey(javaType)) {
             return ArrayHelpers.convertToArray(PRIMITIVE_MAP.get(javaType), values);
         }
-        return Iter.of(values.getCollection()).map(SIMPLE_VALUE_CONVERTER).toArray(new Object[values.length()]);
+        final Class elementType = CallHelpers.getArrayElementType(javaType);
+        return ArrayHelpers.convertToArray(elementType, values);
     }
 
     private static final class ClassPredicate implements Predicate<Class<?>> {

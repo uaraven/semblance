@@ -16,7 +16,7 @@ import static net.ninjacat.semblance.utils.Values.asNumber;
  * Compatibility handler for Integer types
  */
 @SuppressWarnings("unchecked")
-public class IntegerTypeCompatibility implements TypeCompatibility {
+public class NumberTypeCompatibility implements TypeCompatibility {
 
     private static final Func<Object, LispValue> INT_FUNC = new Func<Object, LispValue>() {
         @Override
@@ -54,6 +54,18 @@ public class IntegerTypeCompatibility implements TypeCompatibility {
             return asNumber(lispValue).bigIntValue();
         }
     };
+    private static final Func<Object, LispValue> FLOAT_FUNC = new Func<Object, LispValue>() {
+        @Override
+        public Object apply(final LispValue value) {
+            return (float) asNumber(value).doubleValue();
+        }
+    };
+    private static final Func<Object, LispValue> DOUBLE_FUNC = new Func<Object, LispValue>() {
+        @Override
+        public Object apply(final LispValue value) {
+            return asNumber(value).doubleValue();
+        }
+    };
 
     private static final Map<Type, Func<Object, LispValue>> CONVERT_MAP = Maps.of(
             Integer.class, INT_FUNC,
@@ -67,6 +79,10 @@ public class IntegerTypeCompatibility implements TypeCompatibility {
             Character.class, CHAR_FUNC,
             char.class, CHAR_FUNC,
             BigInteger.class, BIGINT_FUNC,
+            float.class, FLOAT_FUNC,
+            Float.class, FLOAT_FUNC,
+            double.class, DOUBLE_FUNC,
+            Double.class, DOUBLE_FUNC,
             Object.class, LONG_FUNC
     );
 
@@ -82,11 +98,15 @@ public class IntegerTypeCompatibility implements TypeCompatibility {
                 || clazz.isAssignableFrom(Short.class)
                 || clazz.isAssignableFrom(Character.class)
                 || clazz.isAssignableFrom(BigInteger.class)
+                || clazz.isAssignableFrom(Float.class)
+                || clazz.isAssignableFrom(Double.class)
                 || clazz.isAssignableFrom(int.class)
                 || clazz.isAssignableFrom(long.class)
                 || clazz.isAssignableFrom(byte.class)
                 || clazz.isAssignableFrom(short.class)
-                || clazz.isAssignableFrom(char.class);
+                || clazz.isAssignableFrom(char.class)
+                || clazz.isAssignableFrom(float.class)
+                || clazz.isAssignableFrom(double.class);
     }
 
     @Override

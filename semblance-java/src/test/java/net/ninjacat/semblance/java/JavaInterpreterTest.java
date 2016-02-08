@@ -236,6 +236,19 @@ public class JavaInterpreterTest {
         assertThat(value, Is.<LispValue>is(doubleN(25.0)));
     }
 
+    @Test
+    public void testMethodCallWithNumberCast() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final Pojo pojo = new Pojo();
+
+        interpreter.getRootContext().bind(symbol("pojo"), new JavaWrapperValue(pojo));
+
+        final LispValue value = interpreter.run("(pojo power 5.0 2.0)");
+
+        assertThat(value, Is.<LispValue>is(doubleN(25.0)));
+    }
+
     @Test(expected = SemblanceRuntimeException.class)
     public void testShouldFailToCreateUnknownJavaObject() throws Exception {
         final Interpreter interpreter = createJavaInterpreter();

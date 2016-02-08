@@ -29,8 +29,8 @@ import static net.ninjacat.semblance.utils.Values.*;
 public final class CallHelpers {
 
     private static final Map<SemblanceType, ? extends TypeCompatibility> TYPE_MAP = Maps.of(
-            SemblanceType.INTEGER, new IntegerTypeCompatibility(),
-            SemblanceType.FLOATIG_POINT, new FloatingPointTypeCompatibility(),
+            SemblanceType.INTEGER, new NumberTypeCompatibility(),
+            SemblanceType.FLOATIG_POINT, new NumberTypeCompatibility(),
             SemblanceType.STRING, new StringTypeCompatibility(),
             SemblanceType.OPAQUE, new OpaqueTypeCompatibility(),
             SemblanceType.LIST, new ListTypeCompatibility(),

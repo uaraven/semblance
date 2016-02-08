@@ -16,7 +16,9 @@ import net.ninjacat.smooth.utils.Try;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
 
+import static net.ninjacat.semblance.java.types.CallHelpers.convertParameters;
 import static net.ninjacat.semblance.utils.Values.asSymbol;
 import static net.ninjacat.semblance.utils.Values.symbol;
 
@@ -48,10 +50,10 @@ public class JavaWrapperValue extends OpaqueValue<Object> implements Callable {
         final SymbolAtom objectProp = asSymbol(parameters.head());
         final LispCollection evaluatedParameters = context.evaluateList(parameters.tail());
 
-        final Option<Method> method = findMethod(objectProp);
+        final Option<Method> method = findMethod(objectProp, evaluatedParameters);
 
         if (method.isPresent()) {
-            return runMethod(method, evaluatedParameters);
+            return runMethod(method.get(), evaluatedParameters);
         }
         final Option<Field> field = findField(objectProp);
         if (field.isPresent()) {
@@ -61,8 +63,13 @@ public class JavaWrapperValue extends OpaqueValue<Object> implements Callable {
                 objectProp, clazz.getCanonicalName()), SourceInfo.UNKNOWN);
     }
 
-    private LispValue runMethod(final Option<Method> method, final LispCollection evaluatedParameters) {
-        throw new JavaInteropException("method execution is not implemented", SourceInfo.UNKNOWN);
+    private LispValue runMethod(final Method method, final LispCollection evaluatedParameters) {
+        try {
+            final Object result = method.invoke(getValue(), convertParameters(method.getGenericParameterTypes(), evaluatedParameters));
+            return CallHelpers.toLispValue(result);
+        } catch (final Exception e) {
+            throw new JavaInteropException("Failed to invoke method " + method, SourceInfo.UNKNOWN, e);
+        }
     }
 
     private LispValue runField(final Field field, final LispCollection evaluatedParameters) {
@@ -89,12 +96,13 @@ public class JavaWrapperValue extends OpaqueValue<Object> implements Callable {
         }).get();
     }
 
-    private Option<Method> findMethod(final SymbolAtom objectProp) {
-        return Option.of(Iter.of(clazz.getMethods()).find(new Predicate<Method>() {
+    private Option<Method> findMethod(final SymbolAtom objectProp, final LispCollection params) {
+        final List<Method> methods = Iter.of(clazz.getMethods()).filter(new Predicate<Method>() {
             @Override
             public boolean matches(final Method met) {
-                return met.getName().equals(objectProp.toString());
+                return met.getName().equals(objectProp.repr());
             }
-        }, null));
+        }).toList();
+        return CallHelpers.findMatchingMethod(methods, params);
     }
 }

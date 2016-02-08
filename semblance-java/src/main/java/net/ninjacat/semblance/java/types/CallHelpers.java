@@ -14,11 +14,11 @@ import net.ninjacat.smooth.functions.Predicate;
 import net.ninjacat.smooth.iterators.Iter;
 import net.ninjacat.smooth.utils.Option;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import static net.ninjacat.semblance.utils.Values.*;
@@ -55,6 +55,23 @@ public final class CallHelpers {
             @Override
             public boolean matches(final Constructor constructor) {
                 return isCompatible(values, constructor.getGenericParameterTypes());
+            }
+        }, null));
+    }
+
+    /**
+     * Looks up methods matching list of Semblance values.
+     *
+     * @param methods List of methods
+     * @param params  List of values used as parameters
+     * @return Optional of method
+     */
+    public static Option<Method> findMatchingMethod(final Collection<Method> methods, final LispCollection params) {
+        final LispValue[] values = convertToArray(params);
+        return Option.of(Iter.of(methods).find(new Predicate<Method>() {
+            @Override
+            public boolean matches(final Method method) {
+                return isCompatible(values, method.getGenericParameterTypes());
             }
         }, null));
     }
@@ -116,7 +133,7 @@ public final class CallHelpers {
             if (pojo instanceof Iterable) {
                 return toLispCollection((Iterable<? extends Object>) pojo);
             } else if (pojo.getClass().isArray()) {
-                return arrayToLispCollection(pojo);
+                return ArrayHelpers.convertFromArray(pojo);
             } else {
                 return new JavaWrapperValue(pojo);
             }
@@ -131,14 +148,6 @@ public final class CallHelpers {
         } else {
             return longN(((Number) pojo).longValue());
         }
-    }
-
-    private static LispValue arrayToLispCollection(final Object pojo) {
-        final ArrayList<LispValue> values = new ArrayList<>();
-        for (int i = 0; i < Array.getLength(pojo); i++) {
-            values.add(CallHelpers.toLispValue(Array.get(pojo, i)));
-        }
-        return new SList(values);
     }
 
     private static LispValue toLispCollection(final Iterable<? extends Object> pojo) {

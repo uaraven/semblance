@@ -148,7 +148,6 @@ public class JavaInterpreterTest {
 
         assertThat(pojo.isBoolValue(), is(false));
     }
-
     @Test
     public void testSetIntField() throws Exception {
         final Interpreter interpreter = createJavaInterpreter();
@@ -210,7 +209,6 @@ public class JavaInterpreterTest {
         assertThat(value, Is.<LispValue>is(smartList("one", "two")));
     }
 
-
     @Test
     public void testSetStrArrayField() throws Exception {
         final Interpreter interpreter = createJavaInterpreter();
@@ -225,6 +223,19 @@ public class JavaInterpreterTest {
         assertThat(pojo.strData, Matchers.arrayContaining("1", "2"));
     }
 
+    @Test
+    public void testMethodCall() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+
+        final Pojo pojo = new Pojo();
+
+        interpreter.getRootContext().bind(symbol("pojo"), new JavaWrapperValue(pojo));
+
+        final LispValue value = interpreter.run("(pojo power 5 2)");
+
+        assertThat(value, Is.<LispValue>is(doubleN(25.0)));
+    }
+
     @Test(expected = SemblanceRuntimeException.class)
     public void testShouldFailToCreateUnknownJavaObject() throws Exception {
         final Interpreter interpreter = createJavaInterpreter();
@@ -232,7 +243,7 @@ public class JavaInterpreterTest {
         interpreter.run("(java/new net.ninjacat.semblance.java.Pojo2)");
     }
 
-    private Interpreter createJavaInterpreter() {
+    private static Interpreter createJavaInterpreter() {
         return new Interpreter(new JavaBridge());
     }
 }

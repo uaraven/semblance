@@ -1,31 +1,17 @@
 package net.ninjacat.semblance.java.types;
 
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.java.types.arrays.*;
-import net.ninjacat.smooth.collections.Maps;
+import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.collections.SList;
 
-import java.math.BigInteger;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 
 /**
  * Utility methods to convert Semblance values to and from Java arrays
  */
 public final class ArrayHelpers {
-
-    private static final Map<Class, JavaArrayMaker> ARRAY_MAKERS = Maps.of(
-            int.class, new IntArrayMaker(),
-            long.class, new LongArrayMaker(),
-            short.class, new ShortArrayMaker(),
-            byte.class, new ByteArrayMaker(),
-            char.class, new CharArrayMaker(),
-            float.class, new FloatArrayMaker(),
-            double.class, new DoubleArrayMaker(),
-            BigInteger.class, new BigIntArrayMaker(),
-            String.class, new StringArrayMaker()
-    );
-
-    private static final JavaArrayMaker DEFAULT = new ObjectArrayMaker();
 
     private ArrayHelpers() {
     }
@@ -38,11 +24,28 @@ public final class ArrayHelpers {
      * @return Java array.
      */
     public static Object convertToArray(final Class elementType, final LispCollection source) {
-        if (ARRAY_MAKERS.containsKey(elementType)) {
-            return ARRAY_MAKERS.get(elementType).covertToJavaArray(source);
-        } else {
-            return DEFAULT.covertToJavaArray(source);
+        final Object array = Array.newInstance(elementType, source.length());
+        int index = 0;
+        for (final LispValue value : source) {
+            Array.set(array, index, CallHelpers.convertValue(elementType, value));
+            index += 1;
         }
+        return array;
+    }
+
+
+    /**
+     * Converts array into Semblance SList
+     *
+     * @param array Array
+     * @return SList
+     */
+    public static LispCollection convertFromArray(final Object array) {
+        final ArrayList<LispValue> values = new ArrayList<>();
+        for (int i = 0; i < Array.getLength(array); i++) {
+            values.add(CallHelpers.toLispValue(Array.get(array, i)));
+        }
+        return new SList(values);
     }
 
 }

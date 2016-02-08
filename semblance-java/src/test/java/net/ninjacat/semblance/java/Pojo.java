@@ -52,4 +52,8 @@ public class Pojo {
     public boolean isBoolValue() {
         return boolValue;
     }
+
+    public double power(final int x, final long y) {
+        return Math.pow(x, y);
+    }
 }

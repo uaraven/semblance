@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.builtin.spforms.arithmetic;
 
 import net.ninjacat.semblance.data.NumberAtom;
-import net.ninjacat.semblance.data.callables.SpecialForm;
+import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SMap;
@@ -17,7 +17,7 @@ import static net.ninjacat.semblance.utils.Values.*;
  * Addition, union and concatenation
  */
 @SuppressWarnings("ClassNamingConvention")
-public class Add extends SpecialForm {
+public class Add extends BuiltInFunction {
 
     /**
      * Create instance of Add class
@@ -27,8 +27,7 @@ public class Add extends SpecialForm {
     }
 
     @Override
-    public LispValue apply(final Context context, final LispCollection parameters) {
-        final LispCollection evaluated = context.evaluateList(parameters);
+    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
         final LispValue head = evaluated.head();
         if (isNumber(head)) {
             return numericAdd(evaluated);
@@ -42,7 +41,7 @@ public class Add extends SpecialForm {
         if (isMap(head)) {
             return mapUnion(evaluated);
         }
-        throw new SemblanceRuntimeException("Invalid argument types", parameters.getSourceInfo());
+        throw new SemblanceRuntimeException("Invalid argument types", evaluated.getSourceInfo());
     }
 
     private static LispValue mapUnion(final LispCollection evaluated) {

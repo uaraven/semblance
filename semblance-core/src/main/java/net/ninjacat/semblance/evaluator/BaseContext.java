@@ -11,6 +11,7 @@ import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.data.special.ReturnValue;
 import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
 import net.ninjacat.semblance.errors.runtime.UnboundSymbolException;
+import net.ninjacat.smooth.functions.Provider;
 import net.ninjacat.smooth.utils.Option;
 
 import java.util.*;
@@ -27,9 +28,14 @@ abstract class BaseContext implements Context {
     private final Context parent;
     private final Map<SymbolAtom, Namespace> namespaces;
 
-    BaseContext(final SymbolAtom name, final Context parent) {
+    private Option<UndefinedFunctionStrategy> undefinedFunctionStrategy;
+
+    BaseContext(final SymbolAtom name,
+                final Context parent,
+                final Option<UndefinedFunctionStrategy> undefinedFunctionStrategy) {
         this.name = name;
         this.parent = parent;
+        this.undefinedFunctionStrategy = undefinedFunctionStrategy;
         namespaces = new ConcurrentHashMap<>();
         namespaces.put(Constants.NONE, new BaseNamespace(Constants.NONE));
     }
@@ -178,6 +184,21 @@ abstract class BaseContext implements Context {
         }
     }
 
+    @Override
+    public UndefinedFunctionStrategy getUndefinedFunctionStrategy() {
+        return undefinedFunctionStrategy.orGet(new Provider<UndefinedFunctionStrategy>() {
+            @Override
+            public UndefinedFunctionStrategy get() {
+                return parent.getUndefinedFunctionStrategy();
+            }
+        });
+    }
+
+    @Override
+    public void setUndefinedFunctionStrategy(final UndefinedFunctionStrategy undefinedFunctionStrategy) {
+        this.undefinedFunctionStrategy = Option.of(undefinedFunctionStrategy);
+    }
+
     protected Option<LispValue> findInNamespace(final SymbolAtom symbolName) {
         final SymbolAtom rootNs = symbolName.getNamespace();
         if (!namespaces.containsKey(rootNs)) {
@@ -219,7 +240,7 @@ abstract class BaseContext implements Context {
         }
         final Option<LispValue> callable = isCallable(head) ? Option.of(evaluate(head)) : findSymbol(asSymbol(head));
         if (!callable.isPresent() || !isCallable(callable.get())) {
-            throw new FunctionExpectedException(head);
+            return getUndefinedFunctionStrategy().handle(this, head, function.tail());
         }
         final LispCollection params = function.tail();
         final Callable func = asCallable(callable.get());

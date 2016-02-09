@@ -164,6 +164,27 @@ public abstract class NumberAtom<T> extends Atom {
         }
     }
 
+    /**
+     * @return representation of this atom's value as Java long value
+     */
+    public long longValue() {
+        return (Long) convertToLong().getValue();
+    }
+
+    /**
+     * @return representation of this atom's value as Java BigInteger value
+     */
+    public BigInteger bigIntValue() {
+        return (BigInteger) convertToBigInt().getValue();
+    }
+
+    /**
+     * @return representation of this atom's value as Java double value
+     */
+    public double doubleValue() {
+        return (Double) convertToDouble().getValue();
+    }
+
     protected abstract NumberAtom<?> expandIfNeeded(NumberAtom other);
 
     protected abstract NumberAtom<?> convertToBigInt();

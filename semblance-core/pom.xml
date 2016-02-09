@@ -6,8 +6,8 @@
 
     <parent>
         <groupId>net.ninjacat</groupId>
-        <version>1.9.0-SNAPSHOT</version>
         <artifactId>semblance</artifactId>
+        <version>1.9.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>semblance-core</artifactId>
@@ -21,13 +21,6 @@
         </dependency>
 
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest-all</artifactId>
             <version>1.3</version>
@@ -35,9 +28,16 @@
         </dependency>
 
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
-            <version>1.9.0</version>
+            <version>1.9.5</version>
             <scope>test</scope>
         </dependency>
 

@@ -86,7 +86,7 @@ public abstract class Repl {
      */
     public Either<Exception, String> eval(final String input) {
         try {
-            final LispValue value = rootContext.evaluateInContext(input, replContext);
+            final LispValue value = RootContext.evaluateInContext(input, replContext);
             replContext.bind(symbol("$$"), value);
             return Either.second(value.repr());
         } catch (final Exception ex) {

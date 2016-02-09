@@ -16,6 +16,7 @@ public enum SemblanceType {
     MAP,
     BREAK,
     RECURSIVE,
+    OPAQUE,
     SPECIAL; // this are internal types, they will never appear in programs
 
     /**
@@ -24,4 +25,5 @@ public enum SemblanceType {
     public boolean isBreak() {
         return this == BREAK || this == RECURSIVE;
     }
+
 }

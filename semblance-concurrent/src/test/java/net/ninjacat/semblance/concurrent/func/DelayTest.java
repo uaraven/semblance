@@ -6,20 +6,23 @@ import org.hamcrest.core.Is;
 import org.junit.Test;
 
 import static net.ninjacat.semblance.utils.Values.longN;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-public class AwaitTest {
+
+public class DelayTest {
 
     @Test
-    public void shouldReturnAsyncComputedValue() throws Exception {
+    public void shouldDelayExecutionValue() throws Exception {
         final Interpreter semblance = AsyncFixtures.getConcurrentInterpreter();
 
+        final long start = System.currentTimeMillis();
         final LispValue value = semblance.run(
-                "(set1 x (async/run (+ 2 2)))" +
+                "(set1 x (async/run (async/delay 400) (+ 2 2)))" +
                         "(async/await x)");
 
         assertThat(value, Is.<LispValue>is(longN(4)));
+        assertThat(System.currentTimeMillis() - start > 200, is(true));
     }
 
 }

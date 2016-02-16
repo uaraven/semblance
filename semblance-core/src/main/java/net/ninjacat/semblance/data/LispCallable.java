@@ -7,7 +7,7 @@ import net.ninjacat.semblance.evaluator.Context;
 /**
  * Base interface for all kinds of callable: functions, special forms, macros
  */
-public interface Callable extends LispValue {
+public interface LispCallable extends LispValue {
     /**
      * Callable name.
      *

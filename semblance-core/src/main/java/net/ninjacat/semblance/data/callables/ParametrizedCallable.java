@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.data.callables;
 
-import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.SList;
@@ -13,7 +13,7 @@ import static net.ninjacat.semblance.utils.Values.*;
 /**
  * Created on 28/02/15.
  */
-public abstract class ParametrizedCallable implements Callable {
+public abstract class ParametrizedCallable implements LispCallable {
 
     private final SList definition;
     private final SymbolAtom name;

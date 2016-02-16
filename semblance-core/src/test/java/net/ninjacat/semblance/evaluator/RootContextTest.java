@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.evaluator;
 
-import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.smooth.utils.Option;
 import org.junit.Test;
@@ -19,7 +19,7 @@ public class RootContextTest {
         final Option<LispValue> defun = context.findSymbol(symbol("defun"));
 
         assertThat(defun.isPresent(), is(true));
-        assertThat(defun.get(), instanceOf(Callable.class));
+        assertThat(defun.get(), instanceOf(LispCallable.class));
     }
 
 }

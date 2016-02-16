@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.builtin.spforms;
 
-import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.utils.IOUtils;
@@ -44,6 +44,6 @@ public class NamespaceTest {
         assertThat(namespace.isPresent(), is(true));
 
         assertThat(namespace.get().findSymbol(symbol("pi")).isPresent(), is(true));
-        assertThat(namespace.get().findSymbol(symbol("pi")).get(), instanceOf(Callable.class));
+        assertThat(namespace.get().findSymbol(symbol("pi")).get(), instanceOf(LispCallable.class));
     }
 }

@@ -162,9 +162,9 @@ public final class Values {
         }
     }
 
-    public static Callable asCallable(final LispValue value) {
-        if (value instanceof Callable) {
-            return (Callable) value;
+    public static LispCallable asCallable(final LispValue value) {
+        if (value instanceof LispCallable) {
+            return (LispCallable) value;
         } else {
             throw new TypeMismatchException("Callable", value, getSourceInfo(value));
         }
@@ -212,7 +212,7 @@ public final class Values {
 
     public static boolean isCallable(final LispValue value) {
         return SemblanceType.FUNCTION == value.getType() || SemblanceType.MACRO == value.getType() ||
-                value instanceof Callable;
+                value instanceof LispCallable;
     }
 
     public static boolean isFalse(final LispValue value) {

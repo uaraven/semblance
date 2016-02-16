@@ -32,13 +32,15 @@ public class Interpreter {
     }
 
     /**
-     * Creates a new interpreter with a supplied root context consumer. Allows to bind functions, change
+     * Creates a new interpreter with a supplied root context modifiers. Allows to bind functions, change namespaces, etc.
      *
-     * @param contextModifier Root context provider.
+     * @param contextModifiers Root context modifiers.
      */
-    public Interpreter(final ContextModifier contextModifier) {
+    public Interpreter(final ContextModifier... contextModifiers) {
         rootContext = new RootContext();
-        contextModifier.modify(rootContext);
+        for (final ContextModifier modifier : contextModifiers) {
+            modifier.modify(rootContext);
+        }
     }
 
     /**

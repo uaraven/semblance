@@ -23,9 +23,9 @@ Library todo
 Interpreter todo
 ----------------
  - Java interop support:
-    - Opaque values which can contain reference to any java object
-    - Type conversion
-    - Ability to call methods and access fields on java objects 
+    - Opaque values which can contain reference to any java object - done
+    - Type conversion                                              - done
+    - Ability to call methods and access fields on java objects    - done 
  
 Tests todo
 ----------

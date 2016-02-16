@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.data.collections;
 
-import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Map implementation for Semblance
  */
 @SuppressWarnings("ClassNamingConvention")
-public class SMap implements DebugInfoProvider, Callable, JavaConvertible {
+public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
 
     private static final SymbolAtom NAME = new SymbolAtom("--map-access");
     private final SourceInfo sourceInfo;

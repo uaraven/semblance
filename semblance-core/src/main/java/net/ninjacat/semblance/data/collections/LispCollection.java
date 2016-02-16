@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.data.collections;
 
-import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.operations.*;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
@@ -26,7 +26,7 @@ import static net.ninjacat.semblance.utils.Values.*;
  * Parent class for lists and vectors
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
-public abstract class LispCollection implements Iterable<LispValue>, DebugInfoProvider, JavaConvertible, Callable {
+public abstract class LispCollection implements Iterable<LispValue>, DebugInfoProvider, JavaConvertible, LispCallable {
 
     private static final Map<SymbolAtom, ListOperation> OPERATIONS = new ConcurrentHashMap<>();
     private final SourceInfo sourceInfo;
@@ -191,7 +191,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
      * @param applicator Function to apply to elements of collection.
      * @return New collection of results of function application.
      */
-    public LispCollection foreach(@Nonnull final Context context, @Nonnull final Callable applicator) {
+    public LispCollection foreach(@Nonnull final Context context, @Nonnull final LispCallable applicator) {
         final List<LispValue> result = new ArrayList<>(getCollection().size());
         for (final LispValue item : getCollection()) {
             result.add(applicator.apply(context, list(item)));

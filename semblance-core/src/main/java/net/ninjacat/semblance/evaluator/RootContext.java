@@ -9,8 +9,8 @@ import net.ninjacat.semblance.builtin.spforms.comparison.*;
 import net.ninjacat.semblance.builtin.spforms.logic.And;
 import net.ninjacat.semblance.builtin.spforms.logic.Not;
 import net.ninjacat.semblance.builtin.spforms.logic.Or;
-import net.ninjacat.semblance.data.Callable;
 import net.ninjacat.semblance.data.Constants;
+import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
@@ -230,7 +230,7 @@ public class RootContext extends BaseContext {
         }
     }
 
-    private void bindCallable(final Callable form) {
+    private void bindCallable(final LispCallable form) {
         bind(form.name(), form);
     }
 }

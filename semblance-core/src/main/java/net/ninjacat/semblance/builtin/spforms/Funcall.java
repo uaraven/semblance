@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.builtin.spforms;
 
-import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
@@ -25,7 +25,7 @@ public class Funcall extends SpecialForm {
 
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
-        final Callable callable = asCallable(context.evaluate(parameters.head()));
+        final LispCallable callable = asCallable(context.evaluate(parameters.head()));
         final LispCollection params = context.evaluateList(asCollection(parameters.tail().head()));
 
         return callable.apply(LocalContext.namedChildContext(callable.name(), context), params);

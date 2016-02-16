@@ -17,7 +17,8 @@ public enum SemblanceType {
     BREAK,
     RECURSIVE,
     OPAQUE,
-    SPECIAL; // this are internal types, they will never appear in programs
+    SPECIAL,  // this are internal types, they will never appear in programs
+    CUSTOM;
 
     /**
      * @return {@code true} if this type should break block execution

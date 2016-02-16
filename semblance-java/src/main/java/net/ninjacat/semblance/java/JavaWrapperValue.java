@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.java;
 
-import net.ninjacat.semblance.data.Callable;
+import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.OpaqueValue;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
@@ -25,7 +25,7 @@ import static net.ninjacat.semblance.utils.Values.*;
 /**
  * Opaque value providing a way to call methods and access fields of the wrapped java object.
  */
-public class JavaWrapperValue extends OpaqueValue<Object> implements Callable {
+public class JavaWrapperValue extends OpaqueValue<Object> implements LispCallable {
 
     private final Class<? extends Object> clazz;
 

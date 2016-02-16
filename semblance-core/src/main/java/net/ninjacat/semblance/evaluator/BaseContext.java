@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.evaluator;
 
-import net.ninjacat.semblance.data.Callable;
 import net.ninjacat.semblance.data.Constants;
+import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
@@ -243,7 +243,7 @@ abstract class BaseContext implements Context {
             return getUndefinedFunctionStrategy().handle(this, head, function.tail());
         }
         final LispCollection params = function.tail();
-        final Callable func = asCallable(callable.get());
+        final LispCallable func = asCallable(callable.get());
         return func.apply(this, params);
     }
 }

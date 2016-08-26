@@ -21,8 +21,8 @@ public class DelayTest {
                 "(set1 x (async/run (async/delay 400) (+ 2 2)))" +
                         "(async/await x)");
 
-        assertThat(value, Is.<LispValue>is(longN(4)));
         assertThat(System.currentTimeMillis() - start > 200, is(true));
+        assertThat(value, Is.<LispValue>is(longN(4)));
     }
 
 }

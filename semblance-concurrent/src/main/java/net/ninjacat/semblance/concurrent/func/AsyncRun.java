@@ -10,13 +10,13 @@ import net.ninjacat.semblance.evaluator.LocalContext;
 /**
  * Executes supplied code block asynchronously and returns a future
  */
-public class Async extends SpecialForm {
+public class AsyncRun extends SpecialForm {
 
     /**
      * Creates and async special form
      */
-    public Async() {
-        super("async", "&rest", "code-block");
+    public AsyncRun() {
+        super("run", "&rest", "code-block");
     }
 
     @Override

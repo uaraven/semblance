@@ -14,7 +14,7 @@ final class VarBinder {
     private VarBinder() {
     }
 
-    public static LispValue bindVariables(final Context context, final LispCollection parameters) {
+    static LispValue bindVariables(final Context context, final LispCollection parameters) {
         final LispValue binding = parameters.head();
         LispValue value = NilCollection.INSTANCE;
         if (isList(binding)) {

@@ -16,9 +16,9 @@ Library todo
 
  - include - done, not fully tested
  
- - futures
- - coroutines
- - async/await
+ - futures - done
+ - coroutines - done (async/go)
+ - async/await - done
 
 Interpreter todo
 ----------------

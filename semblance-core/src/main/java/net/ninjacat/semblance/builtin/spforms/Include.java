@@ -33,34 +33,7 @@ public class Include extends SpecialForm {
         super("include", "filename");
     }
 
-    @Override
-    public LispValue apply(final Context context, final LispCollection parameters) {
-        final StringAtom sourceName = asString(context.evaluateList(parameters).head());
-        try {
-            final SList source = getCompiled(context, sourceName, parameters.getSourceInfo());
-            return context.evaluateBlock(source);
-        } catch (final ParsingException e) {
-            throw new ParsingRuntimeException("Failed to include " + sourceName, e, SourceInfo.UNKNOWN);
-        }
-    }
-
-    private SList getCompiled(final Context context, final StringAtom sourceName, final SourceInfo sourceInfo)
-            throws ParsingException {
-        final String sourceFile = sourceName.getValue();
-        final Option<SList> srcSList = loadFile(sourceFile);
-        if (srcSList.isPresent()) {
-            return srcSList.get();
-        } else {
-            final Option<SList> program = findInPath(context.getSourceFolders(), sourceFile, "sc", "smbl");
-            if (program.isPresent()) {
-                return program.get();
-            } else {
-                throw new FileNotFoundException(sourceFile, context.getSourceFolders(), sourceInfo);
-            }
-        }
-    }
-
-    private Option<SList> loadFile(final String sourceFile) throws ParsingException {
+    private static Option<SList> loadFile(final String sourceFile) throws ParsingException {
         if (sourceFile.endsWith(".sc")) {
             return loadCompiled(sourceFile);
         } else if (sourceFile.endsWith(".smbl")) {
@@ -70,7 +43,7 @@ public class Include extends SpecialForm {
         }
     }
 
-    private Option<SList> findInPath(final List<String> paths, final String sourceFile, final String... extensions)
+    private static Option<SList> findInPath(final List<String> paths, final String sourceFile, final String... extensions)
             throws ParsingException {
         for (final String path : paths) {
             for (final String ext : extensions) {
@@ -90,7 +63,7 @@ public class Include extends SpecialForm {
         return Option.absent();
     }
 
-    private Option<SList> loadFromResource(final String resourceName) throws ParsingException {
+    private static Option<SList> loadFromResource(final String resourceName) throws ParsingException {
         try (final InputStream asStream = Include.class.getResourceAsStream(resourceName)) {
             if (asStream == null) {
                 return Option.absent();
@@ -108,7 +81,7 @@ public class Include extends SpecialForm {
         }
     }
 
-    private Option<SList> loadAndCompile(final String sourceFile) throws ParsingException {
+    private static Option<SList> loadAndCompile(final String sourceFile) throws ParsingException {
         final File source = new File(sourceFile);
         if (source.exists()) {
             try (final InputStream is = new BufferedInputStream(new FileInputStream(sourceFile))) {
@@ -121,7 +94,7 @@ public class Include extends SpecialForm {
         }
     }
 
-    private Option<SList> loadCompiled(final String sourceFile) throws ParsingException {
+    private static Option<SList> loadCompiled(final String sourceFile) throws ParsingException {
         final File source = new File(sourceFile);
         if (source.exists()) {
             try (final InputStream is = new BufferedInputStream(new FileInputStream(sourceFile))) {
@@ -131,6 +104,33 @@ public class Include extends SpecialForm {
             }
         } else {
             return Option.absent();
+        }
+    }
+
+    private static SList getCompiled(final Context context, final StringAtom sourceName, final SourceInfo sourceInfo)
+            throws ParsingException {
+        final String sourceFile = sourceName.getValue();
+        final Option<SList> srcSList = loadFile(sourceFile);
+        if (srcSList.isPresent()) {
+            return srcSList.get();
+        } else {
+            final Option<SList> program = findInPath(context.getSourceFolders(), sourceFile, "sc", "smbl");
+            if (program.isPresent()) {
+                return program.get();
+            } else {
+                throw new FileNotFoundException(sourceFile, context.getSourceFolders(), sourceInfo);
+            }
+        }
+    }
+
+    @Override
+    public LispValue apply(final Context context, final LispCollection parameters) {
+        final StringAtom sourceName = asString(context.evaluateList(parameters).head());
+        try {
+            final SList source = getCompiled(context, sourceName, parameters.getSourceInfo());
+            return context.evaluateBlock(source);
+        } catch (final ParsingException e) {
+            throw new ParsingRuntimeException("Failed to include " + sourceName, e, SourceInfo.UNKNOWN);
         }
     }
 

@@ -19,7 +19,7 @@ public class Fn extends SpecialForm {
      * Creates a new instance of function
      */
     public Fn() {
-        super("fn", "params", "exprs");
+        super("fn", "(params)", "(exprs)");
     }
 
     @Override

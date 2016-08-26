@@ -137,6 +137,7 @@ Data types
   If index is negative it will be treated as index from the end of the list. 
   
     ('(1 2 3 4) -1) --> 4
+    
   Vectors and lists support additional operations. For example if supplied with two indices it will return a slice of the
   list.
   
@@ -484,9 +485,7 @@ Functions
     (rec 1000) --> Will fail
     (rec2 5000) --> Will complete successfully
   
-  
-  Semblance recurs
-  
+
   **SET**
 
     (set (name value) [(name value) ...])
@@ -675,3 +674,66 @@ Macros
   Example defines a `defun` macro which takes three parameters `name`, `params` and `body` and binds to symbol
   in `name` a function with parameters `params` and `body` of s-expressions.
 
+
+Standard Library
+----------------
+
+### Java interop
+
+  See separate document java-interop.md
+
+### Concurrent
+
+  Semblance has some basic features allowing to execute code concurrently. How much concurrency is there depends 
+  on underlying JVM implementation.
+ 
+  Concurrent constructs are defined in `async` namespace and are available only if interpreter was started with
+  `Concurrent` context modifier.
+
+  Concurrent operations usually return `future` which is an opaque wrapper containing value somewhere inside.
+  Value can be extracted using `async/await`.
+  
+  Concurrent library is not complete and in development.
+  
+  **ASYNC/RUN**
+  
+    (async/run (s-expression)*)
+    
+  Runs s-expressions concurrently, returns a future.
+  
+    (async/run (+ 2 2)) ---> future, which will eventually return 4
+  
+  **ASYNC/GO**
+  
+    (async/go function (parameters))
+    
+  Concurrently performs a function call, providing function with supplied parameters.
+   
+    (async/go + (2 2))                  --> future, which will eventually return 4
+    (async/go (fn (x y) (+ x y)) (2 2)) --> future, which will eventuall return 4
+   
+  **ASYNC/CHECK**
+  
+    (async/check future-value)
+    
+  Checks if the future-value has been computed. Returns either `T` or `F`
+  
+    (set1 x (async/go + (2 2)))  --> x will be bound to a future
+    (async/check x)              --> check will return T if future is computed and its value can be retrieved 
+    
+  **ASYNC/AWAIT**
+   
+    (async/await future-value)
+    
+  Waits till the future-value has been computed. Returns future value or NIL, if future failed
+  
+    (set1 x (async/go + (2 2)))  --> x will be bound to a future
+    (async/await x)              --> will wait till the future is computed and then return 4
+   
+  **ASYNC/DELAY**
+  
+    (async/delay ms)
+    
+   Puts current thread to sleep for given number of milliseconds
+   
+    (async/delay 500) --> delay for half a second

@@ -17,7 +17,12 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings("InstanceMethodNamingConvention")
 public class JavaInterpreterTest {
+
+    private static Interpreter createJavaInterpreter() {
+        return new Interpreter(new JavaBridge());
+    }
 
     @Test
     public void testShouldHaveJavaNamespace() throws Exception {
@@ -173,7 +178,6 @@ public class JavaInterpreterTest {
         assertThat(pojo.getIntValue(), is(150));
     }
 
-
     @Test
     public void testSetStringField() throws Exception {
         final Interpreter interpreter = createJavaInterpreter();
@@ -222,7 +226,6 @@ public class JavaInterpreterTest {
         assertThat(value, instanceOf(SList.class));
         assertThat(value, Is.<LispValue>is(smartList("one", "two")));
     }
-
 
     @Test
     public void testGetStrFieldViaGet() throws Exception {
@@ -310,6 +313,7 @@ public class JavaInterpreterTest {
     public void testStaticFieldGet() throws Exception {
         final Interpreter interpreter = createJavaInterpreter();
 
+        //noinspection AssignmentToStaticFieldFromInstanceMethod
         Pojo.sLong = 42L;
         final LispValue value = interpreter.run("(java/get net.ninjacat.semblance.java.Pojo.sLong)");
 
@@ -330,9 +334,5 @@ public class JavaInterpreterTest {
         final Interpreter interpreter = createJavaInterpreter();
 
         interpreter.run("(java/new net.ninjacat.semblance.java.Pojo2)");
-    }
-
-    private static Interpreter createJavaInterpreter() {
-        return new Interpreter(new JavaBridge());
     }
 }

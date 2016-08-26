@@ -11,7 +11,7 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf;
 import static org.junit.Assert.assertThat;
 
 @SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-public class AsyncTest {
+public class AsyncRunTest {
 
     @Test
     public void shouldCreateOpaqueValue() throws Exception {

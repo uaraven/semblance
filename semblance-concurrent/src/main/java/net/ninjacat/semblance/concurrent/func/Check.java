@@ -7,20 +7,21 @@ import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
+import net.ninjacat.semblance.utils.Values;
 
 import static net.ninjacat.semblance.utils.Values.asOpaque;
 import static net.ninjacat.semblance.utils.Values.isOpaque;
 
 /**
- * Awaits for a future completion, returns future result.
+ * Checks for a future completion, returns {@code T} or {@code F}
  */
-public class Await extends BuiltInFunction {
+public class Check extends BuiltInFunction {
 
     /**
-     * Constructor
+     * Constructor for check function
      */
-    public Await() {
-        super("await", "future");
+    public Check() {
+        super("check", "future");
     }
 
     @Override
@@ -32,9 +33,9 @@ public class Await extends BuiltInFunction {
         if (isOpaque(parameter) && parameter instanceof SFuture) {
             final OpaqueValue<?> opaqueValue = asOpaque(parameter);
             final SFuture future = (SFuture) opaqueValue;
-            return future.getValue().getResult().getValue();
+            return future.getValue().isCompleted() ? Values.T : Values.F;
         } else {
-            return parameter;
+            return Values.T;
         }
     }
 }

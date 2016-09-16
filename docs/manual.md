@@ -295,13 +295,16 @@ Functions
    
     (- param*)
     
-  Arithmetic subtraction or collection subtraction. 
+  Arithmetic subtraction or collection subtraction or negation. 
   
   If the first parameter is number, then subtracts second parameter from the first, then, if there are more 
   parameters, subtracts third parameter from the result, etc.
+  If there is only one number parameter then negation of that parameter is returned.
   If the first parameter is collection then this operation will return collection of the same type as first parameter
   which will be a complement of all other parameters in first parameter. 
   
+    (- 3) -> -3
+    (- -3) -> 3
     (- 3 2 1) -> 0
     (- '(1 2 3 4) [1] '(2 4)) -> (3)
     (- [1 2 3] '(1 5)) -> (2 3)

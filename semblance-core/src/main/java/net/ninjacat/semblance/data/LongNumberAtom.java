@@ -96,6 +96,11 @@ public class LongNumberAtom extends NumberAtom<Long> {
     }
 
     @Override
+    public NumberAtom<?> neg() {
+        return new LongNumberAtom(-value);
+    }
+
+    @Override
     public boolean isInfinity() {
         return false;
     }

@@ -1,5 +1,7 @@
 package net.ninjacat.semblance;
 
+import net.ninjacat.semblance.data.SymbolAtom;
+import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
@@ -14,6 +16,8 @@ import net.ninjacat.semblance.utils.Values;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static net.ninjacat.semblance.utils.Values.list;
 
 /**
  * Semblance interpreter.
@@ -141,6 +145,32 @@ public class Interpreter {
     }
 
     /**
+     * Shortcut to call a single function, may be useful for embedding
+     *
+     * @param functionName Name of the function to call
+     * @param parameters   function parameters
+     * @return function result
+     */
+    public LispValue callFunction(final SymbolAtom functionName, final SList parameters) {
+        final LispCollection call = list(functionName).append(parameters);
+        return rootContext.evaluateProgram(list(call));
+    }
+
+    /**
+     * Executes supplied program in root context of this interpreter. All bindings are stored and available on the
+     * next call of {@link #parse(String)} or {@link #run(String)} )} method.
+     *
+     * @param program Source of the program to execute
+     * @return Result of the evaluation
+     * @throws ParsingException If source contains errors.
+     */
+    public LispValue parse(final String program) throws ParsingException {
+        final Reader reader = new Reader();
+        final SList parsed = reader.readString(program);
+        return rootContext.evaluateHere(parsed);
+    }
+
+    /**
      * @return This interpreter's root context.
      */
     public Context getRootContext() {
@@ -150,5 +180,4 @@ public class Interpreter {
     private LispValue doRun(final SList program) {
         return rootContext.evaluateProgram(program);
     }
-
 }

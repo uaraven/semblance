@@ -95,6 +95,11 @@ public class DoubleNumberAtom extends NumberAtom {
         return new DoubleNumberAtom(value * (Double) expandOther(other).getValue());
     }
 
+    @Override
+    public NumberAtom<?> neg() {
+        return new DoubleNumberAtom(-value);
+    }
+
     @SuppressWarnings("InstanceMethodNamingConvention")
     @Override
     public boolean eq(final NumberAtom other) {

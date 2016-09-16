@@ -98,6 +98,10 @@ public class RootContext extends BaseContext {
         return context.evaluateBlock(readProgram(source));
     }
 
+    private static LispValue unwrapWrappers(final LispValue value) {
+        return value instanceof WrappedValue ? ((WrappedValue) value).getValue() : value;
+    }
+
     /**
      * Evaluates program in the this context. Any bindings made by the program are not stored in the context.
      *
@@ -147,6 +151,17 @@ public class RootContext extends BaseContext {
         return unwrapWrappers(evaluateBlock(program));
     }
 
+    /**
+     * Evaluates source in this context, all binding done in the program are stored in this root context indefinitely.
+     *
+     * @param source Program source.
+     * @return Result of program evaluation.
+     * @throws ParsingException If program contains source errors.
+     */
+    public LispValue evaluateHere(final SList source) throws ParsingException {
+        return unwrapWrappers(evaluateBlock(source));
+    }
+
     @Override
     public List<String> getSourceFolders() {
         return Collections.unmodifiableList(sourceFolders);
@@ -156,10 +171,6 @@ public class RootContext extends BaseContext {
     public void setSourceFolders(final List<String> sourceFolders) {
         this.sourceFolders.clear();
         this.sourceFolders.addAll(sourceFolders);
-    }
-
-    private static LispValue unwrapWrappers(final LispValue value) {
-        return value instanceof WrappedValue ? ((WrappedValue) value).getValue() : value;
     }
 
     private void bindSpecialForms() {

@@ -26,21 +26,6 @@ public class Sub extends BuiltInFunction {
         super("-", "&rest", "values");
     }
 
-    @Override
-    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
-        final LispValue head = evaluated.head();
-        if (isNumber(head)) {
-            return subtract(evaluated);
-        }
-        if (isCollection(head)) {
-            return difference(evaluated);
-        }
-        if (isMap(head)) {
-            return mapDifference(evaluated);
-        }
-        throw new TypeMismatchException("NUMBER, COLLECTION or MAP", head, evaluated.getSourceInfo());
-    }
-
     private static LispValue difference(final LispCollection evaluated) {
         final LispCollection head = asCollection(evaluated.head());
         final List<LispValue> collection = new ArrayList<>(head.getCollection());
@@ -58,9 +43,26 @@ public class Sub extends BuiltInFunction {
         return result;
     }
 
+    @Override
+    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
+        final LispValue head = evaluated.head();
+        if (isNumber(head)) {
+            return subtract(evaluated);
+        }
+        if (isCollection(head)) {
+            return difference(evaluated);
+        }
+        if (isMap(head)) {
+            return mapDifference(evaluated);
+        }
+        throw new TypeMismatchException("NUMBER, COLLECTION or MAP", head, evaluated.getSourceInfo());
+    }
 
     private LispValue subtract(final LispCollection evaluated) {
         NumberAtom accumulator = asNumber(evaluated.head());
+        if (evaluated.length() == 1) {
+            return accumulator.neg();
+        }
         for (final LispValue value : evaluated.tail()) {
             //noinspection unchecked
             accumulator = accumulator.sub(asNumber(value));

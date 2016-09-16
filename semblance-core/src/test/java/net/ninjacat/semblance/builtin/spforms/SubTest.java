@@ -106,4 +106,64 @@ public class SubTest {
         assertThat("Should subtract lists", value, is((LispValue)
                 new SMap(Maps.<LispValue, LispValue>of(symbol(":a"), number(1)), SourceInfo.UNKNOWN)));
     }
+
+    @Test
+    public void shouldNegatePositiveLong() throws Exception {
+        final SList params = list(number(42));
+        final Sub sub = new Sub();
+
+        final LispValue value = sub.apply(context, params);
+
+        assertThat("Should negate long", value, is(number(-42)));
+    }
+
+    @Test
+    public void shouldNegateNegativeLong() throws Exception {
+        final SList params = list(number(-42));
+        final Sub sub = new Sub();
+
+        final LispValue value = sub.apply(context, params);
+
+        assertThat("Should negate long", value, is(number(42)));
+    }
+
+    @Test
+    public void shouldNegatePositiveDouble() throws Exception {
+        final SList params = list(number(42.42));
+        final Sub sub = new Sub();
+
+        final LispValue value = sub.apply(context, params);
+
+        assertThat("Should negate long", value, is(number(-42.42)));
+    }
+
+    @Test
+    public void shouldNegateNegativeDouble() throws Exception {
+        final SList params = list(number(-42.42));
+        final Sub sub = new Sub();
+
+        final LispValue value = sub.apply(context, params);
+
+        assertThat("Should negate long", value, is(number(42.42)));
+    }
+
+    @Test
+    public void shouldNegatePositiveBigInt() throws Exception {
+        final SList params = list(number("42"));
+        final Sub sub = new Sub();
+
+        final LispValue value = sub.apply(context, params);
+
+        assertThat("Should negate long", value, is(number("-42")));
+    }
+
+    @Test
+    public void shouldNegateNegativeBigInt() throws Exception {
+        final SList params = list(number("-42"));
+        final Sub sub = new Sub();
+
+        final LispValue value = sub.apply(context, params);
+
+        assertThat("Should negate long", value, is(number("42")));
+    }
 }

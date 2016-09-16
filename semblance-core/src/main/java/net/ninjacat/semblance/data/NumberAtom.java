@@ -89,6 +89,14 @@ public abstract class NumberAtom<T> extends Atom {
     public abstract NumberAtom<?> mul(NumberAtom<?> other);
 
     /**
+     * Calculates negation of this number
+     *
+     * @return Negation of this number
+     */
+
+    public abstract NumberAtom<?> neg();
+
+    /**
      * @return true if this number represents infinity
      */
     public abstract boolean isInfinity();
@@ -192,4 +200,5 @@ public abstract class NumberAtom<T> extends Atom {
     protected abstract NumberAtom<?> convertToLong();
 
     protected abstract NumberAtom<?> convertToDouble();
+
 }

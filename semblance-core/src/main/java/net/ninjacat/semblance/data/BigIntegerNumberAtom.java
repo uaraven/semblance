@@ -35,6 +35,14 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
         this.value = value;
     }
 
+    private static NumberAtom<?> make(final BigInteger value) {
+        if (0 < value.compareTo(MIN_LONG) && 0 > value.compareTo(MAX_LONG)) {
+            return new LongNumberAtom(value.longValue());
+        } else {
+            return new BigIntegerNumberAtom(value);
+        }
+    }
+
     @Override
     public NumberAtom<?> add(final NumberAtom<?> other) {
         final NumberAtom<?> self = expandIfNeeded(other);
@@ -91,10 +99,14 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     }
 
     @Override
+    public NumberAtom<?> neg() {
+        return new BigIntegerNumberAtom(value.negate());
+    }
+
+    @Override
     public boolean isInfinity() {
         return false;
     }
-
 
     @SuppressWarnings("InstanceMethodNamingConvention")
     @Override
@@ -160,14 +172,6 @@ public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
     @Override
     public int hashCode() {
         return value.hashCode();
-    }
-
-    private static NumberAtom<?> make(final BigInteger value) {
-        if (0 < value.compareTo(MIN_LONG) && 0 > value.compareTo(MAX_LONG)) {
-            return new LongNumberAtom(value.longValue());
-        } else {
-            return new BigIntegerNumberAtom(value);
-        }
     }
 
     @Override

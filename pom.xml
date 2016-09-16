@@ -25,6 +25,7 @@
         <module>semblance-core</module>
         <module>semblance-cli</module>
         <module>semblance-java</module>
+        <module>semblance-java8</module>
         <module>semblance-concurrent</module>
     </modules>
 

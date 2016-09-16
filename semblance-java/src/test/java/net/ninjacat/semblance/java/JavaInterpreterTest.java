@@ -11,6 +11,9 @@ import org.hamcrest.core.Is;
 import org.hamcrest.core.IsCollectionContaining;
 import org.junit.Test;
 
+import static net.ninjacat.semblance.java.JavaInterop.toLisp;
+import static net.ninjacat.semblance.java.SEnum.Value1;
+import static net.ninjacat.semblance.java.SEnum.Value2;
 import static net.ninjacat.semblance.utils.Values.*;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
@@ -318,6 +321,26 @@ public class JavaInterpreterTest {
         final LispValue value = interpreter.run("(java/get net.ninjacat.semblance.java.Pojo.sLong)");
 
         assertThat(value, Is.<LispValue>is(longN(42)));
+    }
+
+    @Test
+    public void testEnum() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+        interpreter.getRootContext().bind(symbol("se"), toLisp(new EnumPojo()));
+
+        final LispValue value = interpreter.run("(se get)");
+
+        assertThat(value, Is.is(JavaInterop.toLisp(Value1)));
+    }
+
+    @Test
+    public void testEnum2() throws Exception {
+        final Interpreter interpreter = createJavaInterpreter();
+        interpreter.getRootContext().bind(symbol("se"), toLisp(new EnumPojo()));
+
+        final LispValue value = interpreter.run("(se convert 'Value1)");
+
+        assertThat(value, Is.is(JavaInterop.toLisp(Value2)));
     }
 
     @Test

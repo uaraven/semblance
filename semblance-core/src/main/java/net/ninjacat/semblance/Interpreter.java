@@ -43,6 +43,14 @@ public class Interpreter {
         }
     }
 
+    private static Path getDestinationFileName(final File source, final String destinationFolder) {
+        final Path sourceFileName = Paths.get(source.getAbsolutePath()).getFileName();
+        final String destFileName = sourceFileName.getName(0).toString();
+        final int extPos = destFileName.lastIndexOf('.');
+        final String destName = (extPos > 0 ? destFileName.substring(0, extPos) : destFileName) + COMPILED_EXT;
+        return Paths.get(destinationFolder, destName);
+    }
+
     /**
      * Runs script from an input stream.
      *
@@ -68,6 +76,17 @@ public class Interpreter {
     public LispValue run(final String text) throws ParsingException {
         final Reader reader = new Reader();
         final SList program = reader.readString(text);
+        return doRun(program);
+    }
+
+    /**
+     * Runs parsed program
+     *
+     * @param program {@link SList} containing parsed program
+     * @return Value returned from string
+     * @throws SemblanceRuntimeException In case of runtime exception.
+     */
+    public LispValue runProgram(final SList program) {
         return doRun(program);
     }
 
@@ -126,14 +145,6 @@ public class Interpreter {
      */
     public Context getRootContext() {
         return rootContext;
-    }
-
-    private static Path getDestinationFileName(final File source, final String destinationFolder) {
-        final Path sourceFileName = Paths.get(source.getAbsolutePath()).getFileName();
-        final String destFileName = sourceFileName.getName(0).toString();
-        final int extPos = destFileName.lastIndexOf('.');
-        final String destName = (extPos > 0 ? destFileName.substring(0, extPos) : destFileName) + COMPILED_EXT;
-        return Paths.get(destinationFolder, destName);
     }
 
     private LispValue doRun(final SList program) {

@@ -15,6 +15,7 @@ public enum Operation {
     DROP(":drop"),
     REVERSE(":reverse"),
     SORT(":sort"),
+    SORTF(":sortf"),
     MAP(":map"),
     FILTER(":filter"),
     APPEND(":append"),

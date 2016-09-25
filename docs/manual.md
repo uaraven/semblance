@@ -41,7 +41,7 @@ and
     (println :v)
 
 In the first program, symbol `v` is bound to result of computation of `1 + 2`. Statement `(println v)` will
-have `var` evaluated prior to calling `println` function and output will be **3**
+have `v` evaluated prior to calling `println` function and output will be **3**
 
 Second program does not have symbol `v` bound to any value, so exception will be thrown.
 
@@ -151,21 +151,21 @@ Data types
     
   Other supported operations are:
     
-   - :length - take number of elements in a collection
-   - :last - take the last element of collection 
-   - :reverse - reverse the collection
-   - :take n - take first `n` elements of collection
-   - :drop n - take all but first `n` elements of collection
-   - :sort - sort collection. `:sort` may accept additional parameter `:desc` to sort in descending order. Attempt to
+   - `:length` - take number of elements in a collection
+   - `:last` - take the last element of collection 
+   - `:reverse` - reverse the collection
+   - `:take n` - take first `n` elements of collection
+   - `:drop n` - take all but first `n` elements of collection
+   - `:sort` - sort collection. `:sort` may accept additional parameter `:desc` to sort in descending order. Attempt to
      sort a collection which holds elements of different types will cause runtime error.
-   - :map - apply a function to each element of the collection. Function that accepts one parameter
+   - `:map` - apply a function to each element of the collection. Function that accepts one parameter
      should be supplied as additional parameter to `:map`
-   - :filter - apply a predicate function to each element of the collection. If function returns **T** then
+   - `:filter` - apply a predicate function to each element of the collection. If function returns **T** then
      that element is included in the resulting collection. `:filter` requires one parameter that is 
      unary function that returns either **T** or **F**.
-   - :append - adds parameters to a collection. If there is only one parameter and that parameter is a collection,
+   - `:append` - adds parameters to a collection. If there is only one parameter and that parameter is a collection,
      then this parameter will be unwrapped and its elements will be appended to a collection
-   - :prepend - same as append, but elements are inserted at the beginning of the collection. Both `:append` and 
+   - `:prepend` - same as append, but elements are inserted at the beginning of the collection. Both `:append` and 
      `:prepend` create new collection and do not modify existing
     
   Some of keyword operations can accept parameters.
@@ -191,6 +191,8 @@ Data types
     
   Though lists and vectors support the same operations their performance can be very different. Vectors are fast when
   accessing items by index, lists are fast when evaluating tail or appending/prepending values.
+  
+  Vectors are implemented as arrays while lists are linked lists.
     
   **MAP**
   
@@ -216,7 +218,7 @@ Data types
   
     (contains collection element)
     
-  Checks whether `collection` contains an `element`. If `collection` is a map, then check if key equal to  `element` is
+  Checks whether `collection` contains an `element`. If `collection` is a map, then check if key equal to `element` is
   present in the map. For list and vector linear search for element is performed.
   Result is either **T** or **F**
   
@@ -279,8 +281,13 @@ Functions
   Depending on type of first parameter following operations are performed:
     - Number - addition.
     - String - concatenation.
-    - Collection - union. resulting collection will be of the same type as first parameter
     - Map - union
+    - Collection - union. resulting collection will be of the same type as first parameter. This means you can 
+      compute union of list and vector.
+        
+          (+ '(1 2) [3 4])  -> (1 2 3 4)
+          (+ [1 2] '(3 4))  -> [1 2 3 4]
+          
     
   If any of the other parameters' type is different from the first parameter's type then `TypeMismatchException` will
   be thrown. 

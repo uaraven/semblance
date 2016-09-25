@@ -45,6 +45,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         addOperation(DROP, new DropOperation());
         addOperation(REVERSE, new ReverseOperation());
         addOperation(SORT, new SortOperation());
+        addOperation(SORTF, new SortFuncOperation());
         addOperation(MAP, new MapOperation());
         addOperation(FILTER, new FilterOperation());
         addOperation(APPEND, new AppendOperation());

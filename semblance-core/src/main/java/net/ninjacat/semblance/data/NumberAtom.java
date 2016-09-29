@@ -14,6 +14,8 @@ import static net.ninjacat.semblance.utils.Values.asNumber;
 @SuppressWarnings({"BooleanMethodNameMustStartWithQuestion", "InstanceMethodNamingConvention"})
 public abstract class NumberAtom<T> extends Atom {
 
+    private static final long serialVersionUID = -8962035894103762183L;
+
     protected NumberAtom() {
     }
 

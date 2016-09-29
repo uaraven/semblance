@@ -10,6 +10,8 @@ import java.math.BigInteger;
 @SuppressWarnings("InstanceMethodNamingConvention")
 public class LongNumberAtom extends NumberAtom<Long> {
 
+    private static final long serialVersionUID = 2837138285306359797L;
+
     private final long value;
 
     /**
@@ -31,6 +33,12 @@ public class LongNumberAtom extends NumberAtom<Long> {
     public LongNumberAtom(final long value, final SourceInfo sourceInfo) {
         super(sourceInfo);
         this.value = value;
+    }
+
+    private static boolean willOverflow(final long l1, final long l2) {
+        final long maximum = Long.signum(l1) == Long.signum(l2) ? Long.MAX_VALUE : Long.MIN_VALUE;
+
+        return (0 != l1 && (0 < l2 && l2 > maximum / l1 || 0 > l2 && l2 < maximum / l1));
     }
 
     @SuppressWarnings("unchecked")
@@ -190,12 +198,6 @@ public class LongNumberAtom extends NumberAtom<Long> {
         } else {
             return this;
         }
-    }
-
-    private boolean willOverflow(final long l1, final long l2) {
-        final long maximum = Long.signum(l1) == Long.signum(l2) ? Long.MAX_VALUE : Long.MIN_VALUE;
-
-        return (0 != l1 && (0 < l2 && l2 > maximum / l1 || 0 > l2 && l2 < maximum / l1));
     }
 
 

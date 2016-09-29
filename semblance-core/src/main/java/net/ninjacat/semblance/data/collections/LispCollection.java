@@ -28,7 +28,9 @@ import static net.ninjacat.semblance.utils.Values.*;
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public abstract class LispCollection implements Iterable<LispValue>, DebugInfoProvider, JavaConvertible, LispCallable {
 
+    private static final long serialVersionUID = -7182398711351245106L;
     private static final Map<SymbolAtom, ListOperation> OPERATIONS = new ConcurrentHashMap<>();
+
     private final SourceInfo sourceInfo;
 
     LispCollection() {
@@ -51,6 +53,10 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         addOperation(APPEND, new AppendOperation());
         addOperation(PREPEND, new PrependOperation());
         addOperation(LENGTH, new LengthOperation());
+    }
+
+    static void addOperation(final Operation name, final ListOperation operation) {
+        OPERATIONS.put(name.asSymbol(), operation);
     }
 
     /**
@@ -223,10 +229,6 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         }
     }
 
-    protected final void addOperation(final Operation name, final ListOperation operation) {
-        OPERATIONS.put(name.asSymbol(), operation);
-    }
-
     private int normalize(final int index) {
         if (index >= 0) {
             return index;
@@ -255,7 +257,7 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         }
     }
 
-    protected enum ValueToString implements Func<String, LispValue> {
+    enum ValueToString implements Func<String, LispValue> {
         REPR;
 
         @Override

@@ -16,6 +16,8 @@ import static net.ninjacat.semblance.utils.Values.symbol;
  */
 public class SymbolAtom extends Atom {
 
+    private static final long serialVersionUID = 2760121266739038022L;
+
     private final String value;
     private final SymbolAtom localName;
     private final SymbolAtom namespace;

@@ -13,6 +13,8 @@ import javax.annotation.Nonnull;
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public abstract class AbstractCallable implements LispCallable {
 
+    private static final long serialVersionUID = 7194540722138030797L;
+
     @Override
     public int compareTo(@Nonnull final LispValue other) {
         //noinspection ObjectEquality

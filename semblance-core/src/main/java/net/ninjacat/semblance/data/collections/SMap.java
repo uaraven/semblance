@@ -25,6 +25,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings("ClassNamingConvention")
 public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
 
+    private static final long serialVersionUID = -4918298073780435068L;
+
     private static final SymbolAtom NAME = new SymbolAtom("--map-access");
     private final SourceInfo sourceInfo;
     private final Map<LispValue, LispValue> contents;
@@ -179,6 +181,25 @@ public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
      */
     public void addAll(final SMap map) {
         contents.putAll(map.contents);
+    }
+
+    /**
+     * Creates a new map which includes all the elements from this map and all the elements from the other map
+     * which do not exist in the first map
+     *
+     * @param other Other map to join with this map
+     * @return New map with elements from two maps joined
+     */
+    public SMap join(final SMap other) {
+        final SMap result = duplicate();
+
+        for (final LispValue key : other.keys()) {
+            if (!contains(key)) {
+                result.put(key, other.get(key));
+            }
+        }
+
+        return result;
     }
 
     @Override

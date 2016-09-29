@@ -10,6 +10,8 @@ import javax.annotation.Nonnull;
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public abstract class SpecialForm extends ParametrizedCallable {
 
+    private static final long serialVersionUID = -714733247319284122L;
+
     /**
      * Creates new instance of the special form.
      *

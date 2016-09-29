@@ -10,6 +10,8 @@ import net.ninjacat.semblance.evaluator.Context;
  */
 public class List extends SpecialForm {
 
+    private static final long serialVersionUID = -8791189222834020669L;
+
     /**
      * Creates new instance of list special form
      */

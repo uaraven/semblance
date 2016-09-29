@@ -30,6 +30,8 @@ import static java.util.Collections.unmodifiableList;
  */
 public class SList extends LispCollection {
 
+    private static final long serialVersionUID = -228096389065534835L;
+
     private static final SymbolAtom NAME = new SymbolAtom("--list-get");
 
     private final List<LispValue> collection;

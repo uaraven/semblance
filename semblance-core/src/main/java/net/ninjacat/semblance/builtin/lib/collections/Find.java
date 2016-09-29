@@ -14,6 +14,8 @@ import static net.ninjacat.semblance.utils.Values.number;
 @SuppressWarnings("ClassNamingConvention")
 public class Find extends CollectionBuiltIn {
 
+    private static final long serialVersionUID = -8006057228349230722L;
+
     /**
      * Create new instance.
      */

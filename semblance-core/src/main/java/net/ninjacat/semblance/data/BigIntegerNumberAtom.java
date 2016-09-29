@@ -10,6 +10,8 @@ import java.math.BigInteger;
 @SuppressWarnings("ObjectEquality")
 public class BigIntegerNumberAtom extends NumberAtom<BigInteger> {
 
+    private static final long serialVersionUID = -1773564823733513827L;
+
     private static final BigInteger MAX_LONG = BigInteger.valueOf(Long.MAX_VALUE);
     private static final BigInteger MIN_LONG = BigInteger.valueOf(Long.MIN_VALUE);
 

@@ -13,6 +13,8 @@ import javax.annotation.Nonnull;
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public abstract class BuiltInFunction extends ParametrizedCallable {
 
+    private static final long serialVersionUID = -5282625835226066711L;
+
     /**
      * Creates new instance of the built-in funtion.
      *

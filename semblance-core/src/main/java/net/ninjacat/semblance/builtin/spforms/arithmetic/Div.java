@@ -14,6 +14,8 @@ import static net.ninjacat.semblance.utils.Values.asNumber;
 @SuppressWarnings("ClassNamingConvention")
 public class Div extends BuiltInFunction {
 
+    private static final long serialVersionUID = -1246180267068398289L;
+
     /**
      * Creates new instance
      */

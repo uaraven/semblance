@@ -9,6 +9,8 @@ import net.ninjacat.semblance.evaluator.Context;
  */
 public class PositionalParameter extends BaseParameter {
 
+    private static final long serialVersionUID = 415121092676132413L;
+
     /**
      * Create new instance of formal parameter.
      *

@@ -14,6 +14,7 @@ import java.util.NoSuchElementException;
  */
 public class NilCollection extends SList {
     public static final NilCollection INSTANCE = new NilCollection();
+    private static final long serialVersionUID = -912504802815726996L;
     private static final String NAME = "NIL";
     private static final Iterator<LispValue> NIL_ITERATOR = new Iterator<LispValue>() {
         @Override
@@ -31,7 +32,6 @@ public class NilCollection extends SList {
             throw new UnsupportedOperationException();
         }
     };
-
 
     NilCollection() {
         super(Collections.<LispValue>emptyList());

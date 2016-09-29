@@ -1,9 +1,13 @@
 package net.ninjacat.semblance.java;
 
+import java.io.Serializable;
+
 /**
  * Java representation of Semblance symbol. Immutable class that holds its value.
  */
-public class Symbol {
+public class Symbol implements Serializable {
+    private static final long serialVersionUID = -5794198489049556109L;
+
     public final String value;
 
     /**

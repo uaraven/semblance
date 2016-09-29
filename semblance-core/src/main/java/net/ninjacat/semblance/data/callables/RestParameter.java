@@ -8,6 +8,8 @@ import net.ninjacat.semblance.evaluator.Context;
  * Created on 28/02/15.
  */
 class RestParameter extends BaseParameter {
+    private static final long serialVersionUID = -975579862750810246L;
+
     RestParameter(final SymbolAtom name) {
         super(name);
     }

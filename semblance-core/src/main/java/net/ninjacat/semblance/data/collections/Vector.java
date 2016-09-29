@@ -32,6 +32,8 @@ import static java.util.Collections.unmodifiableList;
  */
 public class Vector extends LispCollection {
 
+    private static final long serialVersionUID = -2646116337995207839L;
+
     private final List<LispValue> collection;
 
     /**

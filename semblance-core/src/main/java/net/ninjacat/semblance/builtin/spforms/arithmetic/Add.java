@@ -19,29 +19,13 @@ import static net.ninjacat.semblance.utils.Values.*;
 @SuppressWarnings("ClassNamingConvention")
 public class Add extends BuiltInFunction {
 
+    private static final long serialVersionUID = -2093648011052200445L;
+
     /**
      * Create instance of Add class
      */
     public Add() {
         super("+", "&rest", "values");
-    }
-
-    @Override
-    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
-        final LispValue head = evaluated.head();
-        if (isNumber(head)) {
-            return numericAdd(evaluated);
-        }
-        if (isString(head)) {
-            return concatenate(evaluated);
-        }
-        if (isCollection(head)) {
-            return collectionUnion(evaluated);
-        }
-        if (isMap(head)) {
-            return mapUnion(evaluated);
-        }
-        throw new SemblanceRuntimeException("Invalid argument types", evaluated.getSourceInfo());
     }
 
     private static LispValue mapUnion(final LispCollection evaluated) {
@@ -75,5 +59,23 @@ public class Add extends BuiltInFunction {
             accumulator = accumulator.add(asNumber(value));
         }
         return accumulator;
+    }
+
+    @Override
+    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
+        final LispValue head = evaluated.head();
+        if (isNumber(head)) {
+            return numericAdd(evaluated);
+        }
+        if (isString(head)) {
+            return concatenate(evaluated);
+        }
+        if (isCollection(head)) {
+            return collectionUnion(evaluated);
+        }
+        if (isMap(head)) {
+            return mapUnion(evaluated);
+        }
+        throw new SemblanceRuntimeException("Invalid argument types", evaluated.getSourceInfo());
     }
 }

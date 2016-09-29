@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class OpaqueValue<T> implements LispValue, JavaConvertible {
 
+    private static final long serialVersionUID = 4510707306626965671L;
+
     private final T value;
 
     public OpaqueValue(@Nonnull final T value) {
@@ -51,15 +53,15 @@ public class OpaqueValue<T> implements LispValue, JavaConvertible {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
         if (!(o instanceof OpaqueValue)) {
             return false;
         }
-        final OpaqueValue<?> that = (OpaqueValue<?>) o;
-        return Objects.equals(value, that.value);
+        final OpaqueValue<?> other = (OpaqueValue<?>) o;
+        return Objects.equals(value, other.value);
     }
 
     @Override

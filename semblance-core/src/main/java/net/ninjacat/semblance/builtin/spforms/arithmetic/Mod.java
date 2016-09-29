@@ -14,6 +14,8 @@ import static net.ninjacat.semblance.utils.Values.asNumber;
 @SuppressWarnings("ClassNamingConvention")
 public class Mod extends BuiltInFunction {
 
+    private static final long serialVersionUID = 929088997444022603L;
+
     /**
      * Creates new instance
      */

@@ -8,6 +8,7 @@ import net.ninjacat.semblance.data.SymbolAtom;
  * Created on 28/02/15.
  */
 abstract class BaseParameter implements Parameter {
+    private static final long serialVersionUID = 5866176494734932354L;
     private final SymbolAtom name;
 
     BaseParameter(final SymbolAtom name) {

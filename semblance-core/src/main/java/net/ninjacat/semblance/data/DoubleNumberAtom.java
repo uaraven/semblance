@@ -9,6 +9,8 @@ import java.math.BigInteger;
  */
 public class DoubleNumberAtom extends NumberAtom {
 
+    private static final long serialVersionUID = -833290485763379177L;
+
     private final double value;
 
     /**

@@ -13,11 +13,17 @@ import static net.ninjacat.semblance.utils.Values.*;
  */
 public class Contains extends CollectionBuiltIn {
 
+    private static final long serialVersionUID = 4944553991648675782L;
+
     /**
      * Creates a new instance.
      */
     public Contains() {
         super("contains", "list-form", "value");
+    }
+
+    private static boolean isExistInMap(final SMap sMap, final LispValue itemToFind) {
+        return sMap.contains(itemToFind);
     }
 
     @Override
@@ -30,9 +36,5 @@ public class Contains extends CollectionBuiltIn {
         } else {
             return booleanAsAtom(findInCollection(asCollection(collection), itemToFind) >= 0);
         }
-    }
-
-    private static boolean isExistInMap(final SMap sMap, final LispValue itemToFind) {
-        return sMap.contains(itemToFind);
     }
 }

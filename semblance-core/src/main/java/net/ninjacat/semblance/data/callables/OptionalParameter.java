@@ -11,6 +11,8 @@ import net.ninjacat.smooth.utils.Option;
  * Created on 28/02/15.
  */
 public class OptionalParameter extends BaseParameter {
+    private static final long serialVersionUID = -1126573943727814990L;
+
     private final Option<LispValue> defaultValue;
     private final Option<SymbolAtom> suppliedFlagName;
 

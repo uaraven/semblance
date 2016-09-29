@@ -21,6 +21,8 @@ import static net.ninjacat.semblance.utils.Values.asCollection;
 @SuppressWarnings("ClassNamingConvention")
 public class Zip extends BuiltInFunction {
 
+    private static final long serialVersionUID = 7950490641077541932L;
+
     /**
      * Creates new instance
      */

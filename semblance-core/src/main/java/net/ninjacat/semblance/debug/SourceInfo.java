@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class SourceInfo implements Serializable {
     public static final SourceInfo UNKNOWN = new SourceInfo(0, 0);
-
+    private static final long serialVersionUID = -5509266557132831611L;
     private final int line;
     private final int position;
 

@@ -10,6 +10,8 @@ import javax.annotation.Nonnull;
  */
 public class StringAtom extends Atom {
 
+    private static final long serialVersionUID = -7581301973939536276L;
+
     private final String value;
 
     /**

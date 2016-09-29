@@ -30,6 +30,8 @@ import static net.ninjacat.semblance.utils.Values.*;
  * Created on 28/02/15.
  */
 public class Parameters implements Iterable<Parameter>, Serializable {
+    private static final long serialVersionUID = -7184845606247492580L;
+
     private static final SymbolAtom OPTIONAL = symbol("&optional");
     private static final SymbolAtom REST = symbol("&rest");
 
@@ -65,6 +67,42 @@ public class Parameters implements Iterable<Parameter>, Serializable {
         restParameter = Option.of(tempRest);
     }
 
+    private static Parameter createParameter(final LispValue value, final Sweeper sweeper) {
+        switch (sweeper) {
+            case Normal:
+                return createNormalParameter(value);
+            case Optional:
+                return createOptionalParamter(value);
+            case Rest:
+                return createRestParameter(value);
+        }
+        throw new UnexpectedValueException(value);
+    }
+
+    private static Parameter createRestParameter(final LispValue value) {
+        return new RestParameter(asSymbol(value));
+    }
+
+    private static Parameter createNormalParameter(final LispValue value) {
+        return new PositionalParameter(asSymbol(value));
+    }
+
+    private static Parameter createOptionalParamter(final LispValue value) {
+        if (isSymbol(value)) {
+            return new OptionalParameter(asSymbol(value),
+                    Option.<LispValue>absent(), Option.<SymbolAtom>absent());
+        } else if (isList(value)) {
+            final SList list = asSList(value);
+            final SymbolAtom name = asSymbol(list.head());
+            final LispValue defaultValue = list.tail().head();
+            final Option<SymbolAtom> flagName = 2 < list.length()
+                    ? Option.of(asSymbol(list.tail().tail().head()))
+                    : Option.<SymbolAtom>absent();
+            return new OptionalParameter(name, Option.of(defaultValue), flagName);
+        } else {
+            throw new UnexpectedValueException(value);
+        }
+    }
 
     @Override
     public Iterator<Parameter> iterator() {
@@ -127,43 +165,6 @@ public class Parameters implements Iterable<Parameter>, Serializable {
         }
         if (restParameter.isPresent()) {
             restParameter.get().bindInContext(context, params);
-        }
-    }
-
-    private Parameter createParameter(final LispValue value, final Sweeper sweeper) {
-        switch (sweeper) {
-            case Normal:
-                return createNormalParameter(value);
-            case Optional:
-                return createOptionalParamter(value);
-            case Rest:
-                return createRestParameter(value);
-        }
-        throw new UnexpectedValueException(value);
-    }
-
-    private Parameter createRestParameter(final LispValue value) {
-        return new RestParameter(asSymbol(value));
-    }
-
-    private Parameter createNormalParameter(final LispValue value) {
-        return new PositionalParameter(asSymbol(value));
-    }
-
-    private Parameter createOptionalParamter(final LispValue value) {
-        if (isSymbol(value)) {
-            return new OptionalParameter(asSymbol(value),
-                    Option.<LispValue>absent(), Option.<SymbolAtom>absent());
-        } else if (isList(value)) {
-            final SList list = asSList(value);
-            final SymbolAtom name = asSymbol(list.head());
-            final LispValue defaultValue = list.tail().head();
-            final Option<SymbolAtom> flagName = 2 < list.length()
-                    ? Option.of(asSymbol(list.tail().tail().head()))
-                    : Option.<SymbolAtom>absent();
-            return new OptionalParameter(name, Option.of(defaultValue), flagName);
-        } else {
-            throw new UnexpectedValueException(value);
         }
     }
 

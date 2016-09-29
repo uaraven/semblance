@@ -21,6 +21,8 @@ import static net.ninjacat.semblance.utils.Values.*;
 @SuppressWarnings("ClassNamingConvention")
 public class Mul extends BuiltInFunction {
 
+    private static final long serialVersionUID = 4792075918569999688L;
+
     /**
      * Creates new instance
      */
@@ -28,19 +30,7 @@ public class Mul extends BuiltInFunction {
         super("*", "&rest", "values");
     }
 
-    @Override
-    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
-        final LispValue head = evaluated.head();
-        if (isNumber(head)) {
-            return numberMultiplication(evaluated);
-        } else if (isCollection(head)) {
-            return collectionMultiplication(evaluated);
-        } else {
-            throw new TypeMismatchException("NUMBER or COLLECTION", head, evaluated.getSourceInfo());
-        }
-    }
-
-    private LispValue collectionMultiplication(final LispCollection evaluated) {
+    private static LispValue collectionMultiplication(final LispCollection evaluated) {
         if (evaluated.length() != 2) {
             throw new ParameterException("Exactly two parameters expected for collection multiplication", evaluated.getSourceInfo());
         }
@@ -55,7 +45,7 @@ public class Mul extends BuiltInFunction {
         }
     }
 
-    private LispValue cartesianProduct(final LispCollection collection, final LispCollection other) {
+    private static LispValue cartesianProduct(final LispCollection collection, final LispCollection other) {
         final List<LispValue> result = new ArrayList<>(collection.length());
         for (final LispValue item1 : collection) {
             for (final LispValue item2 : other) {
@@ -65,7 +55,7 @@ public class Mul extends BuiltInFunction {
         return collection.createNew(result);
     }
 
-    private LispValue scalarProduct(final LispCollection collection, final NumberAtom number) {
+    private static LispValue scalarProduct(final LispCollection collection, final NumberAtom number) {
         return collection.createNew(Iter.of(collection.getCollection()).map(new Func<LispValue, LispValue>() {
             @SuppressWarnings("unchecked")
             @Override
@@ -75,12 +65,24 @@ public class Mul extends BuiltInFunction {
         }).toList());
     }
 
-    private LispValue numberMultiplication(final LispCollection evaluated) {
+    private static LispValue numberMultiplication(final LispCollection evaluated) {
         NumberAtom accumulator = asNumber(evaluated.head());
         for (final LispValue value : evaluated.tail()) {
             //noinspection unchecked
             accumulator = accumulator.mul(asNumber(value));
         }
         return accumulator;
+    }
+
+    @Override
+    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
+        final LispValue head = evaluated.head();
+        if (isNumber(head)) {
+            return numberMultiplication(evaluated);
+        } else if (isCollection(head)) {
+            return collectionMultiplication(evaluated);
+        } else {
+            throw new TypeMismatchException("NUMBER or COLLECTION", head, evaluated.getSourceInfo());
+        }
     }
 }

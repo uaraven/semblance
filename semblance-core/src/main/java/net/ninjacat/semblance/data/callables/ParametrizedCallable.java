@@ -15,12 +15,14 @@ import static net.ninjacat.semblance.utils.Values.*;
  */
 public abstract class ParametrizedCallable implements LispCallable {
 
+    private static final long serialVersionUID = 2569182753561285703L;
+
     private final SList definition;
     private final SymbolAtom name;
     private final Parameters parameters;
 
     @SuppressWarnings("OverloadedVarargsMethod")
-    protected ParametrizedCallable(final String... definition) {
+    ParametrizedCallable(final String... definition) {
         this(list(Iter.of(definition).map(new Func<SymbolAtom, String>() {
             @Override
             public SymbolAtom apply(final String s) {

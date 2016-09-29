@@ -14,6 +14,8 @@ import javax.annotation.Nonnull;
  */
 public class BreakValue implements LispValue, DebugInfoProvider, WrappedValue {
 
+    private static final long serialVersionUID = -9140934724286756249L;
+
     private final LispValue value;
     private final SourceInfo sourceInfo;
 

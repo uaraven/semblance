@@ -16,6 +16,8 @@ import javax.annotation.Nonnull;
  */
 public class ReturnValue implements LispValue, DebugInfoProvider, WrappedValue {
 
+    private static final long serialVersionUID = 7400610434601441656L;
+
     private final LispValue value;
     private final SymbolAtom scope;
     private final SourceInfo sourceInfo;

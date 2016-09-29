@@ -16,6 +16,7 @@ import static net.ninjacat.semblance.utils.Values.toSList;
  */
 public class InterpretedFunction extends AbstractCallable {
 
+    private static final long serialVersionUID = -9219529125459211054L;
     private final SList body;
     private final Parameters formalParameters;
     private final SymbolAtom name;

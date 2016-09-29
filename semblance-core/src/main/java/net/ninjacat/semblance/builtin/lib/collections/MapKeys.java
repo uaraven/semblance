@@ -11,6 +11,8 @@ import static net.ninjacat.semblance.utils.Values.asSMap;
  * Keys special form
  */
 public class MapKeys extends SpecialForm {
+    private static final long serialVersionUID = -5727107292513128701L;
+
     /**
      * Create a new instance.
      */

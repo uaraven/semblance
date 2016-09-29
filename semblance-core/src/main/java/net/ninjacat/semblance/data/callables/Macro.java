@@ -15,6 +15,8 @@ import static net.ninjacat.semblance.utils.Values.asSList;
  */
 public class Macro extends AbstractCallable {
 
+    private static final long serialVersionUID = 3295367220730180060L;
+
     private final SymbolAtom name;
     private final LispCollection params;
     private final LispCollection body;

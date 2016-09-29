@@ -13,6 +13,8 @@ import net.ninjacat.semblance.java.JavaConvertible;
 @SuppressWarnings("ClassNamingConvention")
 public abstract class Atom implements LispValue, DebugInfoProvider, JavaConvertible {
 
+    private static final long serialVersionUID = 8332913213026062187L;
+
     private final SourceInfo sourceInfo;
 
     Atom() {

@@ -11,6 +11,8 @@ import javax.annotation.Nonnull;
  */
 public class RecursiveCallValue implements LispValue, WrappedValue {
 
+    private static final long serialVersionUID = 739594838026914699L;
+
     private final LispCollection parameters;
 
     /**

@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.repl;
 
-import net.ninjacat.semblance.Interpreter;
+import net.ninjacat.semblance.Compiler;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.smooth.utils.Option;
 import org.apache.commons.cli.CommandLine;
@@ -38,12 +38,10 @@ public final class SemblanceApp {
     }
 
     private static void compileFiles(final CommandLine commandLine, final IoConsole console) {
-        final Interpreter semblance = new Interpreter();
-
         for (final String fileName : commandLine.getArgs()) {
             try {
                 final File file = new File(fileName);
-                semblance.compile(file, file.getParent());
+                Compiler.compile(file, file.getParent());
                 console.printf("Compiled %s", fileName);
             } catch (final IOException e) {
                 console.printf("Failed to read file %s", fileName);

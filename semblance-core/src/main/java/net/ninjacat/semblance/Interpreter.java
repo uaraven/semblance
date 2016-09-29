@@ -13,9 +13,9 @@ import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.reader.Reader;
 import net.ninjacat.semblance.utils.Values;
 
-import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 
 import static net.ninjacat.semblance.utils.Values.list;
 
@@ -24,16 +24,7 @@ import static net.ninjacat.semblance.utils.Values.list;
  */
 public class Interpreter {
 
-    private static final String COMPILED_EXT = ".smc";
     private final RootContext rootContext;
-
-    /**
-     * Creates new interpreter. This sets up internal interpreter context which will be shared
-     * by all scripts executed by this interpreter.
-     */
-    public Interpreter() {
-        rootContext = new RootContext();
-    }
 
     /**
      * Creates a new interpreter with a supplied root context modifiers. Allows to bind functions, change namespaces, etc.
@@ -45,14 +36,6 @@ public class Interpreter {
         for (final ContextModifier modifier : contextModifiers) {
             modifier.modify(rootContext);
         }
-    }
-
-    private static Path getDestinationFileName(final File source, final String destinationFolder) {
-        final Path sourceFileName = Paths.get(source.getAbsolutePath()).getFileName();
-        final String destFileName = sourceFileName.getName(0).toString();
-        final int extPos = destFileName.lastIndexOf('.');
-        final String destName = (extPos > 0 ? destFileName.substring(0, extPos) : destFileName) + COMPILED_EXT;
-        return Paths.get(destinationFolder, destName);
     }
 
     /**
@@ -70,7 +53,8 @@ public class Interpreter {
     }
 
     /**
-     * Runs script from an string.
+     * Runs script from an string. New context is created for the program to run in, so none of bound symbols affects
+     * interpreter.
      *
      * @param text Script source.
      * @return Value returned from script.
@@ -92,38 +76,6 @@ public class Interpreter {
      */
     public LispValue runProgram(final SList program) {
         return doRun(program);
-    }
-
-    /**
-     * Compiles a Semblance program to a stream.
-     *
-     * @param source      Source stream
-     * @param destination Stream to write compiled program to
-     * @throws IOException      If source file cannot be read, or destination cannot be written to
-     * @throws ParsingException If source has syntax errors
-     */
-    public void compile(final InputStream source, final OutputStream destination) throws IOException, ParsingException {
-        final Reader reader = new Reader();
-        final SList program = reader.read(source);
-        try (ObjectOutputStream oos = new ObjectOutputStream(destination)) {
-            oos.writeObject(program);
-        }
-    }
-
-    /**
-     * Compiles a Semblance program.
-     * Will create new file in destination folder with the same name as source file and .sc extension
-     *
-     * @param source            Source file
-     * @param destinationFolder Folder where to put compiled file
-     * @throws IOException      If source file cannot be read, or destination cannot be written to
-     * @throws ParsingException If source has syntax errors
-     */
-    public void compile(final File source, final String destinationFolder) throws IOException, ParsingException {
-        try (InputStream input = new FileInputStream(source);
-             OutputStream output = new FileOutputStream(getDestinationFileName(source, destinationFolder).toFile())) {
-            compile(input, output);
-        }
     }
 
     /**
@@ -158,13 +110,13 @@ public class Interpreter {
 
     /**
      * Executes supplied program in root context of this interpreter. All bindings are stored and available on the
-     * next call of {@link #parse(String)} or {@link #run(String)} )} method.
+     * next call of {@link #run(String)}method.
      *
      * @param program Source of the program to execute
      * @return Result of the evaluation
      * @throws ParsingException If source contains errors.
      */
-    public LispValue parse(final String program) throws ParsingException {
+    public LispValue runHere(final String program) throws ParsingException {
         final Reader reader = new Reader();
         final SList parsed = reader.readString(program);
         return rootContext.evaluateHere(parsed);

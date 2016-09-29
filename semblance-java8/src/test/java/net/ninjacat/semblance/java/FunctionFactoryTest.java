@@ -19,7 +19,7 @@ public class FunctionFactoryTest {
     public void shouldReturnFunction() throws Exception {
         final Interpreter interpreter = new Interpreter();
 
-        interpreter.parse("(defun abs (x) (if (>= x 0) x (- x)))");
+        interpreter.runHere("(defun abs (x) (if (>= x 0) x (- x)))");
 
         final FunctionFactory factory = new FunctionFactory(interpreter);
 

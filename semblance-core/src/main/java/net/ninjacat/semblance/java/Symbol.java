@@ -1,6 +1,7 @@
 package net.ninjacat.semblance.java;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Java representation of Semblance symbol. Immutable class that holds its value.
@@ -24,5 +25,27 @@ public class Symbol implements Serializable {
      */
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Symbol)) {
+            return false;
+        }
+        final Symbol symbol = (Symbol) other;
+        return Objects.equals(value, symbol.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
+    }
+
+    @Override
+    public String toString() {
+        return "Symbol{'" + value + "'}";
     }
 }

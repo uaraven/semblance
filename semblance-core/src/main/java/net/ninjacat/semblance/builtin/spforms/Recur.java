@@ -11,6 +11,8 @@ import net.ninjacat.semblance.evaluator.Context;
  */
 public class Recur extends SpecialForm {
 
+    private static final long serialVersionUID = 6259546687296239467L;
+
     /**
      * Create new instance.
      */

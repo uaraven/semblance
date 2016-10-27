@@ -17,6 +17,8 @@ import net.ninjacat.semblance.utils.Values;
 @SuppressWarnings("ClassNamingConvention")
 public class Loop extends SpecialForm {
 
+    private static final long serialVersionUID = 5736832249202305948L;
+
     /**
      * Creates a new instance.
      */

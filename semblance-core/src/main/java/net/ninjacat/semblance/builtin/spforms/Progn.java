@@ -12,6 +12,8 @@ import net.ninjacat.semblance.evaluator.LocalContext;
 @CreatesContext
 public class Progn extends SpecialForm {
 
+    private static final long serialVersionUID = -1560542200137925785L;
+
     /**
      * Creates instance of Progn
      */

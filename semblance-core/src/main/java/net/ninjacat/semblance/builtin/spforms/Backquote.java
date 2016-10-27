@@ -24,6 +24,8 @@ import static net.ninjacat.semblance.utils.Values.*;
  */
 public class Backquote extends SpecialForm {
 
+    private static final long serialVersionUID = -8768337748751585237L;
+
     /**
      * Creates a new instance of BackQuote.
      */
@@ -31,13 +33,13 @@ public class Backquote extends SpecialForm {
         super("backquote", "&rest", "body");
     }
 
+    private static boolean isUnquote(final LispValue func) {
+        return func.equals(HiddenFunctions.COMMA);
+    }
+
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
         return expandBQ(parameters, context);
-    }
-
-    private static boolean isUnquote(final LispValue func) {
-        return func.equals(HiddenFunctions.COMMA);
     }
 
     private LispCollection expandBQ(final LispCollection sExpr, final Context parameterContext) {

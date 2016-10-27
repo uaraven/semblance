@@ -18,6 +18,8 @@ import static net.ninjacat.semblance.utils.Values.asSymbol;
 @SuppressWarnings("ClassNamingConvention")
 public class Use extends SpecialForm {
 
+    private static final long serialVersionUID = 1479924863559681324L;
+
     /**
      * Creates a new instance
      */

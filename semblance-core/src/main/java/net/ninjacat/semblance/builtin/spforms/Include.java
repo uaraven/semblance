@@ -26,6 +26,8 @@ import static net.ninjacat.semblance.utils.Values.asString;
  */
 public class Include extends SpecialForm {
 
+    private static final long serialVersionUID = -5338822452321779274L;
+
     /**
      * Creates a new instance of Include class
      */

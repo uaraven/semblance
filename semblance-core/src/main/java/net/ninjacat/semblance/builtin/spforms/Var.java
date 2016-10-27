@@ -12,6 +12,8 @@ import net.ninjacat.semblance.evaluator.Context;
 @SuppressWarnings("ClassNamingConvention")
 public class Var extends SpecialForm {
 
+    private static final long serialVersionUID = -1236232816255496329L;
+
     /**
      * Create new instance of Var special form object
      */

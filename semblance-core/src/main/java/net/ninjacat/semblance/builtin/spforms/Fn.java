@@ -15,6 +15,8 @@ import static net.ninjacat.semblance.utils.Values.asCollection;
 @SuppressWarnings("ClassNamingConvention")
 public class Fn extends SpecialForm {
 
+    private static final long serialVersionUID = -6205153302285615880L;
+
     /**
      * Creates a new instance of function
      */

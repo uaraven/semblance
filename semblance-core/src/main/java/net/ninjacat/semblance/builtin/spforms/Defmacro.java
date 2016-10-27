@@ -17,6 +17,8 @@ import static net.ninjacat.semblance.utils.Values.asSymbol;
  */
 public class Defmacro extends SpecialForm {
 
+    private static final long serialVersionUID = -3163706610883209916L;
+
     /**
      * Creates a new instance of defmacro special form
      */

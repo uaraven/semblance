@@ -16,7 +16,7 @@ import static org.junit.Assert.assertThat;
 @SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "DuplicateStringLiteralInspection"})
 public class IfTest {
 
-    public static final SymbolAtom QUOTE = symbol("quote");
+    private static final SymbolAtom QUOTE = symbol("quote");
     private static final SymbolAtom SYMBOL_A = symbol(":A");
     private static final SymbolAtom SYMBOL_B = symbol(":B");
     private static final SList COND_TRUE = list(QUOTE, symbol("T"));

@@ -14,6 +14,8 @@ import static net.ninjacat.semblance.utils.Values.asSymbol;
  */
 public class Return extends SpecialForm {
 
+    private static final long serialVersionUID = -7261730469475185744L;
+
     /**
      * Creates new instance of return.
      */

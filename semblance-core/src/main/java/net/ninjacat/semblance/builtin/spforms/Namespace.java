@@ -19,6 +19,8 @@ import static net.ninjacat.semblance.utils.Values.asSymbol;
 @CreatesContext
 public class Namespace extends SpecialForm {
 
+    private static final long serialVersionUID = -6132619739845968897L;
+
     /**
      * Creates new instance of namespace.
      */

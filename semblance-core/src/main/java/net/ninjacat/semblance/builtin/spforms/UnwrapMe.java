@@ -11,6 +11,8 @@ import net.ninjacat.semblance.evaluator.Context;
  */
 public class UnwrapMe extends SpecialForm {
 
+    private static final long serialVersionUID = -3963587255603588823L;
+
     /**
      * Creates new instance of comma operator special form.
      */

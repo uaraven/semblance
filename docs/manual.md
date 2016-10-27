@@ -106,6 +106,14 @@ Data types
       multiline
       string"""
 
+  **BOOLEAN**
+  
+  There is no boolean type per se in Semblance. There are two predefined symbols `T` and `F` which represent true 
+  and false values.
+  
+  `Semblance false` is any value or expression which evaluates either to `F` or to `NIL`.
+  `Semblance truth` is any value which is not `Semblance false`.
+
   **LIST**
   
     (value value ...)
@@ -123,6 +131,8 @@ Data types
     (list (+ 2 3))   => ( 5 )
     
   Both expressions above will return **2**
+  
+  `NIL` expression always evaluates to empty list.
     
   **VECTOR**
     
@@ -331,7 +341,39 @@ Functions
     (* '(1 2 3) 2) -> (2 4 6)
     (* [1 2] '("a" "b")) -> [(1 "a") (1 "b") (2 "a") (2 "b")]
 
+  **Comparison functions**
+   
+    (= param*)
+    (!= param*)
+    (> param*)
+    (< param*)
+    (>= param*)
+    (<= param*)
 
+  Evaluates parameters and returns `T` if all parameters satisfy the condition, i.e.
+        
+    (= "a" "a" "a") -> T
+    (= "a" "a" "b") -> F
+    (> 5 4 3 2 1) -> T
+    (> 5 4 3 1 2) -> F
+    
+    
+  **AND** **OR**
+    
+    (and params*)
+    (or params*)
+    
+  Logical operations `AND` and `OR`. Will evaluate its parameters and perform logical operation on `Semblance boolean`
+  values, returning either `T` or `F`. 
+   
+  `AND` and `OR` do short-circuit and will not evaluate more parameters than needed.   
+  
+  **NOT**
+  
+    (**NOT** param)
+    
+  Logical `NOT`. Only accepts one parameter as opposed to `AND` and `OR`.
+    
   **PRINTLN**
 
     (println value1 value2 value3 ...)
@@ -356,12 +398,40 @@ Functions
 
     (if condition then-expr &optional else-expr)
 
-  Evaluates condition, if it is not equal to **F** or **NIL** executes then-expr, if condition is **F** or **NIL** and 
-  else-expr is present it will be executed
+  Evaluates condition, if it evaluates to `Semblance Truth`, then executes then-expr, if condition is 'Semblance False' 
+  and else-expr is present it will be executed
 
      (if (= a b)
          (progn ()()...)
          (println "False"))
+         
+  **COND**
+  
+    (cond
+        (condition-1 expr1-1 expr1-2 expr1-3)
+        (condition-2 expr2-1 expr2-2)
+        (condition-3 expr3-1)
+        ...
+    )
+      
+  Evaluates `condition-1`, if it evaluates to `semblance truth` then all expressions will be executed in implicit 
+  `progn` block. If `condition-1` evaluates to `semblance false` then next condition will be evaluated (i.e. `condition-2`)
+  
+  If none of the conditions evalutes to `truth`, then `cond` will return `NIL`, otherwise result of the last expression
+  of the matching block will be returned.
+  
+  
+  **SELECT**
+  
+    (select
+        (block-1)
+        (block-2)
+        ...
+        (block-N)
+    )
+    
+  Evaluates blocks one by one, returning the result of the first one which is not `NIL`. As soon as block returning 
+  non-`NIL` is found any other blocks are not evaluated.
 
   **QUOTE**
 

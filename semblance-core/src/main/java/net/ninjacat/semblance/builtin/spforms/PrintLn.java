@@ -15,6 +15,8 @@ import net.ninjacat.semblance.evaluator.Context;
  */
 public class PrintLn extends SpecialForm {
 
+    private static final long serialVersionUID = 7090589580229750373L;
+
     /**
      * Creates new instance of println special form
      */

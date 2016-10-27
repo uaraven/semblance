@@ -14,6 +14,8 @@ import static net.ninjacat.semblance.utils.Values.isList;
  */
 public class EvalMe extends SpecialForm {
 
+    private static final long serialVersionUID = -2703628977585151534L;
+
     /**
      * Creates new instance of comma operator special form.
      */

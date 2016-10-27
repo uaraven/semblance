@@ -16,6 +16,8 @@ import static net.ninjacat.semblance.utils.Values.asCollection;
 @CreatesContext
 public class Funcall extends SpecialForm {
 
+    private static final long serialVersionUID = 5690616970134102911L;
+
     /**
      * Create new instance.
      */

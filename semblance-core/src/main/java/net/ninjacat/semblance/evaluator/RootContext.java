@@ -208,6 +208,8 @@ public class RootContext extends BaseContext {
         bindCallable(new Mod());
 
         bindCallable(new If());
+        bindCallable(new Cond());
+        bindCallable(new Select());
         bindCallable(new Equal());
         bindCallable(new NotEqual());
         bindCallable(new GreaterThan());

@@ -13,6 +13,7 @@ import net.ninjacat.semblance.utils.Require;
  * Loop break. Can only be called inside loop.
  */
 public class Break extends SpecialForm {
+    private static final long serialVersionUID = -6620907474382731028L;
 
     /**
      * Create new instance

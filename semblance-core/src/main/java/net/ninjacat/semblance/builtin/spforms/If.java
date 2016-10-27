@@ -16,6 +16,8 @@ import static net.ninjacat.semblance.utils.Values.asSList;
 @SuppressWarnings("ClassNamingConvention")
 public class If extends SpecialForm {
 
+    private static final long serialVersionUID = 2060300854196650298L;
+
     /**
      * Creates new instance of If special form
      */

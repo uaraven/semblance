@@ -11,6 +11,8 @@ import net.ninjacat.semblance.utils.Require;
  */
 public class Quote extends SpecialForm {
 
+    private static final long serialVersionUID = 5367685407606537931L;
+
     /**
      * Creates a new instance of quote special form
      */

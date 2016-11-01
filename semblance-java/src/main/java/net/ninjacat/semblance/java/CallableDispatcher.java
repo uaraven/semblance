@@ -11,7 +11,7 @@ import net.ninjacat.smooth.utils.Try;
 import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 
-import static net.ninjacat.semblance.utils.Values.asSymbol;
+import static net.ninjacat.semblance.utils.Values.*;
 
 /**
  * Simplifies implementation of {@link LispCallable} by Java classes.
@@ -52,7 +52,15 @@ public final class CallableDispatcher {
      * @throws SemblanceRuntimeException if found method is not accessible or any exception happens during the execution.
      */
     public static LispValue dispatch(final Object delegate, final Context context, final LispCollection parameters) {
-        final String functionName = asSymbol(parameters.head()).repr();
+        final String functionName;
+        if (isSymbol(parameters.head())) {
+            functionName = asSymbol(parameters.head()).repr();
+        } else if (isString(parameters.head())) {
+            functionName = asString(parameters.head()).getValue();
+        } else {
+            throw new JavaInteropException("First parameter must be a string or symbol matching object method name",
+                    parameters.getSourceInfo());
+        }
         final LispCollection params = parameters.tail();
         try {
             final Option<Method> method = findMethod(delegate, functionName, Context.class, LispCollection.class);

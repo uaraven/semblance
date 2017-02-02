@@ -248,4 +248,11 @@ public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
             contents.remove(key);
         }
     }
+
+    @Override
+    public String toString() {
+        return "SMap{" + contents + ", " +
+                "sourceInfo=" + sourceInfo +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.builtin.spforms;
 
+import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
@@ -8,8 +9,7 @@ import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.evaluator.RootContext;
 import org.junit.Test;
 
-import static net.ninjacat.semblance.utils.Values.list;
-import static net.ninjacat.semblance.utils.Values.symbol;
+import static net.ninjacat.semblance.utils.Values.*;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -81,6 +81,49 @@ public class IfTest {
     public void shouldReturnValueOfFalseBranchWhenConditionIsNil() throws Exception {
         final SList program = list(
                 symbol("if"), NilCollection.INSTANCE,
+                list(QUOTE, SYMBOL_A),
+                list(QUOTE, SYMBOL_B)
+        );
+        final Context rootContext = new RootContext();
+
+        final LispValue result = rootContext.evaluate(program);
+
+        assertThat((SymbolAtom) result, is(SYMBOL_B));
+    }
+
+    @Test
+    public void shouldEvaluateNumberAsTrue() throws Exception {
+        final SList program = list(
+                symbol("if"), number(1),
+                list(QUOTE, SYMBOL_A),
+                list(QUOTE, SYMBOL_B)
+        );
+        final Context rootContext = new RootContext();
+
+        final LispValue result = rootContext.evaluate(program);
+
+        assertThat((SymbolAtom) result, is(SYMBOL_A));
+    }
+
+    @Test
+    public void shouldEvaluateSymbolAsTrue() throws Exception {
+        final SList program = list(
+                symbol("if"), symbol(":symbol"),
+                list(QUOTE, SYMBOL_A),
+                list(QUOTE, SYMBOL_B)
+        );
+        final Context rootContext = new RootContext();
+
+        final LispValue result = rootContext.evaluate(program);
+
+        assertThat((SymbolAtom) result, is(SYMBOL_A));
+    }
+
+
+    @Test
+    public void shouldEvaluateFSymbolAsFalse() throws Exception {
+        final SList program = list(
+                symbol("if"), Constants.FALSE,
                 list(QUOTE, SYMBOL_A),
                 list(QUOTE, SYMBOL_B)
         );

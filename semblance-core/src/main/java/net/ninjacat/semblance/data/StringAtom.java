@@ -69,7 +69,7 @@ public class StringAtom extends Atom {
 
     @Override
     public String toString() {
-        return "StringAtom{\'" + value + "\'}";
+        return "\"" + value + "\"";
     }
 
     @Override

@@ -8,8 +8,6 @@ import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Require;
 import net.ninjacat.semblance.utils.Values;
 
-import static net.ninjacat.semblance.utils.Values.asSList;
-
 /**
  * If special form.
  */
@@ -29,7 +27,7 @@ public class If extends SpecialForm {
     public LispValue apply(final Context context, final LispCollection parameters) {
         Require.that(parameters).hasAtLeast(2);
 
-        final LispValue condition = asSList(parameters.head());
+        final LispValue condition = parameters.head();
 
         final LispValue thenValue = parameters.tail().head();
         final LispValue elseValue = parameters.tail().tail().isNil()

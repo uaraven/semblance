@@ -405,6 +405,10 @@ Functions
          (progn ()()...)
          (println "False"))
          
+     (if 1
+         (prinln "True")
+         (prinln "False"))  => prints "True"
+         
   **COND**
   
     (cond

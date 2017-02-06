@@ -96,7 +96,7 @@ public class SymbolAtom extends Atom {
 
     @Override
     public String toString() {
-        return "SymbolAtom{" + value + '}';
+        return "Symbol{" + value + '}';
     }
 
     /**

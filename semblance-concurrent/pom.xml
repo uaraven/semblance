@@ -11,7 +11,6 @@
     </parent>
 
     <artifactId>semblance-concurrent</artifactId>
-    <version>${project.version}</version>
 
     <dependencies>
 

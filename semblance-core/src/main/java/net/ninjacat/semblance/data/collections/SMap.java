@@ -151,6 +151,16 @@ public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
         }).mkStr(" ") + "}";
     }
 
+    @Override
+    public String printIt() {
+        return "{" + Iter.of(contents.entrySet()).map(new Func<String, Map.Entry<LispValue, LispValue>>() {
+            @Override
+            public String apply(final Map.Entry<LispValue, LispValue> entry) {
+                return entry.getKey().printIt() + " " + entry.getValue().printIt();
+            }
+        }).mkStr(" ") + "}";
+    }
+
     /**
      * @return Number of entries in the map.
      */

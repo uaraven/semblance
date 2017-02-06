@@ -40,6 +40,11 @@ public class StringAtom extends Atom {
     }
 
     @Override
+    public String printIt() {
+        return value;
+    }
+
+    @Override
     public String asJavaObject() {
         return value;
     }

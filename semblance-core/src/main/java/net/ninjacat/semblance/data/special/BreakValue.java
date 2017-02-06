@@ -48,6 +48,12 @@ public class BreakValue implements LispValue, DebugInfoProvider, WrappedValue {
     }
 
     @Override
+    public String printIt() {
+        return "break " + value.printIt();
+    }
+
+
+    @Override
     public SourceInfo getSourceInfo() {
         return sourceInfo;
     }

@@ -23,4 +23,5 @@ public interface LispCallable extends LispValue {
      * @return Evaluated value.
      */
     LispValue apply(Context context, LispCollection parameters);
+
 }

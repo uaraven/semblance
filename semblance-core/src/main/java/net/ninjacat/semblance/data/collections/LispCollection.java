@@ -3,6 +3,7 @@ package net.ninjacat.semblance.data.collections;
 import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.operations.*;
+import net.ninjacat.semblance.data.collections.operations.Operation;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
@@ -53,10 +54,6 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         addOperation(APPEND, new AppendOperation());
         addOperation(PREPEND, new PrependOperation());
         addOperation(LENGTH, new LengthOperation());
-    }
-
-    static void addOperation(final Operation name, final ListOperation operation) {
-        OPERATIONS.put(name.asSymbol(), operation);
     }
 
     /**
@@ -229,6 +226,10 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         }
     }
 
+    static void addOperation(final Operation name, final ListOperation operation) {
+        OPERATIONS.put(name.asSymbol(), operation);
+    }
+
     private int normalize(final int index) {
         if (index >= 0) {
             return index;
@@ -263,6 +264,15 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
         @Override
         public String apply(final LispValue lispValue) {
             return lispValue.repr();
+        }
+    }
+
+    enum PrintValue implements Func<String, LispValue> {
+        PRINT;
+
+        @Override
+        public String apply(final LispValue lispValue) {
+            return lispValue.printIt();
         }
     }
 }

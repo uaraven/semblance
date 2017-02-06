@@ -24,4 +24,5 @@ public abstract class AbstractCallable implements LispCallable {
             throw new TypeMismatchException(getType(), other, SourceInfo.UNKNOWN);
         }
     }
+
 }

@@ -33,4 +33,9 @@ class Pojo1 extends BaseCallable {
         concat2Called = true;
         return string(asString(params.head()).getValue() + asString(params.tail().head()).getValue());
     }
+
+    @Override
+    public String printIt() {
+        return repr();
+    }
 }

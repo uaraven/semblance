@@ -72,6 +72,11 @@ public class SymbolAtom extends Atom {
     }
 
     @Override
+    public String printIt() {
+        return value;
+    }
+
+    @Override
     public SemblanceType getType() {
         return SemblanceType.SYMBOL;
     }

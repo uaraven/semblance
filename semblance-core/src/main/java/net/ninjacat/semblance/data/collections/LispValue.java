@@ -20,4 +20,9 @@ public interface LispValue extends Serializable, Comparable<LispValue> {
      */
     String repr();
 
+    /**
+     * @return print-friendly representation of the value
+     */
+    String printIt();
+
 }

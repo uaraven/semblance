@@ -55,6 +55,11 @@ public abstract class ParametrizedCallable implements LispCallable {
         return "(fun " + definition + ")";
     }
 
+    @Override
+    public String printIt() {
+        return repr();
+    }
+
     protected Parameters getParameters() {
         return parameters;
     }

@@ -62,5 +62,10 @@ public class Macro extends AbstractCallable {
         return String.format("(defmacro %s %s %s)", name.repr(), params.repr(), body.repr());
     }
 
+    @Override
+    public String printIt() {
+        return repr();
+    }
+
 }
 

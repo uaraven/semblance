@@ -76,6 +76,11 @@ public class SList extends LispCollection {
     }
 
     @Override
+    public String printIt() {
+        return "(" + Iter.of(collection).map(PrintValue.PRINT).mkStr(" ") + ")";
+    }
+
+    @Override
     public SymbolAtom name() {
         return NAME;
     }

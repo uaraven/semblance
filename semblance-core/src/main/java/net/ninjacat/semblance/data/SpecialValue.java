@@ -24,6 +24,10 @@ public final class SpecialValue implements LispValue {
         return "special";
     }
 
+    @Override
+    public String printIt() {
+        return "special";
+    }
 
     @SuppressWarnings("ObjectEquality")
     @Override

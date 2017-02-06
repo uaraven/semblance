@@ -77,6 +77,12 @@ public class ReturnValue implements LispValue, DebugInfoProvider, WrappedValue {
     }
 
     @Override
+    public String printIt() {
+        return "return " + value.printIt();
+    }
+
+
+    @Override
     public SourceInfo getSourceInfo() {
         return sourceInfo;
     }

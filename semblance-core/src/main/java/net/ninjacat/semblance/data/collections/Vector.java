@@ -77,6 +77,12 @@ public class Vector extends LispCollection {
     }
 
     @Override
+    public String printIt() {
+        return "[" + Iter.of(collection).map(PrintValue.PRINT).mkStr(" ") + "]";
+    }
+
+
+    @Override
     public LispValue head() {
         if (isNil()) {
             throw new CollectionException("Cannot get head of empty vector", getSourceInfo());

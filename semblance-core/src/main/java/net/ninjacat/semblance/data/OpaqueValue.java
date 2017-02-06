@@ -32,6 +32,11 @@ public class OpaqueValue<T> implements LispValue, JavaConvertible {
         return value.toString();
     }
 
+    @Override
+    public String printIt() {
+        return repr();
+    }
+
     /**
      * @return internal value
      */

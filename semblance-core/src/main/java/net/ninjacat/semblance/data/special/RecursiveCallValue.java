@@ -43,6 +43,12 @@ public class RecursiveCallValue implements LispValue, WrappedValue {
     }
 
     @Override
+    public String printIt() {
+        return "(recur " + parameters.printIt() + ")";
+
+    }
+
+    @Override
     public int compareTo(@Nonnull final LispValue other) {
         return equals(other) ? 0 : 1;
     }

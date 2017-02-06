@@ -149,6 +149,11 @@ public abstract class NumberAtom<T> extends Atom {
     }
 
     @Override
+    public String printIt() {
+        return repr();
+    }
+
+    @Override
     public SemblanceType getType() {
         return SemblanceType.INTEGER;
     }

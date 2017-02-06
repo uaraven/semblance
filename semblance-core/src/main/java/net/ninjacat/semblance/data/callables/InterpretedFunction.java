@@ -65,4 +65,9 @@ public class InterpretedFunction extends AbstractCallable {
     public String repr() {
         return String.format("(fn %s %s %s)", name.repr(), paramDeclaration.repr(), body.repr());
     }
+
+    @Override
+    public String printIt() {
+        return repr();
+    }
 }

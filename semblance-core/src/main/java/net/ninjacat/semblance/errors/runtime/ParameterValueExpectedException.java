@@ -7,6 +7,8 @@ import net.ninjacat.semblance.debug.SourceInfo;
  * Created on 01/03/15.
  */
 public class ParameterValueExpectedException extends ParameterException {
+    private static final long serialVersionUID = -9023201964171030089L;
+
     /**
      * Creates new exception.
      *

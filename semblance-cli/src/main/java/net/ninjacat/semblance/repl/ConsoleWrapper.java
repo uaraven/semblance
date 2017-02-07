@@ -2,7 +2,6 @@ package net.ninjacat.semblance.repl;
 
 import javax.annotation.Nonnull;
 import java.io.Console;
-import java.io.PrintWriter;
 
 /**
  * Implementation of {@link IoConsole} which wraps {@link Console}
@@ -33,8 +32,8 @@ public class ConsoleWrapper implements IoConsole {
     }
 
     @Override
-    public PrintWriter writer() {
-        return console.writer();
+    public void errPrintf(final String format, final Object... args) {
+        printf(format, args);
     }
 
     @Override

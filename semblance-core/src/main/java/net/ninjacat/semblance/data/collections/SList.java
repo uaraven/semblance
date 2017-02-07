@@ -169,7 +169,7 @@ public class SList extends LispCollection {
 
     @Override
     public String toString() {
-        return "List{" + collection + '}';
+        return printIt();
     }
 
     @Override

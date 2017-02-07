@@ -8,12 +8,14 @@ import net.ninjacat.semblance.utils.Values;
  */
 public class UnexpectedValueException extends SemblanceRuntimeException {
 
+    private static final long serialVersionUID = -5712875302338997814L;
+
     /**
      * Creates new exception
      *
      * @param value Encountered value.
      */
     public UnexpectedValueException(final LispValue value) {
-        super("Unexpected value " + value, Values.getSourceInfo(value));
+        super("Unexpected value " + value.printIt(), Values.getSourceInfo(value));
     }
 }

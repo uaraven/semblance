@@ -7,6 +7,8 @@ import net.ninjacat.semblance.debug.SourceInfo;
  */
 public class ValueExpectedException extends SemblanceRuntimeException {
 
+    private static final long serialVersionUID = -8416740804559886930L;
+
     /**
      * Creates a new exception
      *

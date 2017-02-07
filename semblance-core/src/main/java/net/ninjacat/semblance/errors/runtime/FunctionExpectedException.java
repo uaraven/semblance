@@ -14,6 +14,6 @@ public class FunctionExpectedException extends SemblanceRuntimeException {
      * @param expression Function call expression which caused exception.
      */
     public FunctionExpectedException(final LispValue expression) {
-        super(String.format("Function call expected in %s", expression), Values.getSourceInfo(expression));
+        super(String.format("%s is not bound to function", expression.printIt()), Values.getSourceInfo(expression));
     }
 }

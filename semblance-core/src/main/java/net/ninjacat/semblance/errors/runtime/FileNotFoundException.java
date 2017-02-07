@@ -9,6 +9,7 @@ import java.util.List;
  * Thrown when included semblance file cannot be found on class path.
  */
 public class FileNotFoundException extends SemblanceRuntimeException {
+    private static final long serialVersionUID = -8000652454660254185L;
     private static final String NOT_FOUND = "File '%s' not found in path [%s]";
 
     /**

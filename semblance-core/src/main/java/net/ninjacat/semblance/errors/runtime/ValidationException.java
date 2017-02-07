@@ -7,6 +7,8 @@ import net.ninjacat.semblance.debug.SourceInfo;
  */
 public class ValidationException extends SemblanceRuntimeException {
 
+    private static final long serialVersionUID = -1565970832522918866L;
+
     /**
      * Creates a new instance of ValidationException
      *

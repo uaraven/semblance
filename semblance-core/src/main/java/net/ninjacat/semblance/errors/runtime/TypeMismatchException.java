@@ -8,8 +8,9 @@ import net.ninjacat.semblance.debug.SourceInfo;
  * Created on 24/02/15.
  */
 public class TypeMismatchException extends SemblanceRuntimeException {
+    private static final long serialVersionUID = -8762131873899657849L;
 
-    public static final String MESSAGE = "Type mismatch. Expected %s, but got %s %s";
+    private static final String MESSAGE = "Type mismatch. Expected %s, but got %s %s";
 
     /**
      * Creates new exception.
@@ -19,7 +20,7 @@ public class TypeMismatchException extends SemblanceRuntimeException {
      * @param sourceInfo   Source code information.
      */
     public TypeMismatchException(final SemblanceType expectedType, final LispValue value, final SourceInfo sourceInfo) {
-        super(String.format(MESSAGE, expectedType, value.getType(), value), sourceInfo);
+        super(String.format(MESSAGE, expectedType, value.getType(), value.printIt()), sourceInfo);
     }
 
     /**

@@ -6,6 +6,7 @@ import net.ninjacat.semblance.debug.SourceInfo;
  * Basic class for runtime errors
  */
 public class SemblanceRuntimeException extends RuntimeException {
+    private static final long serialVersionUID = 4909074721888011066L;
 
     private final String message;
     private final SourceInfo sourceInfo;

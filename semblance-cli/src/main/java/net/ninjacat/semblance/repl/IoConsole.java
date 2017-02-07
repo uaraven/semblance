@@ -1,7 +1,5 @@
 package net.ninjacat.semblance.repl;
 
-import java.io.PrintWriter;
-
 /**
  * Console abstraction
  */
@@ -22,9 +20,12 @@ public interface IoConsole {
     void printf(String format, Object... args);
 
     /**
-     * @return {@link PrintWriter} to be used for output
+     * Prints text with formatting as a error
+     *
+     * @param format Format string
+     * @param args   Format arguments
      */
-    PrintWriter writer();
+    void errPrintf(String format, Object... args);
 
     /**
      * Flushes output

@@ -8,6 +8,8 @@ import net.ninjacat.semblance.debug.SourceInfo;
  */
 public class UnboundSymbolException extends SemblanceRuntimeException {
 
+    private static final long serialVersionUID = -1597354138515000031L;
+
     /**
      * Creates new exception
      *
@@ -15,6 +17,6 @@ public class UnboundSymbolException extends SemblanceRuntimeException {
      * @param sourceInfo Source code information.
      */
     public UnboundSymbolException(final SymbolAtom symbol, final SourceInfo sourceInfo) {
-        super(String.format("Symbol %s is unbound", symbol), sourceInfo);
+        super(String.format("Symbol %s is unbound", symbol.printIt()), sourceInfo);
     }
 }

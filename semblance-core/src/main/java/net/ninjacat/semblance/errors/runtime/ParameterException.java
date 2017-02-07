@@ -2,10 +2,9 @@ package net.ninjacat.semblance.errors.runtime;
 
 import net.ninjacat.semblance.debug.SourceInfo;
 
-/**
- * Created on 01/03/15.
- */
 public class ParameterException extends SemblanceRuntimeException {
+    private static final long serialVersionUID = 8144585859060705534L;
+
     /**
      * Creates new exception.
      *

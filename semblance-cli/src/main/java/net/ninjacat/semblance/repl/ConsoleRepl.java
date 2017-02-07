@@ -27,7 +27,7 @@ public class ConsoleRepl extends Repl {
                 ln.append(" ");
             }
             ln.append(console.readLine());
-            final boolean unevenParens = !isMatchingParentheses(ln);
+            final boolean unevenParens = !ReplUtils.isMatchingParentheses(ln);
             if (unevenParens) {
                 print("... ");
             } else {
@@ -39,39 +39,15 @@ public class ConsoleRepl extends Repl {
     @Override
     public void print(final String line) {
         console.flush();
-        console.writer().print(line);
+        console.printf(line);
         console.flush();
     }
 
     @Override
     public void printError(final String message) {
         console.flush();
-        console.printf("%n%s%n", message);
+        console.errPrintf("%n%s%n", message);
         console.flush();
     }
 
-    private boolean isMatchingParentheses(final CharSequence ln) {
-        int openParens = 0;
-        int closeParens = 0;
-        int openBrackets = 0;
-        int closeBrackets = 0;
-        for (int i = 0; i < ln.length(); i++) {
-            final char c = ln.charAt(i);
-            switch (c) {
-                case '(':
-                    openParens += 1;
-                    break;
-                case ')':
-                    closeParens += 1;
-                    break;
-                case '[':
-                    openBrackets += 1;
-                    break;
-                case ']':
-                    closeBrackets += 1;
-                    break;
-            }
-        }
-        return openParens == closeParens && openBrackets == closeBrackets;
-    }
 }

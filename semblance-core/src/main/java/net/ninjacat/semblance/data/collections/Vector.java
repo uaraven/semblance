@@ -73,7 +73,7 @@ public class Vector extends LispCollection {
 
     @Override
     public String repr() {
-        return "[" + Iter.of(collection).map(ValueToString.REPR).mkStr(" ") + "]";
+        return printIt();
     }
 
     @Override

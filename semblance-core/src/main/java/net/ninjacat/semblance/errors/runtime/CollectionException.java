@@ -6,6 +6,8 @@ import net.ninjacat.semblance.debug.SourceInfo;
  * Exception thrown when invalid access to a collection happens
  */
 public class CollectionException extends SemblanceRuntimeException {
+    private static final long serialVersionUID = -1852645825866938284L;
+
     /**
      * Creates new exception.
      *

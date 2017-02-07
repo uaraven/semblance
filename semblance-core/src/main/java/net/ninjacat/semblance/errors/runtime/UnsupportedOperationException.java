@@ -7,6 +7,8 @@ import net.ninjacat.semblance.debug.SourceInfo;
  */
 public class UnsupportedOperationException extends SemblanceRuntimeException {
 
+    private static final long serialVersionUID = -5506451563225214064L;
+
     /**
      * Creates new exception.
      *

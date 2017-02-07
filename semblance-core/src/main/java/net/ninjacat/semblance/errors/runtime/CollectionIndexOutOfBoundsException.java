@@ -8,6 +8,7 @@ import net.ninjacat.semblance.debug.SourceInfo;
 public class CollectionIndexOutOfBoundsException extends SemblanceRuntimeException {
 
     private static final String MESSAGE = "Index %d is out of bounds, size %d";
+    private static final long serialVersionUID = -894785072721261847L;
 
     /**
      * Create new Out of bounds exception.

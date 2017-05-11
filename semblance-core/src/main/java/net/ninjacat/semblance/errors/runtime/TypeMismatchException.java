@@ -10,7 +10,7 @@ import net.ninjacat.semblance.debug.SourceInfo;
 public class TypeMismatchException extends SemblanceRuntimeException {
     private static final long serialVersionUID = -8762131873899657849L;
 
-    private static final String MESSAGE = "Type mismatch. Expected %s, but got %s %s";
+    private static final String MESSAGE = "Type mismatch. Expected %s, but got %s: %s";
 
     /**
      * Creates new exception.

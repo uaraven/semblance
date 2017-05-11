@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.data;
 
 
-import net.ninjacat.smooth.collections.Lists;
+import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class ComparisionTests {
         }
     };
 
-    private static final List<ComparisionTestCase> EQ_CASES = Lists.of(
+    private static final List<ComparisionTestCase> EQ_CASES = ImmutableList.of(
             mk(EQ).op1(longN(42)).op2(longN(42)).expect(true).build(),
 
             mk(EQ).op1(longN(42)).op2(bigN("42")).expect(true).build(),
@@ -58,7 +58,7 @@ public class ComparisionTests {
             mk(EQ).op1(doubleN(42.1)).op2(bigN("42")).expect(false).build()
     );
 
-    private static final List<ComparisionTestCase> LT_CASES = Lists.of(
+    private static final List<ComparisionTestCase> LT_CASES = ImmutableList.of(
             mk(LT).op1(longN(1)).op2(longN(2)).expect(true).build(),
 
             mk(LT).op1(longN(1)).op2(bigN("2")).expect(true).build(),
@@ -80,7 +80,7 @@ public class ComparisionTests {
             mk(LT).op1(doubleN(2.1)).op2(bigN("2")).expect(false).build()
     );
 
-    private static final List<ComparisionTestCase> GT_CASES = Lists.of(
+    private static final List<ComparisionTestCase> GT_CASES = ImmutableList.of(
             mk(GT).op1(longN(1)).op2(longN(2)).expect(false).build(),
 
             mk(GT).op1(longN(1)).op2(bigN("2")).expect(false).build(),

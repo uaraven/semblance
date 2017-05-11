@@ -1,17 +1,16 @@
 package net.ninjacat.semblance.data.callables;
 
 import net.ninjacat.semblance.data.SymbolAtom;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.runtime.ParameterException;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
-import net.ninjacat.smooth.utils.Option;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static net.ninjacat.semblance.utils.Values.*;
 import static org.hamcrest.core.Is.is;
@@ -44,7 +43,7 @@ public class ParametersTest {
                 (PositionalParameter) params.get(0), is(new PositionalParameter(symbol("param1"))));
         assertThat("Should parse optional params",
                 (OptionalParameter) params.get(1), is(new OptionalParameter(
-                        symbol("opt1"), Option.<LispValue>absent(), Option.<SymbolAtom>absent())));
+                        symbol("opt1"), Optional.empty(), Optional.empty())));
     }
 
 
@@ -60,7 +59,7 @@ public class ParametersTest {
                 (PositionalParameter) params.get(0), is(new PositionalParameter(symbol("param1"))));
         assertThat("Should parse optional params",
                 (OptionalParameter) params.get(1), is(new OptionalParameter(
-                        symbol("opt1"), Option.of(number(10L)), Option.<SymbolAtom>absent())));
+                        symbol("opt1"), Optional.of(number(10L)), Optional.empty())));
     }
 
     @Test
@@ -75,7 +74,7 @@ public class ParametersTest {
                 (PositionalParameter) params.get(0), is(new PositionalParameter(symbol("param1"))));
         assertThat("Should parse optional params",
                 (OptionalParameter) params.get(1), is(new OptionalParameter(
-                        symbol("opt1"), Option.of(number(10L)), Option.of(symbol("opt1-supplied-p")))));
+                        symbol("opt1"), Optional.of(number(10L)), Optional.of(symbol("opt1-supplied-p")))));
     }
 
     @Test
@@ -112,7 +111,7 @@ public class ParametersTest {
                 (PositionalParameter) params.get(0), is(new PositionalParameter(symbol("param1"))));
         assertThat("Should parse optional params",
                 (OptionalParameter) params.get(1), is(new OptionalParameter(
-                        symbol("opt1"), Option.of(number(10L)), Option.of(symbol("opt1-supplied-p")))));
+                        symbol("opt1"), Optional.of(number(10L)), Optional.of(symbol("opt1-supplied-p")))));
         assertThat("Should parse &rest params",
                 parameters.getRestParameter().isPresent(), is(true));
     }

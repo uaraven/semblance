@@ -2,7 +2,8 @@ package net.ninjacat.semblance.builtin.spforms.comparison;
 
 import net.ninjacat.semblance.data.NumberAtom;
 import net.ninjacat.semblance.data.collections.LispValue;
-import net.ninjacat.smooth.functions.Predicate;
+
+import java.util.function.Predicate;
 
 import static net.ninjacat.semblance.utils.Values.asNumber;
 import static net.ninjacat.semblance.utils.Values.isNumber;
@@ -35,7 +36,7 @@ public abstract class BaseEqual extends BaseComparison {
         }
 
         @Override
-        public boolean matches(final LispValue value) {
+        public boolean test(final LispValue value) {
             //noinspection unchecked
             return isNumber(value) && asNumber(first).eq(asNumber(value));
         }
@@ -49,7 +50,7 @@ public abstract class BaseEqual extends BaseComparison {
         }
 
         @Override
-        public boolean matches(final LispValue value) {
+        public boolean test(final LispValue value) {
             return first.equals(value);
         }
     }

@@ -8,8 +8,9 @@ import net.ninjacat.semblance.data.collections.Vector;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.evaluator.LocalContext;
 import net.ninjacat.semblance.evaluator.RootContext;
-import net.ninjacat.smooth.utils.Either;
-import net.ninjacat.smooth.utils.Option;
+import net.ninjacat.semblance.utils.Either;
+
+import java.util.Optional;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -64,7 +65,7 @@ public abstract class Repl {
      * @return Version of underlying engine
      */
     public String getVersion() {
-        final Option<LispValue> version = rootContext.findSymbol(symbol("--VERSION--"));
+        final Optional<LispValue> version = rootContext.findSymbol(symbol("--VERSION--"));
         if (version.isPresent()) {
             final Vector versionVector = asVector(version.get());
             final StringBuilder ver = new StringBuilder();

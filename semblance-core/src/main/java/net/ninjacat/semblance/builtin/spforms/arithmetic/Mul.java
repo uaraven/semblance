@@ -7,11 +7,10 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.ParameterException;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.functions.Func;
-import net.ninjacat.smooth.iterators.Iter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -28,6 +27,18 @@ public class Mul extends BuiltInFunction {
      */
     public Mul() {
         super("*", "&rest", "values");
+    }
+
+    @Override
+    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
+        final LispValue head = evaluated.head();
+        if (isNumber(head)) {
+            return numberMultiplication(evaluated);
+        } else if (isCollection(head)) {
+            return collectionMultiplication(evaluated);
+        } else {
+            throw new TypeMismatchException("NUMBER or COLLECTION", head, evaluated.getSourceInfo());
+        }
     }
 
     private static LispValue collectionMultiplication(final LispCollection evaluated) {
@@ -56,13 +67,9 @@ public class Mul extends BuiltInFunction {
     }
 
     private static LispValue scalarProduct(final LispCollection collection, final NumberAtom number) {
-        return collection.createNew(Iter.of(collection.getCollection()).map(new Func<LispValue, LispValue>() {
-            @SuppressWarnings("unchecked")
-            @Override
-            public LispValue apply(final LispValue value) {
-                return asNumber(value).mul(number);
-            }
-        }).toList());
+        return collection.createNew(collection.stream()
+                .map(it -> asNumber(it).mul(number))
+                .collect(Collectors.toList()));
     }
 
     private static LispValue numberMultiplication(final LispCollection evaluated) {
@@ -72,17 +79,5 @@ public class Mul extends BuiltInFunction {
             accumulator = accumulator.mul(asNumber(value));
         }
         return accumulator;
-    }
-
-    @Override
-    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
-        final LispValue head = evaluated.head();
-        if (isNumber(head)) {
-            return numberMultiplication(evaluated);
-        } else if (isCollection(head)) {
-            return collectionMultiplication(evaluated);
-        } else {
-            throw new TypeMismatchException("NUMBER or COLLECTION", head, evaluated.getSourceInfo());
-        }
     }
 }

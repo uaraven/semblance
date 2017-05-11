@@ -8,7 +8,8 @@ import net.ninjacat.semblance.errors.runtime.ParameterException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.evaluator.LocalContext;
 import net.ninjacat.semblance.evaluator.Namespace;
-import net.ninjacat.smooth.utils.Option;
+
+import java.util.Optional;
 
 import static net.ninjacat.semblance.utils.Values.asSymbol;
 
@@ -31,7 +32,7 @@ public class Use extends SpecialForm {
     public LispValue apply(final Context context, final LispCollection parameters) {
         final SymbolAtom namespaceName = asSymbol(parameters.head());
 
-        final Option<Namespace> namespace = context.findNamespace(namespaceName);
+        final Optional<Namespace> namespace = context.findNamespace(namespaceName);
         if (namespace.isPresent()) {
             final Context localContext = LocalContext.namelessChildContext(context);
             localContext.setBindings(namespace.get().getBindings());

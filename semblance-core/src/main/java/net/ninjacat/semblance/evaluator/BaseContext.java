@@ -11,8 +11,6 @@ import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.data.special.ReturnValue;
 import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
 import net.ninjacat.semblance.errors.runtime.UnboundSymbolException;
-import net.ninjacat.smooth.functions.Provider;
-import net.ninjacat.smooth.utils.Option;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,17 +20,18 @@ import static net.ninjacat.semblance.utils.Values.*;
 /**
  * Default context implementation. Supports parent contexts
  */
+@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 abstract class BaseContext implements Context {
 
     private final SymbolAtom name;
     private final Context parent;
     private final Map<SymbolAtom, Namespace> namespaces;
 
-    private Option<UndefinedFunctionStrategy> undefinedFunctionStrategy;
+    private Optional<UndefinedFunctionStrategy> undefinedFunctionStrategy;
 
     BaseContext(final SymbolAtom name,
                 final Context parent,
-                final Option<UndefinedFunctionStrategy> undefinedFunctionStrategy) {
+                final Optional<UndefinedFunctionStrategy> undefinedFunctionStrategy) {
         this.name = name;
         this.parent = parent;
         this.undefinedFunctionStrategy = undefinedFunctionStrategy;
@@ -46,7 +45,7 @@ abstract class BaseContext implements Context {
     }
 
     @Override
-    public Option<LispValue> findSymbol(final SymbolAtom symbolName) {
+    public Optional<LispValue> findSymbol(final SymbolAtom symbolName) {
         return findInNamespace(symbolName);
     }
 
@@ -58,7 +57,7 @@ abstract class BaseContext implements Context {
 
     @Override
     public void update(final SymbolAtom symbolName, final LispValue value) {
-        final Option<LispValue> bound = findSymbol(symbolName);
+        final Optional<LispValue> bound = findSymbol(symbolName);
         if (bound.isPresent()) {
             updateExisting(symbolName, value);
         } else {
@@ -82,7 +81,7 @@ abstract class BaseContext implements Context {
             if (asSymbol(expression).repr().startsWith(":")) {
                 return expression;
             } else {
-                final Option<LispValue> value = findSymbol(asSymbol(expression));
+                final Optional<LispValue> value = findSymbol(asSymbol(expression));
                 if (value.isPresent()) {
                     return value.get();
                 } else {
@@ -131,13 +130,15 @@ abstract class BaseContext implements Context {
     }
 
     @Override
-    public Option<Namespace> getNamespace(final SymbolAtom namespaceName) {
-        return namespaces.containsKey(namespaceName) ? Option.of(namespaces.get(namespaceName)) : Option.<Namespace>absent();
+    public Optional<Namespace> getNamespace(final SymbolAtom namespaceName) {
+        return namespaces.containsKey(namespaceName)
+                ? Optional.ofNullable(namespaces.get(namespaceName))
+                : Optional.empty();
     }
 
     @Override
-    public Option<Namespace> findNamespace(final SymbolAtom namespaceName) {
-        final Option<Namespace> namespace = getNamespace(namespaceName);
+    public Optional<Namespace> findNamespace(final SymbolAtom namespaceName) {
+        final Optional<Namespace> namespace = getNamespace(namespaceName);
         if (!namespace.isPresent() && parent != null) {
             return parent.findNamespace(namespaceName);
         }
@@ -186,26 +187,25 @@ abstract class BaseContext implements Context {
 
     @Override
     public UndefinedFunctionStrategy getUndefinedFunctionStrategy() {
-        return undefinedFunctionStrategy.orGet(new Provider<UndefinedFunctionStrategy>() {
-            @Override
-            public UndefinedFunctionStrategy get() {
-                return parent.getUndefinedFunctionStrategy();
-            }
-        });
+        if (undefinedFunctionStrategy.isPresent()) {
+            return undefinedFunctionStrategy.get();
+        } else {
+            return parent.getUndefinedFunctionStrategy();
+        }
     }
 
     @Override
     public void setUndefinedFunctionStrategy(final UndefinedFunctionStrategy undefinedFunctionStrategy) {
-        this.undefinedFunctionStrategy = Option.of(undefinedFunctionStrategy);
+        this.undefinedFunctionStrategy = Optional.ofNullable(undefinedFunctionStrategy);
     }
 
-    protected Option<LispValue> findInNamespace(final SymbolAtom symbolName) {
+    protected Optional<LispValue> findInNamespace(final SymbolAtom symbolName) {
         final SymbolAtom rootNs = symbolName.getNamespace();
         if (!namespaces.containsKey(rootNs)) {
             return lookInParent(symbolName);
         } else {
             final Namespace namespace = namespaces.get(rootNs);
-            final Option<LispValue> symbol = namespace.findSymbol(symbolName.getLocalName());
+            final Optional<LispValue> symbol = namespace.findSymbol(symbolName.getLocalName());
             if (symbol.isPresent()) {
                 return symbol;
             } else {
@@ -225,11 +225,11 @@ abstract class BaseContext implements Context {
         return getName().equals(Constants.ROOT);
     }
 
-    private Option<LispValue> lookInParent(final SymbolAtom symbolName) {
+    private Optional<LispValue> lookInParent(final SymbolAtom symbolName) {
         if (null != parent) {
             return parent.findSymbol(symbolName);
         } else {
-            return Option.absent();
+            return Optional.empty();
         }
     }
 
@@ -238,7 +238,9 @@ abstract class BaseContext implements Context {
         if (!isSymbol(head) && !isCallable(head)) {
             throw new FunctionExpectedException(function);
         }
-        final Option<LispValue> callable = isCallable(head) ? Option.of(evaluate(head)) : findSymbol(asSymbol(head));
+        final Optional<LispValue> callable = isCallable(head)
+                ? Optional.of(evaluate(head))
+                : findSymbol(asSymbol(head));
         if (!callable.isPresent() || !isCallable(callable.get())) {
             return getUndefinedFunctionStrategy().handle(this, head, function.tail());
         }

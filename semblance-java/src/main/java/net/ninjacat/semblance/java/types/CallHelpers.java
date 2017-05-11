@@ -10,18 +10,18 @@ import net.ninjacat.semblance.java.JavaInteropException;
 import net.ninjacat.semblance.java.JavaTypeConversionException;
 import net.ninjacat.semblance.java.JavaWrapperValue;
 import net.ninjacat.semblance.java.Symbol;
-import net.ninjacat.smooth.collections.Maps;
-import net.ninjacat.smooth.functions.Func;
-import net.ninjacat.smooth.functions.Predicate;
-import net.ninjacat.smooth.iterators.Iter;
-import net.ninjacat.smooth.utils.Option;
+import net.ninjacat.semblance.utils.Maps;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -50,15 +50,12 @@ public final class CallHelpers {
      * @param params       List of values used as parameter for constructor
      * @return Optional of found constructor
      */
-    public static Option<Constructor> findMatchingConstructor(final Constructor[] constructors,
-                                                              final LispCollection params) {
+    public static Optional<Constructor> findMatchingConstructor(final Constructor[] constructors,
+                                                                final LispCollection params) {
         final LispValue[] values = convertToArray(params);
-        return Option.of(Iter.of(constructors).find(new Predicate<Constructor>() {
-            @Override
-            public boolean matches(final Constructor constructor) {
-                return isCompatible(values, constructor.getGenericParameterTypes());
-            }
-        }, null));
+        return Arrays.stream(constructors)
+                .filter(it -> isCompatible(values, it.getGenericParameterTypes()))
+                .findFirst();
     }
 
     /**
@@ -68,14 +65,10 @@ public final class CallHelpers {
      * @param params  List of values used as parameters
      * @return Optional of method
      */
-    public static Option<Method> findMatchingMethod(final Collection<Method> methods, final LispCollection params) {
+    public static Optional<Method> findMatchingMethod(final Collection<Method> methods, final LispCollection params) {
         final LispValue[] values = convertToArray(params);
-        return Option.of(Iter.of(methods).find(new Predicate<Method>() {
-            @Override
-            public boolean matches(final Method method) {
-                return isCompatible(values, method.getGenericParameterTypes());
-            }
-        }, null));
+        return methods.stream().filter(it -> isCompatible(values, it.getGenericParameterTypes()))
+                .findFirst();
     }
 
     /**
@@ -168,17 +161,12 @@ public final class CallHelpers {
     }
 
     private static LispValue toLispCollection(final Iterable<? extends Object> pojo) {
-        return new SList(Iter.<Object>of(pojo.iterator())
-                .map(new Func<LispValue, Object>() {
-                    @Override
-                    public LispValue apply(final Object obj) {
-                        return toLispValue(obj);
-                    }
-                }).toList());
+        return new SList(StreamSupport.stream(pojo.spliterator(), true)
+                .map(CallHelpers::toLispValue).collect(Collectors.toList()));
     }
 
     private static LispValue[] convertToArray(final LispCollection params) {
-        return Iter.of(params.getCollection()).toArray(new LispValue[params.length()]);
+        return params.stream().toArray(LispValue[]::new);
     }
 
     private static boolean isCompatible(final LispValue[] values, final Type[] javaTypes) {

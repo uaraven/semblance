@@ -4,11 +4,10 @@ import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.functions.Predicate;
-import net.ninjacat.smooth.iterators.Iter;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -22,12 +21,8 @@ public class FilterOperation implements ListOperation {
                            @Nonnull final LispCollection parameters) {
         final LispCallable predicate = asCallable(parameters.head());
 
-        final List<LispValue> results = Iter.of(source.getCollection()).filter(new Predicate<LispValue>() {
-            @Override
-            public boolean matches(final LispValue item) {
-                return isTrue(predicate.apply(context, list(item)));
-            }
-        }).toList();
+        final List<LispValue> results = source.stream().filter(item ->
+                isTrue(predicate.apply(context, list(item)))).collect(Collectors.toList());
 
         return source.createNew(results);
     }

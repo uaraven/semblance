@@ -2,15 +2,15 @@ package net.ninjacat.semblance.java;
 
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.debug.SourceInfo;
-import net.ninjacat.smooth.functions.Predicate;
-import net.ninjacat.smooth.iterators.Iter;
-import net.ninjacat.smooth.utils.Option;
-import net.ninjacat.smooth.utils.Try;
+import net.ninjacat.semblance.utils.Try;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 
 /**
  * Static reference represented as {@code fully.qualified.class.Name.method} or {@code fully.qualified.class.Name.field}
@@ -61,18 +61,14 @@ public class StaticReference {
      * @return Collection of all {@link Method}s with names matching to the one of this reference.
      */
     public Collection<Method> getMethods() {
-        return Iter.of(clazz.getMethods()).filter(new Predicate<Method>() {
-            @Override
-            public boolean matches(final Method method) {
-                return member.equals(method.getName());
-            }
-        }).toList();
+        return Arrays.stream(clazz.getMethods())
+                .filter(method -> member.equals(method.getName())).collect(Collectors.toList());
     }
 
     /**
      * @return Optional {@link Field} with the name matching the one of this reference.
      */
-    public Option<Field> getField() {
+    public Optional<Field> getField() {
         return Try.execute(new Callable<Field>() {
             @Override
             public Field call() throws Exception {

@@ -8,12 +8,12 @@ import net.ninjacat.semblance.errors.runtime.ParameterException;
 import net.ninjacat.semblance.errors.runtime.ParameterValueExpectedException;
 import net.ninjacat.semblance.errors.runtime.UnexpectedValueException;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.utils.Option;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -36,7 +36,7 @@ public class Parameters implements Iterable<Parameter>, Serializable {
     private static final SymbolAtom REST = symbol("&rest");
 
     private final List<Parameter> formalParameters;
-    private final Option<Parameter> restParameter;
+    private final Optional<Parameter> restParameter;
 
     /**
      * Create new list of formal parameters from a definition list
@@ -64,7 +64,52 @@ public class Parameters implements Iterable<Parameter>, Serializable {
         if (null == tempRest && Sweeper.Rest == sweeper) {
             throw new ParameterException("&rest parameter not specified", definitions.getSourceInfo());
         }
-        restParameter = Option.of(tempRest);
+        restParameter = Optional.ofNullable(tempRest);
+    }
+
+    @Override
+    public Iterator<Parameter> iterator() {
+        return formalParameters.iterator();
+    }
+
+    /**
+     * Gets list of formal parameters.
+     *
+     * @return List of {@link Parameter}
+     */
+    public List<Parameter> getFormalParameters() {
+        return formalParameters;
+    }
+
+    /**
+     * Gets &amp;rest parameter, if defined.
+     *
+     * @return Optional value of &amp;rest parameter;
+     */
+    public Optional<Parameter> getRestParameter() {
+        return restParameter;
+    }
+
+    /**
+     * Assigns actual parameters according to formal parameter definition. Assignment is done in supplied context.
+     *
+     * @param context          Context in which assign parameters.
+     * @param actualParameters List of actual parameters.
+     */
+    public void apply(final Context context, final LispCollection actualParameters) {
+        final LispCollection evaluated = context.evaluateList(actualParameters);
+        applyList(context, evaluated);
+    }
+
+    /**
+     * Assigns actual parameters according to formal parameter definition. Assignment is done in supplied context.
+     * Does not evaluates actual parameters, expressions are assigned as is.
+     *
+     * @param context          Context in which assign parameters.
+     * @param actualParameters List of actual parameters.
+     */
+    public void bindExpressions(final Context context, final LispCollection actualParameters) {
+        applyList(context, actualParameters);
     }
 
     private static Parameter createParameter(final LispValue value, final Sweeper sweeper) {
@@ -90,61 +135,18 @@ public class Parameters implements Iterable<Parameter>, Serializable {
     private static Parameter createOptionalParamter(final LispValue value) {
         if (isSymbol(value)) {
             return new OptionalParameter(asSymbol(value),
-                    Option.<LispValue>absent(), Option.<SymbolAtom>absent());
+                    Optional.empty(), Optional.empty());
         } else if (isList(value)) {
             final SList list = asSList(value);
             final SymbolAtom name = asSymbol(list.head());
             final LispValue defaultValue = list.tail().head();
-            final Option<SymbolAtom> flagName = 2 < list.length()
-                    ? Option.of(asSymbol(list.tail().tail().head()))
-                    : Option.<SymbolAtom>absent();
-            return new OptionalParameter(name, Option.of(defaultValue), flagName);
+            final Optional<SymbolAtom> flagName = 2 < list.length()
+                    ? Optional.ofNullable(asSymbol(list.tail().tail().head()))
+                    : Optional.empty();
+            return new OptionalParameter(name, Optional.of(defaultValue), flagName);
         } else {
             throw new UnexpectedValueException(value);
         }
-    }
-
-    @Override
-    public Iterator<Parameter> iterator() {
-        return formalParameters.iterator();
-    }
-
-    /**
-     * Gets list of formal parameters.
-     * @return List of {@link Parameter}
-     */
-    public List<Parameter> getFormalParameters() {
-        return formalParameters;
-    }
-
-    /**
-     * Gets &amp;rest parameter, if defined.
-     * @return Optional value of &amp;rest parameter;
-     */
-    public Option<Parameter> getRestParameter() {
-        return restParameter;
-    }
-
-    /**
-     * Assigns actual parameters according to formal parameter definition. Assignment is done in supplied context.
-     *
-     * @param context          Context in which assign parameters.
-     * @param actualParameters List of actual parameters.
-     */
-    public void apply(final Context context, final LispCollection actualParameters) {
-        final LispCollection evaluated = context.evaluateList(actualParameters);
-        applyList(context, evaluated);
-    }
-
-    /**
-     * Assigns actual parameters according to formal parameter definition. Assignment is done in supplied context.
-     * Does not evaluates actual parameters, expressions are assigned as is.
-     *
-     * @param context          Context in which assign parameters.
-     * @param actualParameters List of actual parameters.
-     */
-    public void bindExpressions(final Context context, final LispCollection actualParameters) {
-        applyList(context, actualParameters);
     }
 
     private void applyList(final Context context, final LispCollection evaluated) {

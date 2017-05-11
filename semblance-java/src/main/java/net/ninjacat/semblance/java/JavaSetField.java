@@ -7,9 +7,9 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.types.CallHelpers;
-import net.ninjacat.smooth.utils.Option;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 import static java.lang.String.format;
 import static net.ninjacat.semblance.utils.Values.asSymbol;
@@ -46,7 +46,7 @@ public class JavaSetField extends SpecialForm {
 
     private static LispValue setStaticField(final SymbolAtom staticField, final LispCollection values) {
         final StaticReference reference = new StaticReference(staticField);
-        final Option<Field> field = reference.getField();
+        final Optional<Field> field = reference.getField();
         if (!field.isPresent()) {
             throw new JavaInteropException(format("Failed to find static field %s", staticField.repr()));
         }

@@ -2,9 +2,9 @@ package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispValue;
-import net.ninjacat.smooth.utils.Option;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * The namespace.
@@ -22,7 +22,7 @@ public interface Namespace {
      * @param name symbol
      * @return value
      */
-    Option<LispValue> findSymbol(SymbolAtom name);
+    Optional<LispValue> findSymbol(SymbolAtom name);
 
     /**
      * Binds symbol to a value. Will overwrite current binding or create a new one

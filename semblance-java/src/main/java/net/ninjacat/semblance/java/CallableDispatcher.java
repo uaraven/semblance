@@ -5,11 +5,10 @@ import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.utils.Option;
-import net.ninjacat.smooth.utils.Try;
+import net.ninjacat.semblance.utils.Try;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.Callable;
+import java.util.Optional;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -63,11 +62,11 @@ public final class CallableDispatcher {
         }
         final LispCollection params = parameters.tail();
         try {
-            final Option<Method> method = findMethod(delegate, functionName, Context.class, LispCollection.class);
+            final Optional<Method> method = findMethod(delegate, functionName, Context.class, LispCollection.class);
             if (method.isPresent()) {
                 return (LispValue) method.get().invoke(delegate, context, params);
             }
-            final Option<Method> funCall = findMethod(delegate, functionName, LispCollection.class);
+            final Optional<Method> funCall = findMethod(delegate, functionName, LispCollection.class);
             if (funCall.isPresent()) {
                 final LispCollection evalParams = context.evaluateList(parameters.tail());
                 return (LispValue) funCall.get().invoke(delegate, evalParams);
@@ -83,12 +82,7 @@ public final class CallableDispatcher {
         }
     }
 
-    private static Option<Method> findMethod(final Object delegate, final String name, final Class<?>... paramTypes) {
-        return Try.execute(new Callable<Method>() {
-            @Override
-            public Method call() throws Exception {
-                return delegate.getClass().getMethod(name, paramTypes);
-            }
-        }).get();
+    private static Optional<Method> findMethod(final Object delegate, final String name, final Class<?>... paramTypes) {
+        return Try.execute(() -> delegate.getClass().getMethod(name, paramTypes)).get();
     }
 }

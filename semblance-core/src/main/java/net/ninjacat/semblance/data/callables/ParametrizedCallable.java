@@ -5,8 +5,8 @@ import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.runtime.InvalidFunctionDeclarationException;
-import net.ninjacat.smooth.functions.Func;
-import net.ninjacat.smooth.iterators.Iter;
+
+import java.util.Arrays;
 
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -23,12 +23,7 @@ public abstract class ParametrizedCallable implements LispCallable {
 
     @SuppressWarnings("OverloadedVarargsMethod")
     ParametrizedCallable(final String... definition) {
-        this(list(Iter.of(definition).map(new Func<SymbolAtom, String>() {
-            @Override
-            public SymbolAtom apply(final String s) {
-                return new SymbolAtom(s);
-            }
-        }).toArray(new SymbolAtom[]{})));
+        this(list(Arrays.stream(definition).map(SymbolAtom::new).toArray(SymbolAtom[]::new)));
     }
 
     protected ParametrizedCallable(final SList definition) {

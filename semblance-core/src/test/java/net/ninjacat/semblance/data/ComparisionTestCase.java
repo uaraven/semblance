@@ -1,7 +1,8 @@
 package net.ninjacat.semblance.data;
 
-import net.ninjacat.smooth.functions.Func2;
 import org.hamcrest.CoreMatchers;
+
+import java.util.function.BiFunction;
 
 import static org.junit.Assert.assertThat;
 
@@ -63,7 +64,7 @@ public class ComparisionTestCase {
         }
     }
 
-    public abstract static class Operation implements Func2<Boolean, NumberAtom, NumberAtom> {
+    public abstract static class Operation implements BiFunction<NumberAtom, NumberAtom, Boolean> {
         private final String name;
 
         protected Operation(final String name) {

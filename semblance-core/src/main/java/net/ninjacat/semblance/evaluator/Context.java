@@ -3,10 +3,10 @@ package net.ninjacat.semblance.evaluator;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
-import net.ninjacat.smooth.utils.Option;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Execution context
@@ -28,7 +28,7 @@ public interface Context {
      * @param name symbol
      * @return value
      */
-    Option<LispValue> findSymbol(SymbolAtom name);
+    Optional<LispValue> findSymbol(SymbolAtom name);
 
     /**
      * Retrieves namespace by its name.
@@ -36,7 +36,7 @@ public interface Context {
      * @param name Name of the namespace.
      * @return Namespace.
      */
-    Option<Namespace> getNamespace(SymbolAtom name);
+    Optional<Namespace> getNamespace(SymbolAtom name);
 
     /**
      * Retrieves namespace by its name. If namespace is not available in current context, continues searching through
@@ -45,7 +45,7 @@ public interface Context {
      * @param name Name of the namespace.
      * @return Namespace or absent
      */
-    Option<Namespace> findNamespace(SymbolAtom name);
+    Optional<Namespace> findNamespace(SymbolAtom name);
 
 
     /**

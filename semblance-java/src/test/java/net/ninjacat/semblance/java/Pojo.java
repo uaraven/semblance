@@ -1,7 +1,6 @@
 package net.ninjacat.semblance.java;
 
-import net.ninjacat.smooth.functions.Func;
-import net.ninjacat.smooth.iterators.Iter;
+import java.util.Arrays;
 
 @SuppressWarnings("ClassNamingConvention")
 public class Pojo {
@@ -48,12 +47,7 @@ public class Pojo {
     }
 
     public static String[] toStr(final Integer[] input) {
-        return Iter.of(input).map(new Func<String, Integer>() {
-            @Override
-            public String apply(final Integer integer) {
-                return String.valueOf(integer);
-            }
-        }).toArray(new String[input.length]);
+        return Arrays.stream(input).map(String::valueOf).toArray(String[]::new);
     }
 
     public int getIntValue() {

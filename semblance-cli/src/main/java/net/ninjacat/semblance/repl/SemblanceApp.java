@@ -2,7 +2,6 @@ package net.ninjacat.semblance.repl;
 
 import net.ninjacat.semblance.Compiler;
 import net.ninjacat.semblance.errors.compile.ParsingException;
-import net.ninjacat.smooth.utils.Option;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
@@ -10,6 +9,7 @@ import org.apache.commons.cli.ParseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Application which runs Semblance CLI
@@ -28,7 +28,7 @@ public final class SemblanceApp {
         final IoConsole console = System.console() != null
                 ? new ConsoleWrapper(System.console()) : new EmulatedConsole();
 
-        final Option<CommandLine> commandLine = parseCommandLine(console, args);
+        final Optional<CommandLine> commandLine = parseCommandLine(console, args);
 
         if (!commandLine.isPresent() || commandLine.get().getArgList().isEmpty()) {
             runRepl(console);
@@ -54,13 +54,13 @@ public final class SemblanceApp {
         console.flush();
     }
 
-    private static Option<CommandLine> parseCommandLine(final IoConsole console, final String[] args) {
+    private static Optional<CommandLine> parseCommandLine(final IoConsole console, final String[] args) {
         final Options options = new Options();
         try {
-            return Option.of(new DefaultParser().parse(options, args));
+            return Optional.ofNullable(new DefaultParser().parse(options, args));
         } catch (final ParseException e) {
             console.printf(e.toString());
-            return Option.absent();
+            return Optional.empty();
         }
     }
 

@@ -2,12 +2,8 @@ package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispValue;
-import net.ninjacat.smooth.utils.Option;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -39,11 +35,11 @@ public class BaseNamespace implements Namespace {
     }
 
     @Override
-    public Option<LispValue> findSymbol(final SymbolAtom key) {
+    public Optional<LispValue> findSymbol(final SymbolAtom key) {
         if (bindings.containsKey(key)) {
-            return Option.of(bindings.get(key));
+            return Optional.ofNullable(bindings.get(key));
         } else {
-            return Option.absent();
+            return Optional.empty();
         }
     }
 

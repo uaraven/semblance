@@ -1,9 +1,10 @@
 package net.ninjacat.semblance.errors.runtime;
 
 import net.ninjacat.semblance.debug.SourceInfo;
-import net.ninjacat.smooth.iterators.Iter;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.joining;
 
 /**
  * Thrown when included semblance file cannot be found on class path.
@@ -22,6 +23,6 @@ public class FileNotFoundException extends SemblanceRuntimeException {
     public FileNotFoundException(final String fileName,
                                  final List<String> paths,
                                  final SourceInfo sourceInfo) {
-        super(String.format(NOT_FOUND, fileName, Iter.of(paths).mkStr(",")), sourceInfo);
+        super(String.format(NOT_FOUND, fileName, paths.stream().collect(joining(","))), sourceInfo);
     }
 }

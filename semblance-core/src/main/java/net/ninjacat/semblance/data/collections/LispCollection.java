@@ -3,7 +3,6 @@ package net.ninjacat.semblance.data.collections;
 import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.operations.*;
-import net.ninjacat.semblance.data.collections.operations.Operation;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
@@ -12,13 +11,14 @@ import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.errors.runtime.ValueExpectedException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.JavaConvertible;
-import net.ninjacat.smooth.functions.Func;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static net.ninjacat.semblance.data.collections.operations.Operation.*;
 import static net.ninjacat.semblance.utils.Values.*;
@@ -31,7 +31,8 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
 
     private static final long serialVersionUID = -7182398711351245106L;
     private static final Map<SymbolAtom, ListOperation> OPERATIONS = new ConcurrentHashMap<>();
-
+    private static final Function<LispValue, String> VALUE_TO_STRING = LispValue::repr;
+    private static final Function<LispValue, String> PRINT_VALUE = LispValue::printIt;
     private final SourceInfo sourceInfo;
 
     LispCollection() {
@@ -164,6 +165,13 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
     }
 
     /**
+     * @return {@link Stream} of this collection
+     */
+    public Stream<LispValue> stream() {
+        return getCollection().stream();
+    }
+
+    /**
      * Performs a slice on collection.
      *
      * @param from first index of new collection
@@ -255,24 +263,6 @@ public abstract class LispCollection implements Iterable<LispValue>, DebugInfoPr
             return get((int) index);
         } catch (final IndexOutOfBoundsException ex) {
             throw new CollectionIndexOutOfBoundsException(index, getCollection().size(), sourceI, ex);
-        }
-    }
-
-    enum ValueToString implements Func<String, LispValue> {
-        REPR;
-
-        @Override
-        public String apply(final LispValue lispValue) {
-            return lispValue.repr();
-        }
-    }
-
-    enum PrintValue implements Func<String, LispValue> {
-        PRINT;
-
-        @Override
-        public String apply(final LispValue lispValue) {
-            return lispValue.printIt();
         }
     }
 }

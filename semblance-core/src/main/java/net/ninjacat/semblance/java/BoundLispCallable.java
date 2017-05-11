@@ -4,13 +4,14 @@ import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.functions.Func;
+
+import java.util.function.Function;
 
 /**
  * {@link LispCallable} bound to an execution {@link Context}. This class is to simplify calling Lisp functions from
  * Java
  */
-public class BoundLispCallable implements Func<LispValue, LispCollection> {
+public class BoundLispCallable implements Function<LispCollection, LispValue> {
 
     private final Context context;
     private final LispCallable callable;

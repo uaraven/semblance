@@ -7,7 +7,8 @@ import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.evaluator.LocalContext;
-import net.ninjacat.smooth.utils.Option;
+
+import java.util.Optional;
 
 import static net.ninjacat.semblance.utils.Values.asSymbol;
 
@@ -36,11 +37,9 @@ public class Namespace extends SpecialForm {
 
         final LispValue result = localContext.evaluateBlock(body);
 
-        final Option<net.ninjacat.semblance.evaluator.Namespace> namespace = localContext.getNamespace(Constants.NONE);
+        final Optional<net.ninjacat.semblance.evaluator.Namespace> namespace = localContext.getNamespace(Constants.NONE);
 
-        if (namespace.isPresent()) {
-            context.addNamespace(namespace.get().rename(name));
-        }
+        namespace.ifPresent(namespace1 -> context.addNamespace(namespace1.rename(name)));
 
         return result;
     }

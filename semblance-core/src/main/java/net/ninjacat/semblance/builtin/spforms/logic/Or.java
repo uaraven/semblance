@@ -5,8 +5,6 @@ import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.functions.Predicate;
-import net.ninjacat.smooth.iterators.Iter;
 
 import static net.ninjacat.semblance.utils.Values.isFalse;
 
@@ -24,11 +22,6 @@ public class Or extends SpecialForm {
 
     @Override
     public LispValue apply(final Context context, final LispCollection parameters) {
-        return SymbolAtom.fromBoolean(Iter.of(parameters.iterator()).any(new Predicate<LispValue>() {
-            @Override
-            public boolean matches(final LispValue value) {
-                return !isFalse(value);
-            }
-        }));
+        return SymbolAtom.fromBoolean(parameters.stream().anyMatch(it -> !isFalse(it)));
     }
 }

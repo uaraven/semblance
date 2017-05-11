@@ -5,7 +5,8 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
-import net.ninjacat.smooth.utils.Option;
+
+import java.util.Optional;
 
 /**
  * Created on 28/02/15.
@@ -13,8 +14,8 @@ import net.ninjacat.smooth.utils.Option;
 public class OptionalParameter extends BaseParameter {
     private static final long serialVersionUID = -1126573943727814990L;
 
-    private final Option<LispValue> defaultValue;
-    private final Option<SymbolAtom> suppliedFlagName;
+    private final Optional<LispValue> defaultValue;
+    private final Optional<SymbolAtom> suppliedFlagName;
 
     /**
      * Creates new Optional parameter
@@ -24,8 +25,8 @@ public class OptionalParameter extends BaseParameter {
      * @param suppliedFlagName Supplied flag name for parameter (if present).
      */
     public OptionalParameter(final SymbolAtom name,
-                             final Option<LispValue> defaultValue,
-                             final Option<SymbolAtom> suppliedFlagName) {
+                             final Optional<LispValue> defaultValue,
+                             final Optional<SymbolAtom> suppliedFlagName) {
         super(name);
         this.defaultValue = defaultValue;
         this.suppliedFlagName = suppliedFlagName;
@@ -76,18 +77,12 @@ public class OptionalParameter extends BaseParameter {
     public String toString() {
         final StringBuilder builder = new StringBuilder("&optional ");
         builder.append(getName());
-        if (defaultValue.isPresent()) {
-            builder.append(" ").append(defaultValue.get());
-        }
-        if (suppliedFlagName.isPresent()) {
-            builder.append(" ").append(suppliedFlagName.get());
-        }
+        defaultValue.ifPresent(lispValue -> builder.append(" ").append(lispValue));
+        suppliedFlagName.ifPresent(symbolAtom -> builder.append(" ").append(symbolAtom));
         return builder.toString();
     }
 
     private void bindSupplied(final Context context, final boolean isSupplied) {
-        if (suppliedFlagName.isPresent()) {
-            context.bind(suppliedFlagName.get(), isSupplied ? Values.T : Values.F);
-        }
+        suppliedFlagName.ifPresent(symbolAtom -> context.bind(symbolAtom, isSupplied ? Values.T : Values.F));
     }
 }

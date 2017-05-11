@@ -21,7 +21,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "(list (+ 1 2) (- 5 1) (/ 10 2))");
 
-        assertThat(value, is((LispValue) smartList(3, 4, 5)));
+        assertThat(value, is(smartList(3, 4, 5)));
     }
 
     @Test
@@ -32,7 +32,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "'((+ 1 2))");
 
-        assertThat(value, is((LispValue) list(list(symbol("+"), number(1), number(2)))));
+        assertThat(value, is(list(list(symbol("+"), number(1), number(2)))));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class CollectionTests {
                 "(set1 x '(1 2 3 4))" +
                         "(x 1 2)");
 
-        assertThat(value, is((LispValue) smartList(2L, 3L)));
+        assertThat(value, is(smartList(2L, 3L)));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class CollectionTests {
                 "(set1 x '(1 2 3 4))" +
                         "(x :tail)");
 
-        assertThat(value, is((LispValue) smartList(2L, 3L, 4L)));
+        assertThat(value, is(smartList(2L, 3L, 4L)));
     }
 
     @Test
@@ -144,7 +144,7 @@ public class CollectionTests {
                 "(set (x {:a 1 :b (+ 2 3) :c 3}))" +
                         "(list (x :b) (x :c))");
 
-        assertThat(value, is((LispValue) smartList(5L, 3L)));
+        assertThat(value, is(smartList(5L, 3L)));
     }
 
     @SuppressWarnings("RedundantCast")
@@ -166,7 +166,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "(contains {:a 1 :b 2 :c 3} :b)");
 
-        assertThat(value, is((LispValue) Constants.TRUE));
+        assertThat(value, is(Constants.TRUE));
     }
 
     @Test
@@ -176,7 +176,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "(contains {:a 1 :b 2 :c 3} :z)");
 
-        assertThat(value, is((LispValue) Constants.FALSE));
+        assertThat(value, is(Constants.FALSE));
     }
 
     @Test
@@ -218,7 +218,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "('(1 2 3 4 5) :tail)");
 
-        assertThat(value, is((LispValue) smartList(2L, 3L, 4L, 5L)));
+        assertThat(value, is(smartList(2L, 3L, 4L, 5L)));
     }
 
     @Test
@@ -238,7 +238,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "('(1 2 3 4 5) :take 2)");
 
-        assertThat(value, is((LispValue) smartList(1L, 2L)));
+        assertThat(value, is(smartList(1L, 2L)));
     }
 
     @Test
@@ -248,7 +248,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "('(1 2 3 4 5) :drop 2)");
 
-        assertThat(value, is((LispValue) smartList(3L, 4L, 5L)));
+        assertThat(value, is(smartList(3L, 4L, 5L)));
     }
 
     @Test
@@ -258,7 +258,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "('(1 2 3 4 5) :reverse)");
 
-        assertThat(value, is((LispValue) smartList(5L, 4L, 3L, 2L, 1L)));
+        assertThat(value, is(smartList(5L, 4L, 3L, 2L, 1L)));
     }
 
     @Test
@@ -268,7 +268,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "('(1 5 4 2 3) :sort)");
 
-        assertThat(value, is((LispValue) smartList(1L, 2L, 3L, 4L, 5L)));
+        assertThat(value, is(smartList(1L, 2L, 3L, 4L, 5L)));
     }
 
     @Test
@@ -278,7 +278,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "('(1 5 4 2 3) :sort :desc)");
 
-        assertThat(value, is((LispValue) smartList(5L, 4L, 3L, 2L, 1L)));
+        assertThat(value, is(smartList(5L, 4L, 3L, 2L, 1L)));
     }
 
     @Test
@@ -288,7 +288,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "(contains [1 2 3] 2)");
 
-        assertThat(value, is((LispValue) Constants.TRUE));
+        assertThat(value, is(Constants.TRUE));
     }
 
     @Test
@@ -298,7 +298,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "(contains [1 2 3] 5)");
 
-        assertThat(value, is((LispValue) Constants.FALSE));
+        assertThat(value, is(Constants.FALSE));
     }
 
     @Test
@@ -329,7 +329,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "('(\"bz\" \"ac\" \"ba\") :sort)");
 
-        assertThat(value, is((LispValue) smartList("ac", "ba", "bz")));
+        assertThat(value, is(smartList("ac", "ba", "bz")));
     }
 
     @Test
@@ -340,7 +340,7 @@ public class CollectionTests {
                 "(let ((double (fn (x) (* 2 x))))" +
                         "('(1 2 3) :map double))");
 
-        assertThat(value, is((LispValue) smartList(2L, 4L, 6L)));
+        assertThat(value, is(smartList(2L, 4L, 6L)));
     }
 
     @Test
@@ -351,7 +351,7 @@ public class CollectionTests {
                 "(let ((is-odd(fn(x) (!= 0 (% x 2)) )))" +
                         "('(1 2 3 4) :filter is-odd))");
 
-        assertThat(value, is((LispValue) smartList(1L, 3L)));
+        assertThat(value, is(smartList(1L, 3L)));
     }
 
     @Test
@@ -361,7 +361,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "('(1 2) :append 3 4)");
 
-        assertThat(value, is((LispValue) smartList(1L, 2L, 3L, 4L)));
+        assertThat(value, is(smartList(1L, 2L, 3L, 4L)));
     }
 
     @Test
@@ -371,7 +371,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "([1 2] :prepend 3 4)");
 
-        assertThat(value, is((LispValue) smartVector(3L, 4L, 1L, 2L)));
+        assertThat(value, is(smartVector(3L, 4L, 1L, 2L)));
     }
 
 
@@ -382,7 +382,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "('(1 2) :append [3 4])");
 
-        assertThat(value, is((LispValue) smartList(1L, 2L, 3L, 4L)));
+        assertThat(value, is(smartList(1L, 2L, 3L, 4L)));
     }
 
     @Test
@@ -392,7 +392,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "([1 2] :prepend '(3 4))");
 
-        assertThat(value, is((LispValue) smartVector(3L, 4L, 1L, 2L)));
+        assertThat(value, is(smartVector(3L, 4L, 1L, 2L)));
     }
 
     @Test
@@ -402,7 +402,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "(list/zip [1 2] [\"a\" \"b\"])");
 
-        assertThat(value, is((LispValue) vector(smartList(1L, "a"), smartList(2L, "b"))));
+        assertThat(value, is(vector(smartList(1L, "a"), smartList(2L, "b"))));
 
     }
 
@@ -414,7 +414,7 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "(list/zip '(1 2) [\"a\"] [:c :d])");
 
-        assertThat(value, is((LispValue) list(
+        assertThat(value, is(list(
                         list(number(1), string("a"), symbol(":c")),
                         list(number(2), NilCollection.INSTANCE, symbol(":d"))))
         );
@@ -428,6 +428,6 @@ public class CollectionTests {
         final LispValue value = interpreter.run(
                 "[(+ 1 2) (- 5 1) (/ 10 2)]");
 
-        assertThat(value, is((LispValue) smartVector(3, 4, 5)));
+        assertThat(value, is(smartVector(3, 4, 5)));
     }
 }

@@ -4,8 +4,9 @@ import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.utils.IOUtils;
-import net.ninjacat.smooth.utils.Option;
 import org.junit.Test;
+
+import java.util.Optional;
 
 import static net.ninjacat.semblance.utils.Values.number;
 import static net.ninjacat.semblance.utils.Values.symbol;
@@ -22,7 +23,7 @@ public class NamespaceTest {
         context.evaluateHere(IOUtils.asStream(
                 "(namespace math (set (pi 3.14))) math/pi"));
 
-        final Option<net.ninjacat.semblance.evaluator.Namespace> namespace = context.getNamespace(symbol("math"));
+        final Optional<net.ninjacat.semblance.evaluator.Namespace> namespace = context.getNamespace(symbol("math"));
 
         assertThat(namespace.isPresent(), is(true));
 
@@ -38,7 +39,7 @@ public class NamespaceTest {
         final LispValue value = context.evaluateHere(IOUtils.asStream(
                 "(namespace math (defun pi () 3.14)) (math/pi)"));
 
-        final Option<net.ninjacat.semblance.evaluator.Namespace> namespace = context.getNamespace(symbol("math"));
+        final Optional<net.ninjacat.semblance.evaluator.Namespace> namespace = context.getNamespace(symbol("math"));
 
         assertThat(value, is(number(3.14)));
         assertThat(namespace.isPresent(), is(true));

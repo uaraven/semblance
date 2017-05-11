@@ -8,11 +8,12 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.java.JavaConvertible;
 import net.ninjacat.semblance.java.Symbol;
-import net.ninjacat.smooth.functions.Func;
-import net.ninjacat.smooth.iterators.Iter;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Various utils simplifying value manipulations.
@@ -31,6 +32,17 @@ public final class Values {
      * FALSE constant used in {@code if} special form and elsewhere
      */
     public static final SymbolAtom F = symbol("F");
+    /**
+     * Converts LispValue to Java object, if LispValue supports {@link JavaConvertible} interface.
+     */
+    public static final Function<LispValue, Object> TO_JAVA = value -> {
+        if (canBeConvertedToJavaObject(value)) {
+            return ((JavaConvertible) value).asJavaObject();
+        } else {
+            throw new IllegalArgumentException("Non-convertible value");
+        }
+    };
+    private static final Function<Object, LispValue> FROM_JAVA = Values::atom;
 
     private Values() {
     }
@@ -309,11 +321,6 @@ public final class Values {
         }
     }
 
-
-    private static boolean canBeConvertedToJavaObject(final LispValue value) {
-        return value instanceof JavaConvertible;
-    }
-
     /**
      * Creates a {@link Vector} from an array of {@link LispValue}s
      *
@@ -321,7 +328,7 @@ public final class Values {
      * @return new {@link Vector}
      */
     public static Vector vector(final LispValue... values) {
-        return new Vector(Iter.of(values).toList());
+        return new Vector(Arrays.stream(values).collect(Collectors.toList()));
     }
 
     /**
@@ -332,7 +339,7 @@ public final class Values {
      * @return new {@link Vector}
      */
     public static Vector smartVector(final Object... values) {
-        return vector(Iter.of(values).map(FromJavaConverter.INSTANCE).toArray(new LispValue[values.length]));
+        return vector(Arrays.stream(values).map(FROM_JAVA).toArray(LispValue[]::new));
     }
 
     /**
@@ -342,7 +349,7 @@ public final class Values {
      * @return new {@link SList}
      */
     public static SList list(final LispValue... values) {
-        return new SList(Iter.of(values).toList());
+        return new SList(Arrays.stream(values).collect(Collectors.toList()));
     }
 
     /**
@@ -353,7 +360,7 @@ public final class Values {
      * @return new {@link SList}
      */
     public static SList smartList(final Object... values) {
-        return list(Iter.of(values).map(FromJavaConverter.INSTANCE).toArray(new LispValue[values.length]));
+        return list(Arrays.stream(values).map(FROM_JAVA).toArray(LispValue[]::new));
     }
 
     /**
@@ -474,7 +481,7 @@ public final class Values {
      * @return {@link List} of values in collection
      */
     public static List<LispValue> asList(final LispCollection in) {
-        return Iter.of(in.iterator()).toList();
+        return in.stream().collect(Collectors.toList());
     }
 
     /**
@@ -587,40 +594,8 @@ public final class Values {
         }
     }
 
-    private enum FromJavaConverter implements Func<LispValue, Object> {
-        INSTANCE;
-
-        @Override
-        public LispValue apply(final Object o) {
-            return atom(o);
-        }
+    private static boolean canBeConvertedToJavaObject(final LispValue value) {
+        return value instanceof JavaConvertible;
     }
 
-    /**
-     * Converts LispValue to Java object, if LispValue supports {@link JavaConvertible} interface.
-     */
-    public enum ToJavaConverter implements Func<Object, LispValue> {
-        INSTANCE;
-
-        @Override
-        public Object apply(final LispValue value) {
-            if (canBeConvertedToJavaObject(value)) {
-                return ((JavaConvertible) value).asJavaObject();
-            } else {
-                throw new IllegalArgumentException("Non-convertible value");
-            }
-        }
-    }
-
-    /**
-     * Converts Java string to Symbol atom.
-     */
-    public enum StringToSymbol implements Func<LispValue, String> {
-        INSTANCE;
-
-        @Override
-        public LispValue apply(final String s) {
-            return symbol(s);
-        }
-    }
 }

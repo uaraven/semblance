@@ -5,9 +5,9 @@ import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 import net.ninjacat.semblance.utils.Values;
-import net.ninjacat.smooth.iterators.Iter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -59,7 +59,7 @@ public class SList extends LispCollection {
     @Override
     public List<?> asJavaObject() {
         try {
-            return Iter.of(collection).map(Values.ToJavaConverter.INSTANCE).toList();
+            return collection.stream().map(Values.TO_JAVA).collect(Collectors.toList());
         } catch (final IllegalArgumentException ex) {
             throw new CollectionException("Cannot create Java representation", getSourceInfo(), ex);
         }
@@ -72,12 +72,12 @@ public class SList extends LispCollection {
 
     @Override
     public String repr() {
-        return "(" + Iter.of(collection).map(ValueToString.REPR).mkStr(" ") + ")";
+        return "(" + collection.stream().map(LispValue::repr).collect(Collectors.joining(" ")) + ")";
     }
 
     @Override
     public String printIt() {
-        return "(" + Iter.of(collection).map(PrintValue.PRINT).mkStr(" ") + ")";
+        return "(" + collection.stream().map(LispValue::printIt).collect(Collectors.joining(" ")) + ")";
     }
 
     @Override

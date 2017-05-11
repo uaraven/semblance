@@ -19,7 +19,6 @@ import net.ninjacat.semblance.data.special.WrappedValue;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
-import net.ninjacat.smooth.utils.Option;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -29,6 +28,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static net.ninjacat.semblance.evaluator.SourceLoader.readProgram;
 import static net.ninjacat.semblance.utils.Values.symbol;
@@ -55,7 +55,7 @@ public class RootContext extends BaseContext {
      * @param undefinedFunctionStrategy Strategy to resolve undefined functions
      */
     public RootContext(@Nonnull final UndefinedFunctionStrategy undefinedFunctionStrategy) {
-        super(symbol("/"), null, Option.of(undefinedFunctionStrategy));
+        super(symbol("/"), null, Optional.of(undefinedFunctionStrategy));
 
         bind(symbol("nil"), NilCollection.INSTANCE);
         bind(symbol("T"), Constants.TRUE);
@@ -96,10 +96,6 @@ public class RootContext extends BaseContext {
      */
     public static LispValue evaluateInContext(final String source, final Context context) throws ParsingException {
         return context.evaluateBlock(readProgram(source));
-    }
-
-    private static LispValue unwrapWrappers(final LispValue value) {
-        return value instanceof WrappedValue ? ((WrappedValue) value).getValue() : value;
     }
 
     /**
@@ -171,6 +167,10 @@ public class RootContext extends BaseContext {
     public void setSourceFolders(final List<String> sourceFolders) {
         this.sourceFolders.clear();
         this.sourceFolders.addAll(sourceFolders);
+    }
+
+    private static LispValue unwrapWrappers(final LispValue value) {
+        return value instanceof WrappedValue ? ((WrappedValue) value).getValue() : value;
     }
 
     private void bindSpecialForms() {

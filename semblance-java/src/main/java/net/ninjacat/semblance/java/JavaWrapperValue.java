@@ -9,15 +9,15 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.types.CallHelpers;
-import net.ninjacat.smooth.functions.Predicate;
-import net.ninjacat.smooth.iterators.Iter;
-import net.ninjacat.smooth.utils.Option;
-import net.ninjacat.smooth.utils.Try;
+import net.ninjacat.semblance.utils.Try;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static net.ninjacat.semblance.java.types.CallHelpers.convertParameters;
 import static net.ninjacat.semblance.utils.Values.*;
@@ -58,12 +58,12 @@ public class JavaWrapperValue extends OpaqueValue<Object> implements LispCallabl
         final SymbolAtom objectProp = asSymbol(parameters.head());
         final LispCollection evaluatedParameters = context.evaluateList(parameters.tail());
 
-        final Option<Method> method = findMethod(objectProp, evaluatedParameters);
+        final Optional<Method> method = findMethod(objectProp, evaluatedParameters);
 
         if (method.isPresent()) {
             return runMethod(method.get(), evaluatedParameters);
         }
-        final Option<Field> field = findField(objectProp);
+        final Optional<Field> field = findField(objectProp);
         if (field.isPresent()) {
             return runField(field.get(), evaluatedParameters);
         }
@@ -95,22 +95,14 @@ public class JavaWrapperValue extends OpaqueValue<Object> implements LispCallabl
         }
     }
 
-    private Option<Field> findField(final SymbolAtom objectProp) {
-        return Try.execute(new java.util.concurrent.Callable<Field>() {
-            @Override
-            public Field call() throws Exception {
-                return clazz.getField(objectProp.repr());
-            }
-        }).get();
+    private Optional<Field> findField(final SymbolAtom objectProp) {
+        return Try.execute(() -> clazz.getField(objectProp.repr())).get();
     }
 
-    private Option<Method> findMethod(final SymbolAtom objectProp, final LispCollection params) {
-        final List<Method> methods = Iter.of(clazz.getMethods()).filter(new Predicate<Method>() {
-            @Override
-            public boolean matches(final Method met) {
-                return met.getName().equals(objectProp.repr());
-            }
-        }).toList();
+    private Optional<Method> findMethod(final SymbolAtom objectProp, final LispCollection params) {
+        final List<Method> methods = Arrays.stream(clazz.getMethods())
+                .filter(met -> met.getName().equals(objectProp.repr()))
+                .collect(Collectors.toList());
         return CallHelpers.findMatchingMethod(methods, params);
     }
 }

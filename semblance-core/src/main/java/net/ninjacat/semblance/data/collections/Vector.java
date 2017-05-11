@@ -6,10 +6,9 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;
-import net.ninjacat.smooth.functions.Func;
-import net.ninjacat.smooth.iterators.Iter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -60,7 +59,7 @@ public class Vector extends LispCollection {
     @Override
     public List<?> asJavaObject() {
         try {
-            return Iter.of(collection).map(Values.ToJavaConverter.INSTANCE).toList();
+            return collection.stream().map(Values.TO_JAVA).collect(Collectors.toList());
         } catch (final IllegalArgumentException ex) {
             throw new CollectionException("Cannot create Java representation", getSourceInfo(), ex);
         }
@@ -78,7 +77,7 @@ public class Vector extends LispCollection {
 
     @Override
     public String printIt() {
-        return "[" + Iter.of(collection).map(PrintValue.PRINT).mkStr(" ") + "]";
+        return "[" + collection.stream().map(LispValue::printIt).collect(Collectors.joining(" ")) + "]";
     }
 
 
@@ -190,11 +189,6 @@ public class Vector extends LispCollection {
      */
 
     public LispValue evaluateValues(final Context context) {
-        return new Vector(Iter.of(collection).map(new Func<LispValue, LispValue>() {
-            @Override
-            public LispValue apply(final LispValue value) {
-                return context.evaluate(value);
-            }
-        }).toList(), getSourceInfo());
+        return new Vector(collection.stream().map(context::evaluate).collect(Collectors.toList()), getSourceInfo());
     }
 }

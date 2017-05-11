@@ -10,11 +10,9 @@ import net.ninjacat.semblance.data.collections.SMap;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.collections.Maps;
+import net.ninjacat.semblance.utils.Maps;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import static net.ninjacat.semblance.utils.Values.*;
 import static org.hamcrest.Matchers.instanceOf;
@@ -32,12 +30,8 @@ public class AddTest {
     @Before
     public void setUp() throws Exception {
         context = mock(Context.class);
-        when(context.evaluateList(any(LispCollection.class))).thenAnswer(new Answer<LispCollection>() {
-            @Override
-            public LispCollection answer(final InvocationOnMock invocationOnMock) throws Throwable {
-                return (LispCollection) invocationOnMock.getArguments()[0];
-            }
-        });
+        when(context.evaluateList(any(LispCollection.class)))
+                .thenAnswer(invocationOnMock -> invocationOnMock.getArguments()[0]);
     }
 
     @Test
@@ -48,7 +42,7 @@ public class AddTest {
         final LispValue value = add.apply(context, params);
 
         assertThat("Result should be an integer", value, instanceOf(LongNumberAtom.class));
-        assertThat("Result should be equal to 6", (Long) asNumber(value).getValue(), is(6L));
+        assertThat("Result should be equal to 6", asNumber(value).getValue(), is(6L));
     }
 
 
@@ -60,7 +54,7 @@ public class AddTest {
         final LispValue value = add.apply(context, params);
 
         assertThat("Result should be an integer", value, instanceOf(DoubleNumberAtom.class));
-        assertThat("Result should be equal to 6", (Double) asNumber(value).getValue(), is(5d));
+        assertThat("Result should be equal to 6", asNumber(value).getValue(), is(5d));
     }
 
     @Test(expected = TypeMismatchException.class)
@@ -96,7 +90,7 @@ public class AddTest {
 
         final LispValue result = add.apply(context, params);
 
-        assertThat("Should join lists", result, is((LispValue) smartList(1L, 2L, 3L, 4L)));
+        assertThat("Should join lists", result, is(smartList(1L, 2L, 3L, 4L)));
     }
 
     @Test
@@ -106,7 +100,7 @@ public class AddTest {
 
         final LispValue result = add.apply(context, params);
 
-        assertThat("Should join lists", result, is((LispValue) smartVector(1L, 2L, 3L, 4L)));
+        assertThat("Should join lists", result, is(smartVector(1L, 2L, 3L, 4L)));
     }
 
     @Test(expected = TypeMismatchException.class)
@@ -127,8 +121,8 @@ public class AddTest {
 
         final LispValue result = add.apply(context, params);
 
-        assertThat("Should join maps", result, is((LispValue) new SMap(
-                        Maps.<LispValue, LispValue>of(symbol(":a"), number(1), symbol(":b"), number(2)), SourceInfo.UNKNOWN)
+        assertThat("Should join maps", result, is(new SMap(
+                Maps.<LispValue, LispValue>of(symbol(":a"), number(1), symbol(":b"), number(2)), SourceInfo.UNKNOWN)
         ));
     }
 }

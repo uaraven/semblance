@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.reader;
 
+import com.google.common.collect.ImmutableList;
 import net.ninjacat.semblance.data.Constants.HiddenFunctions;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.*;
@@ -9,7 +10,6 @@ import net.ninjacat.semblance.reader.macros.BackquoteMacro;
 import net.ninjacat.semblance.reader.macros.CommaMacro;
 import net.ninjacat.semblance.reader.macros.QuoteMacro;
 import net.ninjacat.semblance.utils.Values;
-import net.ninjacat.smooth.collections.Lists;
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class ParserTest {
 
     @Test
     public void shouldParseSymbol() throws Exception {
-        final List<Token> tokens = Lists.of(symbol("symbol", UNKNOWN));
+        final List<Token> tokens = ImmutableList.of(symbol("symbol", UNKNOWN));
 
         final LispCollection parse = parser.parse(tokens);
 
@@ -53,7 +53,7 @@ public class ParserTest {
 
     @Test
     public void shouldParseTwoSymbols() throws Exception {
-        final List<Token> tokens = Lists.of(symbol("one", UNKNOWN), symbol("another", UNKNOWN));
+        final List<Token> tokens = ImmutableList.of(symbol("one", UNKNOWN), symbol("another", UNKNOWN));
 
         final LispCollection parse = parser.parse(tokens);
 
@@ -63,7 +63,7 @@ public class ParserTest {
 
     @Test
     public void shouldParseVector() throws Exception {
-        final List<Token> tokens = Lists.of(Token.openBracket(UNKNOWN),
+        final List<Token> tokens = ImmutableList.of(Token.openBracket(UNKNOWN),
                 symbol("one", UNKNOWN),
                 integer("10", UNKNOWN), Token.closeBracket(UNKNOWN));
 
@@ -75,7 +75,7 @@ public class ParserTest {
 
     @Test(expected = UnexpectedEndRuntimeException.class)
     public void shouldFailToParseUnterminatedVector() throws Exception {
-        final List<Token> tokens = Lists.of(Token.openBracket(UNKNOWN),
+        final List<Token> tokens = ImmutableList.of(Token.openBracket(UNKNOWN),
                 symbol("one", UNKNOWN),
                 integer("10", UNKNOWN));
 
@@ -84,7 +84,7 @@ public class ParserTest {
 
     @Test
     public void shouldParseList() throws Exception {
-        final List<Token> tokens = Lists.of(Token.openParen(UNKNOWN),
+        final List<Token> tokens = ImmutableList.of(Token.openParen(UNKNOWN),
                 symbol("one", UNKNOWN),
                 integer("10", UNKNOWN),
                 Token.closeParen(UNKNOWN));
@@ -97,7 +97,7 @@ public class ParserTest {
 
     @Test(expected = UnexpectedEndRuntimeException.class)
     public void shouldFailToParseUnterminatedList() throws Exception {
-        final List<Token> tokens = Lists.of(Token.openParen(UNKNOWN),
+        final List<Token> tokens = ImmutableList.of(Token.openParen(UNKNOWN),
                 symbol("one", UNKNOWN),
                 integer("10", UNKNOWN));
 
@@ -106,7 +106,7 @@ public class ParserTest {
 
     @Test
     public void shouldReplaceQuoteMacroForList() throws Exception {
-        final List<Token> tokens = Lists.of(Token.special('\'', UNKNOWN),
+        final List<Token> tokens = ImmutableList.of(Token.special('\'', UNKNOWN),
                 Token.openParen(UNKNOWN),
                 Token.symbol("one", UNKNOWN),
                 Token.closeParen(UNKNOWN));
@@ -124,7 +124,7 @@ public class ParserTest {
 
     @Test
     public void shouldReplaceQuoteMacroForSymbol() throws Exception {
-        final List<Token> tokens = Lists.of(Token.special('\'', UNKNOWN), symbol("one", UNKNOWN));
+        final List<Token> tokens = ImmutableList.of(Token.special('\'', UNKNOWN), symbol("one", UNKNOWN));
         parser.registerReaderMacro(new QuoteMacro());
 
         final LispCollection parse = parser.parse(tokens);
@@ -140,7 +140,7 @@ public class ParserTest {
 
     @Test
     public void shouldReplaceBackQuoteMacroForSymbol() throws Exception {
-        final List<Token> tokens = Lists.of(Token.special('`', UNKNOWN), symbol("one", UNKNOWN));
+        final List<Token> tokens = ImmutableList.of(Token.special('`', UNKNOWN), symbol("one", UNKNOWN));
         parser.registerReaderMacro(new BackquoteMacro());
 
         final LispCollection parse = parser.parse(tokens);
@@ -155,7 +155,7 @@ public class ParserTest {
 
     @Test
     public void shouldReplaceCommaMacroForSymbol() throws Exception {
-        final List<Token> tokens = Lists.of(Token.special(',', UNKNOWN), symbol("one", UNKNOWN));
+        final List<Token> tokens = ImmutableList.of(Token.special(',', UNKNOWN), symbol("one", UNKNOWN));
         parser.registerReaderMacro(new CommaMacro());
 
         final LispCollection parse = parser.parse(tokens);
@@ -170,7 +170,7 @@ public class ParserTest {
 
     @Test
     public void shouldReplaceAtMacroForSymbol() throws Exception {
-        final List<Token> tokens = Lists.of(Token.special('@', UNKNOWN), symbol("one", UNKNOWN));
+        final List<Token> tokens = ImmutableList.of(Token.special('@', UNKNOWN), symbol("one", UNKNOWN));
         parser.registerReaderMacro(new AtMacro());
 
         final LispCollection parse = parser.parse(tokens);
@@ -186,7 +186,7 @@ public class ParserTest {
 
     @Test
     public void shouldReplaceCommaAtMacroForSymbols() throws Exception {
-        final List<Token> tokens = Lists.of(Token.special(',', UNKNOWN),
+        final List<Token> tokens = ImmutableList.of(Token.special(',', UNKNOWN),
                 Token.special('@', UNKNOWN), symbol("one", UNKNOWN));
         parser.registerReaderMacro(new AtMacro());
         parser.registerReaderMacro(new CommaMacro());
@@ -203,7 +203,7 @@ public class ParserTest {
 
     @Test
     public void shouldParseNestedList() throws Exception {
-        final List<Token> tokens = Lists.of(
+        final List<Token> tokens = ImmutableList.of(
                 Token.openParen(UNKNOWN),
                 Token.symbol("+", UNKNOWN),
                 Token.openParen(UNKNOWN),
@@ -227,7 +227,7 @@ public class ParserTest {
 
     @Test
     public void shouldParseMap() throws Exception {
-        final List<Token> tokens = Lists.of(
+        final List<Token> tokens = ImmutableList.of(
                 Token.openBrace(UNKNOWN),
                 Token.symbol(":key", UNKNOWN),
                 Token.integer("12", UNKNOWN),
@@ -246,7 +246,7 @@ public class ParserTest {
 
     @Test
     public void shouldParseMapWithNilValue() throws Exception {
-        final List<Token> tokens = Lists.of(
+        final List<Token> tokens = ImmutableList.of(
                 Token.openBrace(UNKNOWN),
                 Token.symbol(":key", UNKNOWN),
                 Token.closeBrace(UNKNOWN));

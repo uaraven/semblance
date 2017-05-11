@@ -1,24 +1,20 @@
 package net.ninjacat.semblance.reader;
 
-import net.ninjacat.smooth.collections.Collect;
-import net.ninjacat.smooth.utils.Option;
+import com.google.common.collect.ImmutableSet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * StreamReader tokenizer with the ability to look forward and push back.
  * <p/>
  * This class is not thread-safe.
  */
-@SuppressWarnings("ClassWithTooManyFields")
+@SuppressWarnings({"ClassWithTooManyFields", "OptionalUsedAsFieldOrParameterType"})
 public class Tokenizer {
     public static final int EOF_MARK = -1;
 
-    private static final Set<Character> WHITESPACE = Collect.setOf(
+    private static final Set<Character> WHITESPACE = ImmutableSet.of(
             ' ', '\t', '\n', '\r'
     );
     private static final Set<Character> SYMBOLS = new HashSet<>();
@@ -30,7 +26,7 @@ public class Tokenizer {
     private final List<Character> buffer;
     private final java.io.Reader reader;
     private final StringBuilder tokenValue;
-    private Option<Character> commentSymbol;
+    private Optional<Character> commentSymbol;
     private int line;
     private int position;
     private TextType textType;
@@ -120,7 +116,7 @@ public class Tokenizer {
 
         whitespace.addAll(WHITESPACE);
         symbols.addAll(SYMBOLS);
-        commentSymbol = Option.of(';');
+        commentSymbol = Optional.of(';');
     }
 
     /**
@@ -132,7 +128,7 @@ public class Tokenizer {
 
         symbols.add('"');
         symbols.add('\\');
-        commentSymbol = Option.absent();
+        commentSymbol = Optional.empty();
         eolIsSignificant();
     }
 
@@ -277,7 +273,7 @@ public class Tokenizer {
 
     static {
         SYMBOLS.addAll(WHITESPACE);
-        SYMBOLS.addAll(Collect.setOf(
+        SYMBOLS.addAll(ImmutableSet.of(
                 '(', ')', '[', ']', '{', '}', '"', ';', ','
         ));
     }

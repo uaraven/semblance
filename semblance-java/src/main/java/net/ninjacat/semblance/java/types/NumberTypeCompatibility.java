@@ -1,8 +1,7 @@
 package net.ninjacat.semblance.java.types;
 
+import com.google.common.collect.ImmutableMap;
 import net.ninjacat.semblance.data.collections.LispValue;
-import net.ninjacat.smooth.collections.Maps;
-import net.ninjacat.smooth.functions.Func;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,73 +17,32 @@ import static net.ninjacat.semblance.utils.Values.asNumber;
 @SuppressWarnings("unchecked")
 public class NumberTypeCompatibility implements TypeCompatibility {
 
-    private static final Func<Object, LispValue> INT_FUNC = new Func<Object, LispValue>() {
-        @Override
-        public Object apply(final LispValue lispValue) {
-            return (int) asNumber(lispValue).longValue();
-        }
-    };
-    private static final Func<Object, LispValue> LONG_FUNC = new Func<Object, LispValue>() {
-        @Override
-        public Object apply(final LispValue lispValue) {
-            return asNumber(lispValue).longValue();
-        }
-    };
-    private static final Func<Object, LispValue> BYTE_FUNC = new Func<Object, LispValue>() {
-        @Override
-        public Object apply(final LispValue lispValue) {
-            return (byte) asNumber(lispValue).longValue();
-        }
-    };
-    private static final Func<Object, LispValue> SHORT_FUNC = new Func<Object, LispValue>() {
-        @Override
-        public Object apply(final LispValue lispValue) {
-            return (short) asNumber(lispValue).longValue();
-        }
-    };
-    private static final Func<Object, LispValue> CHAR_FUNC = new Func<Object, LispValue>() {
-        @Override
-        public Object apply(final LispValue lispValue) {
-            return (char) asNumber(lispValue).longValue();
-        }
-    };
-    private static final Func<Object, LispValue> BIGINT_FUNC = new Func<Object, LispValue>() {
-        @Override
-        public Object apply(final LispValue lispValue) {
-            return asNumber(lispValue).bigIntValue();
-        }
-    };
-    private static final Func<Object, LispValue> FLOAT_FUNC = new Func<Object, LispValue>() {
-        @Override
-        public Object apply(final LispValue value) {
-            return (float) asNumber(value).doubleValue();
-        }
-    };
-    private static final Func<Object, LispValue> DOUBLE_FUNC = new Func<Object, LispValue>() {
-        @Override
-        public Object apply(final LispValue value) {
-            return asNumber(value).doubleValue();
-        }
-    };
-
-    private static final Map<Type, Func<Object, LispValue>> CONVERT_MAP = Maps.of(
-            Integer.class, INT_FUNC,
-            int.class, INT_FUNC,
-            Long.class, LONG_FUNC,
-            long.class, LONG_FUNC,
-            Byte.class, BYTE_FUNC,
-            byte.class, BYTE_FUNC,
-            Short.class, SHORT_FUNC,
-            short.class, SHORT_FUNC,
-            Character.class, CHAR_FUNC,
-            char.class, CHAR_FUNC,
-            BigInteger.class, BIGINT_FUNC,
-            float.class, FLOAT_FUNC,
-            Float.class, FLOAT_FUNC,
-            double.class, DOUBLE_FUNC,
-            Double.class, DOUBLE_FUNC,
-            Object.class, LONG_FUNC
-    );
+    private static final NumberConverter<Integer> INT_FUNC = it -> (int) asNumber(it).longValue();
+    private static final NumberConverter<Long> LONG_FUNC = it -> asNumber(it).longValue();
+    private static final NumberConverter<Byte> BYTE_FUNC = it -> (byte) asNumber(it).longValue();
+    private static final NumberConverter<Short> SHORT_FUNC = it -> (short) asNumber(it).longValue();
+    private static final NumberConverter<Character> CHAR_FUNC = it -> (char) asNumber(it).longValue();
+    private static final NumberConverter<BigInteger> BIGINT_FUNC = it -> asNumber(it).bigIntValue();
+    private static final NumberConverter<Float> FLOAT_FUNC = it -> (float) asNumber(it).doubleValue();
+    private static final NumberConverter<Double> DOUBLE_FUNC = it -> asNumber(it).doubleValue();
+    private static final Map<Type, NumberConverter<?>> CONVERT_MAP = ImmutableMap.<Type, NumberConverter<?>>builder()
+            .put(Integer.class, INT_FUNC)
+            .put(int.class, INT_FUNC)
+            .put(Long.class, LONG_FUNC)
+            .put(long.class, LONG_FUNC)
+            .put(Byte.class, BYTE_FUNC)
+            .put(byte.class, BYTE_FUNC)
+            .put(Short.class, SHORT_FUNC)
+            .put(short.class, SHORT_FUNC)
+            .put(Character.class, CHAR_FUNC)
+            .put(char.class, CHAR_FUNC)
+            .put(BigInteger.class, BIGINT_FUNC)
+            .put(float.class, FLOAT_FUNC)
+            .put(Float.class, FLOAT_FUNC)
+            .put(double.class, DOUBLE_FUNC)
+            .put(Double.class, DOUBLE_FUNC)
+            .put(Object.class, LONG_FUNC)
+            .build();
 
     @Override
     public boolean isCompatible(@Nonnull final Type javaType, @Nullable final LispValue value) {
@@ -111,7 +69,12 @@ public class NumberTypeCompatibility implements TypeCompatibility {
 
     @Override
     public <T> T convertToJava(@Nonnull final Type javaType, @Nonnull final LispValue value) {
-        return (T) CONVERT_MAP.get(javaType).apply(value);
+        return (T) CONVERT_MAP.get(javaType).convert(value);
+    }
+
+    @FunctionalInterface
+    private interface NumberConverter<T> {
+        T convert(LispValue item);
     }
 
 }

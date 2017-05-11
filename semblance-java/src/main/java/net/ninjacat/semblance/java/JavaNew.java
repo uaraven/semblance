@@ -5,9 +5,9 @@ import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.utils.Option;
 
 import java.lang.reflect.Constructor;
+import java.util.Optional;
 
 import static net.ninjacat.semblance.java.types.CallHelpers.convertParameters;
 import static net.ninjacat.semblance.java.types.CallHelpers.findMatchingConstructor;
@@ -40,7 +40,7 @@ public class JavaNew extends SpecialForm {
 
         final LispCollection constructorParams = context.evaluateList(parameters.tail());
 
-        final Option<Constructor> constructor = findMatchingConstructor(aClass.getConstructors(), constructorParams);
+        final Optional<Constructor> constructor = findMatchingConstructor(aClass.getConstructors(), constructorParams);
 
         if (!constructor.isPresent()) {
             throw new JavaInteropException("Cannot find constructor matching " + parameters.repr(), parameters.getSourceInfo());

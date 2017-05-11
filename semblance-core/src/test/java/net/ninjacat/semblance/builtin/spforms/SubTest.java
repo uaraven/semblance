@@ -10,11 +10,9 @@ import net.ninjacat.semblance.data.collections.SMap;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.collections.Maps;
+import net.ninjacat.semblance.utils.Maps;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 import static net.ninjacat.semblance.utils.Values.*;
 import static org.hamcrest.Matchers.instanceOf;
@@ -32,12 +30,8 @@ public class SubTest {
     @Before
     public void setUp() throws Exception {
         context = mock(Context.class);
-        when(context.evaluateList(any(LispCollection.class))).thenAnswer(new Answer<LispCollection>() {
-            @Override
-            public LispCollection answer(final InvocationOnMock invocationOnMock) throws Throwable {
-                return (LispCollection) invocationOnMock.getArguments()[0];
-            }
-        });
+        when(context.evaluateList(any(LispCollection.class))).thenAnswer(
+                invocationOnMock -> invocationOnMock.getArguments()[0]);
     }
 
     @Test
@@ -48,7 +42,7 @@ public class SubTest {
         final LispValue value = sub.apply(context, params);
 
         assertThat("Result should be an integer", value, instanceOf(LongNumberAtom.class));
-        assertThat("Result should be equal to -7", (Long) asNumber(value).getValue(), is(-7L));
+        assertThat("Result should be equal to -7", asNumber(value).getValue(), is(-7L));
     }
 
 
@@ -60,7 +54,7 @@ public class SubTest {
         final LispValue value = sub.apply(context, params);
 
         assertThat("Result should be a double", value, instanceOf(DoubleNumberAtom.class));
-        assertThat("Result should be equal to 3.5", (Double) asNumber(value).getValue(), is(2.5d));
+        assertThat("Result should be equal to 3.5", asNumber(value).getValue(), is(2.5d));
     }
 
     @Test(expected = TypeMismatchException.class)
@@ -78,7 +72,7 @@ public class SubTest {
 
         final LispValue value = sub.apply(context, params);
 
-        assertThat("Should subtract lists", value, is((LispValue) smartList(2L)));
+        assertThat("Should subtract lists", value, is(smartList(2L)));
     }
 
     @Test
@@ -88,14 +82,14 @@ public class SubTest {
 
         final LispValue value = sub.apply(context, params);
 
-        assertThat("Should subtract lists", value, is((LispValue) smartVector(2L)));
+        assertThat("Should subtract lists", value, is(smartVector(2L)));
     }
 
     @Test
     public void shouldSubtractMaps() throws Exception {
         final SList params = list(new SMap(Maps.<LispValue, LispValue>of(
-                        symbol(":a"), number(1),
-                        symbol(":b"), number(2)), SourceInfo.UNKNOWN),
+                symbol(":a"), number(1),
+                symbol(":b"), number(2)), SourceInfo.UNKNOWN),
                 new SMap(Maps.<LispValue, LispValue>of(
                         symbol(":b"), number(1),
                         symbol(":c"), number(2)), SourceInfo.UNKNOWN));
@@ -103,8 +97,7 @@ public class SubTest {
 
         final LispValue value = sub.apply(context, params);
 
-        assertThat("Should subtract lists", value, is((LispValue)
-                new SMap(Maps.<LispValue, LispValue>of(symbol(":a"), number(1)), SourceInfo.UNKNOWN)));
+        assertThat("Should subtract lists", value, is(new SMap(Maps.<LispValue, LispValue>of(symbol(":a"), number(1)), SourceInfo.UNKNOWN)));
     }
 
     @Test

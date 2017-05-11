@@ -2,7 +2,8 @@ package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.SymbolAtom;
-import net.ninjacat.smooth.utils.Option;
+
+import java.util.Optional;
 
 /**
  * Implementation of context for use everywhere where local context is required: blocks, functions, macros, etc.
@@ -12,7 +13,7 @@ import net.ninjacat.smooth.utils.Option;
 public class LocalContext extends BaseContext {
 
     protected LocalContext(final SymbolAtom name, final Context parent) {
-        super(name, parent, Option.<UndefinedFunctionStrategy>absent());
+        super(name, parent, Optional.empty());
     }
 
     /**

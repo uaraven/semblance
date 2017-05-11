@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.data;
 
+import com.google.common.collect.ImmutableList;
 import net.ninjacat.semblance.data.ArithmeticTestCase.Operation;
-import net.ninjacat.smooth.collections.Lists;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -51,7 +51,7 @@ public class ArithmeticTests {
         }
     };
 
-    private static final List<ArithmeticTestCase> ADD_CASES = Lists.of(
+    private static final List<ArithmeticTestCase> ADD_CASES = ImmutableList.of(
             mk(ADD).op1(longN(42))
                     .op2(longN(42))
                     .expect(longN(84)).build(),
@@ -81,7 +81,7 @@ public class ArithmeticTests {
                     .expect(doubleN(42000000000000000000000000042.42d)).build()
     );
 
-    private static final List<ArithmeticTestCase> MUL_CASES = Lists.of(
+    private static final List<ArithmeticTestCase> MUL_CASES = ImmutableList.of(
             mk(MUL).op1(longN(42))
                     .op2(longN(2))
                     .expect(longN(84)).build(),
@@ -111,7 +111,7 @@ public class ArithmeticTests {
                     .expect(doubleN(92.4)).build()
     );
 
-    private static final List<ArithmeticTestCase> DIV_CASES = Lists.of(
+    private static final List<ArithmeticTestCase> DIV_CASES = ImmutableList.of(
             mk(DIV)
                     .op1(longN(42))
                     .op2(longN(2))
@@ -174,7 +174,7 @@ public class ArithmeticTests {
 
     );
 
-    private static final List<ArithmeticTestCase> SUB_CASES = Lists.of(
+    private static final List<ArithmeticTestCase> SUB_CASES = ImmutableList.of(
             mk(SUB)
                     .op1(longN(42))
                     .op2(longN(2))

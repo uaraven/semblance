@@ -8,16 +8,15 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.JavaConvertible;
-import net.ninjacat.smooth.collections.Maps;
-import net.ninjacat.smooth.functions.Func;
-import net.ninjacat.smooth.iterators.Iter;
-import net.ninjacat.smooth.utils.Option;
+import net.ninjacat.semblance.utils.Maps;
 
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Map implementation for Semblance
@@ -48,17 +47,17 @@ public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
      * Creates new instance of empty map
      */
     public SMap() {
-        this(new ConcurrentHashMap<LispValue, LispValue>(), SourceInfo.UNKNOWN);
+        this(new ConcurrentHashMap<>(), SourceInfo.UNKNOWN);
     }
 
     /**
-     * Convinience factory method
+     * Convenience factory method
      *
      * @param pairs List of keys and values
      * @return New Map
      */
     public static SMap newSMap(final LispValue... pairs) {
-        return new SMap(Maps.<LispValue, LispValue>of(pairs), SourceInfo.UNKNOWN);
+        return new SMap(Maps.of(pairs), SourceInfo.UNKNOWN);
     }
 
     @Override
@@ -99,7 +98,7 @@ public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
      * @return Value for given key or {@link NilCollection#INSTANCE}
      */
     public LispValue get(final LispValue key) {
-        return Option.of(contents.get(key)).or(NilCollection.INSTANCE);
+        return Optional.ofNullable(contents.get(key)).orElse(NilCollection.INSTANCE);
     }
 
     /**
@@ -143,22 +142,16 @@ public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
 
     @Override
     public String repr() {
-        return "{" + Iter.of(contents.entrySet()).map(new Func<String, Map.Entry<LispValue, LispValue>>() {
-            @Override
-            public String apply(final Map.Entry<LispValue, LispValue> entry) {
-                return entry.getKey().repr() + " " + entry.getValue().repr();
-            }
-        }).mkStr(" ") + "}";
+        return "{" + contents.entrySet().stream()
+                .map(entry -> entry.getKey().repr() + " " + entry.getValue().repr())
+                .collect(Collectors.joining(" ")) + "}";
     }
 
     @Override
     public String printIt() {
-        return "{" + Iter.of(contents.entrySet()).map(new Func<String, Map.Entry<LispValue, LispValue>>() {
-            @Override
-            public String apply(final Map.Entry<LispValue, LispValue> entry) {
-                return entry.getKey().printIt() + " " + entry.getValue().printIt();
-            }
-        }).mkStr(" ") + "}";
+        return "{" + contents.entrySet().stream()
+                .map(entry -> entry.getKey().printIt() + " " + entry.getValue().printIt())
+                .collect(Collectors.joining(" ")) + "}";
     }
 
     /**
@@ -265,4 +258,5 @@ public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
                 "sourceInfo=" + sourceInfo +
                 '}';
     }
+
 }

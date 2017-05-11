@@ -1,14 +1,13 @@
 package net.ninjacat.semblance.concurrent.data;
 
+import net.ninjacat.semblance.concurrent.futures.Future;
 import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.OpaqueValue;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
-import net.ninjacat.smooth.concurrent.Future;
 
 import javax.annotation.Nonnull;
-import java.util.concurrent.Callable;
 
 /**
  * Future for Semblance.
@@ -22,12 +21,7 @@ public class SFuture extends OpaqueValue<Future<LispValue>> {
      * @param code    Code to execute
      */
     public SFuture(@Nonnull final Context context, @Nonnull final LispCollection code) {
-        super(Future.run(new Callable<LispValue>() {
-            @Override
-            public LispValue call() throws Exception {
-                return context.evaluateBlock(code);
-            }
-        }));
+        super(Future.run(() -> context.evaluateBlock(code)));
     }
 
     /**
@@ -38,11 +32,6 @@ public class SFuture extends OpaqueValue<Future<LispValue>> {
      * @param params   Parameters for the callable
      */
     public SFuture(@Nonnull final Context context, @Nonnull final LispCallable function, @Nonnull final LispCollection params) {
-        super(Future.run(new Callable<LispValue>() {
-            @Override
-            public LispValue call() throws Exception {
-                return function.apply(context, params);
-            }
-        }));
+        super(Future.run(() -> function.apply(context, params)));
     }
 }

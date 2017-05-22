@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
+    <script src="http://codemirror.net/lib/codemirror.js"></script>
+    <script src="http://codemirror.net/mode/commonlisp/commonlisp.js"></script>
+    <script src="http://codemirror.net/mode/clojure/clojure.js"></script>
+    <style>
+        .CodeMirror {
+            height: auto;
+        }
+
+        .error {
+            color: salmon;
+            background-color: crimson;
+        }
+    </style>
+</head>
+<body>
+<form>
+<textarea id="code" name="code">
+
+</textarea>
+</form>
+
+<script>
+    var selectedErrorLine = -1;
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        smartIndent: true,
+        indentUnit: 4,
+        mode: "clojure"
+    });
+
+    function getText() {
+        return document.getElementById("code").textContent;
+    }
+
+    function clearErrorHighlighting() {
+        if (selectedErrorLine !== -1) {
+            editor.removeLineClass(selectedErrorLine, 'background', 'error');
+        }
+    }
+
+    function highlightError(lineNumber) {
+        clearErrorHighlighting();
+        //Set line css class
+        editor.addLineClass(selectedErrorLine, 'background', 'error');
+    }
+    editor.setValue("(+ 1 (add 2 3))");
+    highlightError(0);
+    editor.setCursor(0, 5);
+
+
+</script>
+</body>
+</html>

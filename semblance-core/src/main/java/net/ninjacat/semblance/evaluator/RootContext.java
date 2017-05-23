@@ -187,7 +187,9 @@ public class RootContext extends BaseContext {
 
         bindCallable(new Quote());
         bindCallable(new Backquote());
-        bindCallable(new PrintLn());
+
+        bindCallable(new WriteOut());
+        bindCallable(new WriteOutCr());
 
         bindCallable(new Namespace());
         bindCallable(new Use());

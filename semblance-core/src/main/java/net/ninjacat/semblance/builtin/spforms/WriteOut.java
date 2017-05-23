@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.builtin.spforms;
 
-import net.ninjacat.semblance.data.callables.SpecialForm;
+import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
@@ -13,27 +13,29 @@ import net.ninjacat.semblance.evaluator.Context;
  * <p/>
  * Created on 01/03/15.
  */
-public class PrintLn extends SpecialForm {
+public class WriteOut extends BuiltInFunction {
 
     private static final long serialVersionUID = 7090589580229750373L;
 
     /**
-     * Creates new instance of println special form
+     * Creates new instance of writeout special form
      */
-    public PrintLn() {
-        super("println", "&rest", "arguments");
+    public WriteOut() {
+        super("writeout", "&rest", "arguments");
     }
 
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     @Override
-    public LispValue apply(final Context context, final LispCollection parameters) {
-        final LispCollection evaluated = context.evaluateList(parameters);
-
-        for (final LispValue value : evaluated) {
+    public LispValue applyFunction(final Context context, final LispCollection parameters) {
+        boolean first = true;
+        for (final LispValue value : parameters) {
+            if (first) {
+                first = false;
+            } else {
+                System.out.print(" ");
+            }
             System.out.print(value.repr());
-            System.out.print(" ");
         }
-        System.out.println();
         return NilCollection.INSTANCE;
     }
 }

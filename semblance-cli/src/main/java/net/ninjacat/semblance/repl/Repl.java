@@ -11,7 +11,9 @@ import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.utils.Either;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static net.ninjacat.semblance.java.Lambdas.methodAsFunction;
 import static net.ninjacat.semblance.utils.Values.*;
 
 /**
@@ -37,6 +39,8 @@ public abstract class Repl {
             }
         };
         rootContext.bind(symbol("quit"), quitRepl);
+        rootContext.bind(symbol("print"), methodAsFunction(this::printIt));
+        rootContext.bind(symbol("println"), methodAsFunction(this::printLnIt));
         replContext = LocalContext.namedChildContext(symbol("repl"), rootContext);
     }
 
@@ -113,6 +117,18 @@ public abstract class Repl {
                 }
             }
         } while (input != null);
+    }
+
+    private LispValue printIt(final Context context, final LispCollection params) {
+        final String output = params.stream().map(LispValue::printIt).collect(Collectors.joining(" "));
+        print(output);
+        return string(output);
+    }
+
+    private LispValue printLnIt(final Context context, final LispCollection params) {
+        final String output = params.stream().map(LispValue::printIt).collect(Collectors.joining(" "));
+        print(output + "\n");
+        return string(output);
     }
 
 }

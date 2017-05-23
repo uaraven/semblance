@@ -9,10 +9,8 @@
         .CodeMirror {
             height: auto;
         }
-
         .error {
-            color: salmon;
-            background-color: crimson;
+            background-color: salmon;
         }
     </style>
 </head>
@@ -35,7 +33,11 @@
     });
 
     function getText() {
-        return document.getElementById("code").textContent;
+        return editor.getValue();
+    }
+
+    function setText(text) {
+        editor.setValue(text)
     }
 
     function clearErrorHighlighting() {
@@ -47,12 +49,8 @@
     function highlightError(lineNumber) {
         clearErrorHighlighting();
         //Set line css class
-        editor.addLineClass(selectedErrorLine, 'background', 'error');
+        editor.addLineClass(lineNumber, 'background', 'error');
     }
-    editor.setValue("(+ 1 (add 2 3))");
-    highlightError(0);
-    editor.setCursor(0, 5);
-
 
 </script>
 </body>

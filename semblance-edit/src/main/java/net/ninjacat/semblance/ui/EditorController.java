@@ -86,7 +86,8 @@ public class EditorController implements Initializable {
 
         } else {
             setErrorLine(sourceInfo.getLine());
-            setCursor(sourceInfo.getLine(), sourceInfo.getPosition());
+            setCursor(sourceInfo.getLine(), sourceInfo.getPosition() + 1);
+            webView.requestFocus();
         }
     }
 }

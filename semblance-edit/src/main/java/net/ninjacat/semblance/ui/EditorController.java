@@ -5,6 +5,10 @@ import com.google.common.io.Files;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.collections.LispValue;
@@ -23,13 +27,34 @@ public class EditorController implements Initializable {
 
     @FXML
     private WebView webView;
-
     @FXML
     private Button runButton;
+    @FXML
+    private TextArea consoleOut;
+    @FXML
+    private TextField consoleIn;
+    @FXML
+    private Label position;
+    @FXML
+    private Label messageBox;
+    @FXML
+    private AnchorPane editorStatus;
 
     private Interpreter interpreter = null;
 
-    public void clearErrorLine(final int lineNumber) {
+    @Override
+    public void initialize(final URL location, final ResourceBundle resources) {
+        webView.getEngine().loadContent(loadEditorTemplate());
+
+        webView.autosize();
+        consoleIn.autosize();
+        consoleOut.autosize();
+        editorStatus.autosize();
+
+        runButton.setOnAction(event -> runScript());
+    }
+
+    public void clearErrorLine() {
         webView.getEngine().executeScript("clearErrorHighlighting()");
     }
 
@@ -45,15 +70,10 @@ public class EditorController implements Initializable {
         return webView.getEngine().executeScript("editor.getValue()").toString();
     }
 
-    @Override
-    public void initialize(final URL location, final ResourceBundle resources) {
-        webView.autosize();
-        webView.getEngine().loadContent(loadEditorTemplate());
-
-        runButton.setOnAction(event -> runScript());
-    }
-
     public LispValue runScript() {
+        clearErrorLine();
+        messageBox.setVisible(false);
+        editorStatus.autosize();
         try {
             final String program = getText();
             return this.interpreter.run(program);
@@ -82,12 +102,18 @@ public class EditorController implements Initializable {
     }
 
     private void highlightError(final SourceInfo sourceInfo, final String message) {
-        if (sourceInfo.equals(SourceInfo.UNKNOWN)) {
-
-        } else {
+        if (!sourceInfo.equals(SourceInfo.UNKNOWN)) {
             setErrorLine(sourceInfo.getLine());
-            setCursor(sourceInfo.getLine(), sourceInfo.getPosition() + 1);
+            setCursor(sourceInfo.getLine(), sourceInfo.getPosition());
+
             webView.requestFocus();
         }
+        if (message != null && !message.trim().isEmpty()) {
+            messageBox.setText(message);
+            messageBox.setVisible(true);
+        } else {
+            messageBox.setVisible(false);
+        }
+        editorStatus.autosize();
     }
 }

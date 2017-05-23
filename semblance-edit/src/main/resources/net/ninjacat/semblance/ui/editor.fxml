@@ -16,11 +16,22 @@
                 </ToolBar>
                 <SplitPane dividerPositions="0.8" orientation="VERTICAL">
                     <items>
-                        <AnchorPane>
+                        <AnchorPane fx:id="editorStatus">
                             <children>
-                                <WebView fx:id="webView" prefHeight="800.0" prefWidth="600.0" minWidth="400"
-                                         minHeight="300" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                         AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                <VBox AnchorPane.bottomAnchor="0.0"
+                                      AnchorPane.leftAnchor="0.0"
+                                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <children>
+                                        <WebView fx:id="webView" prefHeight="800.0" prefWidth="600.0" minWidth="400"
+                                                 minHeight="300"/>
+                                        <Label fx:id="messageBox" prefWidth="600.0" style="-fx-text-fill: #900;"/>
+                                        <HBox prefWidth="600" prefHeight="24">
+                                            <children>
+                                                <Label fx:id="position"/>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
                             </children>
                         </AnchorPane>
                         <AnchorPane minHeight="40.0" minWidth="0.0" prefHeight="100.0" prefWidth="600.0">
@@ -34,7 +45,12 @@
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
                                                             prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
                                                             AnchorPane.leftAnchor="0.0"
-                                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+                                                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                    <VBox>
+                                                        <TextArea fx:id="consoleOut" VBox.vgrow="ALWAYS"/>
+                                                        <TextField fx:id="consoleIn"/>
+                                                    </VBox>
+                                                </AnchorPane>
                                             </content>
                                         </Tab>
                                         <Tab text="Stack">

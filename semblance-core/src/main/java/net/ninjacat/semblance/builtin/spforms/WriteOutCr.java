@@ -6,6 +6,8 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
 import net.ninjacat.semblance.evaluator.Context;
 
+import java.util.stream.Collectors;
+
 /**
  * (println val1 val2 val3)
  * <p/>
@@ -27,16 +29,7 @@ public class WriteOutCr extends BuiltInFunction {
     @SuppressWarnings("UseOfSystemOutOrSystemErr")
     @Override
     public LispValue applyFunction(final Context context, final LispCollection parameters) {
-        boolean firstItem = true;
-        for (final LispValue value : parameters) {
-            if (!firstItem) {
-                System.out.print(" ");
-            } else {
-                firstItem = false;
-            }
-            System.out.print(value.repr());
-        }
-        System.out.println();
+        System.out.println(parameters.stream().map(LispValue::printIt).collect(Collectors.joining(" ")));
         return NilCollection.INSTANCE;
     }
 }

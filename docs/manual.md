@@ -30,18 +30,18 @@ keyword symbols. Keywords are just symbols which start with a `:` and always eva
 Consider following two short programs:
 
     (set v (+ 1 2))
-    (println v)
+    (writeout-cr v)
 
 and
 
-    (println v)
+    (writeout-cr v)
 
 and
 
-    (println :v)
+    (writeout-cr :v)
 
-In the first program, symbol `v` is bound to result of computation of `1 + 2`. Statement `(println v)` will
-have `v` evaluated prior to calling `println` function and output will be **3**
+In the first program, symbol `v` is bound to result of computation of `1 + 2`. Statement `(writeout-cr v)` will
+have `v` evaluated prior to calling `writeout-cr` function and output will be **3**
 
 Second program does not have symbol `v` bound to any value, so exception will be thrown.
 
@@ -373,12 +373,19 @@ Functions
     (**NOT** param)
     
   Logical `NOT`. Only accepts one parameter as opposed to `AND` and `OR`.
+  
+  **WRITEOUT**
+  
+      (writeout-cr value1 value2 value3 ...)
+  
+  prints all values separated by space to standard output and returns printed string
     
-  **PRINTLN**
+  **WRITEOUT-CR**
 
-    (println value1 value2 value3 ...)
+    (writeout-cr value1 value2 value3 ...)
 
-  prints all values separated by space and returns NIL
+  prints all values separated by space to standard output then prints carriage return and returns 
+  printed string (without CR symbol)
 
   **LET**
 

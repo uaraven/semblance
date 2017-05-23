@@ -47,6 +47,7 @@
     }
 
     function highlightError(lineNumber) {
+        selectedErrorLine = lineNumber;
         clearErrorHighlighting();
         //Set line css class
         editor.addLineClass(lineNumber, 'background', 'error');

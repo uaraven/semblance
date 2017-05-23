@@ -5,12 +5,19 @@
     <script src="http://codemirror.net/lib/codemirror.js"></script>
     <script src="http://codemirror.net/mode/commonlisp/commonlisp.js"></script>
     <script src="http://codemirror.net/mode/clojure/clojure.js"></script>
+    <script src="http://codemirror.net/addon/edit/closebrackets.js"></script>
+    <script src="http://codemirror.net/addon/edit/matchbrackets.js"></script>
     <style>
         .CodeMirror {
             height: auto;
         }
         .error {
             background-color: salmon;
+        }
+
+        .CodeMirror-matchingbracket {
+            font-weight: bold;
+            color: navy;
         }
     </style>
 </head>
@@ -29,7 +36,13 @@
         matchBrackets: true,
         smartIndent: true,
         indentUnit: 4,
-        mode: "clojure"
+        mode: "clojure",
+        autoCloseBrackets: true
+    });
+
+    editor.on("cursorActivity", function (instance) {
+        var pos = instance.getCursor();
+        ui.positionChanged(pos.line, pos.ch);
     });
 
     function getText() {

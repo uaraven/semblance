@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.collections.LispValue;
@@ -16,6 +17,7 @@ import net.ninjacat.semblance.data.collections.NilCollection;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
+import netscape.javascript.JSObject;
 
 import java.net.URL;
 import java.nio.file.Path;
@@ -44,7 +46,8 @@ public class EditorController implements Initializable {
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        webView.getEngine().loadContent(loadEditorTemplate());
+        final WebEngine webEngine = webView.getEngine();
+        webEngine.loadContent(loadEditorTemplate());
 
         webView.autosize();
         consoleIn.autosize();
@@ -52,6 +55,10 @@ public class EditorController implements Initializable {
         editorStatus.autosize();
 
         runButton.setOnAction(event -> runScript());
+
+        final JSObject window = (JSObject) webEngine.executeScript("window");
+        window.setMember("ui", new EditorAccess());
+
     }
 
     public void clearErrorLine() {
@@ -115,5 +122,11 @@ public class EditorController implements Initializable {
             messageBox.setVisible(false);
         }
         editorStatus.autosize();
+    }
+
+    private class EditorAccess {
+        public void positionChanged(final int col, final int row) {
+            position.setText(String.format("%d:%d", col, row));
+        }
     }
 }

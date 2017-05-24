@@ -1,0 +1,14 @@
+.root {
+    -fx-base: #002b36;
+    -fx-background: -fx-base;
+    -fx-text-background-color: white;
+    -fx-conroll-inner-background: #002b36;
+}
+
+.button {
+    -fx-background: #002b36;
+}
+
+.toolbar {
+    -fx-background: #002b36;
+}

@@ -28,7 +28,9 @@ public class SemblanceEdit extends Application {
         controller.setInterpreter(this.interpreter);
 
         primaryStage.setTitle("Semblance");
-        primaryStage.setScene(new Scene(root, 800, 600));
+        final Scene scene = new Scene(root, 800, 600);
+        scene.getStylesheets().add("/net/ninjacat/semblance/ui/semblance.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }

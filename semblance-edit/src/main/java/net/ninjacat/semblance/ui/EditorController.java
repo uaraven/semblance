@@ -1,7 +1,5 @@
 package net.ninjacat.semblance.ui;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,10 +18,7 @@ import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import netscape.javascript.JSObject;
 
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class EditorController implements Initializable {
 
@@ -47,7 +42,8 @@ public class EditorController implements Initializable {
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
         final WebEngine webEngine = webView.getEngine();
-        webEngine.loadContent(loadEditorTemplate());
+        loadEditorTemplate();
+//        webEngine.loadContent(loadEditorTemplate());
 
         webView.autosize();
         consoleIn.autosize();
@@ -101,8 +97,11 @@ public class EditorController implements Initializable {
      */
     private String loadEditorTemplate() {
         try {
-            final Path path = Paths.get(getClass().getResource("editor.html").toURI());
-            return Files.readLines(path.toFile(), Charsets.UTF_8).stream().collect(Collectors.joining("\n"));
+            final String url = getClass().getResource("/web/editor.html").toExternalForm();
+            this.webView.getEngine().load(url);
+            return "";
+//            final Path path = Paths.get(getClass().getResource("editor.html").toURI());
+//            return Files.readLines(path.toFile(), Charsets.UTF_8).stream().collect(Collectors.joining("\n"));
         } catch (final Exception ex) {
             return "";
         }

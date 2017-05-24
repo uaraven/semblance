@@ -1,13 +1,16 @@
 <!doctype html>
 <html>
 <head>
-    <link rel="stylesheet" href="http://codemirror.net/lib/codemirror.css">
-    <script src="http://codemirror.net/lib/codemirror.js"></script>
-    <script src="http://codemirror.net/mode/commonlisp/commonlisp.js"></script>
-    <script src="http://codemirror.net/mode/clojure/clojure.js"></script>
-    <script src="http://codemirror.net/addon/edit/closebrackets.js"></script>
-    <script src="http://codemirror.net/addon/edit/matchbrackets.js"></script>
+    <link rel="stylesheet" href="lib/codemirror.css">
+    <script src="lib/codemirror.js"></script>
+    <script src="mode/semblance.js"></script>
+    <script src="addon/edit/closebrackets.js"></script>
+    <script src="addon/edit/matchbrackets.js"></script>
+    <link rel="stylesheet" href="theme/solarized.css">
     <style>
+        body {
+            background-color: #002b36;
+        }
         .CodeMirror {
             height: auto;
         }
@@ -15,10 +18,6 @@
             background-color: salmon;
         }
 
-        .CodeMirror-matchingbracket {
-            font-weight: bold;
-            color: navy;
-        }
     </style>
 </head>
 <body>
@@ -36,8 +35,9 @@
         matchBrackets: true,
         smartIndent: true,
         indentUnit: 4,
-        mode: "clojure",
-        autoCloseBrackets: true
+        mode: "semblance",
+        autoCloseBrackets: true,
+        theme: "solarized dark"
     });
 
     editor.on("cursorActivity", function (instance) {

@@ -1,8 +1,10 @@
 <!doctype html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="lib/codemirror.css">
     <script src="lib/codemirror.js"></script>
+    <script src="lib/show-invisibles.js"></script>
     <script src="mode/semblance.js"></script>
     <script src="addon/edit/closebrackets.js"></script>
     <script src="addon/edit/matchbrackets.js"></script>
@@ -11,10 +13,12 @@
         body {
             background-color: #002b36;
         }
+
         .CodeMirror {
             height: auto;
             font-size: 12pt;
         }
+
         .error {
             background-color: salmon;
         }
@@ -38,7 +42,8 @@
         indentUnit: 4,
         mode: "semblance",
         autoCloseBrackets: true,
-        theme: "solarized dark"
+        theme: "solarized dark",
+        showInvisibles: true
     });
 
     editor.on("cursorActivity", function (instance) {

@@ -729,14 +729,14 @@ Functions
   
   **DO-TIMES**
     
-    (do-list element upper-limit &rest body)
+    (do-times upper-limit element &rest body)
     
   Assigns zero to `element` and executes a body. Increases `element` by one and repeats execution of a body
   while `element` is less than `upper-limit`
   
     (set res) 
-    (do-times x 
-              3 
+    (do-times 3
+              x
               (set* (res 
                         (res :append x))
               )

@@ -2,7 +2,6 @@
     -fx-base: #002b36;
     -fx-background: -fx-base;
     -fx-text-background-color: white;
-    -fx-conroll-inner-background: #002b36;
 }
 
 .button {
@@ -11,4 +10,13 @@
 
 .toolbar {
     -fx-background: #002b36;
+}
+
+.text {
+    -fx-color: white;
+}
+
+#statusBar {
+    -fx-background-color: #003b46;
+    -fx-padding: 4, 4, 4, 4;
 }

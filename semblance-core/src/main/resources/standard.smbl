@@ -1,7 +1,7 @@
 ; Semblance standard library
 ; Part of Semblance project
 
-(set (--VERSION-- '[1 9 2 "SNAPSHOT"]))
+(set (--VERSION-- '[2 0 0 "SNAPSHOT"]))
 
 ; macro 'defun' declares a function and binds it to a specified name in current context.
 (defmacro defun
@@ -64,7 +64,7 @@
     ))
 )
 
-(defmacro do-times (element max-value &rest body)
+(defmacro do-times (max-value element &rest body)
     `(let ((,element 0))
           (loop (< ,element ,max-value)
              ,@body

@@ -39,6 +39,15 @@ public class Interpreter {
     }
 
     /**
+     * Modifies root context of this interpreter with a given context modifier
+     *
+     * @param contextModifier Context modifier for interpreter's root context
+     */
+    public void injectContextModifier(final ContextModifier contextModifier) {
+        contextModifier.modify(rootContext);
+    }
+
+    /**
      * Runs script from an input stream.
      *
      * @param stream Script source.

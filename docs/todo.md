@@ -26,7 +26,12 @@ Interpreter todo
     - Opaque values which can contain reference to any java object - done
     - Type conversion                                              - done
     - Ability to call methods and access fields on java objects    - done 
+    - Call by signature
+    
+ - Debugging
+    - Inspect context
+    - Step-by-step execution
  
 Tests todo
 ----------
- - % (mod) operation
+ - % (mod) operation - done

@@ -118,7 +118,7 @@ Data types
   
     (value value ...)
     
-  List is a function itself. Expression `(list-var 3)` will return value of the fourth list element (lists are 
+  List is a function itself. Expression `(<list-variable> 3)` will return value of the fourth list element (lists are 
   zero-based)
   
     (let ((x '(1 2 3))) 
@@ -337,9 +337,35 @@ Functions
   collection. If the second parameter is number, then scalar product of list or vector and that number is evaluated,
   otherwise cartesian product of collections is evaluated.
   
+    
     (* 1 2 3) -> 6
     (* '(1 2 3) 2) -> (2 4 6)
     (* [1 2] '("a" "b")) -> [(1 "a") (1 "b") (2 "a") (2 "b")]
+    
+
+  **/** 
+  
+    (/ param*)
+    
+  Arithmetic division. Divides first operand by second one and then continues to divide result by all other operands,
+  if present. If there is only one operand supplied, it will be returned unchanged.
+  
+    (/ 10 2) -> 5
+    (/ 10.5 2) -> 5.25
+    (/ 100 4 2) -> 12.5
+   
+  
+  **%**
+  
+    (% param*)
+    
+  Division by modulo. Calculates modulo of the first operand by second one and then continues to divide by modulo all 
+  other operands, one by one. If there is only one operand supplied, it will be returned unchanged.
+  Only works with integers.
+  
+    (% 5 2) -> 1
+    (% 17 8 7) -> 1
+
 
   **Comparison functions**
    
@@ -463,12 +489,13 @@ Functions
       or
       `expression
 
-  Like quote, but prevents evaluation of every symbol, except those which are un-escaped by `,` (comma)
+  Like quote, but evaluates symbols un-escaped by `,` (comma)
   For example:
 
+      (set (a 1) (b 2))
       `(+ ,a ,b)
 
-  will evaluate to `(+ 1 2)` if current context has `a` bound to `1` and `b` bound to `2`.
+  will evaluate to `(+ 1 2)`
   
   **PROGN**
 
@@ -497,24 +524,7 @@ Functions
     
   Will evalute square of **3** and return **9**
 
-  **NAMESPACE**
 
-     (namespace name (s-expression)*)
-
-  Declares a new namespace with a name `name` in current context. Executes body and after execution binds
-  all declared symbols in the new namespace.
-  
-  **USE**
-  
-     (use namespace (s-expression)*)
-     
-  Creates new block and imports all binding from `namespace` into this block, so they are available without namespace
-  reference.
-  
-     (use list
-       (find [1 2 3] 3)
-     ) 
-     
   **FUNCALL**
   
   Calls a function.
@@ -644,6 +654,20 @@ Functions
     (namespace math
        (set1 pi 3.14))
        (set1 tau (* 2 pi)))
+   
+  
+  **USE**
+  
+     (use namespace (s-expression)*)
+     
+  Creates new block and imports all binding from `namespace` into this block, so they are available without namespace
+  reference.
+  
+     (use list
+       (find [1 2 3] 3)
+     ) 
+     
+
 
   **BLOCK**
 

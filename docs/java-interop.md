@@ -100,7 +100,7 @@ Same approach can be applied to constructors
 
     (java/new net.example.Example2(ILjava/lang/String;)
 
-<font color='red'>CALL BY SIGNATURE IS NOT IMLEMENTED YET</font>
+<font color='red'>CALL BY SIGNATURE IS NOT IMPLEMENTED YET</font>
 
 ### Functions
 

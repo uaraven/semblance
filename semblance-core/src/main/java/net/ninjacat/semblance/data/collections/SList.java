@@ -6,6 +6,7 @@ import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 import net.ninjacat.semblance.utils.Values;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -172,6 +173,7 @@ public class SList extends LispCollection {
         return printIt();
     }
 
+    @Nonnull
     @Override
     public Iterator<LispValue> iterator() {
         return collection.iterator();

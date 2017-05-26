@@ -14,6 +14,8 @@ import javax.annotation.Nonnull;
  */
 public class SFuture extends OpaqueValue<Future<LispValue>> {
 
+    private static final long serialVersionUID = 3647681801341085399L;
+
     /**
      * Creates a new SFuture and runs supplied code in a supplied context
      *

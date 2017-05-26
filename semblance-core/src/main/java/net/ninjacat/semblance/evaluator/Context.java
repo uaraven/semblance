@@ -134,6 +134,11 @@ public interface Context {
     void setSourceFolders(List<String> sourceFolders);
 
     /**
+     * @param contextStack stack of context to fill
+     */
+    void fillContextStack(List<SymbolAtom> contextStack);
+
+    /**
      * @return Strategy to resolve undefined functions.
      */
     UndefinedFunctionStrategy getUndefinedFunctionStrategy();

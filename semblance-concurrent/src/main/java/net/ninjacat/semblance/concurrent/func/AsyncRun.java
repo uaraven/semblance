@@ -12,6 +12,8 @@ import net.ninjacat.semblance.evaluator.LocalContext;
  */
 public class AsyncRun extends SpecialForm {
 
+    private static final long serialVersionUID = 3017617937876904883L;
+
     /**
      * Creates and async special form
      */

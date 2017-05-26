@@ -3,12 +3,11 @@ package net.ninjacat.semblance.ui;
 import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextBuilder;
 import javafx.scene.text.TextFlow;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -45,11 +44,11 @@ public class EditorController implements Initializable {
     @FXML
     private Label position;
     @FXML
-    private Label messageBox;
-    @FXML
     private AnchorPane editorStatus;
     @FXML
     private ScrollPane consoleScroll;
+    @FXML
+    private ListView messagesList;
 
     private Interpreter interpreter = null;
 
@@ -75,8 +74,8 @@ public class EditorController implements Initializable {
                 final JSObject window = (JSObject) webEngine.executeScript("window");
                 final EditorAccess access = new EditorAccess();
                 window.setMember("ui", access);
-                final JSObject position = (JSObject) webEngine.executeScript("editor.getCursor()");
-                access.positionChanged((int) position.getMember("line"), (int) position.getMember("ch"));
+                final JSObject cursorPos = (JSObject) webEngine.executeScript("editor.getCursor()");
+                access.positionChanged((int) cursorPos.getMember("line"), (int) cursorPos.getMember("ch"));
             }
         });
 
@@ -100,15 +99,19 @@ public class EditorController implements Initializable {
 
     public LispValue runScript() {
         clearErrorLine();
-        messageBox.setVisible(false);
+        messagesList.getItems().clear();
         editorStatus.autosize();
         try {
             final String program = getText();
-            return interpreter.run(program);
+            final LispValue result = interpreter.run(program);
+            final Text resultText = new Text("Result: " + result.repr());
+            messagesList.getItems().add(resultText);
         } catch (final ParsingException e) {
             highlightError(e.getSourceInfo(), e.getMessage());
         } catch (final SemblanceRuntimeException re) {
             highlightError(re.getSourceInfo(), re.getMessage());
+        } catch (final Exception ex) {
+            highlightError(SourceInfo.UNKNOWN, ex.getMessage());
         }
         return NilCollection.INSTANCE;
     }
@@ -127,17 +130,21 @@ public class EditorController implements Initializable {
     }
 
     private void highlightError(final SourceInfo sourceInfo, final String message) {
+        final String position;
         if (!sourceInfo.equals(SourceInfo.UNKNOWN)) {
             setErrorLine(sourceInfo.getLine());
             setCursor(sourceInfo.getLine(), sourceInfo.getPosition());
+            position = String.format("[%d:%d] ", sourceInfo.getLine(), sourceInfo.getPosition());
 
             webView.requestFocus();
+        } else {
+            position = "";
         }
         if (message != null && !message.trim().isEmpty()) {
-            messageBox.setText(message);
-            messageBox.setVisible(true);
+            final Text errorText = TextBuilder.create().text(position + message).fill(Color.FIREBRICK).build();
+            messagesList.getItems().add(errorText);
         } else {
-            messageBox.setVisible(false);
+            messagesList.getItems().clear();
         }
         editorStatus.autosize();
     }

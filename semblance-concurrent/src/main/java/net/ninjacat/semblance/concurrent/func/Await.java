@@ -16,6 +16,8 @@ import static net.ninjacat.semblance.utils.Values.isOpaque;
  */
 public class Await extends BuiltInFunction {
 
+    private static final long serialVersionUID = 3216055294812227317L;
+
     /**
      * Constructor
      */

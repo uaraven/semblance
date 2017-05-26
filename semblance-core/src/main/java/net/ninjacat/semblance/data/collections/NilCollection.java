@@ -4,6 +4,7 @@ import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -34,11 +35,11 @@ public class NilCollection extends SList {
     };
 
     NilCollection() {
-        super(Collections.<LispValue>emptyList());
+        super(Collections.emptyList());
     }
 
     NilCollection(final SourceInfo sourceInfo) {
-        super(Collections.<LispValue>emptyList(), sourceInfo);
+        super(Collections.emptyList(), sourceInfo);
     }
 
     @Override
@@ -100,6 +101,7 @@ public class NilCollection extends SList {
         return 17;
     }
 
+    @Nonnull
     @Override
     public Iterator<LispValue> iterator() {
         return NIL_ITERATOR;

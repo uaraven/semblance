@@ -199,6 +199,15 @@ abstract class BaseContext implements Context {
         this.undefinedFunctionStrategy = Optional.ofNullable(undefinedFunctionStrategy);
     }
 
+    @Override
+    public void fillContextStack(final List<SymbolAtom> contextStack) {
+        if (parent != null) {
+            parent.fillContextStack(contextStack);
+        } else {
+            contextStack.add(Constants.NONE.equals(parent.getName()) ? symbol("[unknown]") : parent.getName());
+        }
+    }
+
     protected Optional<LispValue> findInNamespace(final SymbolAtom symbolName) {
         final SymbolAtom rootNs = symbolName.getNamespace();
         if (!namespaces.containsKey(rootNs)) {

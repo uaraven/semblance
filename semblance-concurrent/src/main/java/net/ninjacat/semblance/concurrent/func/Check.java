@@ -17,6 +17,8 @@ import static net.ninjacat.semblance.utils.Values.isOpaque;
  */
 public class Check extends BuiltInFunction {
 
+    private static final long serialVersionUID = 4954008329365167831L;
+
     /**
      * Constructor for check function
      */

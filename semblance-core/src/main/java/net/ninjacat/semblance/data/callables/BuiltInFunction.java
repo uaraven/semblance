@@ -3,6 +3,7 @@ package net.ninjacat.semblance.data.callables;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
+import net.ninjacat.semblance.evaluator.LocalContext;
 
 import javax.annotation.Nonnull;
 
@@ -26,7 +27,7 @@ public abstract class BuiltInFunction extends ParametrizedCallable {
 
     @Override
     public final LispValue apply(final Context context, final LispCollection parameters) {
-        return applyFunction(context, context.evaluateList(parameters));
+        return applyFunction(LocalContext.namedChildContext(name(), context), context.evaluateList(parameters));
     }
 
     @Override

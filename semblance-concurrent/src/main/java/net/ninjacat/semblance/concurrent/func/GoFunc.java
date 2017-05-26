@@ -22,6 +22,8 @@ import static net.ninjacat.semblance.utils.Values.asCollection;
  */
 public class GoFunc extends SpecialForm {
 
+    private static final long serialVersionUID = 2249021754950543209L;
+
     /**
      * Creates a new instance of go special form
      */

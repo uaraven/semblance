@@ -14,6 +14,8 @@ import static net.ninjacat.semblance.utils.Values.asNumber;
  */
 public class Delay extends BuiltInFunction {
 
+    private static final long serialVersionUID = 4842032277397697933L;
+
     /**
      * Creates a new instance of Delay
      */

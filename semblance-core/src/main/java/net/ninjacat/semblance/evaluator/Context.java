@@ -4,6 +4,7 @@ import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +21,7 @@ public interface Context {
      *
      * @return current context name. {@link net.ninjacat.semblance.data.Constants#NONE} for nameless contexts
      */
+    @Nonnull
     SymbolAtom getName();
 
     /**

@@ -12,6 +12,7 @@ import net.ninjacat.semblance.data.special.ReturnValue;
 import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
 import net.ninjacat.semblance.errors.runtime.UnboundSymbolException;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -39,6 +40,7 @@ abstract class BaseContext implements Context {
         namespaces.put(Constants.NONE, new BaseNamespace(Constants.NONE));
     }
 
+    @Nonnull
     @Override
     public SymbolAtom getName() {
         return name;
@@ -75,6 +77,12 @@ abstract class BaseContext implements Context {
         }
     }
 
+    /**
+     * Evaluates a single expression
+     *
+     * @param expression Expression to evaluate
+     * @return Evaluated {@link LispValue}
+     */
     @Override
     public LispValue evaluate(final LispValue expression) {
         if (isSymbol(expression)) {
@@ -104,9 +112,17 @@ abstract class BaseContext implements Context {
         }
     }
 
+    /**
+     * Evaluates a collection of values. This does not evaluates list as a function/special form, it simply
+     * calls {@link #evaluate(LispValue)} for each element of collection
+     *
+     * @param params collection of values
+     * @param <T>    Type of collection
+     * @return Collection of evaluated values. Type of result is the same as type of original collection
+     */
     @Override
     public <T extends LispCollection> T evaluateList(final T params) {
-        final List<LispValue> evaluatedParams = new ArrayList<>((int) params.length());
+        final List<LispValue> evaluatedParams = new ArrayList<>(params.length());
         for (final LispValue value : params) {
             final LispValue evaluated = evaluate(value);
             evaluatedParams.add(evaluated);
@@ -114,6 +130,14 @@ abstract class BaseContext implements Context {
         return params.createSame(new SList(evaluatedParams));
     }
 
+    /**
+     * Evaluates a block of expressions, such as <pre>progn</pre>, <pre>block</pre> or function body.
+     * <p>
+     * evaluateBlock handles <pre>return</pre> statement.
+     *
+     * @param expressions List of expressions to evaluate.
+     * @return Value of the last evaluated expression
+     */
     @Override
     public LispValue evaluateBlock(final LispCollection expressions) {
         LispValue last = NilCollection.INSTANCE;
@@ -187,11 +211,7 @@ abstract class BaseContext implements Context {
 
     @Override
     public UndefinedFunctionStrategy getUndefinedFunctionStrategy() {
-        if (undefinedFunctionStrategy.isPresent()) {
-            return undefinedFunctionStrategy.get();
-        } else {
-            return parent.getUndefinedFunctionStrategy();
-        }
+        return undefinedFunctionStrategy.orElseGet(parent::getUndefinedFunctionStrategy);
     }
 
     @Override
@@ -203,24 +223,8 @@ abstract class BaseContext implements Context {
     public void fillContextStack(final List<SymbolAtom> contextStack) {
         if (parent != null) {
             parent.fillContextStack(contextStack);
-        } else {
-            contextStack.add(Constants.NONE.equals(parent.getName()) ? symbol("[unknown]") : parent.getName());
         }
-    }
-
-    protected Optional<LispValue> findInNamespace(final SymbolAtom symbolName) {
-        final SymbolAtom rootNs = symbolName.getNamespace();
-        if (!namespaces.containsKey(rootNs)) {
-            return lookInParent(symbolName);
-        } else {
-            final Namespace namespace = namespaces.get(rootNs);
-            final Optional<LispValue> symbol = namespace.findSymbol(symbolName.getLocalName());
-            if (symbol.isPresent()) {
-                return symbol;
-            } else {
-                return lookInParent(symbolName);
-            }
-        }
+        contextStack.add(Constants.NONE.equals(getName()) ? symbol("[unknown]") : getName());
     }
 
     private LispValue evaluateReturnValue(final ReturnValue returnValue) {
@@ -230,18 +234,17 @@ abstract class BaseContext implements Context {
         return returnValue.getValue();
     }
 
-    private boolean isRootContext() {
-        return getName().equals(Constants.ROOT);
-    }
-
-    private Optional<LispValue> lookInParent(final SymbolAtom symbolName) {
-        if (null != parent) {
-            return parent.findSymbol(symbolName);
-        } else {
-            return Optional.empty();
-        }
-    }
-
+    /**
+     * Evaluates a function represented as list of function/symbol and parameters.
+     * Firstly head of the list is checked for "evaluability", if it is a {@link LispCallable} or a symbol bound to
+     * callable, then rest of the list is evaluated and function is called.
+     * <p>
+     * If head of the list is neither a callable nor a symbol bound to a callable, then <i>Undefined function strategy</i>
+     * handler is called.
+     *
+     * @param function {@link SList} containing a function call
+     * @return Evaluated value of the function
+     */
     private LispValue evaluateFunction(final SList function) {
         final LispValue head = function.head();
         if (!isSymbol(head) && !isCallable(head)) {
@@ -256,5 +259,32 @@ abstract class BaseContext implements Context {
         final LispCollection params = function.tail();
         final LispCallable func = asCallable(callable.get());
         return func.apply(this, params);
+    }
+
+    private Optional<LispValue> findInNamespace(final SymbolAtom symbolName) {
+        final SymbolAtom rootNs = symbolName.getNamespace();
+        if (!namespaces.containsKey(rootNs)) {
+            return lookInParent(symbolName);
+        } else {
+            final Namespace namespace = namespaces.get(rootNs);
+            final Optional<LispValue> symbol = namespace.findSymbol(symbolName.getLocalName());
+            if (symbol.isPresent()) {
+                return symbol;
+            } else {
+                return lookInParent(symbolName);
+            }
+        }
+    }
+
+    private boolean isRootContext() {
+        return getName().equals(Constants.ROOT);
+    }
+
+    private Optional<LispValue> lookInParent(final SymbolAtom symbolName) {
+        if (null != parent) {
+            return parent.findSymbol(symbolName);
+        } else {
+            return Optional.empty();
+        }
     }
 }

@@ -16,7 +16,7 @@ public class Binding {
      * @param name  name of the binding
      * @param value bound value
      */
-    public Binding(final SymbolAtom name, final LispValue value) {
+    Binding(final SymbolAtom name, final LispValue value) {
         this.name = name;
         this.value = value;
     }

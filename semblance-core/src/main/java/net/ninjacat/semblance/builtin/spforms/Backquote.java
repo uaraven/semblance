@@ -41,7 +41,7 @@ public class Backquote extends SpecialForm {
         return func.equals(HiddenFunctions.COMMA);
     }
 
-    private LispCollection expandBQ(final LispCollection sExpr, final Context parameterContext) {
+    private static LispCollection expandBQ(final LispCollection sExpr, final Context parameterContext) {
         final List<LispValue> output = new ArrayList<>();
 
         for (final LispValue item : sExpr) {
@@ -65,7 +65,7 @@ public class Backquote extends SpecialForm {
         return new SList(output);
     }
 
-    private void processHidden(final List<LispValue> output, final Context context, final LispCollection itemAsList) {
+    private static void processHidden(final List<LispValue> output, final Context context, final LispCollection itemAsList) {
         final LispValue head = itemAsList.head();
         final LispValue expression = itemAsList.tail().head();
         if (isUnwrap(head)) {
@@ -80,26 +80,26 @@ public class Backquote extends SpecialForm {
         }
     }
 
-    private void unwrapList(final List<LispValue> output, final Context parameterContext, final LispValue param) {
+    private static void unwrapList(final List<LispValue> output, final Context parameterContext, final LispValue param) {
         final LispCollection coll = asCollection(parameterContext.evaluate(param));
         for (final LispValue value : coll) {
             output.add(value);
         }
     }
 
-    private boolean isUnwrap(final LispValue func) {
+    private static boolean isUnwrap(final LispValue func) {
         return func.equals(HiddenFunctions.UNWRAP);
     }
 
-    private boolean isHidden(final LispValue func) {
+    private static boolean isHidden(final LispValue func) {
         return isUnwrap(func) || isUnquote(func);
     }
 
-    private boolean isNonEscapedParameter(final LispValue item) {
+    private static boolean isNonEscapedParameter(final LispValue item) {
         return asSymbol(item).repr().startsWith(",");
     }
 
-    private Collection<LispValue> expandParameter(final LispValue item, final Context parameterContext) {
+    private static Collection<LispValue> expandParameter(final LispValue item, final Context parameterContext) {
         final SymbolAtom actualName = asSymbol(item);
         final Optional<LispValue> value = parameterContext.findSymbol(actualName);
         if (value.isPresent()) {
@@ -109,7 +109,7 @@ public class Backquote extends SpecialForm {
         }
     }
 
-    private Collection<LispValue> expandList(final LispValue value) {
+    private static Collection<LispValue> expandList(final LispValue value) {
         return asCollection(value).stream().collect(Collectors.toList());
     }
 }

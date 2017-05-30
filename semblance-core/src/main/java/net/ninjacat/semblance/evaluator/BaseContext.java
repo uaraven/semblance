@@ -9,9 +9,8 @@ import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.data.special.ReturnValue;
-import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
-import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
+import net.ninjacat.semblance.errors.runtime.InternalSemblanceError;
 import net.ninjacat.semblance.errors.runtime.UnboundSymbolException;
 
 import javax.annotation.Nonnull;
@@ -219,7 +218,7 @@ abstract class BaseContext implements Context {
             if (parent != null) {
                 return parent.getUndefinedFunctionStrategy();
             } else {
-                throw new SemblanceRuntimeException("Interpreter has no undefined function strategy", SourceInfo.UNKNOWN);
+                throw new InternalSemblanceError("Interpreter has no undefined function strategy");
             }
         }
     }

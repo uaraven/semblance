@@ -2,7 +2,7 @@ package net.ninjacat.semblance.integration;
 
 import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.collections.LispValue;
-import net.ninjacat.semblance.evaluator.RootContext;
+import net.ninjacat.semblance.evaluator.SourceUtils;
 import org.junit.Test;
 
 import java.io.File;
@@ -18,12 +18,11 @@ public class CompilationTest {
 
     @Test
     public void testShouldCompileProgram() throws Exception {
-        final RootContext context = new RootContext();
 
         final File tempFile = File.createTempFile("tmp", "smbl");
         try (final InputStream input = getClass().getResourceAsStream("/test_program.smbl");
              final OutputStream output = new FileOutputStream(tempFile)) {
-            RootContext.compileToStream(input, output);
+            SourceUtils.compileToStream(input, output);
         }
 
         final Interpreter interpreter = new Interpreter();

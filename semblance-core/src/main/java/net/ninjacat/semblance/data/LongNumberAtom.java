@@ -35,12 +35,6 @@ public class LongNumberAtom extends NumberAtom<Long> {
         this.value = value;
     }
 
-    private static boolean willOverflow(final long l1, final long l2) {
-        final long maximum = Long.signum(l1) == Long.signum(l2) ? Long.MAX_VALUE : Long.MIN_VALUE;
-
-        return (0 != l1 && (0 < l2 && l2 > maximum / l1 || 0 > l2 && l2 < maximum / l1));
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public NumberAtom<?> add(final NumberAtom<?> other) {
@@ -172,6 +166,17 @@ public class LongNumberAtom extends NumberAtom<Long> {
     @Override
     public int hashCode() {
         return (int) (value ^ (value >>> 32));
+    }
+
+    @Override
+    public NumberAtom<?> minify() {
+        return this;
+    }
+
+    private static boolean willOverflow(final long l1, final long l2) {
+        final long maximum = Long.signum(l1) == Long.signum(l2) ? Long.MAX_VALUE : Long.MIN_VALUE;
+
+        return (0 != l1 && (0 < l2 && l2 > maximum / l1 || 0 > l2 && l2 < maximum / l1));
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 
+import static net.ninjacat.semblance.utils.Values.number;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -91,6 +92,26 @@ public class BigIntegerNumberAtomTest {
 
         assertThat("Result should be bigint", result, instanceOf(BigIntegerNumberAtom.class));
         assertThat("Should add two bigints", (BigInteger) result.getValue(), is(new BigInteger("42000000000000000042")));
+    }
+
+    @Test
+    public void shouldMinifyToLong() throws Exception {
+        final BigIntegerNumberAtom minLong = new BigIntegerNumberAtom(new BigInteger(String.valueOf(Long.MIN_VALUE)));
+        final BigIntegerNumberAtom maxLong = new BigIntegerNumberAtom(new BigInteger(String.valueOf(Long.MAX_VALUE)));
+        final BigIntegerNumberAtom normLong = new BigIntegerNumberAtom(new BigInteger("100000"));
+        final BigIntegerNumberAtom normNegativeLong = new BigIntegerNumberAtom(new BigInteger("-100000"));
+
+        final BigIntegerNumberAtom positiveBig = new BigIntegerNumberAtom(new BigInteger("9999999999999999999999999"));
+        final BigIntegerNumberAtom negativeBig = new BigIntegerNumberAtom(new BigInteger("9999999999999999999999999"));
+
+        assertThat(minLong.minify(), is(new LongNumberAtom(Long.MIN_VALUE)));
+        assertThat(maxLong.minify(), is(new LongNumberAtom(Long.MAX_VALUE)));
+
+        assertThat(normLong.minify(), is(number(100000)));
+        assertThat(normNegativeLong.minify(), is(number(-100000)));
+
+        assertThat(positiveBig.minify(), Matchers.instanceOf(BigIntegerNumberAtom.class));
+        assertThat(negativeBig.minify(), Matchers.instanceOf(BigIntegerNumberAtom.class));
     }
 
     private Atom getAtom() {

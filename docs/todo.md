@@ -19,6 +19,13 @@ Library todo
  - futures - done
  - coroutines - done (async/go)
  - async/await - done
+ 
+ - functional constructs:
+   - try
+   - either
+   - optional
+   - map
+   - flatmap
 
 Interpreter todo
 ----------------

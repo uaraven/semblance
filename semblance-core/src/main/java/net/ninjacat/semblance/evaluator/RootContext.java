@@ -9,6 +9,9 @@ import net.ninjacat.semblance.builtin.spforms.comparison.*;
 import net.ninjacat.semblance.builtin.spforms.logic.And;
 import net.ninjacat.semblance.builtin.spforms.logic.Not;
 import net.ninjacat.semblance.builtin.spforms.logic.Or;
+import net.ninjacat.semblance.builtin.spforms.types.AsDouble;
+import net.ninjacat.semblance.builtin.spforms.types.AsInt;
+import net.ninjacat.semblance.builtin.spforms.types.AsString;
 import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.collections.LispCollection;
@@ -23,20 +26,17 @@ import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static net.ninjacat.semblance.evaluator.SourceLoader.readProgram;
+import static net.ninjacat.semblance.evaluator.SourceUtils.readProgram;
 import static net.ninjacat.semblance.utils.Values.symbol;
 
 /**
  * Base context for every program.
  * <p/>
- * Created on 01/03/15.
  */
 public class RootContext extends BaseContext {
 
@@ -62,100 +62,44 @@ public class RootContext extends BaseContext {
         bind(symbol("F"), Constants.FALSE);
 
         bindSpecialForms();
+        loadLibrary();
+
         sourceFolders = new ArrayList<>();
-    }
-
-    /**
-     * Loads program from stream and compiles it into another stream.
-     * This method will not close neither source nor destination streams.
-     *
-     * @param source InputStream with program source.
-     * @param dest   OutputStream to receive binary representation of a program.
-     * @return Lisp collection representing a program.
-     * @throws ParsingException if program cannot be compiled.
-     */
-    public static LispValue compileToStream(final InputStream source, final OutputStream dest) throws ParsingException {
-        final SList program = readProgram(source);
-
-        try (final ObjectOutputStream outputStream = new ObjectOutputStream(dest)) {
-            outputStream.writeObject(program);
-            outputStream.flush();
-        } catch (final IOException e) {
-            throw new ParsingException("Failed to save program", e, SourceInfo.UNKNOWN);
-        }
-        return program;
     }
 
     /**
      * Evaluates program in supplied context. Used by REPL
      *
-     * @param source  Program source
+     * @param program  The program
      * @param context Execution context
      * @return evaluated value
-     * @throws ParsingException If syntax error is encountered during evaluation.
      */
-    public static LispValue evaluateInContext(final String source, final Context context) throws ParsingException {
-        return context.evaluateBlock(readProgram(source));
+    public static LispValue evaluateInContext(final LispCollection program,
+                                              final Context context) {
+        return unwrapWrappers(context.evaluateBlock(program));
     }
 
     /**
-     * Evaluates program in the this context. Any bindings made by the program are not stored in the context.
+     * Creates a new local context and evaluates a program in that context.
+     * <p>
+     * Any bindings made by the program are not persisted in this root context.
      *
-     * @param source InputStream containing program.
+     * @param program InputStream containing program.
      * @return Value evaluated.
-     * @throws ParsingException If program contains syntax errors.
      */
-    public LispValue evaluateProgram(final InputStream source) throws ParsingException {
-        final SList program = readProgram(source);
+    public LispValue evaluateProgram(final LispCollection program) {
         final Context executionContext = LocalContext.namedChildContext(symbol("main"), this);
         return unwrapWrappers(executionContext.evaluateBlock(program));
     }
 
     /**
-     * Evaluates program in the this context. Any bindings made by the program are not stored in the context.
+     * Evaluates program in this context, all binding done in the program are persisted in this root context.
      *
-     * @param source InputStream containing program.
-     * @return Value evaluated.
-     * @throws ParsingException If program contains syntax errors.
-     */
-    public LispValue evaluateCompiledProgram(final InputStream source) throws ParsingException {
-        final SList program = SourceLoader.readCompiled(source);
-        final Context executionContext = LocalContext.namedChildContext(symbol("main"), this);
-        return unwrapWrappers(executionContext.evaluateBlock(program));
-    }
-
-    /**
-     * Evaluates program in the this context. Any bindings made by the program are not stored in the context.
-     *
-     * @param source InputStream containing program.
-     * @return Value evaluated.
-     */
-    public LispValue evaluateProgram(final LispCollection source) {
-        final Context executionContext = LocalContext.namedChildContext(symbol("main"), this);
-        return unwrapWrappers(executionContext.evaluateBlock(source));
-    }
-
-    /**
-     * Evaluates source in this context, all binding done in the program are stored in this root context indefinitely.
-     *
-     * @param source Program source.
+     * @param program The program.
      * @return Result of program evaluation.
-     * @throws ParsingException If program contains source errors.
      */
-    public LispValue evaluateHere(final InputStream source) throws ParsingException {
-        final SList program = readProgram(source);
+    public LispValue evaluateHere(final SList program) {
         return unwrapWrappers(evaluateBlock(program));
-    }
-
-    /**
-     * Evaluates source in this context, all binding done in the program are stored in this root context indefinitely.
-     *
-     * @param source Program source.
-     * @return Result of program evaluation.
-     * @throws ParsingException If program contains source errors.
-     */
-    public LispValue evaluateHere(final SList source) throws ParsingException {
-        return unwrapWrappers(evaluateBlock(source));
     }
 
     @Override
@@ -222,14 +166,16 @@ public class RootContext extends BaseContext {
         bindCallable(new Not());
         bindCallable(new Or());
 
+        bindCallable(new AsString());
+        bindCallable(new AsDouble());
+        bindCallable(new AsInt());
+
         bindCallable(new Find());
         bindCallable(new MapKeys());
         bindCallable(new MapValues());
 
         bindCallable(new Contains());
         bindCallable(new Zip());
-
-        loadLibrary();
     }
 
     private void prepareDefaultNamespaces() {
@@ -239,7 +185,7 @@ public class RootContext extends BaseContext {
 
     private void loadLibrary() {
         try (InputStream source = getClass().getResourceAsStream("/standard.smbl")) {
-            evaluateHere(source);
+            evaluateHere(readProgram(source));
         } catch (ParsingException | IOException e) {
             throw new SemblanceRuntimeException("Failed to load standard library", SourceInfo.UNKNOWN, e);
         }

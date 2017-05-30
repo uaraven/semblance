@@ -143,6 +143,14 @@ public abstract class NumberAtom<T> extends Atom {
      */
     public abstract T getValue();
 
+    /**
+     * Shrinks number to a minimal storage. For example BigIntNumber with a value of 10 will be converted to LongNumber,
+     * if there is no need to shrink atom, original one will be returned
+     *
+     * @return Shrinked number
+     */
+    public abstract NumberAtom<?> minify();
+
     @Override
     public String repr() {
         return String.valueOf(getValue());

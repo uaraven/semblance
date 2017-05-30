@@ -13,6 +13,7 @@ import net.ninjacat.semblance.utils.Either;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static net.ninjacat.semblance.evaluator.SourceUtils.readProgram;
 import static net.ninjacat.semblance.java.Lambdas.methodAsFunction;
 import static net.ninjacat.semblance.utils.Values.*;
 
@@ -91,7 +92,7 @@ public abstract class Repl {
      */
     public Either<Exception, String> eval(final String input) {
         try {
-            final LispValue value = RootContext.evaluateInContext(input, replContext);
+            final LispValue value = RootContext.evaluateInContext(readProgram(input), replContext);
             replContext.bind(symbol("$$"), value);
             return Either.second(value.repr());
         } catch (final Exception ex) {

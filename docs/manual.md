@@ -88,6 +88,25 @@ Data types
   
   Promoting to double is also done automatically if one of the operands is double.  
   
+  There are two functions for converting between `integer` and `double` types:
+  
+       (as-int value)
+       (as-double value)
+       
+  <Value> can be either a single value or a collection (list or vector).
+  
+  `as-int` function does not perform rounding and simply drops fractional part of the double number.
+   
+       (as-int 10.6) -> 10
+       (as-int [10.6 11.2 12.8]) -> [10 11 12]
+       
+       (as-double 10) -> 10.0
+       (as-double [10 11 12]) -> [10.0 11.0 12.0]
+       
+       
+  Neither `as-int` nor `as-double` can be used to parse string into number.
+
+  
   **STRINGS**
 
   Strings are everything inside double quotes. Some special characters can be escaped with backslash `\`, like
@@ -105,6 +124,13 @@ Data types
       """This is a
       multiline
       string"""
+      
+  Function `as-string` allows to convert almost any value to its string representation. If a collection is passed to
+  `as-string`, each element of the collection will be converted to string and new collection of strings will be returned.
+  
+    (as-string 42) -> "42"
+    (as-string 42.42) -> "42.42"
+    (as-string [10 20 30 40]) -> ["10" "20" "30" "40"]
 
   **BOOLEAN**
   

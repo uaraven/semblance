@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.builtin.spforms;
 
+import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.collections.LispValue;
-import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.utils.IOUtils;
 import org.junit.Test;
 
@@ -14,9 +14,9 @@ public class FuncallTest {
     @Test
     public void testShouldCallFunctionByBinding() throws Exception {
 
-        final RootContext context = new RootContext();
+        final Interpreter context = new Interpreter();
 
-        final LispValue value = context.evaluateProgram(IOUtils.asStream(
+        final LispValue value = context.run(IOUtils.asStream(
                 "(defun mult2 (x) (* 2 x))\n" +
                         "(funcall mult2 (21))"
         ));

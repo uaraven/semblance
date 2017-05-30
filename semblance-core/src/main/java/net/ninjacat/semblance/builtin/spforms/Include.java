@@ -17,8 +17,8 @@ import java.io.*;
 import java.util.List;
 import java.util.Optional;
 
-import static net.ninjacat.semblance.evaluator.SourceLoader.readCompiled;
-import static net.ninjacat.semblance.evaluator.SourceLoader.readProgram;
+import static net.ninjacat.semblance.evaluator.SourceUtils.readCompiled;
+import static net.ninjacat.semblance.evaluator.SourceUtils.readProgram;
 import static net.ninjacat.semblance.utils.Values.asString;
 
 /**

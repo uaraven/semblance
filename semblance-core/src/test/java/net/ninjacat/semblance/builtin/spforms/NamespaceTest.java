@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.util.Optional;
 
+import static net.ninjacat.semblance.evaluator.SourceUtils.readProgram;
 import static net.ninjacat.semblance.utils.Values.number;
 import static net.ninjacat.semblance.utils.Values.symbol;
 import static org.hamcrest.Matchers.instanceOf;
@@ -20,8 +21,8 @@ public class NamespaceTest {
     public void testShouldBindVarInNamespace() throws Exception {
         final RootContext context = new RootContext();
 
-        context.evaluateHere(IOUtils.asStream(
-                "(namespace math (set (pi 3.14))) math/pi"));
+        context.evaluateHere(readProgram(IOUtils.asStream(
+                "(namespace math (set (pi 3.14))) math/pi")));
 
         final Optional<net.ninjacat.semblance.evaluator.Namespace> namespace = context.getNamespace(symbol("math"));
 
@@ -36,8 +37,8 @@ public class NamespaceTest {
     public void testShouldBindFunctionInNamespace() throws Exception {
         final RootContext context = new RootContext();
 
-        final LispValue value = context.evaluateHere(IOUtils.asStream(
-                "(namespace math (defun pi () 3.14)) (math/pi)"));
+        final LispValue value = context.evaluateHere(readProgram(IOUtils.asStream(
+                "(namespace math (defun pi () 3.14)) (math/pi)")));
 
         final Optional<net.ninjacat.semblance.evaluator.Namespace> namespace = context.getNamespace(symbol("math"));
 

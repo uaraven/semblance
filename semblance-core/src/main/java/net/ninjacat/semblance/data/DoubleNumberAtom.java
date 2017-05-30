@@ -146,6 +146,11 @@ public class DoubleNumberAtom extends NumberAtom {
     }
 
     @Override
+    public NumberAtom<?> minify() {
+        return this;
+    }
+
+    @Override
     protected NumberAtom expandIfNeeded(final NumberAtom other) {
         return this;
     }
@@ -172,5 +177,4 @@ public class DoubleNumberAtom extends NumberAtom {
             return other;
         }
     }
-
 }

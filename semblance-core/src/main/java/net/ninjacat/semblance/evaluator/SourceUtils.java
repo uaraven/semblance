@@ -1,19 +1,19 @@
 package net.ninjacat.semblance.evaluator;
 
+import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
+import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.errors.compile.ParsingIOException;
 import net.ninjacat.semblance.reader.Reader;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import java.io.*;
 
 /**
  * Utility class providing tools to read source and compiled semblance files.
  */
-public final class SourceLoader {
-    private SourceLoader() {
+public final class SourceUtils {
+    private SourceUtils() {
     }
 
     /**
@@ -55,4 +55,24 @@ public final class SourceLoader {
         }
     }
 
+    /**
+     * Loads program from stream and compiles it into another stream.
+     * This method will not close neither source nor destination streams.
+     *
+     * @param source InputStream with program source.
+     * @param dest   OutputStream to receive binary representation of a program.
+     * @return Lisp collection representing a program.
+     * @throws ParsingException if program cannot be compiled.
+     */
+    public static LispValue compileToStream(final InputStream source, final OutputStream dest) throws ParsingException {
+        final SList program = readProgram(source);
+
+        try (final ObjectOutputStream outputStream = new ObjectOutputStream(dest)) {
+            outputStream.writeObject(program);
+            outputStream.flush();
+        } catch (final IOException e) {
+            throw new ParsingException("Failed to save program", e, SourceInfo.UNKNOWN);
+        }
+        return program;
+    }
 }

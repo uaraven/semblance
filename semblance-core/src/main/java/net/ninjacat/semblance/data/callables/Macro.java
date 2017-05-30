@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.data.callables;
 
+import net.ninjacat.semblance.builtin.spforms.CreatesContext;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
@@ -13,6 +14,7 @@ import static net.ninjacat.semblance.utils.Values.asSList;
 /**
  * Implements macro callable. When applied performs macro expansion and execution.
  */
+@CreatesContext
 public class Macro extends AbstractCallable {
 
     private static final long serialVersionUID = 3295367220730180060L;

@@ -17,6 +17,7 @@ import static net.ninjacat.semblance.utils.Values.asSymbol;
  * Use namespace
  */
 @SuppressWarnings("ClassNamingConvention")
+@CreatesContext
 public class Use extends SpecialForm {
 
     private static final long serialVersionUID = 1479924863559681324L;

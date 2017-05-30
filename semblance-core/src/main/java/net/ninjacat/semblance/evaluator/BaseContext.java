@@ -227,13 +227,6 @@ abstract class BaseContext implements Context {
         contextStack.add(Constants.NONE.equals(getName()) ? symbol("[unknown]") : getName());
     }
 
-    private LispValue evaluateReturnValue(final ReturnValue returnValue) {
-        if (returnValue.isScoped() && !returnValue.getScope().equals(getName()) && !isRootContext()) {
-            return returnValue;
-        }
-        return returnValue.getValue();
-    }
-
     /**
      * Evaluates a function represented as list of function/symbol and parameters.
      * Firstly head of the list is checked for "evaluability", if it is a {@link LispCallable} or a symbol bound to
@@ -259,6 +252,13 @@ abstract class BaseContext implements Context {
         final LispCollection params = function.tail();
         final LispCallable func = asCallable(callable.get());
         return func.apply(this, params);
+    }
+
+    private LispValue evaluateReturnValue(final ReturnValue returnValue) {
+        if (returnValue.isScoped() && !returnValue.getScope().equals(getName()) && !isRootContext()) {
+            return returnValue;
+        }
+        return returnValue.getValue();
     }
 
     private Optional<LispValue> findInNamespace(final SymbolAtom symbolName) {

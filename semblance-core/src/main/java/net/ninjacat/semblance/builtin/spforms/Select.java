@@ -22,6 +22,7 @@ import static net.ninjacat.semblance.utils.Values.asSList;
  * )
  * </pre>
  */
+@CreatesContext
 public class Select extends SpecialForm {
     private static final long serialVersionUID = -3001316130532064386L;
 

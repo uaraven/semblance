@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.data.callables;
 
+import net.ninjacat.semblance.builtin.spforms.CreatesContext;
 import net.ninjacat.semblance.data.collections.LispCollection;
 import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
@@ -12,6 +13,7 @@ import javax.annotation.Nonnull;
  * implementation
  */
 @SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
+@CreatesContext
 public abstract class BuiltInFunction extends ParametrizedCallable {
 
     private static final long serialVersionUID = -5282625835226066711L;

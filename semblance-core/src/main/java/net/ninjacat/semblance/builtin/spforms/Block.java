@@ -11,6 +11,7 @@ import net.ninjacat.semblance.utils.Values;
 /**
  * Named block
  */
+@CreatesContext
 public class Block extends SpecialForm {
 
     private static final long serialVersionUID = -8040948899204544890L;

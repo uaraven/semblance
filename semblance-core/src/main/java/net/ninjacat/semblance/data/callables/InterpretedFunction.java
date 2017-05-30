@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.data.callables;
 
+import net.ninjacat.semblance.builtin.spforms.CreatesContext;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
@@ -14,6 +15,7 @@ import static net.ninjacat.semblance.utils.Values.toSList;
 /**
  * Function as defined by {@link net.ninjacat.semblance.builtin.spforms.Fn}
  */
+@CreatesContext
 public class InterpretedFunction extends AbstractCallable {
 
     private static final long serialVersionUID = -9219529125459211054L;

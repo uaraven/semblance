@@ -29,7 +29,7 @@ keyword symbols. Keywords are just symbols which start with a `:` and always eva
 
 Consider following two short programs:
 
-    (set v (+ 1 2))
+    (set1 v (+ 1 2))
     (writeout-cr v)
 
 and

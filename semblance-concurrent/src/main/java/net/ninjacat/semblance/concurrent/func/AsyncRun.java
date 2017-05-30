@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.concurrent.func;
 
+import net.ninjacat.semblance.builtin.spforms.CreatesContext;
 import net.ninjacat.semblance.concurrent.data.SFuture;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
@@ -10,6 +11,7 @@ import net.ninjacat.semblance.evaluator.LocalContext;
 /**
  * Executes supplied code block asynchronously and returns a future
  */
+@CreatesContext
 public class AsyncRun extends SpecialForm {
 
     private static final long serialVersionUID = 3017617937876904883L;

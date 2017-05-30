@@ -51,7 +51,7 @@ public class StandardLibraryTest {
 
         final LispValue value = interpreter.run("(defun fun () (block fff (return-from fun)) 15) (fun)");
 
-        assertThat(value, IsSame.sameInstance((LispValue) NilCollection.INSTANCE));
+        assertThat(value, IsSame.sameInstance(NilCollection.INSTANCE));
     }
 
 
@@ -81,7 +81,7 @@ public class StandardLibraryTest {
         final LispValue value = interpreter.run(
                 "(cdr '(1 2 3 4 5))");
 
-        assertThat(value, is((LispValue) smartList(2L, 3L, 4L, 5L)));
+        assertThat(value, is(smartList(2L, 3L, 4L, 5L)));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class StandardLibraryTest {
         final LispValue value = interpreter.run(
                 "(cdr [1 2 3])");
 
-        assertThat(value, is((LispValue) smartVector(2L, 3L)));
+        assertThat(value, is(smartVector(2L, 3L)));
     }
 
     @Test
@@ -111,7 +111,7 @@ public class StandardLibraryTest {
         final LispValue value = interpreter.run(
                 "(set res) (do-list [1 2 3] x (set* (res (res :prepend x)))) res");
 
-        assertThat(value, is((LispValue) smartList(3L, 2L, 1L)));
+        assertThat(value, is(smartList(3L, 2L, 1L)));
     }
 
 
@@ -120,9 +120,29 @@ public class StandardLibraryTest {
         final Interpreter interpreter = new Interpreter();
 
         final LispValue value = interpreter.run(
-                "(set res) (do-times x 3 (set* (res (res :append x)))) res");
+                "(set res) (do-times 3 x (set* (res (res :append x)))) res");
 
-        assertThat(value, is((LispValue) smartList(0L, 1L, 2L)));
+        assertThat(value, is(smartList(0L, 1L, 2L)));
+    }
+
+
+    @Test
+    public void testShouldIncrementNumber() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run("(1+ 5)");
+
+        assertThat(value, is(number(6)));
+    }
+
+
+    @Test
+    public void testShouldDecrementNumber() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run("(1- 5)");
+
+        assertThat(value, is(number(4)));
     }
 
 }

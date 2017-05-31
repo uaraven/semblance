@@ -41,6 +41,9 @@ public abstract class NumberAtom<T> extends Atom {
      * @return Number atom.
      */
     public static NumberAtom<?> make(final String token, final SourceInfo sourceInfo) {
+        if (token.indexOf('.') >= 0 || token.indexOf('e') >= 0) {
+            return new DoubleNumberAtom(Double.parseDouble(token), sourceInfo);
+        }
         final BigInteger bigInteger = new BigInteger(token);
         if (32 >= bigInteger.bitLength()) {
             return new LongNumberAtom(bigInteger.longValue(), sourceInfo);

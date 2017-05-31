@@ -12,6 +12,7 @@ import net.ninjacat.semblance.builtin.spforms.logic.Or;
 import net.ninjacat.semblance.builtin.spforms.types.AsDouble;
 import net.ninjacat.semblance.builtin.spforms.types.AsInt;
 import net.ninjacat.semblance.builtin.spforms.types.AsString;
+import net.ninjacat.semblance.builtin.spforms.types.ParseNumber;
 import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.LispCallable;
 import net.ninjacat.semblance.data.collections.LispCollection;
@@ -169,6 +170,7 @@ public class RootContext extends BaseContext {
         bindCallable(new AsString());
         bindCallable(new AsDouble());
         bindCallable(new AsInt());
+        bindCallable(new ParseNumber());
 
         bindCallable(new Find());
         bindCallable(new MapKeys());

@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.evaluator;
 
 import net.ninjacat.semblance.data.LispCallable;
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 import org.junit.Test;
 
 import java.util.Optional;

@@ -1,8 +1,11 @@
 package net.ninjacat.semblance.reader;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SpecialValue;
-import net.ninjacat.semblance.data.collections.*;
+import net.ninjacat.semblance.data.collections.NilCollection;
+import net.ninjacat.semblance.data.collections.SList;
+import net.ninjacat.semblance.data.collections.SMap;
 import net.ninjacat.semblance.data.collections.Vector;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.UnknownExpressionRuntimeException;

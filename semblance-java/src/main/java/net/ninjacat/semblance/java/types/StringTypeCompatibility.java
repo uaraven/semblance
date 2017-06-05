@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.java.types;
 
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

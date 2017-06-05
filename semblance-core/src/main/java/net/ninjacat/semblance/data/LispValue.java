@@ -1,6 +1,4 @@
-package net.ninjacat.semblance.data.collections;
-
-import net.ninjacat.semblance.data.SemblanceType;
+package net.ninjacat.semblance.data;
 
 import java.io.Serializable;
 

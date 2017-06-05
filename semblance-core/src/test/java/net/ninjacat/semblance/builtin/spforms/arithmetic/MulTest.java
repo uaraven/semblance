@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.builtin.spforms.arithmetic;
 
 import net.ninjacat.semblance.data.DoubleNumberAtom;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.LongNumberAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.runtime.ParameterException;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;

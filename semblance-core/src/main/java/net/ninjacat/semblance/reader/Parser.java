@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.reader;
 
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.UnknownExpressionException;

@@ -2,8 +2,8 @@ package net.ninjacat.semblance.java;
 
 
 import net.ninjacat.semblance.Interpreter;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 import org.junit.Test;
 

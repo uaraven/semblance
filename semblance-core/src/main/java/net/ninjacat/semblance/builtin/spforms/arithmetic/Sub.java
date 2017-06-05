@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.builtin.spforms.arithmetic;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.NumberAtom;
 import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SMap;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;
@@ -26,6 +26,21 @@ public class Sub extends BuiltInFunction {
      */
     public Sub() {
         super("-", "&rest", "values");
+    }
+
+    @Override
+    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
+        final LispValue head = evaluated.head();
+        if (isNumber(head)) {
+            return subtract(evaluated);
+        }
+        if (isCollection(head)) {
+            return difference(evaluated);
+        }
+        if (isMap(head)) {
+            return mapDifference(evaluated);
+        }
+        throw new TypeMismatchException("NUMBER, COLLECTION or MAP", head, evaluated.getSourceInfo());
     }
 
     private static LispValue difference(final LispCollection evaluated) {
@@ -55,20 +70,5 @@ public class Sub extends BuiltInFunction {
             accumulator = accumulator.sub(asNumber(value));
         }
         return accumulator;
-    }
-
-    @Override
-    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
-        final LispValue head = evaluated.head();
-        if (isNumber(head)) {
-            return subtract(evaluated);
-        }
-        if (isCollection(head)) {
-            return difference(evaluated);
-        }
-        if (isMap(head)) {
-            return mapDifference(evaluated);
-        }
-        throw new TypeMismatchException("NUMBER, COLLECTION or MAP", head, evaluated.getSourceInfo());
     }
 }

@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.java;
 
 import net.ninjacat.semblance.Interpreter;
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
 import org.junit.Test;

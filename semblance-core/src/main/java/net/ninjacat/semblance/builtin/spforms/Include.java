@@ -1,10 +1,10 @@
 package net.ninjacat.semblance.builtin.spforms;
 
 import com.google.common.base.Joiner;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.StringAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;

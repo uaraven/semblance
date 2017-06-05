@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.builtin.spforms.types;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.NumberAtom;
 import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Collectors;

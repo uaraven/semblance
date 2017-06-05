@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.data.callables;
 
 import net.ninjacat.semblance.data.LispCallable;
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 

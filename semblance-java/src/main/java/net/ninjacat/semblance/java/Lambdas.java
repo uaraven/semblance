@@ -1,10 +1,10 @@
 package net.ninjacat.semblance.java;
 
 import net.ninjacat.semblance.data.LispCallable;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 
 import java.util.function.BiFunction;

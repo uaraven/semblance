@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.integration;
 
 import net.ninjacat.semblance.Interpreter;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.Macro;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import org.junit.Test;

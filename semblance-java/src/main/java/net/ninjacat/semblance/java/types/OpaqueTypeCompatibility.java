@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.java.types;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.OpaqueValue;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.utils.Values;
 
 import javax.annotation.Nonnull;

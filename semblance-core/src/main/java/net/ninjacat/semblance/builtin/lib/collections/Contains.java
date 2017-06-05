@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.builtin.lib.collections;
 
 import net.ninjacat.semblance.builtin.spforms.collections.CollectionBuiltIn;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SMap;
 import net.ninjacat.semblance.evaluator.Context;
 
@@ -22,10 +22,6 @@ public class Contains extends CollectionBuiltIn {
         super("contains", "list-form", "value");
     }
 
-    private static boolean isExistInMap(final SMap sMap, final LispValue itemToFind) {
-        return sMap.contains(itemToFind);
-    }
-
     @Override
     public LispValue applyFunction(final Context context, final LispCollection evaluated) {
         final LispValue collection = evaluated.head();
@@ -36,5 +32,9 @@ public class Contains extends CollectionBuiltIn {
         } else {
             return booleanAsAtom(findInCollection(asCollection(collection), itemToFind) >= 0);
         }
+    }
+
+    private static boolean isExistInMap(final SMap sMap, final LispValue itemToFind) {
+        return sMap.contains(itemToFind);
     }
 }

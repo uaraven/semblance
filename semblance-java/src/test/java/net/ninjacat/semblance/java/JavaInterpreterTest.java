@@ -2,8 +2,8 @@ package net.ninjacat.semblance.java;
 
 import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.Constants;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.OpaqueValue;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import org.hamcrest.Matchers;
@@ -22,10 +22,6 @@ import static org.junit.Assert.assertThat;
 
 @SuppressWarnings("InstanceMethodNamingConvention")
 public class JavaInterpreterTest {
-
-    private static Interpreter createJavaInterpreter() {
-        return new Interpreter(new JavaBridge());
-    }
 
     @Test
     public void testShouldHaveJavaNamespace() throws Exception {
@@ -357,5 +353,9 @@ public class JavaInterpreterTest {
         final Interpreter interpreter = createJavaInterpreter();
 
         interpreter.run("(java/new net.ninjacat.semblance.java.Pojo2)");
+    }
+
+    private static Interpreter createJavaInterpreter() {
+        return new Interpreter(new JavaBridge());
     }
 }

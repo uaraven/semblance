@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.builtin.spforms.arithmetic;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.NumberAtom;
 import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SMap;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
@@ -26,6 +26,24 @@ public class Add extends BuiltInFunction {
      */
     public Add() {
         super("+", "&rest", "values");
+    }
+
+    @Override
+    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
+        final LispValue head = evaluated.head();
+        if (isNumber(head)) {
+            return numericAdd(evaluated);
+        }
+        if (isString(head)) {
+            return concatenate(evaluated);
+        }
+        if (isCollection(head)) {
+            return collectionUnion(evaluated);
+        }
+        if (isMap(head)) {
+            return mapUnion(evaluated);
+        }
+        throw new SemblanceRuntimeException("Invalid argument types", evaluated.getSourceInfo());
     }
 
     private static LispValue mapUnion(final LispCollection evaluated) {
@@ -59,23 +77,5 @@ public class Add extends BuiltInFunction {
             accumulator = accumulator.add(asNumber(value));
         }
         return accumulator;
-    }
-
-    @Override
-    public LispValue applyFunction(final Context context, final LispCollection evaluated) {
-        final LispValue head = evaluated.head();
-        if (isNumber(head)) {
-            return numericAdd(evaluated);
-        }
-        if (isString(head)) {
-            return concatenate(evaluated);
-        }
-        if (isCollection(head)) {
-            return collectionUnion(evaluated);
-        }
-        if (isMap(head)) {
-            return mapUnion(evaluated);
-        }
-        throw new SemblanceRuntimeException("Invalid argument types", evaluated.getSourceInfo());
     }
 }

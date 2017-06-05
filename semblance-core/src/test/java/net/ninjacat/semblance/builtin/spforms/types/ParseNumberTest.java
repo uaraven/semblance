@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.builtin.spforms.types;
 
 
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import net.ninjacat.semblance.evaluator.Context;

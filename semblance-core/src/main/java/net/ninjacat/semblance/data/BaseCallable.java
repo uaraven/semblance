@@ -1,7 +1,5 @@
 package net.ninjacat.semblance.data;
 
-import net.ninjacat.semblance.data.collections.LispValue;
-
 import javax.annotation.Nonnull;
 
 /**

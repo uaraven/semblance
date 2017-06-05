@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.builtin.spforms.comparison;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.NumberAtom;
-import net.ninjacat.semblance.data.collections.LispValue;
 
 import java.util.function.Predicate;
 

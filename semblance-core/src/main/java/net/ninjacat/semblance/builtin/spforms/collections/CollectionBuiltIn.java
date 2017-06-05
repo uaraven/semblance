@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.builtin.spforms.collections;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 
 /**
  * Base class for collection special forms

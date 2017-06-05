@@ -117,7 +117,7 @@ Data types
   `parse-number` accepts string or collection of strings as a parameter and returns number or collection of numbers.
   It automatically determines correct numeric type from string.
   
-       (parse-number "12e-4")  -> DOUBLE {12e-4}
+       (parse-number "12e-4")  -> DOUBLE{12e-4}
        (parse-number "22") -> LONG{22}
        (parse-number ["11.44", "98"]) -> [11.44 98]
        

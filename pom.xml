@@ -22,9 +22,10 @@
 
     <modules>
         <module>semblance-core</module>
-        <module>semblance-cli</module>
+        <module>semblance-lib</module>
         <module>semblance-java</module>
         <module>semblance-concurrent</module>
+        <module>semblance-cli</module>
         <module>semblance-edit</module>
     </modules>
 

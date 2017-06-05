@@ -1,6 +1,7 @@
 package net.ninjacat.semblance.data.collections;
 
 import net.ninjacat.semblance.data.LispCallable;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.operations.*;
 import net.ninjacat.semblance.debug.DebugInfoProvider;

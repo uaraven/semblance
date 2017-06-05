@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.utils;
 
 import com.google.common.collect.ImmutableList;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.data.collections.Vector;
 import net.ninjacat.semblance.errors.runtime.InternalSemblanceError;

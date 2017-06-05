@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.builtin.spforms;
 
 import net.ninjacat.semblance.Interpreter;
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
 import org.hamcrest.Matchers;
 import org.junit.Test;

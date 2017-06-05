@@ -2,9 +2,9 @@ package net.ninjacat.semblance.concurrent.data;
 
 import net.ninjacat.semblance.concurrent.futures.Future;
 import net.ninjacat.semblance.data.LispCallable;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.OpaqueValue;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 
 import javax.annotation.Nonnull;

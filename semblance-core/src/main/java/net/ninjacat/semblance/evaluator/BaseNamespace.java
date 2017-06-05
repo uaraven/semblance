@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.evaluator;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;
-import net.ninjacat.semblance.data.collections.LispValue;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

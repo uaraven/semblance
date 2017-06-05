@@ -1,6 +1,6 @@
 package net.ninjacat.semblance.reader.macros;
 
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.reader.ReaderMacro;
 import net.ninjacat.semblance.utils.Values;
 

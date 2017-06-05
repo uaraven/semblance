@@ -2,6 +2,7 @@ package net.ninjacat.semblance.reader;
 
 import com.google.common.collect.ImmutableList;
 import net.ninjacat.semblance.data.Constants.HiddenFunctions;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.*;
 import net.ninjacat.semblance.errors.runtime.UnexpectedEndRuntimeException;

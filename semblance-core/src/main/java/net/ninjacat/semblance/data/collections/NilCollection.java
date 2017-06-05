@@ -1,5 +1,6 @@
 package net.ninjacat.semblance.data.collections;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.CollectionException;

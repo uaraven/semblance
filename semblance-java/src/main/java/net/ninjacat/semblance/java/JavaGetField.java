@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.java;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.callables.SpecialForm;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.java.types.CallHelpers;

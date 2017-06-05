@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.concurrent.func;
 
 import net.ninjacat.semblance.Interpreter;
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.utils.Values;
 import org.hamcrest.core.Is;
 import org.junit.Test;

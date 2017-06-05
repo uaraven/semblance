@@ -1,7 +1,7 @@
 package net.ninjacat.semblance.builtin.spforms;
 
 import com.google.common.collect.ImmutableList;
-import net.ninjacat.semblance.data.collections.LispValue;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.errors.runtime.FileNotFoundException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.evaluator.RootContext;

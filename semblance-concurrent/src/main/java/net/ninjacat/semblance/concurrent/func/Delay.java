@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.concurrent.func;
 
 import net.ninjacat.semblance.data.Constants;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 
 import static net.ninjacat.semblance.utils.Values.asNumber;

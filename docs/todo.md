@@ -24,8 +24,12 @@ Library todo
    - try
    - either
    - optional
-   - map
-   - flatmap
+
+   - flatmap operation on collection
+   
+ - Math library
+ - String functions
+ - String formatting
 
 Interpreter todo
 ----------------
@@ -34,6 +38,10 @@ Interpreter todo
     - Type conversion                                              - done
     - Ability to call methods and access fields on java objects    - done 
     - Call by signature
+    
+ - Constants (binding that cannot be changed)
+    
+ - Pattern matching
     
  - Debugging
     - Inspect context

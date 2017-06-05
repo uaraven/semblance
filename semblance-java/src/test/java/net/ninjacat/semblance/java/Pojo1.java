@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.java;
 
 import net.ninjacat.semblance.data.BaseCallable;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SymbolAtom;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 
 import static net.ninjacat.semblance.utils.Values.*;

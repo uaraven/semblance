@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.builtin.spforms.types;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Collectors;
 import net.ninjacat.semblance.utils.Values;
@@ -20,6 +20,9 @@ public class AsString extends BuiltInFunction {
 
     private static final long serialVersionUID = 5891714102445778798L;
 
+    /**
+     * Creates a new instance of as-string function
+     */
     public AsString() {
         super("as-string", "value");
     }

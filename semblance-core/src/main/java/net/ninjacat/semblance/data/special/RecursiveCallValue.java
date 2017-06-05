@@ -1,8 +1,8 @@
 package net.ninjacat.semblance.data.special;
 
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 
 import javax.annotation.Nonnull;
 

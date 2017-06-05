@@ -1,9 +1,9 @@
 package net.ninjacat.semblance.data.special;
 
 import net.ninjacat.semblance.data.Constants;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.SemblanceType;
 import net.ninjacat.semblance.data.SymbolAtom;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.debug.DebugInfoProvider;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.runtime.TypeMismatchException;

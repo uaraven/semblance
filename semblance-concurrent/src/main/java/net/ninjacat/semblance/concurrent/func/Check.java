@@ -1,10 +1,10 @@
 package net.ninjacat.semblance.concurrent.func;
 
 import net.ninjacat.semblance.concurrent.data.SFuture;
+import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.OpaqueValue;
 import net.ninjacat.semblance.data.callables.BuiltInFunction;
 import net.ninjacat.semblance.data.collections.LispCollection;
-import net.ninjacat.semblance.data.collections.LispValue;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
 import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.utils.Values;

@@ -18,9 +18,31 @@
 
 **JOIN**
 
+**TO-LOWER**
+
+**TO-UPPER**
+
+**EQ-IGNORE-CASE**
+
+## Regular expressions
+
+unix-lines
+case-insensitive
+comments
+multiline
+literal
+dotall
+unicode-case
+canon-eq
+unicode-character-class
+
+**RE/REGEX**
+
 **RE/MATCH**
  
-**RE/GROUP**
+**MATCH**
+
+**FIND**
 
 ## Math functions
 

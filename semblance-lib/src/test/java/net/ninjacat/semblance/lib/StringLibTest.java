@@ -39,6 +39,13 @@ public class StringLibTest {
         interpreter.run("(index-of \"Hello world\")");
     }
 
+    @Test
+    public void shouldFindSubstringWithStartingIndex() throws Exception {
+        final LispValue result = interpreter.run("(index-of \"Hello world Hello\" \"Hello\" 5)");
+
+        assertThat(result, is(number(12)));
+    }
+
     @Test(expected = NotEnoughParametersException.class)
     public void substringShouldFailWhenNotEnoughParameters() throws Exception {
         interpreter.run("(substring \"Hello world\")");

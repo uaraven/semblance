@@ -66,7 +66,8 @@ public class StringLib implements ContextModifier {
         final String text = asString(parameters.head()).getValue();
         final String subtext = asString(parameters.tail().head()).getValue();
         final int startingIndex = parameters.length() > 2
-                ? (int) asNumber(parameters.tail().tail().head()).longValue() : 0;
+                ? (int) asNumber(parameters.tail().tail().head()).longValue()
+                : 0;
 
         return number(text.indexOf(subtext, startingIndex));
     }

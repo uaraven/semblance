@@ -20,8 +20,8 @@ public class MathLib implements ContextModifier {
         try (final InputStream is = getClass().getResourceAsStream("math.smbl")) {
             final Reader reader = new Reader();
             context.evaluateBlock(reader.read(is));
-        } catch (Exception e) {
-            throw new InternalSemblanceError("Cannot read or execute math.smbl");
+        } catch (final Exception e) {
+            throw new InternalSemblanceError("Cannot read or execute math.smbl", e);
         }
     }
 }

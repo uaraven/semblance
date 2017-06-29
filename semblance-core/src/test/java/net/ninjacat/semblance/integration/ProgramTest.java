@@ -5,6 +5,7 @@ import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.callables.Macro;
 import net.ninjacat.semblance.errors.runtime.FunctionExpectedException;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
+import net.ninjacat.semblance.errors.runtime.TypeMismatchException;
 import org.junit.Test;
 
 import static net.ninjacat.semblance.utils.Values.*;
@@ -106,6 +107,23 @@ public class ProgramTest {
         final LispValue value = interpreter.run("(block b1 (block b2 (block b3 (return 5 b2)) 2 ) 3)");
 
         assertThat(value, is(number(3)));
+    }
+
+    @Test
+    public void testLetShouldAssignValuesToVars() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run("(let ((x 5) (y 0)) " +
+                "(+ x y))");
+
+        assertThat(value, is(number(5)));
+    }
+
+    @Test(expected = TypeMismatchException.class)
+    public void testLetShouldFailWhenVarsNotInList() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        interpreter.run("(let (x 5) x)");
     }
 
     @Test

@@ -11,21 +11,17 @@ import java.net.URL;
 
 public class SemblanceEdit extends Application {
 
-
-    private Interpreter interpreter;
-
     @Override
     public void start(final Stage primaryStage) throws Exception {
-
-        interpreter = new Interpreter();
+        final Interpreter interpreter = new Interpreter();
 
         final URL location = getClass().getResource("editor.fxml");
         final FXMLLoader fxmlLoader = new FXMLLoader(location);
 
-        final Pane root = (Pane) fxmlLoader.load();
+        final Pane root = fxmlLoader.load();
         final EditorController controller = fxmlLoader.getController();
 
-        controller.setInterpreter(this.interpreter);
+        controller.setInterpreter(interpreter);
 
         primaryStage.setTitle("Semblance");
         final Scene scene = new Scene(root, 800, 600);

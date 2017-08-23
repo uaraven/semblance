@@ -7,9 +7,7 @@ import net.ninjacat.semblance.data.collections.SList;
 import net.ninjacat.semblance.debug.SourceInfo;
 import net.ninjacat.semblance.errors.compile.ParsingException;
 import net.ninjacat.semblance.errors.runtime.SemblanceRuntimeException;
-import net.ninjacat.semblance.evaluator.Context;
 import net.ninjacat.semblance.evaluator.ContextModifier;
-import net.ninjacat.semblance.evaluator.RootContext;
 import net.ninjacat.semblance.reader.Reader;
 import net.ninjacat.semblance.utils.Values;
 
@@ -22,9 +20,7 @@ import static net.ninjacat.semblance.utils.Values.list;
 /**
  * Semblance interpreter.
  */
-public class Interpreter {
-
-    private final RootContext rootContext;
+public class Interpreter extends SemblanceExecutor {
 
     /**
      * Creates a new interpreter with a supplied root context modifiers. Allows to bind functions, change namespaces, etc.
@@ -32,19 +28,7 @@ public class Interpreter {
      * @param contextModifiers Root context modifiers.
      */
     public Interpreter(final ContextModifier... contextModifiers) {
-        rootContext = new RootContext();
-        for (final ContextModifier modifier : contextModifiers) {
-            modifier.modify(rootContext);
-        }
-    }
-
-    /**
-     * Modifies root context of this interpreter with a given context modifier
-     *
-     * @param contextModifier Context modifier for interpreter's root context
-     */
-    public void injectContextModifier(final ContextModifier contextModifier) {
-        contextModifier.modify(rootContext);
+        super(contextModifiers);
     }
 
     /**
@@ -114,7 +98,7 @@ public class Interpreter {
      */
     public LispValue callFunction(final SymbolAtom functionName, final SList parameters) {
         final LispCollection call = list(functionName).append(parameters);
-        return rootContext.evaluateProgram(list(call));
+        return getRootContext().evaluateProgram(list(call));
     }
 
     /**
@@ -128,17 +112,10 @@ public class Interpreter {
     public LispValue runHere(final String program) throws ParsingException {
         final Reader reader = new Reader();
         final SList parsed = reader.readString(program);
-        return rootContext.evaluateHere(parsed);
-    }
-
-    /**
-     * @return This interpreter's root context.
-     */
-    public Context getRootContext() {
-        return rootContext;
+        return getRootContext().evaluateHere(parsed);
     }
 
     private LispValue doRun(final SList program) {
-        return rootContext.evaluateProgram(program);
+        return getRootContext().evaluateProgram(program);
     }
 }

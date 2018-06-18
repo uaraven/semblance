@@ -103,6 +103,17 @@ public class SMap implements DebugInfoProvider, LispCallable, JavaConvertible {
     }
 
     /**
+     * Returns a value from map by key or default value if key doesn't exist
+     *
+     * @param key          Map key
+     * @param defaultValue default value to return if key does not exist in the map
+     * @return Value for given key or default value
+     */
+    public LispValue getDefault(final LispValue key, final LispValue defaultValue) {
+        return Optional.ofNullable(contents.get(key)).orElse(defaultValue);
+    }
+
+    /**
      * Checks if this map contains the key.
      *
      * @param key Key to check.

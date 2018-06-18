@@ -173,8 +173,10 @@ public class RootContext extends BaseContext {
         bindCallable(new ParseNumber());
 
         bindCallable(new Find());
+
         bindCallable(new MapKeys());
         bindCallable(new MapValues());
+        bindCallable(new MapGet());
 
         bindCallable(new Contains());
         bindCallable(new Zip());

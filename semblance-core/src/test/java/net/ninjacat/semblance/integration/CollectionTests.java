@@ -4,6 +4,7 @@ import net.ninjacat.semblance.Interpreter;
 import net.ninjacat.semblance.data.Constants;
 import net.ninjacat.semblance.data.LispValue;
 import net.ninjacat.semblance.data.collections.NilCollection;
+import net.ninjacat.semblance.errors.runtime.NotEnoughParametersException;
 import org.junit.Test;
 
 import static net.ninjacat.semblance.utils.Values.*;
@@ -188,6 +189,56 @@ public class CollectionTests {
 
         assertThat(asSList(value).getCollection(), containsInAnyOrder(number(1), number(2), number(3)));
     }
+
+
+    @Test
+    public void testShouldReturnMapValueByKey() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(map/get {:a 1 :b 2 :c 3} :a 5)");
+
+        assertThat(asNumber(value).longValue(), is(1L));
+    }
+
+    @Test
+    public void testShouldReturnDefaultValueByKey() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(map/get {:a 1 :b 2 :c 3} :d 5)");
+
+        assertThat(asNumber(value).longValue(), is(5L));
+    }
+
+    @Test
+    public void testShouldReturnNilValueByKey() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(map/get {:a 1 :b 2 :c 3} :d)");
+
+        assertThat(value, is(NilCollection.INSTANCE));
+    }
+
+    @Test(expected = NotEnoughParametersException.class)
+    public void testShouldFailWhenNotEnoughParameters() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        interpreter.run("(map/get {:a 1 :b 2 :c 3})");
+    }
+
+
+    @Test
+    public void testShouldFailWhenNotE() throws Exception {
+        final Interpreter interpreter = new Interpreter();
+
+        final LispValue value = interpreter.run(
+                "(map/get {:a 1 :b 2 :c 3} :d 5)");
+
+        assertThat(asNumber(value).longValue(), is(5L));
+    }
+
 
     @Test
     public void testShouldUpdateMapAsFunction() throws Exception {

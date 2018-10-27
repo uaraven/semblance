@@ -48,26 +48,25 @@ public class EditorController implements Initializable {
     @FXML
     private ScrollPane consoleScroll;
     @FXML
-    private ListView messagesList;
+    private ListView<Text> messagesList;
 
     private Interpreter interpreter = null;
 
     @Override
     public void initialize(final URL location, final ResourceBundle resources) {
-        final WebEngine webEngine = webView.getEngine();
+        final WebEngine webEngine = this.webView.getEngine();
         loadEditorTemplate();
 
-        webView.autosize();
-        consoleOut.autosize();
-        editorStatus.autosize();
-        consoleScroll.autosize();
+        this.webView.autosize();
+        this.editorStatus.autosize();
+        this.consoleScroll.autosize();
 
-        consoleScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        consoleScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        this.consoleScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.consoleScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-        consoleIn.prefWidthProperty().bind(consoleScroll.widthProperty().subtract(4));
+        this.consoleIn.prefWidthProperty().bind(this.consoleScroll.widthProperty().subtract(4));
 
-        runButton.setOnAction(event -> runScript());
+        this.runButton.setOnAction(event -> runScript());
 
         webEngine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == Worker.State.SUCCEEDED) {
@@ -81,31 +80,31 @@ public class EditorController implements Initializable {
 
     }
 
-    public void clearErrorLine() {
-        webView.getEngine().executeScript("clearErrorHighlighting()");
+    private void clearErrorLine() {
+        this.webView.getEngine().executeScript("clearErrorHighlighting()");
     }
 
-    public void setErrorLine(final int lineNumber) {
-        webView.getEngine().executeScript("highlightError(" + lineNumber + ")");
+    private void setErrorLine(final int lineNumber) {
+        this.webView.getEngine().executeScript("highlightError(" + lineNumber + ")");
     }
 
-    public void setCursor(final int line, final int pos) {
-        webView.getEngine().executeScript(String.format("editor.setCursor(%s, %s)", line, pos));
+    private void setCursor(final int line, final int pos) {
+        this.webView.getEngine().executeScript(String.format("editor.setCursor(%s, %s)", line, pos));
     }
 
-    public String getText() {
-        return webView.getEngine().executeScript("editor.getValue()").toString();
+    private String getText() {
+        return this.webView.getEngine().executeScript("editor.getValue()").toString();
     }
 
-    public LispValue runScript() {
+    private LispValue runScript() {
         clearErrorLine();
-        messagesList.getItems().clear();
-        editorStatus.autosize();
+        this.messagesList.getItems().clear();
+        this.editorStatus.autosize();
         try {
             final String program = getText();
-            final LispValue result = interpreter.run(program);
+            final LispValue result = this.interpreter.run(program);
             final Text resultText = new Text("Result: " + result.repr());
-            messagesList.getItems().add(resultText);
+            this.messagesList.getItems().add(resultText);
         } catch (final ParsingException e) {
             highlightError(e.getSourceInfo(), e.getMessage());
         } catch (final SemblanceRuntimeException re) {
@@ -116,7 +115,7 @@ public class EditorController implements Initializable {
         return NilCollection.INSTANCE;
     }
 
-    public void setInterpreter(final Interpreter interpreter) {
+    void setInterpreter(final Interpreter interpreter) {
         this.interpreter = interpreter;
         this.interpreter.injectContextModifier(new ConsoleContextModifier());
     }
@@ -126,7 +125,7 @@ public class EditorController implements Initializable {
      */
     private void loadEditorTemplate() {
         final String url = getClass().getResource("/web/editor.html").toExternalForm();
-        webView.getEngine().load(url);
+        this.webView.getEngine().load(url);
     }
 
     private void highlightError(final SourceInfo sourceInfo, final String message) {
@@ -136,22 +135,22 @@ public class EditorController implements Initializable {
             setCursor(sourceInfo.getLine(), sourceInfo.getPosition());
             position = String.format("[%d:%d] ", sourceInfo.getLine(), sourceInfo.getPosition());
 
-            webView.requestFocus();
+            this.webView.requestFocus();
         } else {
             position = "";
         }
         if (message != null && !message.trim().isEmpty()) {
             final Text errorText = TextBuilder.create().text(position + message).fill(Color.FIREBRICK).build();
-            messagesList.getItems().add(errorText);
+            this.messagesList.getItems().add(errorText);
         } else {
-            messagesList.getItems().clear();
+            this.messagesList.getItems().clear();
         }
-        editorStatus.autosize();
+        this.editorStatus.autosize();
     }
 
     public class EditorAccess {
-        public void positionChanged(final int col, final int row) {
-            position.setText(String.format("%d:%d", col + 1, row + 1));
+        void positionChanged(final int col, final int row) {
+            EditorController.this.position.setText(String.format("%d:%d", col + 1, row + 1));
         }
     }
 
@@ -163,12 +162,12 @@ public class EditorController implements Initializable {
             context.bind(symbol("println"), Lambdas.methodAsFunction(this::println));
         }
 
-        public LispValue print(final Context context, final LispCollection parameters) {
+        LispValue print(final Context context, final LispCollection parameters) {
             final String outString = parameters.stream().map(LispValue::printIt).collect(joining(" "));
             return doPrint(outString);
         }
 
-        public LispValue println(final Context context, final LispCollection parameters) {
+        LispValue println(final Context context, final LispCollection parameters) {
             final String outString = parameters.stream().map(LispValue::printIt).collect(joining(" ")) + "\n";
             return doPrint(outString);
         }
@@ -176,7 +175,9 @@ public class EditorController implements Initializable {
         private LispValue doPrint(final String value) {
             final Text e = new Text(value);
             e.setStyle("-fx-text-fill: white");
-            consoleOut.getChildren().add(e);
+            e.setFill(Color.WHITE);
+            EditorController.this.consoleOut.getChildren().add(e);
+            EditorController.this.consoleScroll.setVvalue(1.0);
             return string(value);
         }
     }

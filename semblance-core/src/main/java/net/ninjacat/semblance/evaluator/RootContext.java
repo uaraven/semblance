@@ -51,7 +51,7 @@ public class RootContext extends BaseContext {
     }
 
     /**
-     * Creates new instnace of root context with custom {@link UndefinedFunctionStrategy}
+     * Creates new instance of root context with custom {@link UndefinedFunctionStrategy}
      *
      * @param undefinedFunctionStrategy Strategy to resolve undefined functions
      */
@@ -147,6 +147,8 @@ public class RootContext extends BaseContext {
         bindCallable(new Loop());
         bindCallable(new Break());
         bindCallable(new Recur());
+        bindCallable(new Resolve());
+        bindCallable(new Apply());
 
         bindCallable(new Add());
         bindCallable(new Sub());

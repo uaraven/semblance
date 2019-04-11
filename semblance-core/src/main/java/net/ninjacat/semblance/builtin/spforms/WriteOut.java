@@ -23,7 +23,7 @@ public class WriteOut extends BuiltInFunction {
      * Creates new instance of writeout special form
      */
     public WriteOut() {
-        super("writeout", "&rest", "arguments");
+        super("print", "&rest", "arguments");
     }
 
     @SuppressWarnings("UseOfSystemOutOrSystemErr")

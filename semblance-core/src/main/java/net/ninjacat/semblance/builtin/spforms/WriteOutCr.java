@@ -23,7 +23,7 @@ public class WriteOutCr extends BuiltInFunction {
      * Creates new instance of writeout-cr special form
      */
     public WriteOutCr() {
-        super("writeout-cr", "&rest", "arguments");
+        super("println", "&rest", "arguments");
     }
 
     @SuppressWarnings("UseOfSystemOutOrSystemErr")

@@ -812,6 +812,33 @@ Functions
     ) 
     
   `res` will contain **(0 1 2)** after this program is executed
+  
+  **RESOLVE**
+  
+    (resolve value)
+  
+  Resolves a symbol to its value or NIL if symbol is not bound.
+  Any self-evaluating values will be resolved to themselves.
+    
+    (defun identity (x) x)
+    (resolve identity)  -> func identity
+    (resolve 1)  -> 1 
+    (resolve non-bound)  -> NIL
+    
+    
+  **APPLY**
+   
+     (apply func (params...))
+     
+  Applies function to a parameters.
+  
+  Resolves `func` in current context, evaluates parameters and then applies 
+  resolved function to the evaluated parameters.
+  
+  `func` MUST resolve to a callable, i.e. function, special form or macro
+
+    (defun identity (x) x)
+    (apply x (:kw))         -> :kw
      
 Macros
 ------
